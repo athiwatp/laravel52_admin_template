@@ -1,0 +1,30 @@
+{
+  "name": "laravel52_admin_template",
+  "description": "Admin Templater for Laravel 5.2 based on bootstrap template",
+  "main": "index.js",
+  "authors": [
+    "Sergey Donchenko",
+    "<sergey.donchenko@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Laravel",
+    "5.2",
+    "Bootstrap",
+    "VuewJs",
+    "Admin",
+    "Template"
+  ],
+  "moduleType": [
+    "amd",
+    "es6"
+  ],
+  "homepage": "pervosoft.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

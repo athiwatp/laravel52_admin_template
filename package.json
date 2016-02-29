@@ -1,0 +1,33 @@
+{
+  "name": "laravel52_admin_template",
+  "version": "1.0.0",
+  "description": "Admin Templater for Laravel 5.2 based on bootstrap template",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergey-donchenko/laravel52_admin_template.git"
+  },
+  "keywords": [
+    "Laravel",
+    "5.2",
+    "Bootstrap",
+    "VuewJs",
+    "Admin",
+    "Template"
+  ],
+  "author": "Sergey Donchenko, <sergey.donchenko@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sergey-donchenko/laravel52_admin_template/issues"
+  },
+  "homepage": "https://github.com/sergey-donchenko/laravel52_admin_template#readme",
+  "devDependencies": {
+    "bower": "^1.7.7"
+  }
+}
