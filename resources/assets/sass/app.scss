@@ -1,2 +1,6 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+$fa-font-path: "/fonts";
 
+$icon-font-path: "/fonts/bootstrap/";
+
+@import "font-awesome";
+@import "bootstrap";

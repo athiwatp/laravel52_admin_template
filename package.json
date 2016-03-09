@@ -28,6 +28,8 @@
   },
   "homepage": "https://github.com/sergey-donchenko/laravel52_admin_template#readme",
   "devDependencies": {
-    "bower": "^1.7.7"
+    "bower": "^1.7.7",
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^5.0.0"
   }
 }
