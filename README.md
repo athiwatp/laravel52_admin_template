@@ -39,6 +39,14 @@ DB_PASSWORD=
 Application key [<YOUR LOCAL APPLICATION KEY>] set successfully.
 ```
 
+# Migrate the db structure
+```shell
+# ./artisan migrate
+Migration table created successfully.
+Migrated: 2014_10_12_000000_create_users_table
+Migrated: 2014_10_12_100000_create_password_resets_table
+```
+
 # Start the dev environment
 ```shell
 # ./artisan serve --port=8000
