@@ -19,5 +19,9 @@ elixir(function(mix) {
     ]}).copy('resources/assets/images/**', 'public/images')
         .copy(bowerDir + 'font-awesome/fonts', 'public/fonts')
         .copy(bowerDir + 'bootstrap-sass/assets/fonts', 'public/fonts');
+
+    // Copy JavaScript libraries
+    mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
+        .copy(bowerDir + 'bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js/vendor/bootstrap.min.js');
 });
 
