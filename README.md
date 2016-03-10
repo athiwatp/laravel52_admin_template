@@ -47,6 +47,11 @@ Migrated: 2014_10_12_000000_create_users_table
 Migrated: 2014_10_12_100000_create_password_resets_table
 ```
 
+# Run the Gulp to create a required structure within the public folder
+```shell
+# gulp
+```
+
 # Start the dev environment
 ```shell
 # ./artisan serve --port=8000
@@ -55,4 +60,7 @@ Laravel development server started on http://localhost:8000/
 
 and now open your browser with the following address: http://localhost:8000/
 
-
+# Start the watcher for the Gulp
+```shell
+# gulp watch
+```
