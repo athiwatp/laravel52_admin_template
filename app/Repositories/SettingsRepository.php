@@ -1,6 +1,6 @@
 <?php namespace App\Repositories;
 
-use App\Models\Settings as Message;
+use App\Models\Settings as Settings;
 
 class SettingsRepository extends BaseRepository {
     /**

@@ -9,7 +9,9 @@ use App\Repositories\SettingsRepository;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class SettingsController extends Controller
+use Settings;
+
+class SettingsController extends AdminController
 {
     /**
      * The MessageRepository instance
@@ -39,7 +41,16 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        //
+        $aData = array(); 
+
+        foreach($this->settings as $item) {
+            $aData[$item->key_name] = $item->value;
+        }
+
+        return $this->renderView('settings.add', array(
+            'aData' => $aData
+            )
+        );
     }
 
     /**

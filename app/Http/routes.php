@@ -10,6 +10,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('/login', array('as' => 'admin.login.post', 'uses' => 'Admin\AuthController@login') );
 
     Route::get('/dashboard', array('as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index') );
+    Route::get('/settings', array('as' => 'admin.settings', 'uses' => 'Admin\SettingsController@index') );
 
 });
 
