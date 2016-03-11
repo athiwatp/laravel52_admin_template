@@ -3,32 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SettingsRequest;
-use App\Repositories\SettingsRepository;
+use App\Http\Requests\NewsRequest;
+use App\Repositories\NewsRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Redirect, Lang;
 
-class SettingsController extends AdminController
+class NewsController extends AdminController
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\SettingsRepository
+     * @var App\Repositories\NewsRepository
      */
-    protected $settings;
+    protected $news;
 
     /**
-     * Create a new SettingsController instance
+     * Create a new NewsController instance
      *
-     * @param App\Repositories\SettingsRepository
+     * @param App\Repositories\NewsRepository
      *
      * @return void
      */
-    public function __construct( SettingsRepository $settings )
+    public function __construct( NewsRepository $news )
     {
-        $this->settings = $settings;
+        $this->news = $news;
 
         $this->middleware('guest');
     }
@@ -40,14 +39,8 @@ class SettingsController extends AdminController
      */
     public function index()
     {
-        $aData = array();
-
-        foreach($this->settings->index() as $item) {
-            $aData[$item->key_name] = $item->value;
-        }
-
-        return $this->renderView('settings.add', array(
-            'aData' => $aData
+        return $this->renderView('news.index', array(
+            'aData' => $this->news->index()
             )
         );
     }
@@ -65,20 +58,12 @@ class SettingsController extends AdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store( SettingsRequest $request )
+    public function store(Request $request)
     {
-        // $user = $request->users();
-
-        // Max, please read it!!!!!
-        // THIS will not work... it should re-written!!!!!
-
-        $this->settings->store( $request->all()/*, $user ? $user->id : null */);
-
-        // Re-direct somewhere!!!!!
-        return Redirect::route('admin.settings')
-            ->with('message', Lang::get('$sMessage') );
+        //
     }
 
     /**

@@ -3,36 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SettingsRequest;
-use App\Repositories\SettingsRepository;
+use App\Http\Requests\ChaptersRequest;
+use App\Repositories\ChaptersRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Redirect, Lang;
 
-class SettingsController extends AdminController
+class ChaptersController extends Controller
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\SettingsRepository
+     * @var App\Repositories\ChaptersRepository
      */
-    protected $settings;
+    protected $chapters;
 
     /**
-     * Create a new SettingsController instance
+     * Create a new ChaptersController instance
      *
-     * @param App\Repositories\SettingsRepository
+     * @param App\Repositories\ChaptersRepository
      *
      * @return void
      */
-    public function __construct( SettingsRepository $settings )
+    public function __construct( ChaptersRepository $chapters )
     {
-        $this->settings = $settings;
+        $this->chapters = $chapters;
 
         $this->middleware('guest');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -40,14 +38,8 @@ class SettingsController extends AdminController
      */
     public function index()
     {
-        $aData = array();
-
-        foreach($this->settings->index() as $item) {
-            $aData[$item->key_name] = $item->value;
-        }
-
-        return $this->renderView('settings.add', array(
-            'aData' => $aData
+        return $this->renderView('chapters.index', array(
+            'aData' => $this->chapters->index()
             )
         );
     }
@@ -65,20 +57,12 @@ class SettingsController extends AdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store( SettingsRequest $request )
+    public function store(Request $request)
     {
-        // $user = $request->users();
-
-        // Max, please read it!!!!!
-        // THIS will not work... it should re-written!!!!!
-
-        $this->settings->store( $request->all()/*, $user ? $user->id : null */);
-
-        // Re-direct somewhere!!!!!
-        return Redirect::route('admin.settings')
-            ->with('message', Lang::get('$sMessage') );
+        //
     }
 
     /**

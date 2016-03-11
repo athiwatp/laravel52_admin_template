@@ -12,7 +12,7 @@
         <div class="panel-heading">{{ Lang::get('settings.form.settings_this_site') }}</div>
         <div class="panel-body">
             <div class="col-lg-12">
-                 <div class="panel-body">
+                <div class="panel-body">
 
                     <ul class="nav nav-pills">
                         <li class="active">
@@ -24,6 +24,7 @@
                     </ul>
 
                     <br>
+                    {{ Form::open(array('url' => URL::route('admin.settings.post'), 'method'=>'POST')) }}
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home-pills">
                             <div class="form-group">
@@ -54,7 +55,8 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline btn-primary">{{ Lang::get('settings.form.save') }}</button>
+                    {{ Form::submit(Lang::get('settings.form.save'), array('class' => 'btn btn-outline btn-primary')) }}
+                    {{ Form::close() }}
                 </div>
             </div>
         </div>
