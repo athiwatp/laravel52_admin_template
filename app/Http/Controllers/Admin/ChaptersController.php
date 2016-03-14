@@ -8,8 +8,9 @@ use App\Repositories\ChaptersRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Lang, Redirect;
 
-class ChaptersController extends Controller
+class ChaptersController extends AdminController
 {
     /**
      * The MessageRepository instance
@@ -31,6 +32,7 @@ class ChaptersController extends Controller
 
         $this->middleware('guest');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +41,7 @@ class ChaptersController extends Controller
     public function index()
     {
         return $this->renderView('chapters.index', array(
-            'aData' => $this->chapters->index()
+            'aList' => $this->chapters->index()
             )
         );
     }
@@ -51,7 +53,10 @@ class ChaptersController extends Controller
      */
     public function create()
     {
-        //
+        return $this->renderView('chapters.add', array(
+            'oData' => null
+            )
+        );
     }
 
     /**
@@ -60,9 +65,12 @@ class ChaptersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( ChaptersRequest $request )
     {
-        //
+        $this->chapters->store( $request->all() );
+
+        return Redirect::route('admin.chapter')
+            ->with('message', Lang::get('$sMessage') );
     }
 
     /**
@@ -84,7 +92,10 @@ class ChaptersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->renderView('chapters.add', array(
+            'oData' => $this->chapters->edit( $id )
+            )
+        );
     }
 
     /**

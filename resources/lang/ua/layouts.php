@@ -14,6 +14,7 @@ return array(
     'layouts' => array(
         'logout' => 'Вихід',
         'news' => 'Новини',
+        'menu' => 'Управління меню',
         'chapter_news' => 'Розділи новин',
         'news_articles' => 'Статті новин',
         'dashboard' => 'Головна',

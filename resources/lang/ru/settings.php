@@ -4,7 +4,6 @@ return array(
 
     'form' => array(
         'main' => 'Главные',
-        'save' => 'Сохранить',
         'other' => 'Другие',
         'settings' => 'Настройки',
         'site_name' => 'Название сайта',

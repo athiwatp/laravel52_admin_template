@@ -10,9 +10,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('/login', array('as' => 'admin.login.post', 'uses' => 'Admin\AuthController@login') );
     Route::post('/logout', array('as' => 'admin.logout', 'uses' => 'Admin\AuthController@logout') );
 
-    Route::group(array('prefix' => 'dashboard'), function() {
-        Route::get('/', array('as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index') );
-    });
+    Route::get('/', array('as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index') );
 
     Route::group(array('prefix' => 'settings'), function() {
         Route::get('/', array('as' => 'admin.settings', 'uses' => 'Admin\SettingsController@index') );
@@ -23,7 +21,7 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('/', array('as' => 'admin.chapter', 'uses' => 'Admin\ChaptersController@index') );
         Route::get('/add', array('as' => 'admin.chapter.create', 'uses' => 'Admin\ChaptersController@create') );
         Route::get('/edit/{id}', array('as' => 'admin.chapter.edit', 'uses' => 'Admin\ChaptersController@edit') );
-        Route::get('/store', array('as' => 'admin.chapter.store', 'uses' => 'Admin\ChaptersController@store') );
+        Route::post('/store', array('as' => 'admin.chapter.store', 'uses' => 'Admin\ChaptersController@store') );
         Route::get('/destroy', array('as' => 'admin.chapter.destroy', 'uses' => 'Admin\ChaptersController@destroy') );
     });
 
@@ -33,6 +31,14 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('/edit/{id}', array('as' => 'admin.news.edit', 'uses' => 'Admin\NewsController@edit') );
         Route::post('/store', array('as' => 'admin.news.store', 'uses' => 'Admin\NewsController@store') );
         Route::get('/destroy', array('as' => 'admin.news.destroy', 'uses' => 'Admin\NewsController@destroy') );
+    });
+
+    Route::group(array('prefix' => 'menu'), function() {
+        Route::get('/', array('as' => 'admin.menu', 'uses' => 'Admin\MenusController@index') );
+        Route::get('/add', array('as' => 'admin.menu.create', 'uses' => 'Admin\MenusController@create') );
+        Route::get('/edit/{id}', array('as' => 'admin.menu.edit', 'uses' => 'Admin\MenusController@edit') );
+        Route::post('/store', array('as' => 'admin.menu.store', 'uses' => 'Admin\MenusController@store') );
+        Route::get('/destroy/{id}', array('as' => 'admin.menu.destroy', 'uses' => 'Admin\MenusController@destroy') );
     });
 
 });

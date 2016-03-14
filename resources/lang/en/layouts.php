@@ -14,6 +14,7 @@ return array(
     'layouts' => array(
         'logout' => 'Logout',
         'news' => 'News',
+        'menu' => 'Menu Control',
         'chapter_news' => 'Chapter news',
         'news_articles' => 'News articles',
         'dashboard' => 'Dashboard',

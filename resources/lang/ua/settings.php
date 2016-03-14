@@ -4,7 +4,6 @@ return array(
 
     'form' => array(
         'main' => 'Головні',
-        'save' => 'Зберегти',
         'other' => 'Інші',
         'settings' => 'Налаштування',
         'site_name' => 'Назва сайту',

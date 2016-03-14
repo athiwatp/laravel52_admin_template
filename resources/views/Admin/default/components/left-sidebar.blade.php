@@ -23,12 +23,11 @@
                 <a href="{{ URL::route('admin.news') }}"><i class="fa fa-list-alt"></i> {{ Lang::get('layouts.layouts.news_articles') }}</a>
             </li>
         </ul>
-        <!-- /.nav-second-level -->
+    </li>
+    <li>
+        <a href="{{ URL::route('admin.menu') }}"><i class="fa fa-circle-o"></i> {{ Lang::get('layouts.layouts.menu') }}</a>
     </li>
 <?php
-    // <li>
-    //     <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-    // </li>
     // <li>
     //     <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
     // </li>

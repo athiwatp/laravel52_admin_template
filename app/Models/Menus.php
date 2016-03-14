@@ -2,16 +2,12 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-    const TYPE_NEWS = '0';
-
-
-class News extends Model {
-
+class Menus extends Model
+{
     /**
      * The database table used by the model
      *
      * @var string
     */
-    protected $table = 'news';
-
+    protected $table = 'static_menus';
 }

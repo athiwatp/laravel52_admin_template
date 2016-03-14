@@ -13,6 +13,7 @@ class CreateChaptersTable extends Migration
     public function up()
     {
         Schema::create('chapters', function (Blueprint $table) {
+            $table->increments('id')->unsigned();
             $table->string('title',255);
             $table->text('description');
             $table->integer('parent_id')->nullable();

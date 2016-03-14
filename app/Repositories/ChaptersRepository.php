@@ -35,13 +35,21 @@ class ChaptersRepository extends BaseRepository {
      *
      * @return
     */
-    public function saveChapter( $chapters, $inputs/*, $user_id*/)
+    public function saveChapter( $chapter, $inputs )
     {
+        $chapter->title        = $inputs['title'];
+        $chapter->description  = $inputs['description'];
+        $chapter->parent_id    = ( isset($inputs['parent_id']) ? $inputs['parent_id'] : null );
+        $chapter->path         = ( isset($inputs['path']) ? $inputs['path'] : null );
+        $chapter->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : null );
+        $chapter->is_active    = $inputs['is_active'];
+        $chapter->type_chapter = ( isset($inputs['type_chapter']) ? $inputs['type_chapter'] : 0 );
+        $chapter->date         = $inputs['date'];
+        $chapter->number       = ( isset($inputs['number']) ? $inputs['number'] : null );
+        $chapter->user_id      = 1/*Auth::id()*/;
+        $chapter->icon        = ( isset($inputs['icon']) ? $inputs['icon'] : null );
 
-        /**
-         * NEED TO IMPLEMENT CHAPTERS SAVING PROCESS
-        */
-        //$chapters->save();
+        $chapter->save();
 
         return true;
     }
@@ -54,11 +62,31 @@ class ChaptersRepository extends BaseRepository {
      *
      * @return void
     */
-    public function store( $chapters, $inputs/*, $user_id*/)
+    public function store( $inputs )
     {
-        $chapters = $this->saveChapter(new $this->model, $inputs/*, $user_id*/);
+        $id = $inputs['id'];
+
+        if ( isset($id) && $id > 0 ) {
+            $model = $this->model->find( $id );
+        } else {
+            $model = new $this->model;
+        }
+
+        $chapters = $this->saveChapter( $model, $inputs );
 
         // some post creation actions will be required
+    }
+
+    /**
+     * Edit or update Message
+     *
+     * @param App\Models\Chapters $chapters
+     *
+     * @return
+    */
+    public function edit( $id )
+    {
+        return $this->model->find($id);
     }
 
     /**

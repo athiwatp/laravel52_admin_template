@@ -18,8 +18,8 @@ class UserTableSeeder extends Seeder
                 'email'     => 'admin@pervosoft.com',
                 'password'  => Hash::make('pervosoft'),
                 'is_admin'  => '1',
-                'phone'     => 'admin123',
-                'is_verified' => '1'
+                'is_verified' => '1',
+                'phone'     => 'pervosoft',
             ));
 
     }

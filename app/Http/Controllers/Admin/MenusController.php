@@ -3,32 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\NewsRequest;
-use App\Repositories\NewsRepository;
+use App\Http\Requests\MenusRequest;
+use App\Repositories\MenusRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lang, Redirect;
 
-class NewsController extends AdminController
+class MenusController extends AdminController
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\NewsRepository
+     * @var App\Repositories\MenusRepository
      */
-    protected $news;
+    protected $menus;
 
     /**
-     * Create a new NewsController instance
+     * Create a new MenusController instance
      *
-     * @param App\Repositories\NewsRepository
+     * @param App\Repositories\MenusRepository
      *
      * @return void
      */
-    public function __construct( NewsRepository $news )
+    public function __construct( MenusRepository $menus )
     {
-        $this->news = $news;
+        $this->menus = $menus;
 
         $this->middleware('guest');
     }
@@ -40,8 +40,8 @@ class NewsController extends AdminController
      */
     public function index()
     {
-        return $this->renderView('news.index', array(
-            'aList' => $this->news->index()
+        return $this->renderView('menus.index', array(
+            'aList' => $this->menus->index()
             )
         );
     }
@@ -53,7 +53,7 @@ class NewsController extends AdminController
      */
     public function create()
     {
-        return $this->renderView('news.add', array(
+        return $this->renderView('menus.add', array(
             'oData' => null
             )
         );
@@ -65,11 +65,11 @@ class NewsController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( NewsRequest $request )
+    public function store( MenusRequest $request )
     {
-        $this->news->store( $request->all() );
+        $this->menus->store( $request->all() );
 
-        return Redirect::route('admin.news')
+        return Redirect::route('admin.menu')
             ->with('message', Lang::get('$sMessage') );
     }
 
@@ -92,8 +92,8 @@ class NewsController extends AdminController
      */
     public function edit($id)
     {
-        return $this->renderView('news.add', array(
-            'oData' => $this->news->edit( $id )
+        return $this->renderView('menus.add', array(
+            'oData' => $this->menus->edit( $id )
             )
         );
     }
@@ -118,6 +118,9 @@ class NewsController extends AdminController
      */
     public function destroy($id)
     {
-        //
+        $this->menus->destroy( $id );
+
+        return Redirect::route('admin.menu')
+            ->with('message', Lang::get('$sMessage') );
     }
 }

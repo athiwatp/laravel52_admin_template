@@ -4,7 +4,6 @@ return array(
 
     'form' => array(
         'main' => 'Main',
-        'save' => 'Save',
         'other' => 'Other',
         'settings' => 'Settings',
         'site_name' => 'Site name',
