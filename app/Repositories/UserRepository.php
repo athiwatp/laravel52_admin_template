@@ -1,6 +1,6 @@
 <?php namespace App\Repositories;
 
-use App\Models\User as User;
+use App\User as User;
 use Carbon\Carbon;
 
 class UserRepository extends BaseRepository {
@@ -35,13 +35,15 @@ class UserRepository extends BaseRepository {
      *
      * @return
     */
-    public function saveUser( $user, $inputs/*, $user_id*/)
+    public function saveUser( $user, $inputs )
     {
+        $user->name         = $inputs['name'];
+        $user->email        = $inputs['email'];
+        $user->is_admin     = ( isset($inputs['is_admin']) ? $inputs['is_admin'] : 0 );
+        $user->is_verified  = ( isset($inputs['is_verified']) ? $inputs['is_verified'] : 0 );
+        $user->phone        = ( isset($inputs['phone']) ? $inputs['phone'] : null );
 
-        /**
-         * NEED TO IMPLEMENT USER SAVING PROCESS
-        */
-        //$user->save();
+        $user->save();
 
         return true;
     }
@@ -54,11 +56,28 @@ class UserRepository extends BaseRepository {
      *
      * @return void
     */
-    public function store( $user, $inputs/*, $user_id*/)
+    public function store( $inputs )
     {
-        $user = $this->saveUser(new $this->model, $inputs/*, $user_id*/);
+        $id = $inputs['id'];
 
-        // some post creation actions will be required
+        if ( isset($id) && $id > 0 ) {
+            $model = $this->model->find( $id );
+        } else {
+            $model = new $this->model;
+        }
+        $news = $this->saveUser( $model, $inputs );
+    }
+
+    /**
+     * Edit or update Message
+     *
+     * @param App\Models\User $user
+     *
+     * @return
+    */
+    public function edit( $id )
+    {
+        return $this->model->find($id);
     }
 
     /**

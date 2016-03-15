@@ -13,9 +13,9 @@ return array(
         'lists_chapters' => 'Список разделов',
         ),
 
-    'menus' => array(
+    'menues' => array(
         'create_menu' => 'Создание меню',
-        'lists_menus' => 'Список меню',
+        'lists_menues' => 'Список меню',
         ),
 
     'lists' => array(

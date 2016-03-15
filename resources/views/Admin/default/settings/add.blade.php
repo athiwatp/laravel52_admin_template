@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    {{ Form::submit(Lang::get('settings.form.save'), array('class' => 'btn btn-outline btn-primary')) }}
+                    {{ Form::submit(Lang::get('table_field.lists.save'), array('class' => 'btn btn-outline btn-primary')) }}
                     {{ Form::close() }}
                 </div>
             </div>

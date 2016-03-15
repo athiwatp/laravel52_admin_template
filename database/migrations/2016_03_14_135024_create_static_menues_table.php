@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStaticMenusTable extends Migration
+class CreateStaticMenuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateStaticMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('static_menus', function (Blueprint $table) {
+        Schema::create('static_menues', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->string('title',255);
             $table->char('type_menu',1);
@@ -40,6 +40,6 @@ class CreateStaticMenusTable extends Migration
      */
     public function down()
     {
-        Schema::drop('static_menus');
+        Schema::drop('static_menues');
     }
 }

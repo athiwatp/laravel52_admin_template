@@ -52,7 +52,7 @@
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse metismenu">
-                @include( $__theme . '.components.left-sidebar')
+                @include( $__theme . '.components.left-sidebar-menues')
             </div>
             <!-- /.sidebar-collapse -->
         </div>

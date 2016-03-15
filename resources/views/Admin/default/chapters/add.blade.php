@@ -76,7 +76,7 @@
                         {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
                     </div>
                     {{ Form::submit(Lang::get('table_field.lists.save'), array('class' => 'btn btn-outline btn-primary')) }}
-                    <a href="{{ URL::route('admin.chapter') }}" class="btn btn-outline btn-default">{{ Lang::get('table_field.lists.back') }}</a>
+                    {{ Html::link(URL::route('admin.chapter'), Lang::get('table_field.lists.back'), array( 'class' => 'btn btn-outline btn-default') ) }}
                     {{ Form::close() }}
                 </div>
             </div>

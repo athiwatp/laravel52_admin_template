@@ -13,9 +13,9 @@ return array(
         'lists_chapters' => 'List of chapters',
         ),
 
-    'menus' => array(
+    'menues' => array(
         'create_menu' => 'Create menu',
-        'lists_menus' => 'List of menus',
+        'lists_menues' => 'List of menus',
         ),
 
     'lists' => array(

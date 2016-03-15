@@ -1,8 +1,17 @@
 <?php namespace App\Http\Requests;
 
-use App\Models\Menus;
+use App\Models\Menues, Lang;
 
-class MenusRequest extends Request {
+class MenuesRequest extends Request {
+
+    // const TYPE_MAIN = 'M';
+    // const TYPE_SIDE = 'S';
+    // const TYPE_FOOTER = 'F';
+    // const TYPE_HIDDEN_PAGE = 'H';
+
+    // const IS_PUBLISHED = '1';
+    // const NOT_PUBLISHED = '0';
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -28,6 +37,5 @@ class MenusRequest extends Request {
     {
         return true;
     }
-
 
 }

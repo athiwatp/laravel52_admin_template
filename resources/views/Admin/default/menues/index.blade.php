@@ -8,9 +8,9 @@
 </div>
 
 <div class="row">
-    <a href="{{ URL::route('admin.menu.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> {{ Lang::get('table_field.menus.create_menu') }}</a>
+    {{ Html::link(URL::route('admin.menu.create'), Lang::get('table_field.menues.create_menu'), array( 'class' => 'btn btn-outline btn-success') ) }}
     <div class="panel panel-default">
-        <div class="panel-heading">{{ Lang::get('table_field.menus.lists_menus') }}</div>
+        <div class="panel-heading">{{ Lang::get('table_field.menues.lists_menues') }}</div>
         <div class="panel-body">
             <div class="col-lg-12">
                 <div class="panel-body">
@@ -20,11 +20,11 @@
                                 <thead>
                                     <tr role="row">
                                         <th class="sorting_asc">Id</th>
-                                        <th class="sorting">{{ Lang::get('menus.form.title') }}</th>
-                                        <th class="sorting">{{ Lang::get('menus.form.pos') }}</th>
-                                        <th class="sorting">{{ Lang::get('menus.form.is_published') }}</th>
-                                        <th class="sorting">{{ Lang::get('menus.form.is_loaded_by_default') }}</th>
-                                        <th class="sorting">{{ Lang::get('menus.form.is_shown_print_version') }}</th>
+                                        <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
+                                        <th class="sorting">{{ Lang::get('menues.form.pos') }}</th>
+                                        <th class="sorting">{{ Lang::get('menues.form.is_published') }}</th>
+                                        <th class="sorting">{{ Lang::get('menues.form.is_loaded_by_default') }}</th>
+                                        <th class="sorting">{{ Lang::get('menues.form.is_shown_print_version') }}</th>
                                         <th class="sorting">User id</th>
                                         <th>{{ Lang::get('table_field.lists.actions') }}</th>
                                     </tr>

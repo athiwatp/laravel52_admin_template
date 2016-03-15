@@ -3,32 +3,33 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\MenusRequest;
-use App\Repositories\MenusRepository;
+use App\Http\Requests\UserRequest;
+use App\Repositories\UserRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lang, Redirect;
 
-class MenusController extends AdminController
+class UsersController extends AdminController
 {
-    /**
+
+        /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\MenusRepository
+     * @var App\Repositories\UsersRepository
      */
-    protected $menus;
+    protected $menues;
 
     /**
-     * Create a new MenusController instance
+     * Create a new UsersController instance
      *
-     * @param App\Repositories\MenusRepository
+     * @param App\Repositories\UsersRepository
      *
      * @return void
      */
-    public function __construct( MenusRepository $menus )
+    public function __construct( UserRepository $users )
     {
-        $this->menus = $menus;
+        $this->users = $users;
 
         $this->middleware('guest');
     }
@@ -40,8 +41,8 @@ class MenusController extends AdminController
      */
     public function index()
     {
-        return $this->renderView('menus.index', array(
-            'aList' => $this->menus->index()
+        return $this->renderView('user.index', array(
+            'aList' => $this->users->index()
             )
         );
     }
@@ -53,10 +54,11 @@ class MenusController extends AdminController
      */
     public function create()
     {
-        return $this->renderView('menus.add', array(
+        return $this->renderView('user.register', array(
             'oData' => null
             )
         );
+
     }
 
     /**
@@ -65,11 +67,11 @@ class MenusController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( MenusRequest $request )
+    public function store( UserRequest $request )
     {
-        $this->menus->store( $request->all() );
+        $this->users->store( $request->all() );
 
-        return Redirect::route('admin.menu')
+        return Redirect::route('admin.users')
             ->with('message', Lang::get('$sMessage') );
     }
 
@@ -90,10 +92,10 @@ class MenusController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit( $id, UserRepository $users )
     {
-        return $this->renderView('menus.add', array(
-            'oData' => $this->menus->edit( $id )
+        return $this->renderView('user.edit', array(
+            'oData' => $this->users->edit( $id )
             )
         );
     }
@@ -118,9 +120,6 @@ class MenusController extends AdminController
      */
     public function destroy($id)
     {
-        $this->menus->destroy( $id );
-
-        return Redirect::route('admin.menu')
-            ->with('message', Lang::get('$sMessage') );
+        //
     }
 }

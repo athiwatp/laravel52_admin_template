@@ -8,7 +8,7 @@
 </div>
 
 <div class="row">
-    <a href="{{ URL::route('admin.chapter.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> {{ Lang::get('table_field.chapters.create_chapter') }}</a>
+    {{ Html::link(URL::route('admin.chapter.create'), Lang::get('table_field.chapters.create_chapter'), array( 'class' => 'btn btn-outline btn-success') ) }}
     <div class="panel panel-default">
         <div class="panel-heading">{{ Lang::get('table_field.chapters.lists_chapters') }}</div>
         <div class="panel-body">

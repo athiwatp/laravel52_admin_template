@@ -83,8 +83,8 @@
                             </div>
                         {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
                     </div>
-                    {{ Form::submit(Lang::get('settings.form.save'), array('class' => 'btn btn-outline btn-primary')) }}
-                    <a href="{{ URL::route('admin.news') }}" class="btn btn-outline btn-default">{{ Lang::get('table_field.lists.back') }}</a>
+                    {{ Form::submit(Lang::get('table_field.lists.save'), array('class' => 'btn btn-outline btn-primary')) }}
+                    {{ Html::link(URL::route('admin.news'), Lang::get('table_field.lists.back'), array( 'class' => 'btn btn-outline btn-default') ) }}
                     {{ Form::close() }}
                 </div>
             </div>

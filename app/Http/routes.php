@@ -34,11 +34,19 @@ Route::group(['prefix' => 'admin'], function() {
     });
 
     Route::group(array('prefix' => 'menu'), function() {
-        Route::get('/', array('as' => 'admin.menu', 'uses' => 'Admin\MenusController@index') );
-        Route::get('/add', array('as' => 'admin.menu.create', 'uses' => 'Admin\MenusController@create') );
-        Route::get('/edit/{id}', array('as' => 'admin.menu.edit', 'uses' => 'Admin\MenusController@edit') );
-        Route::post('/store', array('as' => 'admin.menu.store', 'uses' => 'Admin\MenusController@store') );
-        Route::get('/destroy/{id}', array('as' => 'admin.menu.destroy', 'uses' => 'Admin\MenusController@destroy') );
+        Route::get('/', array('as' => 'admin.menu', 'uses' => 'Admin\MenuesController@index') );
+        Route::get('/add', array('as' => 'admin.menu.create', 'uses' => 'Admin\MenuesController@create') );
+        Route::get('/edit/{id}', array('as' => 'admin.menu.edit', 'uses' => 'Admin\MenuesController@edit') );
+        Route::post('/store', array('as' => 'admin.menu.store', 'uses' => 'Admin\MenuesController@store') );
+        Route::get('/destroy/{id}', array('as' => 'admin.menu.destroy', 'uses' => 'Admin\MenuesController@destroy') );
+    });
+
+    Route::group(array('prefix' => 'users'), function() {
+        Route::get('/', array('as' => 'admin.users', 'uses' => 'Admin\UsersController@index') );
+        Route::get('/add', array('as' => 'admin.user.create', 'uses' => 'Admin\UsersController@create') );
+        Route::get('/edit/{id}', array('as' => 'admin.user.edit', 'uses' => 'Admin\UsersController@edit') );
+        Route::post('/store', array('as' => 'admin.user.store', 'uses' => 'Admin\UsersController@store') );
+        Route::get('/destroy/{id}', array('as' => 'admin.user.destroy', 'uses' => 'Admin\UsersController@destroy') );
     });
 
 });

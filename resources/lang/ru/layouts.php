@@ -17,6 +17,7 @@ return array(
         'menu' => 'Управление меню',
         'chapter_news' => 'Разделы новостей',
         'news_articles' => 'Статьи новостей',
+        'user_management' => 'Управление пользователями',
         'dashboard' => 'Главная',
         'you_are_logged' => 'Вы вошли в систему',
         'you_went_out_account' => 'Вы вышли из учетной записи',

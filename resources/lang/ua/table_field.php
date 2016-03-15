@@ -13,9 +13,9 @@ return array(
         'lists_news' => 'Список розділів',
         ),
 
-    'menus' => array(
+    'menues' => array(
         'create_menu' => 'Створення меню',
-        'lists_menus' => 'Список меню',
+        'lists_menues' => 'Список меню',
         ),
 
     'lists' => array(

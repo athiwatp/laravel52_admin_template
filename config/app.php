@@ -159,6 +159,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\HelperServiceProvider::class,
+        Pingpong\Menus\MenusServiceProvider::class,
+
+
 
 
     ],
@@ -207,8 +211,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        'Form'=> 'Collective\Html\FormFacade',
-        'Html'=> 'Collective\Html\HtmlFacade'
+        'Form' => 'Collective\Html\FormFacade',
+        'Html' => 'Collective\Html\HtmlFacade',
+        'Menu' => 'Pingpong\Menus\MenuFacade',
 
     ],
 
