@@ -20,7 +20,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::group(array('prefix' => 'chapter'), function() {
         Route::get('/', array('as' => 'admin.chapter', 'uses' => 'Admin\ChaptersController@index') );
         Route::get('/add', array('as' => 'admin.chapter.create', 'uses' => 'Admin\ChaptersController@create') );
-        Route::get('/edit/{id}', array('as' => 'admin.chapter.edit', 'uses' => 'Admin\ChaptersController@edit') );
+        Route::get('/edit/{id?}', array('as' => 'admin.chapter.edit', 'uses' => 'Admin\ChaptersController@edit') );
         Route::post('/store', array('as' => 'admin.chapter.store', 'uses' => 'Admin\ChaptersController@store') );
         Route::get('/destroy', array('as' => 'admin.chapter.destroy', 'uses' => 'Admin\ChaptersController@destroy') );
     });

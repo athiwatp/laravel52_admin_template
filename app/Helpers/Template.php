@@ -1,7 +1,6 @@
 <?php
-namespace Forms;
 
-use View;
+namespace Forms;
 
 class Template {
 
@@ -11,7 +10,7 @@ class Template {
      * 
      * @return array           pre-defined list
      */
-    public static function createSimpleTemplate( $aParams = array() )
+    public static function createSimpleTemplate( $aTemplate, $aParams = array() )
     {
         $aResult = $aParams;
 
@@ -19,7 +18,7 @@ class Template {
             $aResult['isShownSearchBox'] = true;
         }
 
-        return View::make('Admin.default.components.template', array('aParams' => $aResult));
+        return view( $aTemplate . '.components.template', array( '__theme' => $aTemplate ,'aParams' => $aResult ) );
     }
 
     /**
@@ -29,10 +28,10 @@ class Template {
      * 
      * @return array           pre-defined list
      */
-    public static function createSiteRegularPage( $aParams = array() )
+    public static function createSiteRegularPage( $aTemplate, $aParams = array() )
     {
         $aResult = $aParams;
 
-        return View::make('Site.elements.page', array('aParams' => $aResult));
+        return view( $aTemplate . 'components.page', array( '__theme' => $aTemplate , 'aParams' => $aResult ));
     }
 }

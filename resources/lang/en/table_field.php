@@ -18,6 +18,19 @@ return array(
         'lists_menues' => 'List of menus',
         ),
 
+    'users' => array(
+        'lists_users' => 'User lists',
+        'create_user' => 'Registration user',
+        'edit_user' => 'Edit user',
+        ),
+
+    'toolbar' => array(
+        'add' => 'Add',
+        'edit' => 'Edit',
+        'remove' => 'Remove',
+        'refresh' => 'Refresh',
+        ),
+
     'lists' => array(
         'empty' => 'Database queries - returned empty data set.',
         'actions' => 'Action',

@@ -1,24 +1,23 @@
-@extends( $__theme . '.layouts.default')
-
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">{{ Lang::get('table_field.chapters.chapters') }}</h1>
-    </div>
-</div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    @yield('page_header')
+</section>
+<!-- End Content Header (Page header) -->
 
 <div class="row">
-    {{ Html::link(URL::route('admin.chapter.create'), Lang::get('table_field.chapters.create_chapter'), array( 'class' => 'btn btn-outline btn-success') ) }}
     <div class="panel panel-default">
-        <div class="panel-heading">{{ Lang::get('table_field.chapters.lists_chapters') }}</div>
+        <!-- <div class="panel-heading"></div> -->
         <div class="panel-body">
             <div class="col-lg-12">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-12">
+                            <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
                             <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline">
                                 <thead>
                                     <tr role="row">
+                                        <th class="checkbox-column"></th>
                                         <th class="sorting_asc">Id</th>
                                         <th class="sorting">Title</th>
                                         <th class="sorting">Description</th>
@@ -33,6 +32,7 @@
                                 <tbody>
                                     @forelse( $aList as $chaptersItem )
                                     <tr class="gradeA odd" role="row">
+                                        <td>{!! Form::checkbox('chapters_items[]', $chaptersItem->id, false,  array('id' => 'check_' . $chaptersItem->id, 'class'=>'i-check')) !!}</td>
                                         <td class="sorting_1">{{ $chaptersItem->id }}</td>
                                         <td class="">{{ $chaptersItem->title }}</td>
                                         <td>{{ $chaptersItem->description }}</td>

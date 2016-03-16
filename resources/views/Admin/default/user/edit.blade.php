@@ -3,13 +3,13 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">{{ Lang::get('table_field.users.edit_users') }}</h1>
+        <h1 class="page-header">{{ Lang::get('layouts.layouts.users_management') }}</h1>
     </div>
 </div>
 
 <div class="row">
     <div class="panel panel-default">
-        <div class="panel-heading">{{ Lang::get('table_field.users.create_chapter') }}</div>
+        <div class="panel-heading">{{ Lang::get('table_field.users.edit_user') }}</div>
         <div class="panel-body">
             <div class="col-lg-12">
                 <div class="panel-body">

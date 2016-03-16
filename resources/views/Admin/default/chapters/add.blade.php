@@ -1,19 +1,4 @@
-@extends( $__theme . '.layouts.default')
 
-@section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">{{ Lang::get('table_field.chapters.chapters') }}</h1>
-    </div>
-</div>
-
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">{{ Lang::get('table_field.chapters.create_chapter') }}</div>
-        <div class="panel-body">
-            <div class="col-lg-12">
-                <div class="panel-body">
-                    {{ Form::open(array('url' => URL::route('admin.chapter.store'), 'method'=>'POST')) }}
                         <div class="tab-content">
 
                             <div class="form-group">
@@ -75,12 +60,3 @@
 
                         {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
                     </div>
-                    {{ Form::submit(Lang::get('table_field.lists.save'), array('class' => 'btn btn-outline btn-primary')) }}
-                    {{ Html::link(URL::route('admin.chapter'), Lang::get('table_field.lists.back'), array( 'class' => 'btn btn-outline btn-default') ) }}
-                    {{ Form::close() }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@stop

@@ -15,6 +15,7 @@ return array(
         'logout' => 'Выход',
         'news' => 'Новости',
         'menu' => 'Управление меню',
+        'users_management' => 'Управление пользователями',
         'chapter_news' => 'Разделы новостей',
         'news_articles' => 'Статьи новостей',
         'user_management' => 'Управление пользователями',

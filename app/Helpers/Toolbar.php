@@ -2,8 +2,6 @@
 
 namespace Toolbar;
 
-use View;
-
 class Items {
 
     /**
@@ -13,13 +11,16 @@ class Items {
      */
     public static function getToolbarParams( $aButtons = array(), $aFilters = array() )
     {
-        
 
         $sDefaultClass = 'btn btn-default btn-sm';
         $aResult = array(
             'buttons' => array(),
             'filters' => $aFilters
         );
+
+        if (array_key_exists('template', $aButtons)) {
+            $aTemplate = $aButtons['template'];
+        }
 
         if (array_key_exists('add', $aButtons)) {
             $aResult['buttons'][] = $aButtons['add'];
@@ -41,6 +42,10 @@ class Items {
             $aResult['buttons'][] = $aButtons['custom'];
         }
 
+        if (array_key_exists('refresh', $aButtons)) {
+            $aResult['buttons'][] = $aButtons['refresh'];
+        }
+
         foreach($aResult['buttons'] as $index => $button) {
             if ( array_key_exists('aParams', $button) && array_key_exists('class', $button['aParams']) ) {
                 $aResult['buttons'][$index]['aParams']['class'] = $sDefaultClass . ' ' . $button['aParams']['class'];
@@ -49,6 +54,6 @@ class Items {
             }
         }
     
-        return View::make('Admin.default.components.toolbar', array('aToolbarParams' => $aResult));
+        return view($aTemplate . '.components.toolbar', array('aToolbarParams' => $aResult));
     }
 }

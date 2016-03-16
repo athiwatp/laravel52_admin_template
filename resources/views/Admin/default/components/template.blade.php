@@ -8,8 +8,8 @@
 {{-- Header section --}}
 @section('page_header')
     <h1> {{ $aParams['sTitle'] }} <small>{{ $aParams['sSubTitle'] }}</small></h1>
-    @if(null !== $aParams['sBreadcrumbs'])
-    {{ $aParams['sBreadcrumbs'] }}
+    @if( isset($aParams['sBreadcrumbs']) && $aParams['sBreadcrumbs'] !== null )
+    {!! $aParams['sBreadcrumbs'] !!}
     @endif
 @stop
 

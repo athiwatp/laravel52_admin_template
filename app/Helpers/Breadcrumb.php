@@ -2,8 +2,6 @@
 
 namespace Breadcrumb;
 
-use View;
-
 class Items {
 
     /**
@@ -11,11 +9,10 @@ class Items {
      * @param  array  $aItems list of available items for the breadcrumb
      * @return array           pre-defined list
      */
-    public static function getItems( $aItems = array() )
+    public static function getItems( $aTemplate, $aItems = array() )
     {
-        
         $aBreadcrumbItems = $aItems;
 
-        return View::make('Admin.default.components.breadcrumbs', array('aBreadcrumbs' => $aBreadcrumbItems));
+        return view( $aTemplate . '.components.breadcrumbs', array('aBreadcrumbs' => $aBreadcrumbItems));
     }
 }

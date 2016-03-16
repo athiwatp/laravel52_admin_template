@@ -16,6 +16,7 @@ return array(
         'news' => 'News',
         'menu' => 'Menu Control',
         'chapter_news' => 'Chapter news',
+        'users_management' => 'Users management',
         'news_articles' => 'News articles',
         'dashboard' => 'Dashboard',
         'you_are_logged' => 'You are logged',

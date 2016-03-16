@@ -26,6 +26,12 @@
   }
 }
 
+.btn-outline {
+    color: inherit;
+    background-color: transparent;
+    transition: all .5s;
+}
+
 .panel-red {
   border-color: #d9534f;
 

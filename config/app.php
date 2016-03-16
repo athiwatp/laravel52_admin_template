@@ -215,6 +215,11 @@ return [
         'Html' => 'Collective\Html\HtmlFacade',
         'Menu' => 'Pingpong\Menus\MenuFacade',
 
+        'Toolbar'         => 'Toolbar\Items',
+        'cForms'          => 'Forms\Standard',
+        'cTemplate'       => 'Forms\Template',
+        'cBreadcrumbs'    => 'Breadcrumb\Items',
+
     ],
 
 ];

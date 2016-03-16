@@ -10,12 +10,25 @@ return array(
     'chapters' => array(
         'chapters' => 'Розділи новин',
         'create_chapter' => 'Створення розділу',
-        'lists_news' => 'Список розділів',
+        'lists_chapters' => 'Список розділів',
         ),
 
     'menues' => array(
         'create_menu' => 'Створення меню',
         'lists_menues' => 'Список меню',
+        ),
+
+    'users' => array(
+        'lists_users' => 'Список користувачів',
+        'create_user' => 'Реєстрація користувача',
+        'edit_user' => 'Редагування користувача',
+        ),
+
+    'toolbar' => array(
+        'add' => 'Додати',
+        'edit' => 'Змінити',
+        'remove' => 'Видалити',
+        'refresh' => 'Оновити',
         ),
 
     'lists' => array(
