@@ -7,12 +7,6 @@ return array(
         'lists_news' => 'Список новостей',
         ),
 
-    'chapters' => array(
-        'chapters' => 'Разделы новостей',
-        'create_chapter' => 'Создание раздела',
-        'lists_chapters' => 'Список разделов',
-        ),
-
     'menues' => array(
         'create_menu' => 'Создание меню',
         'lists_menues' => 'Список меню',
@@ -34,6 +28,9 @@ return array(
     'lists' => array(
         'empty' => 'Запрос к базе данных - вернул пустой набор данных.',
         'actions' => 'Действия',
+        'user' => 'Пользователь',
+        'edit' => 'Редактировать',
+        'delete' => 'Удалить',
         'save' => 'Сохранить',
         'back' => 'Назад',
         'date' => 'Дата',

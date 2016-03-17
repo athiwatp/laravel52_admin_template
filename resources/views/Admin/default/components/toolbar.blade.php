@@ -3,8 +3,7 @@
     @if (isset($aToolbarParams['buttons']) && count($aToolbarParams['buttons']) > 0 )
     <div class="btn-group">
         @foreach ($aToolbarParams['buttons'] as $item)
-        <a href="{!! $item['url'] !!}" class="{!! $item['class'] !!}">{!! $item['icon'] . ' ' . $item['title'] !!} </a>
-        <!-- {!! Html::link( $item['url'], $item['icon'] . ' ' . $item['title'], array_merge(array(), $item['aParams'] ) ) !!} -->
+            {!! HTML::_link( $item['url'], $item['icon'] . ' ' . $item['title'], array_merge(array(), $item['aParams'] ) ) !!}
         @endforeach
     </div>
     @endif

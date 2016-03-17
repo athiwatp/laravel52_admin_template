@@ -7,12 +7,6 @@ return array(
         'lists_news' => 'List of news',
         ),
 
-    'chapters' => array(
-        'chapters' => 'Sections news',
-        'create_chapter' => 'Create chapter',
-        'lists_chapters' => 'List of chapters',
-        ),
-
     'menues' => array(
         'create_menu' => 'Create menu',
         'lists_menues' => 'List of menus',
@@ -34,8 +28,11 @@ return array(
     'lists' => array(
         'empty' => 'Database queries - returned empty data set.',
         'actions' => 'Action',
-        'back' => 'Back',
+        'user' => 'User',
+        'edit' => 'Edit',
+        'delete' => 'Delete',
         'save' => 'Save',
+        'back' => 'Back',
         'date' => 'Date',
         'yes' => 'Yes',
         'no' => 'No',

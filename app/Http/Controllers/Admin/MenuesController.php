@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\MenuesRequest;
 use App\Repositories\MenuesRepository;
-use App\Providers\HelperServiceProvider;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, URL;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
 class MenuesController extends AdminController
 {
@@ -39,10 +38,49 @@ class MenuesController extends AdminController
      */
     public function index()
     {
-        return $this->renderView('menues.index', array(
-            'aList' => $this->menues->index()
-            )
+        $aBreadcrumbs = array(
+            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('menues.lists.lists_menues'))
         );
+
+        return cTemplate::createSimpleTemplate( $this->getTheme(), array(
+            'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+            'sTitle' => Lang::get('menues.nav.menu_management'),
+            'sSubTitle' => Lang::get('menues.lists.menues_online'),
+            'sBoxTitle' => Lang::get('menues.lists.lists_menues'),
+            'isShownSearchBox' => false,
+            'sContent' => $this->renderView('menues.index', array(
+                'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'aToolbar' => array(
+                    'template' => $this->getTheme(),
+                    'add' => array(
+                        'url' => URL::route('admin.menu.create'),
+                        'title' => Lang::get('table_field.toolbar.add'),
+                        'icon' => '<i class="fa fa-plus"></i>',
+                        'aParams' => array('id' => 'add_menu', 'class' => 'add-btn')
+                    ),
+                    'edit' => array(
+                        'url' => '#', 
+                        'title' => Lang::get('table_field.toolbar.edit'),
+                        'icon' => '<i class="fa fa-pencil"></i>',
+                        'aParams' => array('id' => 'edit_menu', 'class' => 'edit-btn', 'data-url' => URL::route('admin.menu.edit') )
+                    ),
+                    'delete' => array(
+                        'url' => '#', 
+                        'title' => Lang::get('table_field.toolbar.remove'),
+                        'icon' => '<i class="fa fa-trash-o"></i>',
+                        'aParams' => array('id' => 'delete_menu', 'class' => 'delete-btn', 'data-url' => URL::route('admin.menu.destroy') )
+                    ),
+                    'refresh' => array(
+                        'url' => URL::route('admin.menu'),
+                        'title' => Lang::get('table_field.toolbar.refresh'),
+                        'icon' => '<i class="fa fa-refresh"></i>',
+                        'aParams' => array('id' => 'refresh_menu', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu') )
+                    )
+                ),
+                'aList' => $this->menues->index()
+            ))
+        ));
+
     }
 
     /**
@@ -52,12 +90,36 @@ class MenuesController extends AdminController
      */
     public function create( MenuesRepository $menues )
     {
-        return $this->renderView('menues.add', array(
-            'oData' => null,
-            'aTypeMenues' => $menues->getMenuTypes(),
-            'aMenues' => $menues->getComboList(),
-            )
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.menu'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('menues.lists.create_menues'))
         );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('menues.lists.management_menues'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('menues.lists.create_new_menues'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.menu'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('menues.add', array(
+                'aTypeMenues' => $menues->getMenuTypes(),
+                'aMenues' => $menues->getComboList(),
+                'oData' => null
+            )),
+            'formUrl' => URL::route('admin.menu.store'),
+        ));
+
     }
 
     /**
@@ -93,12 +155,36 @@ class MenuesController extends AdminController
      */
     public function edit( $id, MenuesRepository $menues )
     {
-        return $this->renderView('menues.add', array(
-            'oData' => $this->menues->edit( $id ),
-            'aTypeMenues' => $menues->getMenuTypes(),
-            'aMenues' => $menues->getComboList(),
-            )
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.menu'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('menues.lists.editing_menues'))
         );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('menues.lists.management_menues'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('menues.lists.editing_menues'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.menu'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('menues.add', array(
+                'oData' => $this->menues->edit( $id ),
+                'aTypeMenues' => $menues->getMenuTypes(),
+                'aMenues' => $menues->getComboList()
+            )),
+            'formUrl' => URL::route('admin.menu.store'),
+        ));
+
     }
 
     /**

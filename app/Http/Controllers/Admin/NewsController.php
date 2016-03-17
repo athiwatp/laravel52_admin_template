@@ -8,7 +8,7 @@ use App\Repositories\NewsRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Lang, Redirect;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
 class NewsController extends AdminController
 {
@@ -38,10 +38,49 @@ class NewsController extends AdminController
      */
     public function index()
     {
-        return $this->renderView('admin.news.index', array(
-            'aList' => $this->news->index()
-            )
+        $aBreadcrumbs = array(
+            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news'))
         );
+
+        return cTemplate::createSimpleTemplate( $this->getTheme(), array(
+            'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+            'sTitle' => Lang::get('news.lists.news_management'),
+            'sSubTitle' => Lang::get('news.lists.news_management_online'),
+            'sBoxTitle' => Lang::get('news.lists.lists_news'),
+            'isShownSearchBox' => false,
+            'sContent' => $this->renderView('news.index', array(
+                'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'aToolbar' => array(
+                    'template' => $this->getTheme(),
+                    'add' => array(
+                        'url' => URL::route('admin.news.create'),
+                        'title' => Lang::get('table_field.toolbar.add'),
+                        'icon' => '<i class="fa fa-plus"></i>',
+                        'aParams' => array('id' => 'add_news')
+                    ),
+                    'edit' => array(
+                        'url' => '#', 
+                        'title' => Lang::get('table_field.toolbar.edit'),
+                        'icon' => '<i class="fa fa-pencil"></i>',
+                        'aParams' => array('id' => 'edit_news', 'class' => 'edit-btn', 'data-url' => URL::route('admin.news.edit') )
+                    ),
+                    'delete' => array(
+                        'url' => '#', 
+                        'title' => Lang::get('table_field.toolbar.remove'),
+                        'icon' => '<i class="fa fa-trash-o"></i>',
+                        'aParams' => array('id' => 'delete_news', 'class' => 'delete-btn', 'data-url' => URL::route('admin.news.destroy') )
+                    ),
+                    'refresh' => array(
+                        'url' => URL::route('admin.news'),
+                        'title' => Lang::get('table_field.toolbar.refresh'),
+                        'icon' => '<i class="fa fa-refresh"></i>',
+                        'aParams' => array('id' => 'refresh_news', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.news') )
+                    )
+                ),
+                'aList' => $this->news->index()
+            ))
+        ));
+
     }
 
     /**
@@ -51,10 +90,34 @@ class NewsController extends AdminController
      */
     public function create()
     {
-        return $this->renderView('news.add', array(
-            'oData' => null
-            )
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('news.lists.create_news'))
         );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('news.lists.news_management'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('news.lists.create_new_news'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('news.add', array(
+                'oData' => null
+            )),
+            'formUrl' => URL::route('admin.news.store'),
+        ));
+
     }
 
     /**
@@ -90,10 +153,34 @@ class NewsController extends AdminController
      */
     public function edit($id)
     {
-        return $this->renderView('news.add', array(
-            'oData' => $this->news->edit( $id )
-            )
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('news.lists.editing_news'))
         );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('news.lists.news_management'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('news.lists.editing_news'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('news.add', array(
+                'oData' => $this->news->edit( $id )
+            )),
+            'formUrl' => URL::route('admin.news.store'),
+        ));
+
     }
 
     /**

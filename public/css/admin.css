@@ -7870,6 +7870,10 @@ body {
   z-index: 1000;
   border-width: 0 0 1px; }
 
+.content-wrapper .content-header {
+  position: relative;
+  padding: 15px 15px 0 15px; }
+
 .navbar-top-links li {
   display: inline-block; }
   .navbar-top-links li:last-child {

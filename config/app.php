@@ -160,6 +160,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\HelperServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
         Pingpong\Menus\MenusServiceProvider::class,
 
 

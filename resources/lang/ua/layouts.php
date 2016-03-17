@@ -13,12 +13,6 @@ return array(
 
     'layouts' => array(
         'logout' => 'Вихід',
-        'news' => 'Новини',
-        'menu' => 'Управління меню',
-        'users_management' => 'Управління користувачами',
-        'chapter_news' => 'Розділи новин',
-        'news_articles' => 'Статті новин',
-        'dashboard' => 'Головна',
         'you_are_logged' => 'Ви увійшли в систему',
         'you_went_out_account' => 'Ви вийшли з облікового запису',
         )

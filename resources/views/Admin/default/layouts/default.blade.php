@@ -6,66 +6,59 @@
     <meta name="description" content="">
     <meta name="author" content="Sergey Donchenko">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Admin PervoSoft</title>
 
     <!-- MetisMenu CSS -->
     {!! Html::style('css/vendor/metisMenu.min.css') !!}
     {!! Html::style('css/admin.css') !!}
 <body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 
-<div id="wrapper">
+            <!-- notification panel -->
+            @include( $__theme . '.components.notification-bar')
+            <!-- /.notification panel -->
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">PS Admin v1.0</a>
-        </div>
-        <!-- /.navbar-header -->
-
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="{{ URL::route('admin.settings.index') }}"><i class="fa fa-gear fa-fw"></i> {{ Lang::get('settings.form.settings') }}</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="{{ URL::route('admin.logout') }}"><i class="fa fa-sign-out fa-fw"></i> {{ Lang::get('layouts.layouts.logout') }}</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
-
-
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse metismenu">
-                @include( $__theme . '.components.left-sidebar-menues')
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse metismenu">
+                    @include( $__theme . '.components.left-sidebar-menues')
+                </div>
+                <!-- /.sidebar-collapse -->
             </div>
-            <!-- /.sidebar-collapse -->
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div class="content-wrapper" id="page-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                @yield('page_header')
+            </section>
+            <section class="content">
+                @if (Session::has('message'))
+                <?php
+                    $aMessage = Session::get('message');
+                    $sType    = 'alert alert-warning alert-dismissable';
+                    
+                    if ( is_array($aMessage) ) {
+                        $sType    = $aMessage['code'];
+                        $sMessage = $aMessage['message'];
+                    } else {
+                        $sMessage = $aMessage;
+                    }
+                ?>
+
+                <div class="{{$sType}}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ $sMessage }}
+                </div>
+                @endif
+
+            @yield('content')
         </div>
-        <!-- /.navbar-static-side -->
-    </nav>
+        <!-- /#page-wrapper -->
 
-    <div id="page-wrapper">
-        @yield('content')
     </div>
-    <!-- /#page-wrapper -->
-
-</div>
-<!-- /#wrapper -->
+    <!-- /#wrapper -->
 
 {!! Html::script('js/vendor/jquery.min.js') !!}
 {!! Html::script('js/vendor/bootstrap.min.js') !!}

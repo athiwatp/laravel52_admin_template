@@ -7,12 +7,6 @@ return array(
         'lists_news' => 'Список новин',
         ),
 
-    'chapters' => array(
-        'chapters' => 'Розділи новин',
-        'create_chapter' => 'Створення розділу',
-        'lists_chapters' => 'Список розділів',
-        ),
-
     'menues' => array(
         'create_menu' => 'Створення меню',
         'lists_menues' => 'Список меню',
@@ -34,6 +28,9 @@ return array(
     'lists' => array(
         'empty' => 'Запит до Бази Даних - повернув порожнiй набiр даних.',
         'actions' => 'Дії',
+        'user' => 'Користувач',
+        'edit' => 'Редагувати',
+        'delete' => 'Видалити',
         'save' => 'Зберегти',
         'back' => 'Назад',
         'date' => 'Дата',
