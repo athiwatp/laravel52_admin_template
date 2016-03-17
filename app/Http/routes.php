@@ -1,8 +1,11 @@
 <?php
 
 // Entry point
-Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index') );
-Route::get('/login', array('as' => 'login', 'uses' => 'Admin\AuthController@index') );
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index') );
+});
 
 /**
  * Middleware:
@@ -31,5 +34,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function() {
     Route::resource('users', 'Admin\UsersController');
 
 });
+
+
 
 

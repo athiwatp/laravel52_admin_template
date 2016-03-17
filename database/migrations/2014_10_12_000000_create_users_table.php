@@ -17,8 +17,8 @@ class CreateUsersTable extends Migration
             $table->string('name',255);
             $table->string('email')->unique();
             $table->string('password', 60);
-            $table->char('is_admin',1)->default(0);
-            $table->char('is_verified',1)->default(0);
+            $table->char('is_admin', 1)->default(0);
+            $table->char('is_verified', 1)->default(0);
             $table->string('phone',255)->nullable();
 
             $table->rememberToken();

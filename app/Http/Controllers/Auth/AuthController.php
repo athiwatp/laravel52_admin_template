@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use URL;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -28,7 +29,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new authentication controller instance.
