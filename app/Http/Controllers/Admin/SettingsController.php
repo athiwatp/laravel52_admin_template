@@ -8,7 +8,7 @@ use App\Repositories\SettingsRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Redirect, Lang;
+use Lang, Redirect, cBreadcrumbs, cForms, URL;
 
 class SettingsController extends AdminController
 {
@@ -40,16 +40,34 @@ class SettingsController extends AdminController
      */
     public function index()
     {
+        $aBreadcrumbs = array(
+            array('url' => '#', 'icon' => '<i class="fa fa-cog"></i>', 'title' => Lang::get('settings.form.settings'))
+        );
+
         $aData = array();
 
         foreach($this->settings->index() as $item) {
             $aData[$item->key_name] = $item->value;
         }
 
-        return $this->renderView('settings.add', array(
-            'aData' => $aData
-            )
-        );
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('settings.lists.system_settings'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('settings.lists.manage_system_settings'),
+            'formButtons' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('settings.add', array(
+                'oData' => $aData,
+            )),
+            'formUrl' => URL::route('admin.settings.store'),
+        ));
+
     }
 
     /**
@@ -69,14 +87,8 @@ class SettingsController extends AdminController
      */
     public function store( SettingsRequest $request )
     {
-        // $user = $request->users();
+        $this->settings->store( $request->all() );
 
-        // Max, please read it!!!!!
-        // THIS will not work... it should re-written!!!!!
-
-        $this->settings->store( $request->all()/*, $user ? $user->id : null */);
-
-        // Re-direct somewhere!!!!!
         return Redirect::route('admin.settings')
             ->with('message', Lang::get('$sMessage') );
     }

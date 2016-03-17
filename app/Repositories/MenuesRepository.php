@@ -224,12 +224,12 @@ class MenuesRepository extends BaseRepository {
         return array(
 
             'general' => array(
-                'title' => Lang::get('layouts.layouts.dashboard'),
+                'title' => Lang::get('menues.nav.dashboard'),
                 'leftIcon' => '<i class="fa fa-dashboard"></i>',
                 'rightIcon' => '<span class="fa arrow"></span>',
                 'children' => array(
                     'dashboard' => array(
-                        'title' => Lang::get('layouts.layouts.dashboard'),
+                        'title' => Lang::get('menues.nav.dashboard'),
                         'icon' => '<i class="fa fa-dashboard fa-fw"></i>',
                         'route' => 'admin.dashboard'
                     )
@@ -237,18 +237,18 @@ class MenuesRepository extends BaseRepository {
             ),
 
             'news' => array(
-                'title' => Lang::get('layouts.layouts.news'),
+                'title' => Lang::get('menues.nav.news_online'),
                 'leftIcon' => '<i class="fa fa fa-trello fa-fw"></i>',
                 'rightIcon' => '<span class="fa arrow"></span>',
                 'children' => array(
                     'chapter_news' => array(
-                        'title' => Lang::get('layouts.layouts.chapter_news'),
+                        'title' => Lang::get('menues.nav.chapter_news_management'),
                         'icon' => '<i class="fa fa-dashboard"></i>',
                         'route' => 'admin.chapter'
                     ),
 
                     'news' => array(
-                        'title' => Lang::get('layouts.layouts.news_articles'),
+                        'title' => Lang::get('menues.nav.news_online'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'route' => 'admin.news'
                     )
@@ -261,13 +261,13 @@ class MenuesRepository extends BaseRepository {
                 'rightIcon' => '<span class="fa arrow"></span>',
                 'children' => array(
                     'menu' => array(
-                        'title' => Lang::get('layouts.layouts.menu') ,
+                        'title' => Lang::get('menues.nav.menu_management'),
                         'icon' => '<i class="fa fa-circle-o"></i>',
                         'route' => 'admin.menu'
                     ),
 
                     'user' => array(
-                        'title' => Lang::get('layouts.layouts.user_management'),
+                        'title' => Lang::get('menues.nav.users_management'),
                         'icon' => '<i class="fa fa-user"></i>',
                         'route' => 'admin.users'
                     ),

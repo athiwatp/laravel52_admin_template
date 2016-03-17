@@ -2,6 +2,11 @@
 
 return array(
 
+    'lists' => array(
+        'system_settings' => 'System settings',
+        'manage_system_settings' => 'Manage system settings',
+        ),
+
     'form' => array(
         'main' => 'Main',
         'other' => 'Other',

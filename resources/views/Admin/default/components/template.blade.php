@@ -8,7 +8,7 @@
 {{-- Header section --}}
 @section('page_header')
     <h1> {{ $aParams['sTitle'] }} <small>{{ $aParams['sSubTitle'] }}</small></h1>
-    @if( isset($aParams['sBreadcrumbs']) && $aParams['sBreadcrumbs'] !== null )
+    @if( null !== $aParams['sBreadcrumbs'] )
     {!! $aParams['sBreadcrumbs'] !!}
     @endif
 @stop
@@ -21,23 +21,23 @@
             
             <div class="box-header">
                 @if (isset($aParams['sBoxTitle']))
-                <h3 class="box-title">{{ $aParams['sBoxTitle'] }}</h3>
+                    <h3 class="box-title">{{ $aParams['sBoxTitle'] }}</h3>
                 @endif
                 <div class="box-tools">
-                    @if( $aParams['isShownSearchBox'] === true )
-                    <div class="input-group" style="width: 150px;">
-                        {{ Form::open(array('method'=>'GET', 'class' => 'input-group') ) }}
-                        {{ Form::text('keywords', 'keywords', array('class' => 'form-control input-sm pull-right search-control', 'placeholder' => Lang::get('admin_page.form.search') ) ) }}
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                        </div>
-                        {{ Form::close() }}
+                @if( $aParams['isShownSearchBox'] === true )
+                <div class="input-group" style="width: 150px;">
+                    {{ Form::open(array('method'=>'GET', 'class' => 'input-group') ) }}
+                    {{ Form::text('keywords', '', array('class' => 'form-control input-sm pull-right search-control', 'placeholder' => Lang::get('admin_page.form.search') ) ) }}
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                     </div>
-                    @endif
+                    {{ Form::close() }}
+                </div>
+                @endif
                 </div>
             </div><!-- /.box-header -->
             
-            <div class="box-body table-responsive no-padding">{{ (isset($aParams['sContent']) ? $aParams['sContent'] : '') }}</div>
+            <div class="box-body table-responsive no-padding">{!! (isset($aParams['sContent']) ? $aParams['sContent'] : '') !!}</div>
 
         </div><!-- /.box -->
     </div><!-- /.col-xs-12 -->

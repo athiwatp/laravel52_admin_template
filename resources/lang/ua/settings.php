@@ -2,6 +2,11 @@
 
 return array(
 
+    'lists' => array(
+        'system_settings' => 'Системні налаштування',
+        'manage_system_settings' => 'Управління системними налаштуваннями',
+        ),
+
     'form' => array(
         'main' => 'Головні',
         'other' => 'Інші',
