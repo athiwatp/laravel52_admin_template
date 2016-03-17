@@ -37,6 +37,10 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        // Default redirection method
+        $this->redirectTo = URL::route('admin.dashboard');
+
+        // Applying the middleware
         $this->middleware('guest', ['except' => 'logout']);
     }
 

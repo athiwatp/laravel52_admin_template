@@ -244,13 +244,13 @@ class MenuesRepository extends BaseRepository {
                     'chapter_news' => array(
                         'title' => Lang::get('layouts.layouts.chapter_news'),
                         'icon' => '<i class="fa fa-dashboard"></i>',
-                        'route' => 'admin.chapter'
+                        'route' => 'admin.chapter.index'
                     ),
 
                     'news' => array(
                         'title' => Lang::get('layouts.layouts.news_articles'),
                         'icon' => '<i class="fa fa-users"></i>',
-                        'route' => 'admin.news'
+                        'route' => 'admin.news.index'
                     )
                 ) 
             ),
@@ -263,19 +263,19 @@ class MenuesRepository extends BaseRepository {
                     'menu' => array(
                         'title' => Lang::get('layouts.layouts.menu') ,
                         'icon' => '<i class="fa fa-circle-o"></i>',
-                        'route' => 'admin.menu'
+                        'route' => 'admin.menu.index'
                     ),
 
                     'user' => array(
                         'title' => Lang::get('layouts.layouts.user_management'),
                         'icon' => '<i class="fa fa-user"></i>',
-                        'route' => 'admin.users'
+                        'route' => 'admin.users.index'
                     ),
 
                     'settings' => array(
                         'title' => Lang::get('settings.form.settings'),
                         'icon' => '<i class="fa fa-cog"></i>',
-                        'route' => 'admin.settings'
+                        'route' => 'admin.settings.index'
                     )
                 )
             )

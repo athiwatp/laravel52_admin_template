@@ -29,8 +29,6 @@ class NewsController extends AdminController
     public function __construct( NewsRepository $news )
     {
         $this->news = $news;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -40,7 +38,7 @@ class NewsController extends AdminController
      */
     public function index()
     {
-        return $this->renderView('news.index', array(
+        return $this->renderView('admin.news.index', array(
             'aList' => $this->news->index()
             )
         );
@@ -69,7 +67,7 @@ class NewsController extends AdminController
     {
         $this->news->store( $request->all() );
 
-        return Redirect::route('admin.news')
+        return Redirect::route('admin.news.index')
             ->with('message', Lang::get('$sMessage') );
     }
 

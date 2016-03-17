@@ -30,8 +30,6 @@ class UsersController extends AdminController
     public function __construct( UserRepository $users )
     {
         $this->users = $users;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -41,6 +39,10 @@ class UsersController extends AdminController
      */
     public function index()
     {
+        if (Gate::denies('read-users')) {
+            abort(403);
+        }
+
         return $this->renderView('user.index', array(
             'aList' => $this->users->index()
             )
@@ -71,7 +73,7 @@ class UsersController extends AdminController
     {
         $this->users->store( $request->all() );
 
-        return Redirect::route('admin.users')
+        return Redirect::route('admin.users.index')
             ->with('message', Lang::get('$sMessage') );
     }
 

@@ -64,3 +64,6 @@ and now open your browser with the following address: http://localhost:8000/
 ```shell
 # gulp watch
 ```
+
+
+More details: https://github.com/sergey-donchenko/laravel52_admin_template/wiki

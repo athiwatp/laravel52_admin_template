@@ -29,8 +29,6 @@ class SettingsController extends AdminController
     public function __construct( SettingsRepository $settings )
     {
         $this->settings = $settings;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -53,16 +51,6 @@ class SettingsController extends AdminController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return Response
@@ -77,7 +65,7 @@ class SettingsController extends AdminController
         $this->settings->store( $request->all()/*, $user ? $user->id : null */);
 
         // Re-direct somewhere!!!!!
-        return Redirect::route('admin.settings')
+        return Redirect::route('admin.settings.index')
             ->with('message', Lang::get('$sMessage') );
     }
 

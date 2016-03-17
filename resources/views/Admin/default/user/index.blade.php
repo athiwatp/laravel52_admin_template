@@ -8,7 +8,7 @@
 </div>
 
 <div class="row">
-    {{ Html::link(URL::route('admin.user.create'), Lang::get('table_field.users.create_user'), array( 'class' => 'btn btn-outline btn-success') ) }}
+    {{ Html::link(URL::route('admin.users.create'), Lang::get('table_field.users.create_user'), array( 'class' => 'btn btn-outline btn-success') ) }}
     <div class="panel panel-default">
         <div class="panel-heading">{{ Lang::get('table_field.users.lists_users') }}</div>
         <div class="panel-body">
@@ -38,9 +38,9 @@
                                         <td class="center">{{ $userItem->is_admin }}</td>
                                         <td class="center">{{ $userItem->is_verified }}</td>
                                         <td>
-                                            <a href="{{ URL::route('admin.user.edit', array('id' => $userItem->id)) }}">Edit</a>
+                                            <a href="{{ URL::route('admin.users.edit', array('id' => $userItem->id)) }}">Edit</a>
                                             <br>
-                                            <a href="{{ URL::route('admin.user.destroy', array('id' => $userItem->id)) }}">Delete</a>
+                                            <a href="{{ URL::route('admin.users.destroy', array('id' => $userItem->id)) }}">Delete</a>
                                         </td>
                                     </tr>
                                     @empty

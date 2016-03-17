@@ -37,7 +37,7 @@
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                     </li>
-                    <li><a href="{{ URL::route('admin.settings') }}"><i class="fa fa-gear fa-fw"></i> {{ Lang::get('settings.form.settings') }}</a>
+                    <li><a href="{{ URL::route('admin.settings.index') }}"><i class="fa fa-gear fa-fw"></i> {{ Lang::get('settings.form.settings') }}</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="{{ URL::route('admin.logout') }}"><i class="fa fa-sign-out fa-fw"></i> {{ Lang::get('layouts.layouts.logout') }}</a>

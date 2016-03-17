@@ -26,6 +26,33 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        //
+        // Here should be defined the User Politics
+        // 1. Create news
+        $gate->define('read-news', function ( $user ) {
+            return true;
+        });
+
+        $gate->define('write-news', function ($user) {
+            return true;
+        });
+
+
+        // 2. Manage Settings
+        $gate->define('read-settings', function ($user) {
+            return true;
+        });
+
+        $gate->define('write-settings', function ($user) {
+            return true;
+        });
+
+        // 3. Manage Users
+        $gate->define('read-users', function ($user) {
+            return true;
+        });
+
+        $gate->define('write-users', function ($user) {
+            return true;
+        });
     }
 }

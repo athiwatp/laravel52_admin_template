@@ -24,7 +24,7 @@
                     </ul>
 
                     <br>
-                    {{ Form::open(array('url' => URL::route('admin.settings.post'), 'method'=>'POST')) }}
+                    {{ Form::open(array('url' => URL::route('admin.settings.store'), 'method'=>'POST')) }}
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home-pills">
                             <div class="form-group">

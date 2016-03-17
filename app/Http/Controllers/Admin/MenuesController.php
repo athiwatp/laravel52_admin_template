@@ -30,8 +30,6 @@ class MenuesController extends AdminController
     public function __construct( MenuesRepository $menues )
     {
         $this->menues = $menues;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -72,7 +70,7 @@ class MenuesController extends AdminController
     {
         $this->menues->store( $request->all() );
 
-        return Redirect::route('admin.menu')
+        return Redirect::route('admin.menu.index')
             ->with('message', Lang::get('$sMessage') );
     }
 

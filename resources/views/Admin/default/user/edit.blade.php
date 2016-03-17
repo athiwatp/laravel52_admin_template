@@ -13,7 +13,7 @@
         <div class="panel-body">
             <div class="col-lg-12">
                 <div class="panel-body">
-                    {{ Form::open(array('url' => URL::route('admin.user.store'), 'method'=>'POST')) }}
+                    {{ Form::open(array('url' => URL::route('admin.users.store'), 'method'=>'POST')) }}
                         <div class="tab-content">
 
                             <div class="form-group">
@@ -56,7 +56,7 @@
                         {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
                     </div>
                     {{ Form::submit(Lang::get('table_field.lists.save'), array('class' => 'btn btn-outline btn-primary')) }}
-                    {{ Html::link(URL::route('admin.users'), Lang::get('table_field.lists.back'), array( 'class' => 'btn btn-outline btn-default') ) }}
+                    {{ Html::link(URL::route('admin.users.index'), Lang::get('table_field.lists.back'), array( 'class' => 'btn btn-outline btn-default') ) }}
                     {{ Form::close() }}
                 </div>
             </div>
