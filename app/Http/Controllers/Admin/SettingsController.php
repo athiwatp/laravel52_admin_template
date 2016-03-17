@@ -8,8 +8,9 @@ use App\Repositories\SettingsRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Redirect, Lang;
 
-class SettingsController extends Controller
+class SettingsController extends AdminController
 {
     /**
      * The MessageRepository instance
@@ -39,7 +40,16 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        //
+        $aData = array();
+
+        foreach($this->settings->index() as $item) {
+            $aData[$item->key_name] = $item->value;
+        }
+
+        return $this->renderView('settings.add', array(
+            'aData' => $aData
+            )
+        );
     }
 
     /**
@@ -59,14 +69,16 @@ class SettingsController extends Controller
      */
     public function store( SettingsRequest $request )
     {
-        $user = $request->user();
+        // $user = $request->users();
 
         // Max, please read it!!!!!
         // THIS will not work... it should re-written!!!!!
 
-        $this->settings->store( $request->all(), $user ? $user->id : null );
+        $this->settings->store( $request->all()/*, $user ? $user->id : null */);
 
         // Re-direct somewhere!!!!!
+        return Redirect::route('admin.settings')
+            ->with('message', Lang::get('$sMessage') );
     }
 
     /**

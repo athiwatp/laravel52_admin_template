@@ -25,7 +25,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+            <a class="navbar-brand" href="index.html">PS Admin v1.0</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -37,10 +37,10 @@
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="{{ URL::route('admin.settings') }}"><i class="fa fa-gear fa-fw"></i> {{ Lang::get('settings.form.settings') }}</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="{{ URL::route('admin.logout') }}"><i class="fa fa-sign-out fa-fw"></i> {{ Lang::get('layouts.layouts.logout') }}</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -52,7 +52,7 @@
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse metismenu">
-                @include( $__theme . '.components.left-sidebar')
+                @include( $__theme . '.components.left-sidebar-menues')
             </div>
             <!-- /.sidebar-collapse -->
         </div>
