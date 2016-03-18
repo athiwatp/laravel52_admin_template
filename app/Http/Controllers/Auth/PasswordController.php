@@ -20,6 +20,8 @@ class PasswordController extends Controller
 
     use ResetsPasswords;
 
+    public $chapter = 'Admin';
+
     /**
      * Create a new password controller instance.
      *
@@ -27,6 +29,8 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
+        $this->linkRequestView = $this->getTemplate( 'auth.passwords.email' );
+
         $this->middleware('guest');
     }
 }

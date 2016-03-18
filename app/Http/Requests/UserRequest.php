@@ -1,6 +1,6 @@
 <?php namespace App\Http\Requests;
 
-use App\User;
+use App\Models\User;
 
 class UserRequest extends Request {
 

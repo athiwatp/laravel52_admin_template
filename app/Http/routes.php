@@ -10,12 +10,7 @@ Route::group(['middleware' => 'web'], function () {
 /**
  * Middleware:
 */
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function() {
-
-    Route::get('/login', array('as' => 'admin.login', 'uses' => 'Admin\AuthController@index') );
-    Route::post('/login', array('as' => 'admin.login.post', 'uses' => 'Admin\AuthController@login') );
-    Route::post('/logout', array('as' => 'admin.logout', 'uses' => 'Admin\AuthController@logout') );
-
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     Route::get('/', array('as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index') );
 
     // Settings resource

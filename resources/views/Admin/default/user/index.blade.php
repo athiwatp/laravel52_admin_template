@@ -21,9 +21,9 @@
             <td class="center">{{ $userItem->is_admin }}</td>
             <td class="center">{{ $userItem->is_verified }}</td>
             <td>
-                {!! Html::_link(URL::route('admin.user.edit', array('id' => $userItem->id)), Lang::get('table_field.lists.edit') ) !!}
+                {!! Html::_link(URL::route('admin.users.edit', array('id' => $userItem->id)), Lang::get('table_field.lists.edit') ) !!}
                 <br>
-                {!! Html::_link(URL::route('admin.user.destroy', array('id' => $userItem->id)), Lang::get('table_field.lists.delete') ) !!}
+                {!! Html::_link(URL::route('admin.users.destroy', array('id' => $userItem->id)), Lang::get('table_field.lists.delete') ) !!}
             </td>
         </tr>
         @empty
