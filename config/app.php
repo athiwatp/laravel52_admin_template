@@ -150,6 +150,7 @@ return [
 
         // Custom packages
         Collective\Html\HtmlServiceProvider::class,
+        'Sorskod\Larasponse\LarasponseServiceProvider',
 
         /*
          * Application Service Providers...

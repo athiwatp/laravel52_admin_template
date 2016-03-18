@@ -10,6 +10,7 @@
 
     <!-- MetisMenu CSS -->
     {!! Html::style('css/vendor/metisMenu.min.css') !!}
+    {!! Html::style('css/vendor/jquery.dataTables.min.css') !!}
     {!! Html::style('css/admin.css') !!}
 <body>
     <div id="wrapper">
@@ -65,6 +66,7 @@
 
 <!-- Metis Menu Plugin JavaScript -->
 {!! Html::script('js/vendor/metisMenu.min.js') !!}
+{!! Html::script('js/vendor/jquery.dataTables.min.js') !!}
 
 <!-- Custom Theme JavaScript -->
 {!! Html::script('js/admin.js') !!}

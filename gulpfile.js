@@ -31,13 +31,16 @@ elixir(function(mix) {
 
     // Copy Resources and CSS
     mix.copy('resources/assets/images/**', 'public/images')
+        .copy(bowerDir + 'datatables/media/images', 'public/css/images')
         .copy(bowerDir + 'font-awesome/fonts', 'public/fonts')
         .copy(bowerDir + 'bootstrap-sass/assets/fonts', 'public/fonts')
+        .copy(bowerDir + 'datatables/media/css/jquery.dataTables.min.css', 'public/css/vendor/jquery.dataTables.min.css')
         .copy(bowerDir + 'metisMenu/dist/metisMenu.min.css', 'public/css/vendor/metisMenu.min.css');
 
     // Copy JavaScript libraries
     mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
         .copy(bowerDir + 'bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js/vendor/bootstrap.min.js')
-        .copy(bowerDir + 'metisMenu/dist/metisMenu.min.js', 'public/js/vendor/metisMenu.min.js');
+        .copy(bowerDir + 'metisMenu/dist/metisMenu.min.js', 'public/js/vendor/metisMenu.min.js')
+        .copy(bowerDir + 'datatables/media/js/jquery.dataTables.min.js', 'public/js/vendor/jquery.dataTables.min.js');
 });
 

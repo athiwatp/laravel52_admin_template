@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
-     * The entry point for the size
-    */
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         return $this->renderView('home.index');

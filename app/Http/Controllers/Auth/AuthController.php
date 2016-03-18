@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use URL;
+use App\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -28,8 +29,11 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/admin';
 
+    public $chapter = 'Admin';
+
+    protected $redirectAfterLogout = 'login';
     /**
      * Create a new authentication controller instance.
      *
@@ -37,6 +41,15 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        // Default redirection method
+        $this->redirectTo = URL::route('admin.dashboard');
+
+        // Set Login view
+        $this->loginView       = $this->getTemplate( 'auth.login' );
+        $this->registerView    = $this->getTemplate( 'auth.register' );
+        $this->resetView       = $this->getTemplate( 'auth.passwords.reset' );
+
+        // Applying the middleware
         $this->middleware('guest', ['except' => 'logout']);
     }
 
@@ -69,4 +82,9 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+//    public function showLoginForm()
+//    {
+//        die('Just hello from my side!!!!');
+//    }
 }

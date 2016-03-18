@@ -1,6 +1,6 @@
 <?php namespace App\Repositories;
 
-use App\User as User;
+use App\Models\User as User;
 use Carbon\Carbon;
 
 class UserRepository extends BaseRepository {

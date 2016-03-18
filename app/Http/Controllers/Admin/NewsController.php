@@ -30,8 +30,6 @@ class NewsController extends AdminController
     public function __construct( NewsRepository $news )
     {
         $this->news = $news;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -65,19 +63,19 @@ class NewsController extends AdminController
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_news', 'class' => 'edit-btn', 'data-url' => URL::route('admin.news.edit') )
+                        'aParams' => array('id' => 'edit_news', 'class' => 'edit-btn', 'data-url' => URL::route('admin.news.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_news', 'class' => 'delete-btn', 'data-url' => URL::route('admin.news.destroy') )
+                        'aParams' => array('id' => 'delete_news', 'class' => 'delete-btn', 'data-url' => URL::route('admin.news.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.news'),
+                        'url' => URL::route('admin.news.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_news', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.news') )
+                        'aParams' => array('id' => 'refresh_news', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.news.index') )
                     )
                 ),
                 'aList' => $this->news->index()
@@ -94,7 +92,7 @@ class NewsController extends AdminController
     public function create( ChaptersRepository $chapters )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('news.lists.create_news'))
         );
 
@@ -107,7 +105,7 @@ class NewsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.news.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -134,7 +132,7 @@ class NewsController extends AdminController
     {
         $this->news->store( $request->all() );
 
-        return Redirect::route('admin.news')
+        return Redirect::route('admin.news.index')
             ->with('message', Lang::get('$sMessage') );
     }
 
@@ -158,7 +156,7 @@ class NewsController extends AdminController
     public function edit( $id, ChaptersRepository $chapters )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('news.lists.editing_news'))
         );
 
@@ -171,7 +169,7 @@ class NewsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.news.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),

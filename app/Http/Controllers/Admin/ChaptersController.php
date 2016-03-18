@@ -29,8 +29,6 @@ class ChaptersController extends AdminController
     public function __construct( ChaptersRepository $chapters )
     {
         $this->chapters = $chapters;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -73,19 +71,19 @@ class ChaptersController extends AdminController
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_chapter', 'class' => 'edit-btn', 'data-url' => URL::route('admin.chapter.edit') )
+                        'aParams' => array('id' => 'edit_chapter', 'class' => 'edit-btn', 'data-url' => URL::route('admin.chapter.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_chapter', 'class' => 'delete-btn', 'data-url' => URL::route('admin.chapter.destroy') )
+                        'aParams' => array('id' => 'delete_chapter', 'class' => 'delete-btn', 'data-url' => URL::route('admin.chapter.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.chapter'),
+                        'url' => URL::route('admin.chapter.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter') )
+                        'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter.index') )
                     )
                 ),
                 'aList' => $this->chapters->index($sType)
@@ -102,7 +100,7 @@ class ChaptersController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.chapter'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter'))
         );
 
@@ -115,7 +113,7 @@ class ChaptersController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.chapter'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.chapter.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -141,7 +139,7 @@ class ChaptersController extends AdminController
     {
         $this->chapters->store( $request->all() );
 
-        return Redirect::route('admin.chapter')
+        return Redirect::route('admin.chapter.index')
             ->with('message', Lang::get('$sMessage') );
     }
 
@@ -165,7 +163,7 @@ class ChaptersController extends AdminController
     public function edit( $id )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.chapter'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter'))
         );
 
@@ -178,7 +176,7 @@ class ChaptersController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.chapter'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.chapter.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
