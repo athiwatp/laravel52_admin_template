@@ -9,11 +9,15 @@ use Pingpong\Menus\Presenters\Bootstrap\NavbarPresenter;
 
         foreach(MenuesRepository::getAdminSiderbarMenu() as $menuItem) {
             $aSubMenu = array_key_exists('children', $menuItem) ? $menuItem['children'] : array();
-            $menu->dropdown( $menuItem['leftIcon'] . ' ' . $menuItem['title'] . $menuItem['rightIcon'], function(MenuItem $sub) use ($aSubMenu) {
-                foreach($aSubMenu as $subItem) {
-                    $sub->route( $subItem['route'] , $subItem['icon'] . ' ' . $subItem['title']);
-                }
-            });
+            if ( isset($aSubMenu) && $aSubMenu != null ) {
+                $menu->dropdown( $menuItem['leftIcon'] . ' ' . $menuItem['title'] . $menuItem['rightIcon'], function(MenuItem $sub) use ($aSubMenu) {
+                    foreach($aSubMenu as $subItem) {
+                        $sub->route( $subItem['route'] , $subItem['icon'] . ' ' . $subItem['title']);
+                    }
+                });
+            } else {
+                $menu->route( $menuItem['route'], $menuItem['leftIcon'] . ' ' . $menuItem['title']);
+            }
         }
     });
 

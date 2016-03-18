@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Chapters as Chapters;
-use Carbon\Carbon;
+use Carbon\Carbon, Lang;
 
 class ChaptersRepository extends BaseRepository {
     /**
@@ -23,9 +23,9 @@ class ChaptersRepository extends BaseRepository {
      *
      * @return
     */
-    public function index()
+    public function index( $sType )
     {
-        return $this->model->all();
+        return $this->model->where('type_chapter', '=', $sType)->get();
     }
 
     /**
@@ -47,7 +47,7 @@ class ChaptersRepository extends BaseRepository {
         $chapter->date         = $inputs['date'];
         $chapter->number       = ( isset($inputs['number']) ? $inputs['number'] : null );
         $chapter->user_id      = 1/*Auth::id()*/;
-        $chapter->icon        = ( isset($inputs['icon']) ? $inputs['icon'] : null );
+        $chapter->icon         = ( isset($inputs['icon']) ? $inputs['icon'] : null );
 
         $chapter->save();
 
@@ -100,4 +100,29 @@ class ChaptersRepository extends BaseRepository {
     {
         $chapters->delete();
     }
+
+    /**
+    * Prepare a list of chapters for the combox
+    */
+    public static function getComboList( $sChaptersType )
+    {
+        if ( $sChaptersType === Chapters::TYPE_CHAPTER ) {
+            $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter') . ' --- ' );
+        } else {
+            $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter_gallery') . ' --- ' );
+        }
+
+        $oItems = Chapters::where('type_chapter', '=', $sChaptersType)
+            ->where('is_active', '=', Chapters::IS_ACTIVE)
+            ->orderBy('pos')
+            ->orderBy('title')
+            ->get();
+
+        foreach($oItems as $item) {
+            $aItems[ $item->id ] = $item->title;
+        }
+
+        return $aItems;
+    }
+
 }

@@ -3,33 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\NewsRequest;
-use App\Repositories\NewsRepository;
-use App\Repositories\ChaptersRepository;
+use App\Http\Requests\PagesRequest;
+use App\Repositories\PagesRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
-class NewsController extends AdminController
+class PagesController extends AdminController
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\NewsRepository
+     * @var App\Repositories\PagesRepository
      */
-    protected $news;
+    protected $pages;
 
     /**
-     * Create a new NewsController instance
+     * Create a new PagesController instance
      *
-     * @param App\Repositories\NewsRepository
+     * @param App\Repositories\PagesRepository
      *
      * @return void
      */
-    public function __construct( NewsRepository $news )
+    public function __construct( PagesRepository $pages )
     {
-        $this->news = $news;
+        $this->pages = $pages;
 
         $this->middleware('guest');
     }
@@ -42,48 +41,47 @@ class NewsController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news'))
+            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
             'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-            'sTitle' => Lang::get('news.lists.news_management'),
-            'sSubTitle' => Lang::get('news.lists.news_management_online'),
-            'sBoxTitle' => Lang::get('news.lists.lists_news'),
+            'sTitle' => Lang::get('pages.lists.pages_management'),
+            'sSubTitle' => Lang::get('pages.lists.pages_management_online'),
+            'sBoxTitle' => Lang::get('pages.lists.page_static_website'),
             'isShownSearchBox' => false,
-            'sContent' => $this->renderView('news.index', array(
+            'sContent' => $this->renderView('pages.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
-                        'url' => URL::route('admin.news.create'),
+                        'url' => URL::route('admin.pages.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_news')
+                        'aParams' => array('id' => 'add_page')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_news', 'class' => 'edit-btn', 'data-url' => URL::route('admin.news.edit') )
+                        'aParams' => array('id' => 'edit_page', 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit') )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_news', 'class' => 'delete-btn', 'data-url' => URL::route('admin.news.destroy') )
+                        'aParams' => array('id' => 'delete_pages', 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy') )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.news'),
+                        'url' => URL::route('admin.pages'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_news', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.news') )
+                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages') )
                     )
                 ),
-                'aList' => $this->news->index()
+                'aList' => $this->pages->index()
             ))
         ));
-
     }
 
     /**
@@ -91,23 +89,23 @@ class NewsController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( ChaptersRepository $chapters )
+    public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
-            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('news.lists.create_news'))
+            array('url' => URL::route('admin.pages'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('pages.lists.create_page'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('news.lists.news_management'),
+            'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('news.lists.create_new_news'),
+            'formTitle' => Lang::get('pages.lists.create_new_pages'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -115,13 +113,11 @@ class NewsController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('news.add', array(
-                'oData' => null,
-                'aChapters' => $chapters->getComboList( 0 /*Chapters::TYPE_CHAPTER*/ )
+            'formContent' => $this->renderView('pages.add', array(
+                'oData' => null
             )),
-            'formUrl' => URL::route('admin.news.store'),
+            'formUrl' => URL::route('admin.pages.store'),
         ));
-
     }
 
     /**
@@ -130,11 +126,11 @@ class NewsController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( NewsRequest $request )
+    public function store( PagesRequest $request )
     {
-        $this->news->store( $request->all() );
+        $this->pages->store( $request->all() );
 
-        return Redirect::route('admin.news')
+        return Redirect::route('admin.pages')
             ->with('message', Lang::get('$sMessage') );
     }
 
@@ -155,23 +151,23 @@ class NewsController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, ChaptersRepository $chapters )
+    public function edit( $id, PagesRepository $pages )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
-            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('news.lists.editing_news'))
+            array('url' => URL::route('admin.pages'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('pages.lists.editing_pages'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('news.lists.news_management'),
+            'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('news.lists.editing_news'),
+            'formTitle' => Lang::get('pages.lists.editing_page'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.news'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -179,13 +175,11 @@ class NewsController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('news.add', array(
-                'oData' => $this->news->edit( $id ),
-                'aChapters' => $chapters->getComboList()
+            'formContent' => $this->renderView('pages.add', array(
+                'oData' => $this->pages->edit( $id )
             )),
-            'formUrl' => URL::route('admin.news.store'),
+            'formUrl' => URL::route('admin.pages.store'),
         ));
-
     }
 
     /**

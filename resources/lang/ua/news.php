@@ -14,6 +14,7 @@ return array(
     'form' => array(
         'title' => 'Назва',
         'main' => 'Главна',
+        'chapter' => 'Розділ',
         'url' => 'URL',
         'published' => 'Опубліковано',
         'important' => 'Важлива',

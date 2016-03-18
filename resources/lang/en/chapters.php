@@ -9,6 +9,8 @@ return array(
         'editing_chapter' => 'Editing chapter',
         'create_new_chapter' => 'Create new chapter',
         'management_chapters' => 'Management chapters',
+        'select_chapter' => 'Select chapter',
+        'select_chapter_gallery' => 'Select the gallery section',
         ),
 
     'form' => array(

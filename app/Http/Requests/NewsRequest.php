@@ -8,7 +8,7 @@ class NewsRequest extends Request {
      * Get the validation rules that apply to the request.
      *
      * @return array
-    */
+     */
     public function rules()
     {
         //@TODO: Specify here a list of required and mandatory fields

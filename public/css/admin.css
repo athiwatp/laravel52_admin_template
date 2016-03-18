@@ -7869,6 +7869,10 @@ body {
 .navbar-static-top {
   z-index: 1000;
   border-width: 0 0 1px; }
+  .navbar-static-top .navbar-collapse .nav .nav-second-level li a {
+    padding-left: 30px; }
+  .navbar-static-top .navbar-collapse .nav li a.active {
+    background-color: #eee; }
 
 .content-wrapper .content-header {
   position: relative;

@@ -104,7 +104,7 @@ class MenuesRepository extends BaseRepository {
     }
 
 
-        /**
+    /**
     * Returns a list of menu types
     */
     public static function getTypes() {
@@ -226,14 +226,20 @@ class MenuesRepository extends BaseRepository {
             'general' => array(
                 'title' => Lang::get('menues.nav.dashboard'),
                 'leftIcon' => '<i class="fa fa-dashboard"></i>',
-                'rightIcon' => '<span class="fa arrow"></span>',
+                'route' => 'admin.dashboard'
+            ),
+
+            'content' => array(
+                'title' => Lang::get('menues.nav.content'),
+                'leftIcon' => '<i class="fa fa-book"></i>',
+                'rightIcon' => '<i class="fa arrow"></i>',
                 'children' => array(
-                    'dashboard' => array(
-                        'title' => Lang::get('menues.nav.dashboard'),
-                        'icon' => '<i class="fa fa-dashboard fa-fw"></i>',
-                        'route' => 'admin.dashboard'
+                    'page' => array(
+                        'title' => Lang::get('menues.nav.sidebar_page'),
+                        'icon' => '<i class="fa fa-sticky-note"></i>',
+                        'route' => 'admin.pages'
                     )
-                ) 
+                )
             ),
 
             'news' => array(
@@ -249,10 +255,29 @@ class MenuesRepository extends BaseRepository {
 
                     'news' => array(
                         'title' => Lang::get('menues.nav.news_online'),
-                        'icon' => '<i class="fa fa-users"></i>',
+                        'icon' => '<i class="fa fa-list-alt"></i>',
                         'route' => 'admin.news'
                     )
                 ) 
+            ),
+
+            'gallery' => array(
+                'title' => Lang::get('menues.nav.gallery'),
+                'leftIcon' => '<i class="fa fa-picture-o"></i>',
+                'rightIcon' => '<i class="fa fa-angle-left pull-right"></i>',
+                'children' => array(
+                    'gallery-chapters' => array(
+                        'title' => Lang::get('menues.nav.gallery_chapter'),
+                        'icon' => '<i class="fa fa-clone"></i>',
+                        'route' => 'admin.chapter.gallery'
+                    ),
+
+                    'media' => array(
+                        'title' => Lang::get('menues.nav.photo_gallery'),
+                        'icon' => '<i class="fa fa-camera"></i>',
+                        'route' => 'admin.gallery'
+                    ),
+                )
             ),
 
             'settings' => array(

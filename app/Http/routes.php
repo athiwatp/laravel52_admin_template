@@ -19,6 +19,7 @@ Route::group(['prefix' => 'admin'], function() {
     
     Route::group(array('prefix' => 'chapter'), function() {
         Route::get('/', array('as' => 'admin.chapter', 'uses' => 'Admin\ChaptersController@index') );
+        Route::get('/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Admin\ChaptersController@indexGallery') );
         Route::get('/add', array('as' => 'admin.chapter.create', 'uses' => 'Admin\ChaptersController@create') );
         Route::get('/edit/{id?}', array('as' => 'admin.chapter.edit', 'uses' => 'Admin\ChaptersController@edit') );
         Route::post('/store', array('as' => 'admin.chapter.store', 'uses' => 'Admin\ChaptersController@store') );
@@ -31,6 +32,23 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('/edit/{id?}', array('as' => 'admin.news.edit', 'uses' => 'Admin\NewsController@edit') );
         Route::post('/store', array('as' => 'admin.news.store', 'uses' => 'Admin\NewsController@store') );
         Route::get('/destroy', array('as' => 'admin.news.destroy', 'uses' => 'Admin\NewsController@destroy') );
+    });
+
+    Route::group(array('prefix' => 'pages'), function() {
+        Route::get('/', array('as' => 'admin.pages', 'uses' => 'Admin\PagesController@index') );
+        Route::get('/add', array('as' => 'admin.pages.create', 'uses' => 'Admin\PagesController@create') );
+        Route::get('/edit/{id?}', array('as' => 'admin.pages.edit', 'uses' => 'Admin\PagesController@edit') );
+        Route::post('/store', array('as' => 'admin.pages.store', 'uses' => 'Admin\PagesController@store') );
+        Route::get('/destroy', array('as' => 'admin.pages.destroy', 'uses' => 'Admin\PagesController@destroy') );
+    });
+
+
+    Route::group(array('prefix' => 'gallery'), function() {
+        Route::get('/', array('as' => 'admin.gallery', 'uses' => 'Admin\GalleryController@index') );
+        Route::get('/add', array('as' => 'admin.gallery.create', 'uses' => 'Admin\GalleryController@create') );
+        Route::get('/edit/{id?}', array('as' => 'admin.gallery.edit', 'uses' => 'Admin\GalleryController@edit') );
+        Route::post('/store', array('as' => 'admin.gallery.store', 'uses' => 'Admin\GalleryController@store') );
+        Route::get('/destroy', array('as' => 'admin.gallery.destroy', 'uses' => 'Admin\GalleryController@destroy') );
     });
 
     Route::group(array('prefix' => 'menu'), function() {

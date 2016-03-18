@@ -14,6 +14,20 @@ body {
 .navbar-static-top {
   z-index: 1000;
   border-width: 0 0 1px;
+  .navbar-collapse {
+    .nav {
+      .nav-second-level {
+        li {
+          a {
+            padding-left: 30px;
+          }
+        }
+      }
+      li a.active {
+        background-color: #eee;
+      }
+    }
+  }
 }
 
 .content-wrapper {

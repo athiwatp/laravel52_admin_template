@@ -9,6 +9,11 @@ return array(
         'menu_management' => 'Управління меню',
         'news_online' => 'Статті новин',
         'users_management' => 'Управління користувачами',
+        'content' => 'Контент',
+        'sidebar_page' => 'Статичні сторінки',
+        'gallery' => 'Фото-галерея',
+        'gallery_chapter' => 'Розділи',
+        'photo_gallery' => 'Галерея',
         ),
 
     'lists' => array(

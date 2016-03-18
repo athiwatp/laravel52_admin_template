@@ -26,11 +26,15 @@ return array(
         ),
 
     'lists' => array(
+        'meta_keywords' => 'Meta keywords',
+        'meta_descriptions' => 'Meta descriptions',
+        'descriptions' => 'Descriptions',
         'empty' => 'Database queries - returned empty data set.',
         'actions' => 'Action',
         'user' => 'User',
         'edit' => 'Edit',
         'delete' => 'Delete',
+        'pos' => 'Pos',
         'save' => 'Save',
         'back' => 'Back',
         'date' => 'Date',

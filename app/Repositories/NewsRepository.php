@@ -39,7 +39,7 @@ class NewsRepository extends BaseRepository {
     {
         $news->title        = $inputs['title'];
         $news->content      = $inputs['content'];
-        $news->chapter_id   = (isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
+        $news->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
         $news->user_id      = 1/*Auth::id()*/;
         $news->url          = $inputs['url'];
         $news->type_news    = '1';

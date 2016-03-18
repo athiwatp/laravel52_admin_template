@@ -9,6 +9,8 @@ return array(
         'editing_chapter' => 'Редагування розділу',
         'create_new_chapter' => 'Створення нового розділу',
         'management_chapters' => 'Управління розділами',
+        'select_chapter' => 'Оберiть розділ',
+        'select_chapter_gallery' => 'Виберіть розділ галереї',
         ),
 
     'form' => array(

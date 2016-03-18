@@ -26,11 +26,15 @@ return array(
         ),
 
     'lists' => array(
+        'meta_keywords' => 'Meta keywords',
+        'meta_descriptions' => 'Meta descriptions',
+        'descriptions' => 'Опис',
         'empty' => 'Запит до Бази Даних - повернув порожнiй набiр даних.',
         'actions' => 'Дії',
         'user' => 'Користувач',
         'edit' => 'Редагувати',
         'delete' => 'Видалити',
+        'pos' => 'Позиція',
         'save' => 'Зберегти',
         'back' => 'Назад',
         'date' => 'Дата',

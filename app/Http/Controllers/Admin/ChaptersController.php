@@ -38,7 +38,16 @@ class ChaptersController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexGallery( $sType = '1' )
+    {
+        return $this->index( $sType );
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index( $sType = 0 )
     {
         $aBreadcrumbs = array(
             array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters'))
@@ -79,7 +88,7 @@ class ChaptersController extends AdminController
                         'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter') )
                     )
                 ),
-                'aList' => $this->chapters->index()
+                'aList' => $this->chapters->index($sType)
             ))
         ));
 
@@ -153,7 +162,7 @@ class ChaptersController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.chapter'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),

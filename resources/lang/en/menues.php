@@ -9,6 +9,11 @@ return array(
         'menu_management' => 'Menu management',
         'news_online' => 'news_online',
         'users_management' => 'URLsers management',
+        'content' => 'Content',
+        'sidebar_page' => 'Static pages',
+        'gallery' => 'Photo gallery',
+        'gallery_chapter' => 'Chapters',
+        'photo_gallery' => 'Gallery',
         ),
 
     'lists' => array(

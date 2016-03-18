@@ -26,11 +26,15 @@ return array(
         ),
 
     'lists' => array(
+        'meta_keywords' => 'Meta keywords',
+        'meta_descriptions' => 'Meta descriptions',
+        'descriptions' => 'Описание',
         'empty' => 'Запрос к базе данных - вернул пустой набор данных.',
         'actions' => 'Действия',
         'user' => 'Пользователь',
         'edit' => 'Редактировать',
         'delete' => 'Удалить',
+        'pos' => 'Позиция',
         'save' => 'Сохранить',
         'back' => 'Назад',
         'date' => 'Дата',

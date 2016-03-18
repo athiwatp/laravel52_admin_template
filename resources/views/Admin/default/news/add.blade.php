@@ -16,6 +16,10 @@
         {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control')) }}
     </div>
     <div class="form-group">
+        {{ Form::label('chapter_id', Lang::get('news.form.chapter') ) }}
+        {{ Form::select('chapter_id', $aChapters, ( isset($oData) ? $oData->chapter_id : null), array('class' => 'form-control')) }}
+    </div>
+    <div class="form-group">
         {{ Form::label('source', Lang::get('news.form.source') ) }}
         {{ Form::text('source', ( isset($oData) ? $oData->source : null), array('class' => 'form-control')) }}
     </div>
