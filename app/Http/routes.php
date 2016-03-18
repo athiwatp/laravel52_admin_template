@@ -8,7 +8,7 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 /**
- * Middleware:
+ * Admin
 */
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     Route::get('/', array('as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index') );
@@ -30,6 +30,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
 });
 
+/**
+ * API
+*/
+Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], function () {
+    // Module to handle the News in the system
+    Route::resource('news', 'Api\NewsController', ['only' => ['index', 'show']]);
+});
 
 
 

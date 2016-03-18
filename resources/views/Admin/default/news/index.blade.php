@@ -1,4 +1,28 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
+
+<table id="example" class="datatables display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Office</th>
+        <th>Extn.</th>
+        <th>Start date</th>
+        <th>Salary</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Office</th>
+        <th>Extn.</th>
+        <th>Start date</th>
+        <th>Salary</th>
+    </tr>
+    </tfoot>
+</table>
+{{--
 <table class="table table-hover">
     <thead>
         <tr role="row">
@@ -36,4 +60,4 @@
         </tr>
         @endforelse
     </tbody>
-</table>
+</table> --}}
