@@ -1,6 +1,6 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 
-<table id="example" class="datatables display responsive no-wrap" data-url="news" data-columns="{{ $sColumnsJson }}" cellspacing="0" width="100%">
+<table id="example" class="datatables display responsive no-wrap" data-url="news" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.news.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Id</th>

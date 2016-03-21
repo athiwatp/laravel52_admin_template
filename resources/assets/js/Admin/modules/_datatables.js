@@ -21,7 +21,8 @@ $(function() {
 
     $('.datatables').each(function() {
         var sUrl = $(this).attr('data-url'),
-            sColumn = $(this).attr('data-columns');
+            sColumn = $(this).attr('data-columns'),
+            sEditUrl = $(this).attr('data-edit-url');
 
         if (sUrl) {
             var table = $(this).dataTable( {
@@ -38,7 +39,17 @@ $(function() {
                     url: system.getUrl( sUrl )
                 },
 
-                columns: JSON.parse(sColumn)
+                columns: JSON.parse(sColumn),
+
+
+                columnDefs: [{
+                    render: function ( data, type, row ) {
+
+                        return '<a href="' + sEditUrl.replace('%id%', row.id) + '">' + data + '</a>';
+                    },
+                    targets: 1
+                }]
+
             } );
 
             $(this).on( 'click', 'tr', function () {
