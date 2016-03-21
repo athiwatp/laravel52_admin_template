@@ -150,6 +150,8 @@ return [
 
         // Custom packages
         Collective\Html\HtmlServiceProvider::class,
+        Pingpong\Menus\MenusServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
         'Sorskod\Larasponse\LarasponseServiceProvider',
 
         /*
@@ -162,7 +164,7 @@ return [
 
         App\Providers\HelperServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
-        Pingpong\Menus\MenusServiceProvider::class,
+
 
 
 

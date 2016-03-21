@@ -7,7 +7,7 @@
 
 {{-- Header section --}}
 @section('page_header')
-    <h1> {{ $aParams['sTitle'] }} <small>{{ $aParams['sSubTitle'] }}</small></h1>
+    <h1> {{ $aParams['sTitle'] }} <br><small>{{ $aParams['sSubTitle'] }}</small></h1>
     @if( null !== $aParams['sBreadcrumbs'] )
     {!! $aParams['sBreadcrumbs'] !!}
     @endif
@@ -20,9 +20,7 @@
         <div class="box">
             
             <div class="box-header">
-                @if (isset($aParams['sBoxTitle']))
-                    <h3 class="box-title">{{ $aParams['sBoxTitle'] }}</h3>
-                @endif
+
                 <div class="box-tools">
                 @if( $aParams['isShownSearchBox'] === true )
                 <div class="input-group" style="width: 150px;">
