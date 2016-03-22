@@ -5,27 +5,7 @@
     </div>
     <div class="form-group">
         {{ Form::label('description', Lang::get('chapters.form.description') ) }}
-        {{ Form::text('description', ( isset($oData) ? $oData->description : null), array('class' => 'form-control')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('parent_id', Lang::get('chapters.form.parent') ) }}
-        {{ Form::number('parent_id', ( isset($oData) ? $oData->parent_id : null), array('class' => 'form-control')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('type_chapter', Lang::get('chapters.form.type_chapter') ) }}
-        {{ Form::number('type_chapter', ( isset($oData) ? $oData->type_chapter : null), array('class' => 'form-control')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('date', Lang::get('table_field.lists.date') ) }}
-        {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('number', Lang::get('chapters.form.number') ) }}
-        {{ Form::text('number', ( isset($oData) ? $oData->number : null), array('class' => 'form-control')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('path', 'Path') }}
-        {{ Form::text('path', ( isset($oData) ? $oData->path : null), array('class' => 'form-control')) }}
+        {{ Form::textarea('description', ( isset($oData) ? $oData->description : null), array('class' => 'form-control')) }}
     </div>
     <div class="form-group">
         {{ Form::label('pos', Lang::get('chapters.form.pos') ) }}
@@ -46,5 +26,6 @@
             {{ Form::label('is_active_no', Lang::get('table_field.lists.no') ) }}
         </div>
     </div>
+    {{ Form::hidden('sType', isset($oData) ? $oData->type_chapter : $sType) }}
     {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
 </div>

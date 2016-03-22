@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Menues as Menues;
-use Carbon\Carbon, Lang;
+use Carbon\Carbon, Lang, Auth;
 
 class MenuesRepository extends BaseRepository {
     /**
@@ -45,7 +45,7 @@ class MenuesRepository extends BaseRepository {
         $menu->page_id      = ( isset($inputs['page_id']) ? $inputs['page_id'] : null );
         $menu->url          = $inputs['url'];
         $menu->redirect_url = ( isset($inputs['redirect_url']) ? $inputs['redirect_url'] : null );
-        $menu->user_id      = 1/*Auth::id()*/;
+        $menu->user_id      = Auth::id();
         $menu->is_published           = $inputs['is_published'];
         $menu->is_redirectable        = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
         $menu->is_loaded_by_default   = ( isset($inputs['is_loaded_by_default']) ? $inputs['is_loaded_by_default'] : 0);
@@ -237,7 +237,7 @@ class MenuesRepository extends BaseRepository {
                     'page' => array(
                         'title' => Lang::get('menues.nav.sidebar_page'),
                         'icon' => '<i class="fa fa-sticky-note"></i>',
-                        'route' => 'admin.pages'
+                        'route' => 'admin.pages.index'
                     )
                 )
             ),
@@ -249,7 +249,7 @@ class MenuesRepository extends BaseRepository {
                 'children' => array(
                     'chapter_news' => array(
                         'title' => Lang::get('menues.nav.chapter_news_management'),
-                        'icon' => '<i class="fa fa-dashboard"></i>',
+                        'icon' => '<i class="fa fa-object-group"></i>',
                         'route' => 'admin.chapter.index'
                     ),
 
@@ -275,7 +275,7 @@ class MenuesRepository extends BaseRepository {
                     'media' => array(
                         'title' => Lang::get('menues.nav.photo_gallery'),
                         'icon' => '<i class="fa fa-camera"></i>',
-                        'route' => 'admin.gallery'
+                        'route' => 'admin.gallery.index'
                     ),
                 )
             ),
@@ -293,7 +293,7 @@ class MenuesRepository extends BaseRepository {
 
                     'user' => array(
                         'title' => Lang::get('menues.nav.users_management'),
-                        'icon' => '<i class="fa fa-user"></i>',
+                        'icon' => '<i class="fa fa-users"></i>',
                         'route' => 'admin.users.index'
                     ),
 

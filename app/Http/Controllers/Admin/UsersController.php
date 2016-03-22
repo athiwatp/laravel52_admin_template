@@ -43,7 +43,7 @@ class UsersController extends AdminController
         }
         
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users'))
+            array('url' => '#', 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
@@ -95,7 +95,7 @@ class UsersController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users')),
+            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('users.lists.register'))
         );
 
@@ -158,7 +158,7 @@ class UsersController extends AdminController
     public function edit( $id, UserRepository $users )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users')),
+            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('users.lists.editing_user'))
         );
 

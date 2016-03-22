@@ -42,7 +42,7 @@ class PagesRepository extends BaseRepository {
         $page->meta_keywords    = $inputs['meta_keywords'];
         $page->meta_descriptions = $inputs['meta_descriptions'];
         $page->content          = $inputs['content'];
-        $page->user_id          = 1/*Auth::id()*/;
+        $page->user_id          = Auth::id();
         $page->is_published     = $inputs['is_published'];
 
         $page->save();

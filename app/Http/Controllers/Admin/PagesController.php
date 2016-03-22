@@ -29,8 +29,6 @@ class PagesController extends AdminController
     public function __construct( PagesRepository $pages )
     {
         $this->pages = $pages;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -41,7 +39,7 @@ class PagesController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
+            array('url' => '#', 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
@@ -64,19 +62,19 @@ class PagesController extends AdminController
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_page', 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit') )
+                        'aParams' => array('id' => 'edit_page', 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_pages', 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy') )
+                        'aParams' => array('id' => 'delete_pages', 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.pages'),
+                        'url' => URL::route('admin.pages.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages') )
+                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
                     )
                 ),
                 'aList' => $this->pages->index()
@@ -92,7 +90,7 @@ class PagesController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.pages'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('pages.lists.create_page'))
         );
 
@@ -105,7 +103,7 @@ class PagesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -154,7 +152,7 @@ class PagesController extends AdminController
     public function edit( $id, PagesRepository $pages )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.pages'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('pages.lists.editing_pages'))
         );
 
@@ -167,7 +165,7 @@ class PagesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),

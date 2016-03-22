@@ -30,8 +30,6 @@ class GalleryController extends AdminController
     public function __construct( GalleryRepository $gallery )
     {
         $this->gallery = $gallery;
-
-        $this->middleware('guest');
     }
 
     /**
@@ -42,7 +40,7 @@ class GalleryController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('gallery.lists.lists_gallery'))
+            array('url' => '#', 'icon' => '<i class="fa fa-camera"></i>', 'title' => Lang::get('gallery.lists.lists_gallery'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
@@ -65,19 +63,19 @@ class GalleryController extends AdminController
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_gallery', 'class' => 'edit-btn', 'data-url' => URL::route('admin.gallery.edit') )
+                        'aParams' => array('id' => 'edit_gallery', 'class' => 'edit-btn', 'data-url' => URL::route('admin.gallery.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_chapter', 'class' => 'delete-btn', 'data-url' => URL::route('admin.gallery.destroy') )
+                        'aParams' => array('id' => 'delete_gallery', 'class' => 'delete-btn', 'data-url' => URL::route('admin.gallery.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.gallery'),
+                        'url' => URL::route('admin.gallery.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_gallery', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.gallery') )
+                        'aParams' => array('id' => 'refresh_gallery', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.gallery.index') )
                     )
                 ),
                 'aList' => $this->gallery->index()
@@ -93,7 +91,7 @@ class GalleryController extends AdminController
     public function create( ChaptersRepository $chapters, GalleryRepository $gallery )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.gallery'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('gallery.lists.lists_gallery')),
+            array('url' => URL::route('admin.gallery.index'), 'icon' => '<i class="fa fa-camera"></i>', 'title' => Lang::get('gallery.lists.lists_gallery')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('gallery.lists.create_gallery'))
         );
 
@@ -106,7 +104,7 @@ class GalleryController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.gallery'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.gallery.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -129,9 +127,15 @@ class GalleryController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( GalleryRequest $request )
     {
-        //
+        $this->gallery->store( $request->all() );
+
+        return Redirect::route('admin.gallery.index')
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('gallery.message.store_gallery')
+            ));
     }
 
     /**
@@ -153,7 +157,35 @@ class GalleryController extends AdminController
      */
     public function edit( $id, ChaptersRepository $chapters, GalleryRepository $gallery )
     {
-        //
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.gallery.index'), 'icon' => '<i class="fa fa-camera"></i>', 'title' => Lang::get('gallery.lists.lists_gallery')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('gallery.lists.editing_gallery'))
+        );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('gallery.lists.management_gallery'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('gallery.lists.editing_gallery'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.gallery.index'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('gallery.add', array(
+                'oData' => $this->gallery->edit( $id ),
+                'sType' => $gallery->getGalleryTypes(),
+                'aChapter' => $chapters->getComboList( 1 /*Chapters::TYPE_GALLERY*/ ),
+            )),
+            'formUrl' => URL::route('admin.gallery.store'),
+        ));
     }
 
     /**

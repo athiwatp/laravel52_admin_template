@@ -4,8 +4,8 @@
         {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
     </div>
     <div class="form-group">
-        {{ Form::label('descriptions', Lang::get('table_field.lists.descriptions') ) }}
-        {{ Form::textarea('descriptions', ( isset($oData) ? $oData->descriptions: null), array('class' => 'form-control')) }}
+        {{ Form::label('description', Lang::get('table_field.lists.descriptions') ) }}
+        {{ Form::textarea('description', ( isset($oData) ? $oData->description: null), array('class' => 'form-control')) }}
     </div>
     <div class="form-group">
         {{ Form::label('chapter', Lang::get('gallery.form.chapter') ) }}
@@ -19,5 +19,9 @@
         {{ Form::label('pos', Lang::get('table_field.lists.pos') ) }}
         {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
     </div>
+    <div class="form-group">
+    {{ Form::label('file', Lang::get('gallery.form.file')) }}
+    {{ Form::file('file', array() ) }}
+</div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
 </div>

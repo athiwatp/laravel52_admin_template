@@ -40,8 +40,8 @@ class GalleryRepository extends BaseRepository {
         $gallery->title        = $inputs['title'];
         $gallery->description  = $inputs['description'];
         $gallery->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
-        $gallery->user_id      = 1/*Auth::id()*/;
-        $gallery->filename     = $inputs['filename'];
+        $gallery->user_id      = Auth::id();
+        $gallery->filename     = 'name'/*$inputs['filename']*/;
         $gallery->tp           = '1';
         $gallery->pos          = $inputs['pos'];
 

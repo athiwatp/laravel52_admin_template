@@ -17,37 +17,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     Route::resource('settings', 'Admin\SettingsController');
 
     // Module to handle the Chapters the system
+    Route::get('chapter/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Admin\ChaptersController@indexGallery'));
     Route::resource('chapter', 'Admin\ChaptersController');
 
     // Module to handle the News in the system
     Route::resource('news', 'Admin\NewsController');
 
     // Handle the Menu
-    Route::resource('menu', 'Admin\NewsController');
-        Route::get('/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Admin\ChaptersController@indexGallery') );
+    Route::resource('menu', 'Admin\MenuesController');
 
     // User resource
     Route::resource('users', 'Admin\UsersController');
-    });
 
-    Route::group(array('prefix' => 'pages'), function() {
-        Route::get('/', array('as' => 'admin.pages', 'uses' => 'Admin\PagesController@index') );
-        Route::get('/add', array('as' => 'admin.pages.create', 'uses' => 'Admin\PagesController@create') );
-        Route::get('/edit/{id?}', array('as' => 'admin.pages.edit', 'uses' => 'Admin\PagesController@edit') );
-        Route::post('/store', array('as' => 'admin.pages.store', 'uses' => 'Admin\PagesController@store') );
-        Route::get('/destroy', array('as' => 'admin.pages.destroy', 'uses' => 'Admin\PagesController@destroy') );
-    });
+    // Module to handle the Pages in the system
+    Route::resource('pages', 'Admin\PagesController');
 
-
-    Route::group(array('prefix' => 'gallery'), function() {
-        Route::get('/', array('as' => 'admin.gallery', 'uses' => 'Admin\GalleryController@index') );
-        Route::get('/add', array('as' => 'admin.gallery.create', 'uses' => 'Admin\GalleryController@create') );
-        Route::get('/edit/{id?}', array('as' => 'admin.gallery.edit', 'uses' => 'Admin\GalleryController@edit') );
-        Route::post('/store', array('as' => 'admin.gallery.store', 'uses' => 'Admin\GalleryController@store') );
-        Route::get('/destroy', array('as' => 'admin.gallery.destroy', 'uses' => 'Admin\GalleryController@destroy') );
+    // Module to handle the Gallery in the system
+    Route::resource('gallery', 'Admin\GalleryController');
 
 });
-
 /**
  * API
 */

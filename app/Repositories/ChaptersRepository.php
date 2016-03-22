@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Chapters as Chapters;
-use Carbon\Carbon, Lang;
+use Carbon\Carbon, Lang, Auth;
 
 class ChaptersRepository extends BaseRepository {
     /**
@@ -39,14 +39,10 @@ class ChaptersRepository extends BaseRepository {
     {
         $chapter->title        = $inputs['title'];
         $chapter->description  = $inputs['description'];
-        $chapter->parent_id    = ( isset($inputs['parent_id']) ? $inputs['parent_id'] : null );
-        $chapter->path         = ( isset($inputs['path']) ? $inputs['path'] : null );
         $chapter->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : null );
         $chapter->is_active    = $inputs['is_active'];
-        $chapter->type_chapter = ( isset($inputs['type_chapter']) ? $inputs['type_chapter'] : 0 );
-        $chapter->date         = $inputs['date'];
-        $chapter->number       = ( isset($inputs['number']) ? $inputs['number'] : null );
-        $chapter->user_id      = 1/*Auth::id()*/;
+        $chapter->type_chapter = ( isset($inputs['sType']) ? $inputs['sType'] : $chapter->type_chapter );
+        $chapter->user_id      = Auth::id();
         $chapter->icon         = ( isset($inputs['icon']) ? $inputs['icon'] : null );
 
         $chapter->save();

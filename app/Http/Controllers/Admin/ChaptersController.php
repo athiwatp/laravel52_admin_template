@@ -45,16 +45,18 @@ class ChaptersController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( $sType = 0 )
+    public function index( $sType = '0' )
     {
-        $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters'))
+        $aBreadcrumbs = array( 
+            $sType === '0' ? 
+            array('url' => '#', 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')) :
+            array('url' => '#', 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
             'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-            'sTitle' => Lang::get('chapters.lists.management_chapters'),
-            'sSubTitle' => Lang::get('chapters.lists.chapters'),
+            'sTitle' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
+            'sSubTitle' => ( $sType === '0' ? Lang::get('chapters.lists.chapters') : Lang::get('chapters.lists.gallery') ),
             'sBoxTitle' => Lang::get('chapters.lists.lists_chapters'),
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('chapters.index', array(
@@ -62,7 +64,7 @@ class ChaptersController extends AdminController
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
-                        'url' => URL::route('admin.chapter.create'),
+                        'url' => URL::route('admin.chapter.create', array('sType' => $sType)),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
                         'aParams' => array('id' => 'add_chapter', 'class' => 'add-btn')
@@ -80,13 +82,14 @@ class ChaptersController extends AdminController
                         'aParams' => array('id' => 'delete_chapter', 'class' => 'delete-btn', 'data-url' => URL::route('admin.chapter.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.chapter.index'),
+                        'url' => URL::route( ($sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery')),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
                         'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter.index') )
                     )
                 ),
-                'aList' => $this->chapters->index($sType)
+                'aList' => $this->chapters->index($sType),
+                'sType' => $sType,
             ))
         ));
 
@@ -97,18 +100,23 @@ class ChaptersController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create( ChaptersRequest $request )
     {
-        $aBreadcrumbs = array(
-            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+        $sType = $request['sType'];
+
+        $aBreadcrumbs = $sType === '0' ? array(
+            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter'))
+        ) : array(
+            array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_gallery'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('chapters.lists.management_chapters'),
+            'formChapter' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('chapters.lists.create_new_chapter'),
+            'formTitle' => ( $sType === '0' ? Lang::get('chapters.lists.create_new_chapter') : Lang::get('chapters.lists.create_new_chapter_gallery') ),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -122,7 +130,8 @@ class ChaptersController extends AdminController
                 )
             ),
             'formContent' => $this->renderView('chapters.add', array(
-                'oData' => null
+                'oData' => null,
+                'sType' => $sType
             )),
             'formUrl' => URL::route('admin.chapter.store'),
         ));
@@ -137,10 +146,20 @@ class ChaptersController extends AdminController
      */
     public function store( ChaptersRequest $request )
     {
+        $sType = $request['sType'];
         $this->chapters->store( $request->all() );
 
-        return Redirect::route('admin.chapter.index')
-            ->with('message', Lang::get('$sMessage') );
+        if ($sType === '0') {
+            $sMessage = Lang::get('chapters.message.store_chapter');
+        } else {
+            $sMessage = Lang::get('chapters.message.store_gallery');
+        }
+
+        return Redirect::route( ( $sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery' ) )
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get($sMessage)
+            ));
     }
 
     /**
@@ -162,21 +181,27 @@ class ChaptersController extends AdminController
      */
     public function edit( $id )
     {
-        $aBreadcrumbs = array(
-            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+        $oData = $this->chapters->edit( $id );
+        $sType = $oData->type_chapter;
+
+        $aBreadcrumbs = $sType === '0' ? array(
+            array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter'))
+        ) : array(
+            array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_gallery'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('chapters.lists.management_chapters'),
+            'formChapter' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('chapters.lists.editing_chapter'),
+            'formTitle' => ( $sType === '0' ? Lang::get('chapters.lists.editing_chapter') : Lang::get('chapters.lists.editing_chapter_gallery') ),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.chapter.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route(( $sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery' ) ), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -185,7 +210,7 @@ class ChaptersController extends AdminController
                 )
             ),
             'formContent' => $this->renderView('chapters.add', array(
-                'oData' => $this->chapters->edit( $id )
+                'oData' => $oData
             )),
             'formUrl' => URL::route('admin.chapter.store'),
         ));

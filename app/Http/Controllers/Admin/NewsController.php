@@ -40,7 +40,7 @@ class NewsController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news'))
+            array('url' => '#', 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('news.lists.lists_news'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
@@ -92,7 +92,7 @@ class NewsController extends AdminController
     public function create( ChaptersRepository $chapters )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('news.lists.lists_news')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('news.lists.create_news'))
         );
 
@@ -156,7 +156,7 @@ class NewsController extends AdminController
     public function edit( $id, ChaptersRepository $chapters )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('news.lists.lists_news')),
+            array('url' => URL::route('admin.news.index'), 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('news.lists.lists_news')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('news.lists.editing_news'))
         );
 
@@ -179,7 +179,7 @@ class NewsController extends AdminController
             ),
             'formContent' => $this->renderView('news.add', array(
                 'oData' => $this->news->edit( $id ),
-                'aChapters' => $chapters->getComboList()
+                'aChapters' => $chapters->getComboList(1/* Chapters::TYPE_CHAPTER */)
             )),
             'formUrl' => URL::route('admin.news.store'),
         ));
