@@ -12,7 +12,9 @@
     <div class="form-group">
         {{ Form::label('picture', Lang::get('videoNews.form.picture') ) }}
         <div>
-            <img width="100" height="50" src="http://img.youtube.com/vi/{{ $oData->url }}/hqdefault.jpg" class="img-responsive img-thumbnail">
+            <a href="{{ $oData->url }}" target="_blank" title="">
+                <img width="100" height="50" src="http://img.youtube.com/vi/{{ cScreenshot::getItems($oData->url) }}/hqdefault.jpg" class="img-responsive img-thumbnail">
+            </a>
         </div>
     </div>
 @endif

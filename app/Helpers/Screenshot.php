@@ -14,8 +14,6 @@ class Items {
         $parsed_url = parse_url($sUrl);
         parse_str($parsed_url['query'], $parsed_query);
 
-    // $parsed_query['v']
-
         return $parsed_query['v'];
     }
 }

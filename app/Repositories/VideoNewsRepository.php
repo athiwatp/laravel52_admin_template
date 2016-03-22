@@ -96,12 +96,4 @@ class VideoNewsRepository extends BaseRepository {
         $videoNews->delete();
     }
 
-    public function getParseUrl()
-    {
-        $parsed_url = parse_url($this->url);
-        parse_str($parsed_url['query'], $parsed_query);
-        return $parsed_query['v'];
-    }
-
-
 }

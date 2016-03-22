@@ -19,8 +19,7 @@ class VideoNews extends TransformerAbstract
             'id' => (int) $videoNews->id,
             'title' => $videoNews->title,
             'content' => $videoNews->content,
-            'url' => cScreenshot::getItems($videoNews->url),
-            'published' => (boolean) $videoNews->is_published
+            'url' => cScreenshot::getItems($videoNews->url)
         ];
     }
 }
