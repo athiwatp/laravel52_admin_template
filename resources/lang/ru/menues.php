@@ -8,6 +8,7 @@ return array(
         'news_management' => 'Управление новостями',
         'menu_management' => 'Управление меню',
         'news_online' => 'Новости на сайте',
+        'video_news' => 'Видео новости',
         'users_management' => 'Управление пользователями',
         'content' => 'Контент',
         'sidebar_page' => 'Статические страницы',
@@ -44,6 +45,5 @@ return array(
         'is_loaded_by_default' => 'Загрузить по умолчанию',
         'is_shown_print_version' => 'Показать "Версия для печати"',
         'is_redirectable' => 'Переход на указанную страницу',
-        'is_published' => 'Опубликовано',
         )
     );

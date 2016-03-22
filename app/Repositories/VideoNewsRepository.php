@@ -1,25 +1,25 @@
 <?php namespace App\Repositories;
 
-use App\Models\Pages as Pages;
+use App\Models\VideoNews as VideoNews;
 use Carbon\Carbon, Auth;
 
-class PagesRepository extends BaseRepository {
+class VideoNewsRepository extends BaseRepository {
     /**
      * Create a new Message instance
      *
-     * @param App\Models\Pages $pages
+     * @param App\Models\VideoNews $videoNews
      *
      * @return void
     */
-    public function __construct(Pages $pages)
+    public function __construct(VideoNews $videoNews)
     {
-        $this->model = $pages;
+        $this->model = $videoNews;
     }
 
         /**
      * Create or update Message
      *
-     * @param App\Models\Pages $pages
+     * @param App\Models\VideoNews $videoNews
      *
      * @return
     */
@@ -31,21 +31,20 @@ class PagesRepository extends BaseRepository {
     /**
      * Create or update Message
      *
-     * @param App\Models\Pages $pages
+     * @param App\Models\VideoNews $videoNews
      *
      * @return
     */
-    public function savePage( $page, $inputs )
+    public function saveVideoNews( $videoNews, $inputs )
     {
-        $page->title            = $inputs['title'];
-        $page->url              = $inputs['url'];
-        $page->meta_keywords    = $inputs['meta_keywords'];
-        $page->meta_descriptions = $inputs['meta_descriptions'];
-        $page->content          = $inputs['content'];
-        $page->user_id          = Auth::id();
-        $page->is_published     = $inputs['is_published'];
+        $videoNews->title        = $inputs['title'];
+        $videoNews->content      = $inputs['content'];
+        $videoNews->date         = $inputs['date'];
+        $videoNews->url          = $inputs['url'];
+        $videoNews->is_published = $inputs['is_published'];
+        $videoNews->user_id      = Auth::id();
 
-        $page->save();
+        $videoNews->save();
 
         return true;
     }
@@ -68,13 +67,15 @@ class PagesRepository extends BaseRepository {
             $model = new $this->model;
         }
 
-        $pages = $this->savePage( $model, $inputs );
+        $videoNews = $this->saveVideoNews( $model, $inputs );
+
+        // some post creation actions will be required
     }
 
     /**
      * Edit or update Message
      *
-     * @param App\Models\Pages $pages
+     * @param App\Models\VideoNews $videoNews
      *
      * @return
     */
@@ -86,12 +87,13 @@ class PagesRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\Pages
+     * @param App\Models\News
      *
      * @return void
     */
-    public function destroy($pages)
+    public function destroy($videoNews)
     {
-        $pages->delete();
+        $videoNews->delete();
     }
+
 }

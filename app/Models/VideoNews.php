@@ -2,12 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pages extends Model
-{
+class VideoNews extends Model {
+
     /**
      * The database table used by the model
      *
      * @var string
     */
-    protected $table = 'static_pages';
+    protected $table = 'video_news';
+
 }

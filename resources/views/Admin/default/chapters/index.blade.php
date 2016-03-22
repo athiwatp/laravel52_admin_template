@@ -34,4 +34,5 @@
         </tr>
         @endforelse
     </tbody>
+
 </table>

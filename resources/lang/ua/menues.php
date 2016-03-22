@@ -8,6 +8,7 @@ return array(
         'news_management' => 'Управління Новинами',
         'menu_management' => 'Управління меню',
         'news_online' => 'Статті новин',
+        'video_news' => 'Видео новини',
         'users_management' => 'Управління користувачами',
         'content' => 'Контент',
         'sidebar_page' => 'Статичні сторінки',
@@ -44,6 +45,5 @@ return array(
         'is_loaded_by_default' => 'Завантажувати по-змовчуваню',
         'is_shown_print_version' => 'Показувати "Версія для друку"',
         'is_redirectable' => 'Перехід на вказану сторінку',
-        'is_published' => 'Опублiковано',
         )
     );

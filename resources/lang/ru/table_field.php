@@ -29,6 +29,7 @@ return array(
         'meta_keywords' => 'Meta keywords',
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Описание',
+        'published' => 'Опубликовано',
         'empty' => 'Запрос к базе данных - вернул пустой набор данных.',
         'actions' => 'Действия',
         'user' => 'Пользователь',

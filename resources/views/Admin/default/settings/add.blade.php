@@ -3,7 +3,7 @@
         <a href="#home-pills" data-toggle="tab" aria-expanded="true">{{ Lang::get('settings.form.main') }}</a>
     </li>
     <li class="">
-        <a href="#profile-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.form.other') }}</a>
+        <a href="#profile-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('pages.form.tegs') }}</a>
     </li>
 </ul>
 <br>

@@ -16,7 +16,6 @@ return array(
         'main' => 'Главна',
         'chapter' => 'Розділ',
         'url' => 'URL',
-        'published' => 'Опубліковано',
         'important' => 'Важлива',
         'content' => 'Зміст',
         'source' => 'Джерело',

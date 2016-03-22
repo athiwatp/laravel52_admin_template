@@ -2,9 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-    const TYPE_NEWS = '0';
-
-
 class News extends Model {
 
     /**

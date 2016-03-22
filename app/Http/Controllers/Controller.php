@@ -11,6 +11,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected static $statusError   = 'alert alert-danger alert-dismissable';
+    protected static $statusOk      = 'alert alert-success alert-dismissable';
+    protected static $statusWarning = 'alert alert-warning alert-dismissable';
+    protected static $statusInfo    = 'alert alert-info alert-dismissable';
+
     /**
      * Define the CHAPTER
      *

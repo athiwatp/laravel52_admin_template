@@ -5,7 +5,6 @@
             <th class="checkbox-column"></th>
             <th class="sorting">Date</th>
             <th class="sorting">Title</th>
-            <th class="sorting">Description</th>
             <th class="sorting">File</th>
             <th class="sorting">User</th>
             <th>{{ Lang::get('table_field.lists.actions') }}</th>
