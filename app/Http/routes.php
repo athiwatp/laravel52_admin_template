@@ -29,6 +29,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // User resource
     Route::resource('users', 'Admin\UsersController');
 
+    // Module to handle the Video News in the system
+    Route::resource('videoNews', 'Admin\VideoNewsController');
+
     // Module to handle the Pages in the system
     Route::resource('pages', 'Admin\PagesController');
 
@@ -42,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], function () {
     // Module to handle the News in the system
     Route::resource('news', 'Api\NewsController', ['only' => ['index', 'show']]);
+    Route::resource('video-news', 'Api\VideoNewsController', ['only' => ['index', 'show']]);
 });
 
 

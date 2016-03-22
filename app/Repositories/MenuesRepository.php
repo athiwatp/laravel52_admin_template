@@ -257,6 +257,12 @@ class MenuesRepository extends BaseRepository {
                         'title' => Lang::get('menues.nav.news_online'),
                         'icon' => '<i class="fa fa-list-alt"></i>',
                         'route' => 'admin.news.index'
+                    ),
+
+                    'video-news' => array(
+                        'title' => Lang::get('menues.nav.video_news'),
+                        'icon' => '<i class="fa fa-video-camera"></i>',
+                        'route' => 'admin.videoNews.index'
                     )
                 ) 
             ),
