@@ -33,7 +33,7 @@ body {
 .content-wrapper {
     .content-header {
         position: relative;
-        padding: 15px 15px 0 15px;
+        padding: 15px 0 0 0;
     }
 }
 
@@ -113,4 +113,12 @@ body {
     border-left: 1px solid #e7e7e7;
   }
 }
+
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: none !important;
+  }
+}
+
 

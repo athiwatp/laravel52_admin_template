@@ -1,5 +1,5 @@
 <div class="toolbar-controls">
-    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+    {{--<button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>--}}
     @if (isset($aToolbarParams['buttons']) && count($aToolbarParams['buttons']) > 0 )
     <div class="btn-group">
         @foreach ($aToolbarParams['buttons'] as $item)

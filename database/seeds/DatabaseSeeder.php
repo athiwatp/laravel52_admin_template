@@ -12,7 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UserTableSeeder::class);
-
         $this->command->info('Таблица пользователей заполнена данными!');
+
+        $this->call(NewsTableSeeder::class);
+        $this->command->info('Таблица Новостей - заполнена данными!');
     }
 }

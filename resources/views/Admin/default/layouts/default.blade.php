@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="utf-8">
+    <title>Admin PervoSoft | @yield('title')</title>
+    <meta name="description" content="@yield('description')">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Sergey Donchenko">
+    <meta name="api_token" content="{{ Auth::user()->api_token }}">
 
-    <title>Admin PervoSoft</title>
-
-    <!-- MetisMenu CSS -->
     {!! Html::style('css/vendor/metisMenu.min.css') !!}
     {!! Html::style('css/vendor/jquery.dataTables.min.css') !!}
     {!! Html::style('css/admin.css') !!}
@@ -65,8 +66,7 @@
 {!! Html::script('js/vendor/bootstrap.min.js') !!}
 
 <!-- Metis Menu Plugin JavaScript -->
-{!! Html::script('js/vendor/metisMenu.min.js') !!}
-{!! Html::script('js/vendor/jquery.dataTables.min.js') !!}
+{!! Html::script('js/vendor/metisMenu.min.js') !!}}
 
 <!-- Custom Theme JavaScript -->
 {!! Html::script('js/admin.js') !!}

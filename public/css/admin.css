@@ -7876,7 +7876,7 @@ body {
 
 .content-wrapper .content-header {
   position: relative;
-  padding: 15px 15px 0 15px; }
+  padding: 15px 0 0 0; }
 
 .navbar-top-links li {
   display: inline-block; }
@@ -7922,5 +7922,9 @@ body {
     margin: 0 0 0 250px;
     padding: 0 30px;
     border-left: 1px solid #e7e7e7; } }
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: none !important; } }
 
 /*# sourceMappingURL=admin.css.map */

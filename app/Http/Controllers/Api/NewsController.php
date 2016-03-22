@@ -8,19 +8,23 @@
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Sorskod\Larasponse\Larasponse;
+use App\Http\Transformers\News as NewsTransformer;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+
+use Yajra\Datatables\Facades\Datatables;
 
 use App\Models\News;
 
-class NewsController extends Controller
+class NewsController extends ApiController
 {
     protected $fractal;
 
     /**
      * Constructor
     */
-    public function __construct(Larasponse $fractal)
+    public function __construct(Manager $fractal)
     {
         $this->fractal = $fractal;
     }
@@ -32,7 +36,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return $this->fractal->paginatedCollection( News::paginate() );
+        return Datatables::of(News::query())
+            ->setTransformer( new NewsTransformer() )
+            ->make(true);
     }
 
         /**
@@ -43,7 +49,19 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = News::find($id);
+
+        if ( ! $item)
+        {
+            return Response::json([
+                'error' => [
+                    'message' => 'Not Found',
+                    'status_code' => 404
+                ]
+            ], 404);
+        }
+
+        return $this->fractal->item( $item, new NewsTransformer() );
     }
 
 }
