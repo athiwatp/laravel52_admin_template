@@ -1,5 +1,24 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
-<table class="table table-hover">
+<br>
+<table class="datatables display responsive no-wrap" data-url="users" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.users.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>{{ Lang::get('users.form.name') }}</th>
+        <th class="sorting">{{ Lang::get('users.form.email') }}</th>
+        <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Id</th>
+        <th>{{ Lang::get('users.form.name') }}</th>
+        <th class="sorting">{{ Lang::get('users.form.email') }}</th>
+        <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
+    </tr>
+    </tfoot>
+</table>
+{{--<table class="table table-hover">
     <thead>
         <tr role="row">
             <th class="sorting_asc">Id</th>
@@ -32,4 +51,4 @@
         </tr>
         @endforelse
     </tbody>
-</table>
+</table>--}}

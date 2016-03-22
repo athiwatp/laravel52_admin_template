@@ -30,6 +30,7 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
+
         <div class="content-wrapper" id="page-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">

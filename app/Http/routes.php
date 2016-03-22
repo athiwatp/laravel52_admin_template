@@ -37,7 +37,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Module to handle the Gallery in the system
     Route::resource('gallery', 'Admin\GalleryController');
-
 });
 /**
  * API
@@ -45,6 +44,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], function () {
     // Module to handle the News in the system
     Route::resource('news', 'Api\NewsController', ['only' => ['index', 'show']]);
+    Route::resource('chapters', 'Api\NewsChapterController', ['only' => ['index', 'show']]);
+    Route::resource('pages', 'Api\PagesController', ['only' => ['index', 'show']]);
+    Route::resource('users', 'Api\UsersController', ['only' => ['index', 'show']]);
+    Route::resource('menu', 'Api\MenuController', ['only' => ['index', 'show']]);
     Route::resource('video-news', 'Api\VideoNewsController', ['only' => ['index', 'show']]);
 });
 

@@ -41,9 +41,9 @@ class UsersController extends AdminController
         if (Gate::denies('read-users')) {
             abort(403);
         }
-        
+
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users'))
+            array('url' => '#', 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
@@ -54,6 +54,12 @@ class UsersController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('user.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sColumnsJson' => json_encode(array(
+                    array( 'data'=> 'id' ),
+                    array( 'data' => 'name' ),
+                    array( 'data' => 'email' ),
+                    array( 'data' => 'phone' )
+                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
@@ -66,13 +72,13 @@ class UsersController extends AdminController
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_user', 'class' => 'edit-btn', 'data-url' => URL::route('admin.users.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit_user', 'disabled' => true,'class' => 'edit-btn', 'data-url' => URL::route('admin.users.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_user', 'class' => 'delete-btn', 'data-url' => URL::route('admin.users.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete_user', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.users.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.users.index'),
@@ -95,7 +101,7 @@ class UsersController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users')),
+            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('users.lists.register'))
         );
 
@@ -158,7 +164,7 @@ class UsersController extends AdminController
     public function edit( $id, UserRepository $users )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users')),
+            array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-bars"></i>', 'title' => Lang::get('users.lists.lists_users')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('users.lists.editing_user'))
         );
 

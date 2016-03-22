@@ -1,4 +1,20 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
+<br>
+<table class="datatables display responsive no-wrap" data-url="menu" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.menu.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Id</th>
+        <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
+    </tr>
+    </tfoot>
+</table>
+{{--
 <table class="table table-hover">
     <thead>
         <tr role="row">
@@ -34,4 +50,4 @@
         </tr>
         @endforelse
     </tbody>
-</table>
+</table>--}}

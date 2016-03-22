@@ -1,5 +1,20 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
-<table class="table table-hover">
+<br>
+
+<table class="datatables display responsive no-wrap" data-url="chapters" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.chapter.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+    </tr>
+    </tfoot>
+    {{--
     <thead>
         <tr role="row">
             <th class="checkbox-column"></th>
@@ -34,5 +49,5 @@
         </tr>
         @endforelse
     </tbody>
-
+--}}
 </table>
