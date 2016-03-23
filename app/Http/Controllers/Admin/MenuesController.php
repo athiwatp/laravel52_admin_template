@@ -50,6 +50,11 @@ class MenuesController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('menues.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sColumnsJson' => json_encode(array(
+                    array( 'data'=> 'id' ),
+                    array( 'data' => 'title' ),
+                    array( 'data' => 'type' )
+                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
@@ -77,7 +82,7 @@ class MenuesController extends AdminController
                         'aParams' => array('id' => 'refresh_menu', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu.index') )
                     )
                 ),
-                'aList' => $this->menues->index()
+                // 'aList' => $this->menues->index()
             ))
         ));
 

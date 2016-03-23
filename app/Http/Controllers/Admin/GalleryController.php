@@ -51,6 +51,11 @@ class GalleryController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('gallery.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sColumnsJson' => json_encode(array(
+                    array( 'data'=> 'id' ),
+                    array( 'data' => 'title' ),
+                    array( 'data' => 'filename' )
+                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
@@ -78,7 +83,7 @@ class GalleryController extends AdminController
                         'aParams' => array('id' => 'refresh_gallery', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.gallery.index') )
                     )
                 ),
-                'aList' => $this->gallery->index()
+                // 'aList' => $this->gallery->index()
             ))
         ));
     }

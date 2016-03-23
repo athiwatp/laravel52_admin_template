@@ -15,7 +15,7 @@
     </tfoot>
 </table>
 {{--
-<table class="table table-hover">
+<!-- <table class="table table-hover">
     <thead>
         <tr role="row">
             <th class="checkbox-column"></th>
@@ -52,4 +52,5 @@
         </tr>
         @endforelse
     </tbody>
-</table> --}}
+</table> -->
+    --}}

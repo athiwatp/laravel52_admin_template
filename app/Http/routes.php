@@ -46,6 +46,11 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     // Module to handle the News in the system
     Route::resource('news', 'Api\NewsController', ['only' => ['index', 'show']]);
     Route::resource('video-news', 'Api\VideoNewsController', ['only' => ['index', 'show']]);
+    Route::resource('menu', 'Api\MenuesController', ['only' => ['index', 'show']]);
+    Route::resource('pages', 'Api\PagesController', ['only' => ['index', 'show']]);
+    Route::resource('chapter', 'Api\ChaptersController', ['only' => ['index', 'show']]);
+    Route::resource('gallery', 'Api\GalleryController', ['only' => ['index', 'show']]);
+    Route::resource('users', 'Api\UsersController', ['only' => ['index', 'show']]);
 });
 
 

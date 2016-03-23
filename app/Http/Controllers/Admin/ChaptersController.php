@@ -61,6 +61,10 @@ class ChaptersController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('chapters.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sColumnsJson' => json_encode(array(
+                    array( 'data'=> 'id' ),
+                    array( 'data' => 'title' )
+                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
@@ -88,7 +92,7 @@ class ChaptersController extends AdminController
                         'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter.index') )
                     )
                 ),
-                'aList' => $this->chapters->index($sType),
+                // 'aList' => $this->chapters->index($sType),
                 'sType' => $sType,
             ))
         ));

@@ -8,7 +8,7 @@
 </div>
 <div class="form-group">
     {{ Form::label('pos', Lang::get('chapters.form.pos') ) }}
-    {{ Form::text('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
+    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
 </div>
 <div class="form-group">
     {{ Form::label('icon', Lang::get('chapters.form.icon')) }}
@@ -17,10 +17,10 @@
 <div class="form-group">
     {{ Form::label('is_important', Lang::get('chapters.form.is_active')) }}
     <div class="radio">
-        {!! Form::_label('active_yes', Form::radio('is_active', '1', isset($oData) ? $oData->is_active === '1' : false, array('id' => 'active_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
+        {!! Form::_label('active_yes', Form::radio('is_active', '1', isset($oData) ? $oData->is_active === '1' : true, array('id' => 'active_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
     </div>
     <div class="radio">
-        {!! Form::_label('active_no', Form::radio('is_active', '0', isset($oData) ? $oData->is_active === '0' : true, array('id' => 'active_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
+        {!! Form::_label('active_no', Form::radio('is_active', '0', isset($oData) ? $oData->is_active === '0' : false, array('id' => 'active_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
     </div>
 </div>
 {{ Form::hidden('sType', isset($oData) ? $oData->type_chapter : $sType) }}

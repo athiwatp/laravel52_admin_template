@@ -50,6 +50,11 @@ class PagesController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('pages.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sColumnsJson' => json_encode(array(
+                    array( 'data'=> 'id' ),
+                    array( 'data' => 'title' ),
+                    array( 'data' => 'published' )
+                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
@@ -77,7 +82,7 @@ class PagesController extends AdminController
                         'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
                     )
                 ),
-                'aList' => $this->pages->index()
+                // 'aList' => $this->pages->index()
             ))
         ));
     }
@@ -128,7 +133,7 @@ class PagesController extends AdminController
     {
         $this->pages->store( $request->all() );
 
-        return Redirect::route('admin.pages')
+        return Redirect::route('admin.pages.index')
             ->with('message', Lang::get('$sMessage') );
     }
 
