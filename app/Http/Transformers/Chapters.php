@@ -1,7 +1,7 @@
 <?php namespace App\Http\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Models\Chapters as mChapters;
+use App\Models\Chapters as Model;
 
 class Chapters extends TransformerAbstract
 {
@@ -11,12 +11,13 @@ class Chapters extends TransformerAbstract
      * @param App\Models\Chapters model
      *
      * @return Array
-    */
-    public function transform(mChapters $chapter)
+     */
+    public function transform(Model $chapter)
     {
         return [
             'id' => (int) $chapter->id,
-            'title' => $chapter->title
+            'title' => $chapter->title,
+            'description' => $chapter->description
         ];
     }
 }

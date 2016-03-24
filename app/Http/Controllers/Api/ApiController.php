@@ -2,10 +2,21 @@
 
 use Illuminate\Http\Response as IlluminateResponse;
 use App\Http\Controllers\Controller;
+use League\Fractal\Manager;
 
 class ApiController extends Controller
 {
     protected $statusCode = IlluminateResponse::HTTP_OK;
+
+    protected $fractal;
+
+    /**
+     * Constructor
+     */
+    public function __construct(Manager $fractal)
+    {
+        $this->fractal = $fractal;
+    }
 
     public function getStatusCode()
     {

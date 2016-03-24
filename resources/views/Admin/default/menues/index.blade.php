@@ -1,21 +1,20 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 <br>
-<table id="example" class="datatables display responsive no-wrap" data-url="menu" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.menu.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+<table class="datatables display responsive no-wrap" data-url="menu" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.menu.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Id</th>
-        <th>Title</th>
-        <th>Type</th>
+        <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
         <th>Id</th>
-        <th>Title</th>
-        <th>Type</th>
+        <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
     </tr>
     </tfoot>
 </table>
+
 {{--
 <!-- <table class="table table-hover">
     <thead>
@@ -24,6 +23,10 @@
             <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
             <th class="sorting">{{ Lang::get('menues.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('table_field.lists.published') }}</th>
+            <th class="sorting">{{ Lang::get('menues.form.is_published') }}</th>
+            <th class="sorting">{{ Lang::get('menues.form.is_loaded_by_default') }}</th>
+            <th class="sorting">{{ Lang::get('menues.form.is_shown_print_version') }}</th>
+            <th class="sorting">User id</th>
             <th>{{ Lang::get('table_field.lists.actions') }}</th>
         </tr>
     </thead>
@@ -34,6 +37,9 @@
             <td class="">{{ $menuItem->title }}</td>
             <td class="center">{{ $menuItem->pos }}</td>
             <td class="center">{{ $menuItem->is_published }}</td>
+            <td class="center">{{ $menuItem->is_loaded_by_default }}</td>
+            <td class="center">{{ $menuItem->is_shown_print_version }}</td>
+            <td class="center">{{ $menuItem->user_id }}</td>
             <td>
                 {!! Html::_link(URL::route('admin.menu.edit', array('id' => $menuItem->id)), Lang::get('table_field.lists.edit') ) !!}
                 <br>

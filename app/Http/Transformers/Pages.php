@@ -1,7 +1,7 @@
 <?php namespace App\Http\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Models\Pages as mPages;
+use App\Models\Pages as Model;
 
 class Pages extends TransformerAbstract
 {
@@ -11,13 +11,13 @@ class Pages extends TransformerAbstract
      * @param App\Models\Pages model
      *
      * @return Array
-    */
-    public function transform(mPages $page)
+     */
+    public function transform(Model $page)
     {
         return [
             'id' => (int) $page->id,
             'title' => $page->title,
-            'published' => $page->is_published
+            'published' => (boolean) $page->is_published
         ];
     }
 }

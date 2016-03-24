@@ -1,3 +1,4 @@
+{{--
 <li class="sidebar-search" style="list-style: none">
     <div class="input-group custom-search-form">
         <input type="text" class="form-control" placeholder="Search...">
@@ -9,3 +10,4 @@
     </div>
     <!-- /input-group -->
 </li>
+--}}

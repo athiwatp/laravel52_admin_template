@@ -1,11 +1,11 @@
 <?php namespace App\Http\Controllers\Api;
 
 use App\Http\Requests;
-use App\Http\Transformers\Users as UsersTransformer;
+use App\Http\Transformers\Chapters as ChaptersTransformer;
 use Yajra\Datatables\Facades\Datatables;
-use App\Models\User;
+use App\Models\Chapters;
 
-class UsersController extends ApiController
+class NewsChapterController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class UsersController extends ApiController
      */
     public function index()
     {
-        return Datatables::of(User::query())
-            ->setTransformer( new UsersTransformer() )
+        return Datatables::of(Chapters::query())
+            ->setTransformer( new ChaptersTransformer() )
             ->make(true);
     }
 

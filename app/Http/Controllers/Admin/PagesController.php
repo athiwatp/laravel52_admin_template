@@ -52,8 +52,7 @@ class PagesController extends AdminController
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
                 'sColumnsJson' => json_encode(array(
                     array( 'data'=> 'id' ),
-                    array( 'data' => 'title' ),
-                    array( 'data' => 'published' )
+                    array( 'data' => 'title' )
                 )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
@@ -67,13 +66,13 @@ class PagesController extends AdminController
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_page', 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit_page', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_pages', 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete_pages', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.pages.index'),
