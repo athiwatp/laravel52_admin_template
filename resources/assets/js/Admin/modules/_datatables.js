@@ -3,18 +3,14 @@
 var $          = require( 'jquery' );
 $.fn.dataTable = require( 'datatables.net' )( window, $ );
 
-require( 'datatables.net-buttons' )( window, $ );
+var styles   = require( 'datatables.net-buttons' )( window, $ );
 var autofill = require( 'datatables.net-autofill' )( window, $ );
+var _system  = require('./_System.js');
 
-var _system = require('./_System.js');
-//
 require( 'datatables.net-buttons/js/buttons.colVis.js' )(); // Column visibility
 require( 'datatables.net-buttons/js/buttons.html5.js' )();  // HTML 5 file export
 require( 'datatables.net-buttons/js/buttons.flash.js' )();  // Flash file export
 require( 'datatables.net-buttons/js/buttons.print.js' )();  // Print view button
-
-//$.fn.DataTable.Buttons = buttons;
-//$.fn.dataTable.AutoFill = autofill;
 
 $(function() {
     var system = _system.getInstance();
@@ -40,7 +36,6 @@ $(function() {
                 },
 
                 columns: JSON.parse(sColumn),
-
 
                 columnDefs: [{
                     render: function ( data, type, row ) {

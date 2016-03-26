@@ -29896,11 +29896,25 @@ return jQuery;
 },{}],9:[function(require,module,exports){
 'use strict';
 
+var $ = require('jquery');
+
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
+
 require('./modules/_datatables.js');
 
-},{"./modules/_datatables.js":11,"./modules/_metis.js":12,"./modules/_resizer.js":13}],10:[function(require,module,exports){
+$(function () {
+    // Handle the grids
+    $('.datatables').each(function () {
+        var module = $(this).attr('data-module');
+    });
+});
+
+var test = require('./modules/_test_datatable.js')(window);
+
+console.log(test.hello);
+
+},{"./modules/_datatables.js":11,"./modules/_metis.js":12,"./modules/_resizer.js":13,"./modules/_test_datatable.js":14,"jquery":8}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -29982,18 +29996,14 @@ module.exports = AdminSingleton;
 var $ = require('jquery');
 $.fn.dataTable = require('datatables.net')(window, $);
 
-require('datatables.net-buttons')(window, $);
+var styles = require('datatables.net-buttons')(window, $);
 var autofill = require('datatables.net-autofill')(window, $);
-
 var _system = require('./_System.js');
-//
+
 require('datatables.net-buttons/js/buttons.colVis.js')(); // Column visibility
 require('datatables.net-buttons/js/buttons.html5.js')(); // HTML 5 file export
 require('datatables.net-buttons/js/buttons.flash.js')(); // Flash file export
 require('datatables.net-buttons/js/buttons.print.js')(); // Print view button
-
-//$.fn.DataTable.Buttons = buttons;
-//$.fn.dataTable.AutoFill = autofill;
 
 $(function () {
     var system = _system.getInstance();
@@ -30104,6 +30114,61 @@ $(function () {
     });
 })(jQuery);
 
-},{}]},{},[9]);
+},{}],14:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function (factory) {
+    "use strict";
+
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], {}, function ($, parameters) {
+            return factory($, parameters, window, document);
+        });
+    } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+        // CommonJS
+        module.exports = function (root, $, parameters) {
+            if (!root) {
+                // CommonJS environments without a window global must pass a
+                // root. This will give an error otherwise
+                root = window;
+            }
+
+            if (!$) {
+                $ = typeof window !== 'undefined' ? // jQuery's factory checks for a global window
+                require('jquery') : require('jquery')(root);
+            }
+
+            return factory($, parameters, root, root.document);
+        };
+    } else {
+        // Browser
+        factory(jQuery, {}, window, document);
+    }
+})(function ($, parameters, window, document, undefined) {
+    "use strict";
+
+    if ($ && $.fn && !$.fn.dataTable) {
+        $.fn.dataTable = require('datatables.net')(window, $);
+
+        // Include all required libraries
+        require('datatables.net-buttons/js/buttons.colVis.js')(); // Column visibility
+        require('datatables.net-buttons/js/buttons.html5.js')(); // HTML 5 file export
+        require('datatables.net-buttons/js/buttons.flash.js')(); // Flash file export
+        require('datatables.net-buttons/js/buttons.print.js')(); // Print view button
+    }
+
+    $.extend(settings.oBrowser, DataTable.__browser);
+
+    var table = { hello: 'Mother Fuck!!!' };
+
+    console.log('Hello from here!!!!!');
+
+    return table;
+});
+
+},{"datatables.net":7,"datatables.net-buttons/js/buttons.colVis.js":2,"datatables.net-buttons/js/buttons.flash.js":3,"datatables.net-buttons/js/buttons.html5.js":4,"datatables.net-buttons/js/buttons.print.js":5,"jquery":8}]},{},[9]);
 
 //# sourceMappingURL=admin.js.map
