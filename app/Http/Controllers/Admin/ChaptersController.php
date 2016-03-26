@@ -90,7 +90,7 @@ class ChaptersController extends AdminController
                         'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter.index') )
                     )
                 ),
-                'aList' => $this->chapters->index($sType)
+                // 'aList' => $this->chapters->index($sType)
             ))
         ));
 

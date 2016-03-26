@@ -81,7 +81,7 @@ class MenuesController extends AdminController
                         'aParams' => array('id' => 'refresh_menu', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu.index') )
                     )
                 ),
-                'aList' => $this->menues->index()
+                // 'aList' => $this->menues->index()
             ))
         ));
 

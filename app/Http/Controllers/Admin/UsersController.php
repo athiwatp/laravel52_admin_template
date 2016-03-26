@@ -87,7 +87,7 @@ class UsersController extends AdminController
                         'aParams' => array('id' => 'refresh_user', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.users.index') )
                     )
                 ),
-                'aList' => $this->users->index()
+                // 'aList' => $this->users->index()
             ))
         ));
 

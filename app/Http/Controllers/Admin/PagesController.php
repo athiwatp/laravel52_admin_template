@@ -81,7 +81,7 @@ class PagesController extends AdminController
                         'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
                     )
                 ),
-                'aList' => $this->pages->index()
+                // 'aList' => $this->pages->index()
             ))
         ));
     }

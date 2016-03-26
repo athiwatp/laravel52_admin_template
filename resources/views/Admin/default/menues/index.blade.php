@@ -14,13 +14,15 @@
     </tr>
     </tfoot>
 </table>
+
 {{--
-<table class="table table-hover">
+<!-- <table class="table table-hover">
     <thead>
         <tr role="row">
             <th class="checkbox-column"></th>
             <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
             <th class="sorting">{{ Lang::get('menues.form.pos') }}</th>
+            <th class="sorting">{{ Lang::get('table_field.lists.published') }}</th>
             <th class="sorting">{{ Lang::get('menues.form.is_published') }}</th>
             <th class="sorting">{{ Lang::get('menues.form.is_loaded_by_default') }}</th>
             <th class="sorting">{{ Lang::get('menues.form.is_shown_print_version') }}</th>
@@ -50,4 +52,5 @@
         </tr>
         @endforelse
     </tbody>
-</table>--}}
+</table> -->
+--}}
