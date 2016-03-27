@@ -1,19 +1,22 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('videoNews.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
 </div>
 
 <div class="form-group">
     {{ Form::label('url', Lang::get('videoNews.form.url') ) }}
-    {{ Form::text('url', ( isset($oData) ? $oData->url : null ), array('class' => 'form-control data-url', 'readonly' => true)) }}
+    {{ Form::text('url', ( isset($oData) ? $oData->url : null ), array('class' => 'form-control')) }}
+    <p class="help-block">Ссылка на Youtube, например https://www.youtube.com/watch?v=s1ysoohV_zA</p>
 </div>
 
-@if( isset($oData) && $oData->url)
+@if( $oData && $oData->url)
     <div class="form-group">
         {{ Form::label('picture', Lang::get('videoNews.form.picture') ) }}
         <div>
             <a href="{{ $oData->url }}" target="_blank" title="">
-                <img width="100" height="50" src="http://img.youtube.com/vi/{{ cScreenshot::getItems($oData->url) }}/hqdefault.jpg" class="img-responsive img-thumbnail">
+                <img width="100" height="50"
+                     src="http://img.youtube.com/vi/{{ cScreenshot::getItems($oData->url) }}/hqdefault.jpg"
+                     class="img-responsive img-thumbnail">
             </a>
         </div>
     </div>

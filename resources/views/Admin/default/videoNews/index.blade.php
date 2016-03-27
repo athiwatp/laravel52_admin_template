@@ -6,6 +6,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Preview</th>
         <th>Title</th>
         <th>Created</th>
         <th>Updated</th>
@@ -14,6 +15,7 @@
     <tfoot>
     <tr>
         <th>Id</th>
+        <th>Preview</th>
         <th>Title</th>
         <th>Created</th>
         <th>Updated</th>

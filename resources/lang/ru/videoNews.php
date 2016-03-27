@@ -13,7 +13,7 @@ return array(
 
     'form' => array(
         'title' => 'Заголовок',
-        'url' => 'URL',
+        'url' => 'URL на Youtube',
         'picture' => 'Картинка',
         'date' => 'Дата',
         'content' => 'Cодержание',

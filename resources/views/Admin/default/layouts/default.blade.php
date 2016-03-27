@@ -13,6 +13,8 @@
     {!! Html::style('css/vendor/metisMenu.min.css') !!}
     {!! Html::style('css/vendor/jquery.dataTables.min.css') !!}
     {!! Html::style('css/admin.css') !!}
+
+    {!! Html::style('css/vendor/datepicker.min.css') !!}
 <body>
     <div id="wrapper">
         <!-- Navigation -->

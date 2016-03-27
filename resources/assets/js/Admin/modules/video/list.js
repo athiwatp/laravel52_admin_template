@@ -8,6 +8,7 @@ module.exports = {
      **/
     columns: [
         {data: 'id'},
+        {data: 'preview'},
         {data: 'title'},
         {data: 'created'},
         {data: 'updated'}
@@ -23,7 +24,7 @@ module.exports = {
             render: function( data ) {
                 return system.getFormattedDate( data );
             },
-            targets: [2,3]
+            targets: [3,4]
         }, {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data);
@@ -32,15 +33,20 @@ module.exports = {
                      system.ellipsis( noTags, 100 ) +
                     '</a>';
             },
+            targets: 2
+        }, {
+            render: function( data ) {
+                var img = '';
+
+                if (system.isEmpty( data ) === false ) {
+                    img = '<img width="100" height="50" src="http://img.youtube.com/vi/' + data + '/hqdefault.jpg" ' +
+                        'class="img-responsive img-thumbnail">';
+                }
+
+                return img;
+            },
             targets: 1
         }
-
-        //{
-        //    render: function( data ) {
-        //        return system.getPublishedIcon(data);
-        //    },
-        //    targets: 3
-        //}
     ],
 
     ajax: {

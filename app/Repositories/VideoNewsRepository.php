@@ -81,7 +81,7 @@ class VideoNewsRepository extends BaseRepository {
     */
     public function edit( $id )
     {
-        return $this->model->find($id);
+       return $this->model->find($id);
     }
 
     /**

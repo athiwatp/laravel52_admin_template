@@ -90,8 +90,17 @@ class VideoNewsController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.videoNews.index'), 'icon' => '<i class="fa fa-video-camera"></i>', 'title' => Lang::get('videoNews.lists.lists_video_news')),
-            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('videoNews.lists.create_video_news'))
+            array(
+                'url' => URL::route('admin.videoNews.index'),
+                'icon' => '<i class="fa fa-video-camera"></i>',
+                'title' => Lang::get('videoNews.lists.lists_video_news')
+            ),
+
+            array(
+                'url' => '#',
+                'icon' => '<i class="fa fa-plus"></i>',
+                'title' => Lang::get('videoNews.lists.create_video_news')
+            )
         );
 
         return cForms::createForm( $this->getTheme(), array(
@@ -155,8 +164,16 @@ class VideoNewsController extends AdminController
     public function edit($id)
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.videoNews.index'), 'icon' => '<i class="fa fa-video-camera"></i>', 'title' => Lang::get('videoNews.lists.lists_video_news')),
-            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('videoNews.lists.editing_video_news'))
+            array(
+                'url' => URL::route('admin.videoNews.index'),
+                'icon' => '<i class="fa fa-video-camera"></i>',
+                'title' => Lang::get('videoNews.lists.lists_video_news')
+            ),
+            array(
+                'url' => '#',
+                'icon' => '<i class="fa fa-pencil"></i>',
+                'title' => Lang::get('videoNews.lists.editing_video_news')
+            )
         );
 
         return cForms::createForm( $this->getTheme(), array(

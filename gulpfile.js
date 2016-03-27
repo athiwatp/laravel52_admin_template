@@ -2,6 +2,7 @@ var elixir = require('laravel-elixir');
 
 // Define the boer path
 var bowerDir = './resources/assets/vendor/';
+var nodeDir = './node_modules/';
 
 // Sass Paths
 var sassPaths = {
@@ -35,7 +36,8 @@ elixir(function(mix) {
         .copy(bowerDir + 'font-awesome/fonts', 'public/fonts')
         .copy(bowerDir + 'bootstrap-sass/assets/fonts', 'public/fonts')
         .copy(bowerDir + 'datatables/media/css/jquery.dataTables.min.css', 'public/css/vendor/jquery.dataTables.min.css')
-        .copy(bowerDir + 'metisMenu/dist/metisMenu.min.css', 'public/css/vendor/metisMenu.min.css');
+        .copy(bowerDir + 'metisMenu/dist/metisMenu.min.css', 'public/css/vendor/metisMenu.min.css')
+        .copy(nodeDir + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css', 'public/css/vendor/datepicker.min.css');
 
     // Copy JavaScript libraries
     mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
