@@ -42,6 +42,7 @@ return array(
         'type_hidden_page' => 'Внутрішня сторінка',
         'select_type_main' => 'Оберiть тип меню',
         'redirect_url' => 'Перенаправлення URL',
+        'is_published' => 'Опублікований',
         'is_loaded_by_default' => 'Завантажувати по-змовчуваню',
         'is_shown_print_version' => 'Показувати "Версія для друку"',
         'is_redirectable' => 'Перехід на вказану сторінку',

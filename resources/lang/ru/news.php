@@ -16,6 +16,7 @@ return array(
         'main' => 'Главная',
         'chapter' => 'Раздел',
         'url' => 'URL',
+        'url_ident' => 'URL идентификатор',
         'important' => 'Важная',
         'content' => 'Cодержание',
         'source' => 'Источник',

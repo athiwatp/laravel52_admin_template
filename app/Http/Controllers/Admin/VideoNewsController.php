@@ -50,11 +50,6 @@ class VideoNewsController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('videoNews.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-                'sColumnsJson' => json_encode(array(
-                    array( 'data'=> 'id' ),
-                    array( 'data' => 'title' ),
-                    array( 'data' => 'url' )
-                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(

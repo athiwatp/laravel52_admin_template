@@ -16,6 +16,7 @@ return array(
         'main' => 'Main',
         'chapter' => 'Chapter',
         'url' => 'URL',
+        'url_ident' => 'URL ident.',
         'important' => 'Important',
         'content' => 'Content',
         'source' => 'Source',

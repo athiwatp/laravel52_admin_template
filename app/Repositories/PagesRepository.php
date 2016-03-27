@@ -80,6 +80,7 @@ class PagesRepository extends BaseRepository {
     */
     public function edit( $id )
     {
+
         return $this->model->find($id);
     }
 

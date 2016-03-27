@@ -16,9 +16,12 @@ class News extends TransformerAbstract
     {
         return [
             'id' => (int) $news->id,
+            'date' => $news->date,
             'title' => $news->title,
             'content' => $news->content,
-            'published' => (boolean) $news->is_published
+            'published' => (boolean) $news->is_published,
+            'main' => (boolean) $news->is_main,
+            'important' => (boolean) $news->is_important,
         ];
     }
 }

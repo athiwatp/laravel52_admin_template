@@ -16,7 +16,16 @@ class Menues extends TransformerAbstract
     {
         return [
             'id' => (int) $menu->id,
-            'title' => $menu->title
+            'title' => $menu->title,
+            'pos' => (int) $menu->pos,
+            'published' => (boolean) $menu->is_published,
+            'default' => (boolean) $menu->is_loaded_by_default,
+            'print' => (boolean) $menu->is_shown_print_version,
+            'redirect' => (boolean) $menu->is_redirectable,
+            'redirect_url' => $menu->redirect_url,
+            'url' => $menu->url,
+            'created' => $menu->created_at,
+            'updated' => $menu->updated_at
         ];
     }
 }

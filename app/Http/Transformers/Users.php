@@ -20,7 +20,9 @@ class Users extends TransformerAbstract
             'email' => $user->email,
             'phone' => $user->phone,
             'is_admin' => (boolean) $user->is_admin,
-            'is_verified' => (boolean) $user->is_verified
+            'is_verified' => (boolean) $user->is_verified,
+            'created' => $user->created_at,
+            'updated' => $user->updated_at,
         ];
     }
 }

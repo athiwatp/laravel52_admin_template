@@ -17,7 +17,13 @@ class Pages extends TransformerAbstract
         return [
             'id' => (int) $page->id,
             'title' => $page->title,
-            'published' => (boolean) $page->is_published
+            'url' => $page->url,
+            'created' => $page->created_at,
+            'updated' => $page->updated_at,
+            'content' => $page->content,
+            'meta_keywords' => $page->meta_keywords,
+            'meta_description' => $page->meta_description,
+            'published' => (boolean) $page->is_published,
         ];
     }
 }

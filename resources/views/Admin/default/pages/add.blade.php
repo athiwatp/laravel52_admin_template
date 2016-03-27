@@ -12,11 +12,11 @@
     <div class="tab-pane fade active in" id="main-pills">
         <div class="form-group">
             {{ Form::label('title', Lang::get('news.form.title') ) }}
-            {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
+            {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
         </div>
         <div class="form-group">
-            {{ Form::label('url', Lang::get('news.form.url') ) }}
-            {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control')) }}
+            {{ Form::label('url', Lang::get('news.form.url_ident') ) }}
+            {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control data-url', 'readonly' => true)) }}
         </div>
         <div class="form-group">
             {{ Form::label('content', Lang::get('news.form.content') ) }}

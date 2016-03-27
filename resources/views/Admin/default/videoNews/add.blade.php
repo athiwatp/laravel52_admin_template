@@ -1,11 +1,11 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('videoNews.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
+    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
 </div>
 
 <div class="form-group">
     {{ Form::label('url', Lang::get('videoNews.form.url') ) }}
-    {{ Form::text('url', ( isset($oData) ? $oData->url : null ), array('class' => 'form-control')) }}
+    {{ Form::text('url', ( isset($oData) ? $oData->url : null ), array('class' => 'form-control data-url', 'readonly' => true)) }}
 </div>
 
 @if( isset($oData) && $oData->url)

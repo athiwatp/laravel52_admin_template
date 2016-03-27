@@ -1,10 +1,16 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('menues.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
+    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
 </div>
+
+<div class="form-group">
+    {{ Form::label('url', Lang::get('menues.form.url') ) }}
+    {{ Form::text('url', ( isset($oData) ? $oData->url : null ), array('class' => 'form-control data-url', 'readonly' => true)) }}
+</div>
+
 <div class="form-group">
     {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
-    {{ Form::text('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
+    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
 </div>
 <div class="form-group">
     {{ Form::label('type_menu', Lang::get('menues.form.type_menu') ) }}
@@ -14,18 +20,11 @@
     {{ Form::label('parent_id', Lang::get('menues.form.parent_id') ) }}
     {{ Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array('class' => 'form-control')) }}
 </div>
-<div class="form-group">
-    {{ Form::label('path', Lang::get('menues.form.path') ) }}
-    {{ Form::text('path', ( isset($oData) ? $oData->path : null), array('class' => 'form-control')) }}
-</div>
-<div class="form-group">
-    {{ Form::label('url', Lang::get('menues.form.url') ) }}
-    {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control')) }}
-    {!! Form::_label('redirectable', Form::checkbox('is_redirectable', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'redirectable')) . ' ' . Lang::get('menues.form.is_redirectable') ) !!}
-</div>
+
 <div class="form-group">
     {{ Form::label('url', Lang::get('menues.form.redirect_url') ) }}
     {{ Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array('class' => 'form-control')) }}
+    {!! Form::_label('redirectable', Form::checkbox('is_redirectable', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'redirectable')) . ' ' . Lang::get('menues.form.is_redirectable') ) !!}
 </div>
 <div class="form-group">
     <div class="checkbox">

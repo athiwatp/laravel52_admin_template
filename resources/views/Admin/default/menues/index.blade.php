@@ -1,16 +1,24 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 <br>
-<table class="datatables display responsive no-wrap" data-url="menu" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.menu.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+<table class="datatables display responsive no-wrap"
+       data-module="menu/list"
+       cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Id</th>
         <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
+        <th class="sorting">{{ Lang::get('menues.form.pos') }}</th>
+        <th class="sorting">{{ Lang::get('menues.form.is_published') }}</th>
+        <th class="sorting">Created</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
         <th>Id</th>
         <th class="sorting">{{ Lang::get('menues.form.title') }}</th>
+        <th class="sorting">{{ Lang::get('menues.form.pos') }}</th>
+        <th class="sorting">{{ Lang::get('menues.form.is_published') }}</th>
+        <th class="sorting">Created</th>
     </tr>
     </tfoot>
 </table>

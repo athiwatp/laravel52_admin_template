@@ -54,12 +54,6 @@ class UsersController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('user.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-                'sColumnsJson' => json_encode(array(
-                    array( 'data'=> 'id' ),
-                    array( 'data' => 'name' ),
-                    array( 'data' => 'email' ),
-                    array( 'data' => 'phone' )
-                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(

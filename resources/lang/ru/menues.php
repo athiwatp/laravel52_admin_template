@@ -43,6 +43,7 @@ return array(
         'select_type_main' => 'Выберите тип меню',
         'redirect_url' => 'Перенаправление URL',
         'is_loaded_by_default' => 'Загрузить по умолчанию',
+        'is_published' => 'Размещен',
         'is_shown_print_version' => 'Показать "Версия для печати"',
         'is_redirectable' => 'Переход на указанную страницу',
         )

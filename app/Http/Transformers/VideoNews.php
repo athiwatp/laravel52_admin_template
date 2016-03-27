@@ -19,6 +19,8 @@ class VideoNews extends TransformerAbstract
             'id' => (int) $videoNews->id,
             'title' => $videoNews->title,
             'content' => $videoNews->content,
+            'created' => $videoNews->created_at,
+            'updated' => $videoNews->updated_at,
             'url' => cScreenshot::getItems($videoNews->url)
         ];
     }

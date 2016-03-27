@@ -50,10 +50,6 @@ class PagesController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('pages.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-                'sColumnsJson' => json_encode(array(
-                    array( 'data'=> 'id' ),
-                    array( 'data' => 'title' )
-                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(

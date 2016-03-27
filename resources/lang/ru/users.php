@@ -19,6 +19,8 @@ return array(
         'is_verified' => 'Идентифицирован',
         'parent_id' => 'Родительский узел',
         'profile' => 'Профиль',
+        'created' => 'Создан',
+        'updated' => 'Обновлен',
         )
 
     );

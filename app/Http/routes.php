@@ -18,6 +18,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Module to handle the Chapters the system
     Route::get('chapter/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Admin\ChaptersController@indexGallery'));
+
+    // Chapters
     Route::resource('chapter', 'Admin\ChaptersController');
 
     // Module to handle the News in the system

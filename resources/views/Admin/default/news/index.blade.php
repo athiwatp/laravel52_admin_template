@@ -1,15 +1,19 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 <br>
-<table class="datatables display responsive no-wrap" data-url="news" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.news.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+<table class="datatables display responsive no-wrap"
+       data-module="news/list"
+       cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Id</th>
+        <th>Date</th>
         <th>Title</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
         <th>Id</th>
+        <th>Date</th>
         <th>Title</th>
     </tr>
     </tfoot>

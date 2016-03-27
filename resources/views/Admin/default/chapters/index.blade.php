@@ -1,16 +1,24 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 <br>
-<table class="datatables display responsive no-wrap" data-url="chapters" data-columns="{{ $sColumnsJson }}" data-edit-url="{{ URL::route('admin.chapter.edit', ['id' => '%id%']) }}" cellspacing="0" width="100%">
+<table class="datatables display responsive no-wrap" data-url="chapters" data-module="chapters/list"
+       data-edit-url="{{ URL::route('admin.chapter.edit', ['id' => '%id%']) }}"
+       cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Title</th>
+            <th class="sorting">{{ Lang::get('table_field.lists.date') }}</th>
+            <th>{{ Lang::get('chapters.form.title') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
             <th>Id</th>
-            <th>Title</th>
+            <th class="sorting">{{ Lang::get('table_field.lists.date') }}</th>
+            <th>{{ Lang::get('chapters.form.title') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </tfoot>
 </table>
@@ -20,7 +28,7 @@
     <thead>
         <tr role="row">
             <th class="checkbox-column"></th>
-            <th class="sorting">{{ Lang::get('chapters.form.title') }}</th>
+            <th class="sorting"></th>
             <th class="sorting">{{ Lang::get('chapters.form.description') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>

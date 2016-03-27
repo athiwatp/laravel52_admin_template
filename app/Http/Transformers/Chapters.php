@@ -17,7 +17,10 @@ class Chapters extends TransformerAbstract
         return [
             'id' => (int) $chapter->id,
             'title' => $chapter->title,
-            'description' => $chapter->description
+            'icon' => $chapter->icon,
+            'description' => $chapter->description,
+            'pos' => (int) $chapter->pos,
+            'active' => (boolean) $chapter->is_active
         ];
     }
 }
