@@ -34815,8 +34815,22 @@ var AdminSingleton = function ($) {
             /**
              * Returns API url
              **/
-            getUrl: function getUrl(url) {
-                return this._get('api') + '/' + url + '/?api_token=' + this._get('token');
+            getUrl: function getUrl(url, params) {
+                var ext = '';
+
+                if (this.isObject(params)) {
+                    var tmp = [];
+
+                    for (var index in params) {
+                        tmp.push(index + '=' + params[index]);
+                    }
+
+                    if (tmp.length > 0) {
+                        ext = tmp.join('&');
+                    }
+                }
+
+                return this._get('api') + '/' + url + '/?api_token=' + this._get('token') + (ext ? '&' + ext : '');
             },
 
             /**
@@ -35173,7 +35187,9 @@ module.exports = {
     }],
 
     ajax: {
-        url: system.getUrl('chapters')
+        url: system.getUrl('chapters', {
+            type: '1'
+        })
     }
 
 };

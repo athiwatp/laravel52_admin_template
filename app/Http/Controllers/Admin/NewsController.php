@@ -132,7 +132,9 @@ class NewsController extends AdminController
         $this->news->store( $request->all() );
 
         return Redirect::route('admin.news.index')
-            ->with('message', Lang::get('$sMessage') );
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('news.lists.news_saved_successfully') ));
     }
 
     /**

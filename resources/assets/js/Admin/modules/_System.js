@@ -50,8 +50,22 @@ var AdminSingleton = (function($) {
             /**
              * Returns API url
              **/
-            getUrl: function(url) {
-                return this._get('api') + '/' + url + '/?api_token=' + this._get('token');
+            getUrl: function(url, params) {
+                var ext = '';
+
+                if ( this.isObject(params) ) {
+                    var tmp = [];
+
+                    for( var index in params) {
+                        tmp.push(index + '=' + params[index]); 
+                    }
+
+                    if (tmp.length > 0) {
+                        ext = tmp.join('&');
+                    } 
+                }
+
+                return this._get('api') + '/' + url + '/?api_token=' + this._get('token') + ( ext ? '&' + ext : '');
             },
 
             /**

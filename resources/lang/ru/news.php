@@ -9,6 +9,7 @@ return array(
         'editing_news' => 'Редактирование новости',
         'create_new_news' => 'Создание новости',
         'news_management' => 'Управление новостями',
+        'news_saved_successfully' => 'Новость сохранен успешна',
         ),
 
     'form' => array(

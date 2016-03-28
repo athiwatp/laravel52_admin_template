@@ -1,10 +1,5 @@
 <?php namespace App\Http\Controllers\Api;
 
-
-///https://laravelista.com/laravel-fractal/
-///https://mattstauffer.co/blog/multiple-authentication-guard-drivers-including-api-in-laravel-5-2
-///https://github.com/salebab/larasponse/tree/L5
-
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

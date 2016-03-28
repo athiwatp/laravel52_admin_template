@@ -3,7 +3,7 @@
 return array(
 
     'lists' => array(
-        'lists_chapters' => 'Список разделов',
+        'lists_chapters' => 'Список разделов новостей',
         'lists_chapters_gallery' => 'Список разделов галереи',
         'chapters' => 'Разделы новостей',
         'gallery' => 'Разделы галереи',
@@ -27,7 +27,6 @@ return array(
     'form' => array(
         'title' => 'Название',
         'description' => 'Описание',
-        'type_chapter' => 'Тип раздела',
         'parent' => 'Родитель',
         'pos' => 'Позиция',
         'number' => 'Номер',

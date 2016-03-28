@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\MenuesRequest;
 use App\Repositories\MenuesRepository;
+use App\Repositories\PagesRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -92,7 +93,7 @@ class MenuesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( MenuesRepository $menues )
+    public function create( MenuesRepository $menues, PagesRepository $pages )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
@@ -119,6 +120,7 @@ class MenuesController extends AdminController
             'formContent' => $this->renderView('menues.add', array(
                 'aTypeMenues' => $menues->getMenuTypes(),
                 'aMenues' => $menues->getComboList(),
+                'aPages' => $pages->getComboList(),
                 'oData' => null
             )),
             'formUrl' => URL::route('admin.menu.store'),
@@ -137,7 +139,9 @@ class MenuesController extends AdminController
         $this->menues->store( $request->all() );
 
         return Redirect::route('admin.menu.index')
-            ->with('message', Lang::get('$sMessage') );
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('menues.lists.menues_saved_successfully') ));
     }
 
     /**
@@ -157,7 +161,7 @@ class MenuesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, MenuesRepository $menues )
+    public function edit( $id, MenuesRepository $menues, PagesRepository $pages )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
@@ -184,6 +188,7 @@ class MenuesController extends AdminController
             'formContent' => $this->renderView('menues.add', array(
                 'oData' => $this->menues->edit( $id ),
                 'aTypeMenues' => $menues->getMenuTypes(),
+                'aPages' => $pages->getComboList(),
                 'aMenues' => $menues->getComboList()
             )),
             'formUrl' => URL::route('admin.menu.store'),

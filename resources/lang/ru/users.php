@@ -9,6 +9,7 @@ return array(
         'editing_user' => 'Редактирование пользователя',
         'register' => 'Регистрация',
         'users_management' => 'Управление пользователями',
+        'user_saved_successfully' => 'Пользовательские данные сохранены успешно',
         ),
 
     'form' => array(

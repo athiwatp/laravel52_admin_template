@@ -27,7 +27,6 @@ return array(
     'form' => array(
         'title' => 'Назва',
         'description' => 'Опис',
-        'type_chapter' => 'Тип роздiлу',
         'parent' => 'Батькiвський вузол',
         'pos' => 'Позицiя',
         'number' => 'Номер',

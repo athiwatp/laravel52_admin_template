@@ -9,6 +9,7 @@ return array(
         'editing_user' => 'Редагування користувача',
         'register' => 'Реєстрація',
         'users_management' => 'Управління користувачами',
+        'user_saved_successfully' => 'Пользовательские данные сохранены успешно',
         ),
 
     'form' => array(
@@ -19,6 +20,8 @@ return array(
         'is_verified' => 'Iдентифікован',
         'parent_id' => 'Батькiвський вузол',
         'profile' => 'Профіль',
+        'created' => 'Створений',
+        'updated' => 'Оновлений',
         )
 
     );

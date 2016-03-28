@@ -11,6 +11,9 @@ return array(
         'create_new_pages' => 'Создание новой страницы',
         'editing_pages' => 'Редактирование',
         'editing_page' => 'Редактирование существующей страницы',
+        'select_pages' => 'Выберите контент',
+        'create_pages' => 'Create page',
+        'pages_saved_successfully' => 'Страница сохранена успешно',
         ),
 
     'form' =>array(

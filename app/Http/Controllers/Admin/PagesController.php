@@ -129,7 +129,9 @@ class PagesController extends AdminController
         $this->pages->store( $request->all() );
 
         return Redirect::route('admin.pages.index')
-            ->with('message', Lang::get('$sMessage') );
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('pages.lists.pages_saved_successfully') ));
     }
 
     /**

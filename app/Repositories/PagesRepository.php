@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Pages as Pages;
-use Carbon\Carbon, Auth;
+use Carbon\Carbon, Auth, Lang;
 
 class PagesRepository extends BaseRepository {
     /**
@@ -95,4 +95,26 @@ class PagesRepository extends BaseRepository {
     {
         $pages->delete();
     }
+
+    /**
+    * Prepare a list of pages for the combox
+    */
+    public static function getComboList()
+    {
+        $aItems = array(
+            '-1' => ' --- ' . Lang::get('pages.lists.select_pages') . ' --- ',
+            0 => ' *** ' . Lang::get('pages.lists.create_pages') . ' *** ' );
+
+        $oItems = Pages::where('is_published', '=', Pages::IS_PUBLISHED)
+            ->orderBy('title')
+            ->get();
+
+        foreach($oItems as $item) {
+            $aItems[ $item->id ] = $item->title;
+        }
+
+        return $aItems;
+    }
+
+
 }

@@ -5,6 +5,7 @@ return array(
     'lists' => array(
         'system_settings' => 'System settings',
         'manage_system_settings' => 'Manage system settings',
+        'settings_saved_successfully' => 'Settings saved successfully!',
         ),
 
     'form' => array(

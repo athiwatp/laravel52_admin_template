@@ -193,15 +193,15 @@ class MenuesRepository extends BaseRepository {
     {
         $aItems = array(
             '-1' => ' --- ' . Lang::get('menues.form.select_menu') . ' --- ',
-            0 => ' *** ' . Lang::get('menues.form.select_root_menu') . ' *** ',
+            '0' => ' *** ' . Lang::get('menues.form.select_root_menu') . ' *** ',
         );
         $oAllMenu = self::getMenu(true)->orderBy('path')
             ->orderBy('pos')
             ->orderBy('title')
             ->get();
 
-
         $aTree  = self::buildTree($oAllMenu ? $oAllMenu->toArray() : array() );
+        // print_r( $oAllMenu->toArray() ); exit;
         $oItems = array();
 
         if ( $aTree ) {

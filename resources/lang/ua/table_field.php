@@ -29,6 +29,7 @@ return array(
         'meta_keywords' => 'Meta keywords',
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Опис',
+        'published' => 'Опубліковано',
         'empty' => 'Запит до Бази Даних - повернув порожнiй набiр даних.',
         'actions' => 'Дії',
         'user' => 'Користувач',

@@ -24,6 +24,7 @@ return array(
         'editing_menues' => 'Editing menus',
         'create_new_menues' => 'Create new menu',
         'management_menues' => 'Management menus',
+        'menues_saved_successfully' => 'Menu successfully saved!    ',
         ),
 
     'form' => array(
@@ -42,6 +43,7 @@ return array(
         'type_hidden_page' => 'Inner page',
         'select_type_main' => 'Select the type changed',
         'redirect_url' => 'Redirect url',
+        'is_published' => 'Published',
         'is_loaded_by_default' => 'Is loaded by default',
         'is_shown_print_version' => 'Is shown print version',
         'is_redirectable' => 'Is redirectable',

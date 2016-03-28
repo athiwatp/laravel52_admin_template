@@ -4,7 +4,7 @@ return array(
 
     'lists' => array(
         'management_gallery' => 'Управление медиа файлами',
-        'gallery' => 'Управление файлами на сайте',
+        'gallery' => 'Разделы галереи',
         'lists_gallery' => 'Список медиа файлов',
         'create_new_gallery' => 'Создание нового файлу',
         'create_gallery' => 'Новый файл',
@@ -12,7 +12,7 @@ return array(
         ),
 
     'message' => array(
-        'store_gallery' => 'Мадиа файл успешно сохранен!',
+        'store_gallery' => 'Медиа файл успешно сохранен!',
         ),
 
     'form' => array(

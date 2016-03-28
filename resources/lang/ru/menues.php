@@ -24,6 +24,7 @@ return array(
         'editing_menues' => 'Редактирование меню',
         'create_new_menues' => 'Создание нового меню',
         'management_menues' => 'Управление меню',
+        'menues_saved_successfully' => 'Меню сохранено успешно',
         ),
 
     'form' => array(
@@ -32,7 +33,7 @@ return array(
         'type_menu' => 'Тип меню',
         'parent_id' => 'Родитель',
         'path' => 'Path',
-        'page_id' => 'Страница',
+        'page_id' => 'Контент страницы',
         'url' => 'URL',
         'type_main' => 'Главное меню',
         'type_side' => 'Боковое меню',
@@ -42,8 +43,8 @@ return array(
         'type_hidden_page' => 'Внутренняя страница',
         'select_type_main' => 'Выберите тип меню',
         'redirect_url' => 'Перенаправление URL',
-        'is_loaded_by_default' => 'Загрузить по умолчанию',
         'is_published' => 'Размещен',
+        'is_loaded_by_default' => 'Загрузить по умолчанию',
         'is_shown_print_version' => 'Показать "Версия для печати"',
         'is_redirectable' => 'Переход на указанную страницу',
         )

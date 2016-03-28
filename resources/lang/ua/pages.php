@@ -11,6 +11,14 @@ return array(
         'create_new_pages' => 'Створення нової сторiнки',
         'editing_pages' => 'Редагування',
         'editing_page' => 'Редагування існуючої сторінки',
+        'select_pages' => 'Оберiть контент',
+        'create_pages' => 'Створити сторінку',
+        'pages_saved_successfully' => 'Сторінка збережена успішно!',
+        ),
+
+    'form' =>array(
+        'main' => 'Основне',
+        'tegs' => 'Мета-теги',
         ),
 
     );

@@ -4,6 +4,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pages extends Model
 {
+
+    const IS_PUBLISHED = '1';
+    const NOT_PUBLISHED = '0';
+
+
     /**
      * The database table used by the model
      *

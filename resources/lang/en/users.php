@@ -9,6 +9,7 @@ return array(
         'editing_user' => 'Edit user',
         'register' => 'Registration',
         'users_management' => 'User management',
+        'user_saved_successfully' => 'User data is stored successfully!',
         ),
 
     'form' => array(
@@ -19,6 +20,8 @@ return array(
         'is_verified' => 'Verified',
         'parent_id' => 'Parent',
         'profile' => 'Profile',
+        'created' => 'Created',
+        'updated' => 'Updated',
         )
 
     );

@@ -8,6 +8,11 @@ return array(
         'lists_gallery' => 'Список медіа файлів',
         'create_new_gallery' => 'Створення нового файлу',
         'create_gallery' => 'Новий файл',
+        'editing_gallery' => 'Редагування файлу',
+        ),
+
+    'message' => array(
+        'store_gallery' => 'Медіа файл успішно збережений!',
         ),
 
     'form' => array(
@@ -16,6 +21,7 @@ return array(
         'type' => 'Тип файлу',
         'type_video' => 'Відео',
         'type_photo' => 'Фото',
+        'file' => 'Файл',
         'select_type_gallery' => 'Виберіть тип файлу',
         )
     );

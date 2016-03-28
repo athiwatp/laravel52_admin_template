@@ -9,16 +9,20 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
-    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
-</div>
-<div class="form-group">
     {{ Form::label('type_menu', Lang::get('menues.form.type_menu') ) }}
     {{ Form::select('type_menu', $aTypeMenues,( isset($oData) ? $oData->type_menu : null), array('class' => 'form-control')) }}
 </div>
 <div class="form-group">
+    {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
+    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
+</div>
+<div class="form-group">
     {{ Form::label('parent_id', Lang::get('menues.form.parent_id') ) }}
     {{ Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array('class' => 'form-control')) }}
+</div>
+<div class="form-group">
+    {{ Form::label('page_id', Lang::get('menues.form.page_id') ) }}
+    {{ Form::select('page_id', $aPages, ( isset($oData) ? $oData->page_id : null), array('class' => 'form-control')) }}
 </div>
 
 <div class="form-group">
@@ -38,10 +42,10 @@
 <div class="form-group">
     {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}
     <div class="radio">
-        {!! Form::_label('published_yes', Form::radio('is_published', '1', isset($oData) ? $oData->is_published === '1' : false, array('id' => 'published_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
+        {!! Form::_label('published_yes', Form::radio('is_published', '1', isset($oData) ? $oData->is_published === '1' : true, array('id' => 'published_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
     </div>
     <div class="radio">
-        {!! Form::_label('published_no', Form::radio('is_published', '0', isset($oData) ? $oData->is_published === '0' : true, array('id' => 'published_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
+        {!! Form::_label('published_no', Form::radio('is_published', '0', isset($oData) ? $oData->is_published === '0' : false, array('id' => 'published_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
     </div>
 </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}

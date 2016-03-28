@@ -78,7 +78,9 @@ class SettingsController extends AdminController
         $this->settings->store( $request->all() );
 
         return Redirect::route('admin.settings.index')
-            ->with('message', Lang::get('$sMessage') );
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('settings.lists.settings_saved_successfully') ));
     }
 
     /**

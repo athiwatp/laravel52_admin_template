@@ -5,21 +5,22 @@ use App\Http\Transformers\Chapters as ChaptersTransformer;
 use Yajra\Datatables\Facades\Datatables;
 use App\Models\Chapters;
 
-class NewsChapterController extends ApiController
+class GalleryChaptersController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( $sType )
     {
         return Datatables::of(Chapters::query())
+            ->where('type_chapter', '=', 1)
             ->setTransformer( new ChaptersTransformer() )
             ->make(true);
     }
 
-    /**
+        /**
      * Display the specified resource.
      *
      * @param  int  $id

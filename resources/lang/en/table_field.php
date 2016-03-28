@@ -29,6 +29,7 @@ return array(
         'meta_keywords' => 'Meta keywords',
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Descriptions',
+        'published' => 'Published',
         'empty' => 'Database queries - returned empty data set.',
         'actions' => 'Action',
         'user' => 'User',
