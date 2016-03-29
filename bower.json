@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "font-awesome": "~4.5.0",
-    "datatables": "^1.10.11"
+    "datatables": "^1.10.11",
+    "ckeditor": "^4.5.7"
   }
 }

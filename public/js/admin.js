@@ -34688,11 +34688,13 @@ var loader = require('./modules/_loader.js');
 require('./types/String.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
+require('./modules/_ckeditor.js');
 
 //require('./modules/_datatables.js');
 require('bootstrap-datepicker');
 
 $(function () {
+
     /**
      * Handle the grids
      **/
@@ -34760,7 +34762,7 @@ $(function () {
     });
 });
 
-},{"./modules/_datatable.js":12,"./modules/_loader.js":13,"./modules/_metis.js":14,"./modules/_resizer.js":15,"./types/String.js":22,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
+},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_metis.js":15,"./modules/_resizer.js":16,"./types/String.js":23,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34965,6 +34967,87 @@ module.exports = AdminSingleton;
 },{"moment":9}],12:[function(require,module,exports){
 'use strict';
 
+//var system = require('./_System.js').getInstance();
+if (typeof jQuery === 'undefined') {
+    throw new Error('AdminPS area requires jQuery');
+}
+
+/**
+ * CKEDITOR implementation
+ **/
+(function (w, $) {
+    'use strict';
+
+    if (typeof CKEDITOR === 'undefined') {
+        return false;
+    }
+
+    // Set base Path for the editor
+    w.CKEDITOR_BASEPATH = '/js/vendor/ckeditor/';
+
+    if ($('.ck-edtor').length > 0) {
+        CKEDITOR.basePath = w.CKEDITOR_BASEPATH;
+
+        CKEDITOR.replaceAll('ck-edtor', {
+            customConfig: '/js/vendor/ckeditor/config.js'
+        });
+    }
+
+    console.log('The direct implementation of that code here with ', CKEDITOR);
+})(window, jQuery);
+
+//// config.extraPlugins = 'imageuploader';
+//config.extraPlugins = 'lightbox,clipboard,pastefromword,tabletools,quicktable,button,toolbar,floating-tools,youtube,justify,colorbutton,colordialog,lineutils,widget,image2,imageuploader';
+//// config.filebrowserImageUploadUrl = CKEDITOR.basePath + 'plugins/imgupload.php';
+//config.extraAllowedContent = 'audio[*]{*},a[data-lightbox,data-title,data-lightbox-saved]';
+//
+//
+//config.filebrowserBrowseUrl = '/admin/files/browse';
+//config.filebrowserUploadUrl = '/admin/files/upload';
+//config.filebrowserWindowWidth = '640';
+//config.filebrowserWindowHeight = '480';
+
+// The toolbar groups arrangement, optimized for two toolbar rows.
+//config.toolbarGroups = [
+//
+//     {
+//        name: 'document',
+//        groups: ['mode', 'document', 'doctools']
+//    }, {
+//        name: 'others'
+//    },
+//    '/', {
+//        name: 'basicstyles',
+//        groups: ['basicstyles', 'cleanup', 'justify']
+//    }, {
+//        name: 'paragraph',
+//        groups: ['list', 'indent', 'blocks', 'align', 'bidi']
+//    }, {
+//        name: 'styles'
+//    }, {
+//        name: 'colors'
+//    }, {
+//        name: 'about'
+//    }
+//
+//];
+
+// Remove some buttons provided by the standard plugins, which are
+// not needed in the Standard(s) toolbar.
+//config.removeButtons = 'Underline,Subscript,Superscript,elementspath';
+//
+//// Remove Plugins
+//config.removePlugins = 'elementspath';
+//
+//// Set the most common block elements.
+//config.format_tags = 'p;h1;h2;h3;pre';
+//
+//// Simplify the dialog windows.
+//config.removeDialogTabs = 'image:advanced;link:advanced';
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function (factory) {
@@ -35053,7 +35136,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     return table;
 });
 
-},{"datatables.net":7,"datatables.net-buttons/js/buttons.colVis.js":2,"datatables.net-buttons/js/buttons.flash.js":3,"datatables.net-buttons/js/buttons.html5.js":4,"datatables.net-buttons/js/buttons.print.js":5,"jquery":8}],13:[function(require,module,exports){
+},{"datatables.net":7,"datatables.net-buttons/js/buttons.colVis.js":2,"datatables.net-buttons/js/buttons.flash.js":3,"datatables.net-buttons/js/buttons.html5.js":4,"datatables.net-buttons/js/buttons.print.js":5,"jquery":8}],14:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35097,7 +35180,7 @@ module.exports = {
     }
 };
 
-},{"./chapters/list.js":16,"./menu/list.js":17,"./news/list.js":18,"./pages/list.js":19,"./users/list.js":20,"./video/list.js":21}],14:[function(require,module,exports){
+},{"./chapters/list.js":17,"./menu/list.js":18,"./news/list.js":19,"./pages/list.js":20,"./users/list.js":21,"./video/list.js":22}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35111,7 +35194,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35149,7 +35232,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35194,7 +35277,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],17:[function(require,module,exports){
+},{"../_System.js":11}],18:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35237,7 +35320,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],18:[function(require,module,exports){
+},{"../_System.js":11}],19:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35290,7 +35373,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],19:[function(require,module,exports){
+},{"../_System.js":11}],20:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35337,7 +35420,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],20:[function(require,module,exports){
+},{"../_System.js":11}],21:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35385,7 +35468,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],21:[function(require,module,exports){
+},{"../_System.js":11}],22:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35434,7 +35517,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],22:[function(require,module,exports){
+},{"../_System.js":11}],23:[function(require,module,exports){
 'use strict';
 
 /**

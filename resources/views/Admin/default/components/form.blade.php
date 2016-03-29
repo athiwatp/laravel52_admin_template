@@ -1,5 +1,12 @@
 @extends( $__theme . '.layouts.default')
 
+
+@section('javascript')
+    @if ( array_key_exists('useCKEditor', $aFormParams) && $aFormParams['useCKEditor'] )
+    {!! Html::script('js/vendor/ckeditor/ckeditor.min.js') !!}
+    @endif
+@stop
+
 @section('page_header')
 <h1> {{ $aFormParams['formChapter'] }} <small>{{ $aFormParams['formSubChapter'] }}</small></h1>
 {!! $aFormParams['sFormBreadcrumbs'] !!}

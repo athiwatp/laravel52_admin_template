@@ -10,6 +10,9 @@
     <meta name="author" content="Sergey Donchenko">
     <meta name="api_token" content="{{ Auth::user()->api_token }}">
 
+    {{-- Custom CSS --}}
+    @yield('css')
+
     {!! Html::style('css/vendor/metisMenu.min.css') !!}
     {!! Html::style('css/vendor/jquery.dataTables.min.css') !!}
     {!! Html::style('css/admin.css') !!}
@@ -69,7 +72,10 @@
 {!! Html::script('js/vendor/bootstrap.min.js') !!}
 
 <!-- Metis Menu Plugin JavaScript -->
-{!! Html::script('js/vendor/metisMenu.min.js') !!}}
+{!! Html::script('js/vendor/metisMenu.min.js') !!}
+
+{{-- Custom javascript --}}
+@yield('javascript')
 
 <!-- Custom Theme JavaScript -->
 {!! Html::script('js/admin.js') !!}

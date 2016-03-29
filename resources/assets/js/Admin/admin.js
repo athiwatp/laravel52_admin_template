@@ -4,11 +4,13 @@ var loader = require( './modules/_loader.js' );
 require( './types/String.js' );
 require( './modules/_metis.js' );
 require( './modules/_resizer.js' );
+require( './modules/_ckeditor.js' );
 
 //require('./modules/_datatables.js');
 require( 'bootstrap-datepicker' );
 
 $(function() {
+
     /**
      * Handle the grids
      **/

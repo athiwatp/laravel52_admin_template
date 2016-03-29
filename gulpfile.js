@@ -1,8 +1,9 @@
 var elixir = require('laravel-elixir');
 
 // Define the boer path
-var bowerDir = './resources/assets/vendor/';
-var nodeDir = './node_modules/';
+var bowerDir  = './resources/assets/vendor/';
+var nodeDir   = './node_modules/';
+var customJs  = './resources/assets/js/';
 
 // Sass Paths
 var sassPaths = {
@@ -43,5 +44,13 @@ elixir(function(mix) {
     mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
         .copy(bowerDir + 'bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js/vendor/bootstrap.min.js')
         .copy(bowerDir + 'metisMenu/dist/metisMenu.min.js', 'public/js/vendor/metisMenu.min.js');
+
+    // Copy CKEditor stuff
+    mix.copy(bowerDir + 'ckeditor/ckeditor.js', 'public/js/vendor/ckeditor/ckeditor.min.js')
+        .copy(bowerDir + 'ckeditor/styles.js', 'public/js/vendor/ckeditor/styles.js')
+        .copy(bowerDir + 'ckeditor/lang/ru.js', 'public/js/vendor/ckeditor/lang/ru.js')
+        .copy(bowerDir + 'ckeditor/skins/moono', 'public/js/vendor/ckeditor/skins/moono')
+        .copy(customJs + 'Admin/libs/ckeditor/config.js', 'public/js/vendor/ckeditor/config.js')
+        .copy(bowerDir + 'ckeditor/plugins', 'public/js/vendor/ckeditor/plugins');
 });
 

@@ -100,6 +100,7 @@ class NewsController extends AdminController
             'formChapter' => Lang::get('news.lists.news_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('news.lists.create_new_news'),
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
