@@ -32,6 +32,8 @@ return array(
         'published' => 'Published',
         'empty' => 'Database queries - returned empty data set.',
         'actions' => 'Action',
+        'created' => 'Created',
+        'updated' => 'Updated',
         'user' => 'User',
         'edit' => 'Edit',
         'delete' => 'Delete',

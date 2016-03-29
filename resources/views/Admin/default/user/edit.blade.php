@@ -8,7 +8,7 @@
 </div>
 <div class="form-group">
     {{ Form::label('phone', Lang::get('users.form.phone') ) }}
-    {{ Form::text('phone', ( isset($oData) ? $oData->phone : null), array('class' => 'form-control')) }}
+    {{ Form::text('phone', ( isset($oData) ? $oData->phone : null), array('class' => 'form-control phone-mask')) }}
 </div>
 <div class="form-group">
     {{ Form::label('is_published', Lang::get('users.form.is_admin')) }}

@@ -223,7 +223,8 @@ return [
         'cForms'          => 'Forms\Standard',
         'cTemplate'       => 'Forms\Template',
         'cBreadcrumbs'    => 'Breadcrumb\Items',
-        'cScreenshot'    => 'Screenshot\Items',
+        'cScreenshot'     => 'Screenshot\Items',
+        'cTrackChangesUrl'=> 'TrackChangesUrl\Items',
 
     ],
 

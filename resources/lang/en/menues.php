@@ -24,7 +24,7 @@ return array(
         'editing_menues' => 'Editing menus',
         'create_new_menues' => 'Create new menu',
         'management_menues' => 'Management menus',
-        'menues_saved_successfully' => 'Menu successfully saved!    ',
+        'menues_saved_successfully' => 'Menu successfully saved!',
         ),
 
     'form' => array(
@@ -33,7 +33,7 @@ return array(
         'type_menu' => 'Type menu',
         'parent_id' => 'Parent',
         'path' => 'Path',
-        'page_id' => 'Page',
+        'page_id' => 'Contents page',
         'url' => 'URL',
         'type_main' => 'Main menu',
         'type_side' => 'Sidebar',

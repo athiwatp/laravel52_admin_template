@@ -19,6 +19,7 @@ return array(
     'form' =>array(
         'main' => 'Основное',
         'tegs' => 'Мета-теги',
+        'title' => 'Заголовок',
         ),
 
     );

@@ -20,6 +20,4 @@ class Menues extends Model
     */
     protected $table = 'static_menues';
 
-
-
 }

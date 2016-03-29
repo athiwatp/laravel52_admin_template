@@ -107,7 +107,7 @@ class VideoNewsController extends AdminController
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('videoNews.lists.video_news_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('videoNews.lists.create_new_video_news'),
+            'formTitle' => Lang::get('videoNews.lists.create_video_news'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),

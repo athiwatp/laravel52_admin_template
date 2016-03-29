@@ -1,7 +1,8 @@
 <?php namespace App\Repositories;
 
 use App\Models\Menues as Menues;
-use Carbon\Carbon, Lang, Auth;
+use App\Models\UrlHistory as UrlHistory;
+use Carbon\Carbon, Lang, Auth, cTrackChangesUrl;
 
 class MenuesRepository extends BaseRepository {
     /**
@@ -37,17 +38,20 @@ class MenuesRepository extends BaseRepository {
     */
     public function saveMenues( $menu, $inputs )
     {
+        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0') );
+        
         $menu->title        = $inputs['title'];
-        $menu->parent_id    = ( isset($inputs['parent_id']) ? $inputs['parent_id'] : null );
-        $menu->path         = ( isset($inputs['path']) ? $inputs['path'] : null );
+        $menu->parent_id    = ( $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
+        $menu->path         = $oMenus['path'];
         $menu->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : 0 );
         $menu->type_menu    = ( isset($inputs['type_menu']) ? $inputs['type_menu'] : 0 );
         $menu->page_id      = ( isset($inputs['page_id']) ? $inputs['page_id'] : null );
         $menu->url          = $inputs['url'];
-        $menu->redirect_url = ( isset($inputs['redirect_url']) ? $inputs['redirect_url'] : null );
         $menu->user_id      = Auth::id();
-        $menu->is_published           = $inputs['is_published'];
-        $menu->is_redirectable        = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
+        $menu->redirect_url = ( isset($inputs['redirect_url']) ? $inputs['redirect_url'] : null );
+        $menu->children_count   = $oMenus['children_count'];
+        $menu->is_published     = $inputs['is_published'];
+        $menu->is_redirectable  = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
         $menu->is_loaded_by_default   = ( isset($inputs['is_loaded_by_default']) ? $inputs['is_loaded_by_default'] : 0);
         $menu->is_shown_print_version = ( isset($inputs['is_shown_print_version']) ? $inputs['is_shown_print_version'] : 0 );
 
@@ -74,9 +78,17 @@ class MenuesRepository extends BaseRepository {
             $model = new $this->model;
         }
 
+        if ( $id > 0 && $model->url != $inputs['url'] ) {
+            $sSaveUrlHistory = cTrackChangesUrl::getItems(
+                array(
+                    'aData' => array(
+                        'content_type' => UrlHistory::TYPE_MENU,
+                        'url' => $inputs['url'],
+                        'type_id' => $inputs['id']
+                    )
+                ));
+        }
         $menues = $this->saveMenues( $model, $inputs );
-
-        // some post creation actions will be required
     }
 
     /**
@@ -138,6 +150,42 @@ class MenuesRepository extends BaseRepository {
         }
 
         return $oAllMenu;
+    }
+
+    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId ) {
+        // var_dump( $children_count, $iParentId, $iOldParentId ); exit;
+        if ( $iParentId != $iOldParentId ) {
+            if ( empty($iParentId) && $iOldParentId > 0) {
+                if ($oParentMenu = Menues::find($iOldParentId)) {
+                    $oMenus['children_count'] = $oParentMenu->children_count - 1;
+                }
+
+                $oMenus['path'] = Menues::getParentPath($iOldParentId, $oMenu->path, 'remove');
+            } else {
+                $oParentMenu = Menues::find($iParentId);
+                
+                if ( $oParentMenu ) {
+                    $oMenus['children_count'] = $oParentMenu->children_count + 1;
+
+                    $oMenus['path'] = self::getParentPath($iParentId, $oParentMenu->path);
+                }
+            }
+            return $oMenus;
+        }
+    }
+
+    public static function getParentPath($iParentId, $sParentPath = '', $sAction = 'add')
+    {
+        $sResult = '';
+        $sNodeId = 'zZ' . $iParentId . 'zZ';
+
+        if ($sAction == 'add') {
+            $sResult = $sParentPath ? $sParentPath . ',' . $sNodeId : $sNodeId; 
+        } else {
+            $sResult = str_replace($sNodeId, '', $sParentPath);
+        }
+
+        return $sResult;
     }
 
     public static function buildTree(array $elements, $parentId = 0) {

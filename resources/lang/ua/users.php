@@ -10,6 +10,7 @@ return array(
         'register' => 'Реєстрація',
         'users_management' => 'Управління користувачами',
         'user_saved_successfully' => 'Пользовательские данные сохранены успешно',
+        'user_register' => 'Користувач зареєстрований успішно!',
         ),
 
     'form' => array(
@@ -22,6 +23,23 @@ return array(
         'profile' => 'Профіль',
         'created' => 'Створений',
         'updated' => 'Оновлений',
-        )
+        ),
+
+    'auth' => array(
+        'log_in' => 'Авторизація',
+        'login' => 'Авторизуватися',
+        'e-mail' => 'Адреса електронної пошти',
+        'password' => 'Пароль',
+        'remember_me' => 'Запам\'ятати мене',
+        'forgot_your_password' => 'Забули пароль?',
+        'reset_pass' => 'Скидання пароля',
+        'send_password_reset' => 'Надіслати посилання на відновлення пароля',
+        ),
+
+    'reg' => array(
+        'name' => 'Iм\'я',
+        'confirm_pass' => 'Підтвердіть Пароль',
+        'register' => 'Реєстрація',
+        ),
 
     );
