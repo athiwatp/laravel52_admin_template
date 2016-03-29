@@ -28,10 +28,6 @@ class AuthController extends AdminController
 
         Auth::logout();
 
-        return Redirect::route('home')
-            ->with('message', array(
-                'code'      => self::$statusOk,
-                'message'   => Lang::get('layouts.layouts.you_went_out_account')
-            ));
+        return Redirect::route('home');
     }
 }

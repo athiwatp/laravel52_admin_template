@@ -102,8 +102,8 @@ class UsersController extends AdminController
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('users.lists.users_management'),
-            'formSubChapter' => Lang::get('users.lists.register_user'),
-            'formTitle' => Lang::get('users.lists.create_new_users'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('users.lists.register_user'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -111,9 +111,9 @@ class UsersController extends AdminController
                     'params' => array('url' => URL::route('admin.users.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
-                    'title' => Lang::get('table_field.lists.save'),
+                    'title' => Lang::get('users.reg.register'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-outline btn-default')
                 )
             ),
             'formContent' => $this->renderView('user.register', array(
@@ -137,7 +137,9 @@ class UsersController extends AdminController
         return Redirect::route('admin.users.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get('users.lists.user_saved_successfully') ));
+                'message'   => Lang::get( ($request->id > '0' ? 'users.lists.user_saved_successfully' : 'users.lists.user_register') )
+                )
+            );
     }
 
     /**

@@ -6,19 +6,19 @@
     <thead>
     <tr>
         <th>Id</th>
-        <th>Preview</th>
-        <th>Title</th>
-        <th>Created</th>
-        <th>Updated</th>
+        <th>{{ Lang::get('videoNews.form.preview') }}</th>
+        <th>{{ Lang::get('videoNews.form.title') }}</th>
+        <th>{{ Lang::get('table_field.lists.created') }}</th>
+        <th>{{ Lang::get('table_field.lists.updated') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
         <th>Id</th>
-        <th>Preview</th>
-        <th>Title</th>
-        <th>Created</th>
-        <th>Updated</th>
+        <th>{{ Lang::get('videoNews.form.preview') }}</th>
+        <th>{{ Lang::get('videoNews.form.title') }}</th>
+        <th>{{ Lang::get('table_field.lists.created') }}</th>
+        <th>{{ Lang::get('table_field.lists.updated') }}</th>
     </tr>
     </tfoot>
 </table>

@@ -66,6 +66,7 @@
     <!-- /#wrapper -->
 
 {!! Html::script('js/vendor/jquery.min.js') !!}
+{!! Html::script('js/vendor/inputmask.min.js') !!}
 {!! Html::script('js/vendor/bootstrap.min.js') !!}
 
 <!-- Metis Menu Plugin JavaScript -->

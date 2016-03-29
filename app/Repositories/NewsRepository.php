@@ -1,7 +1,8 @@
 <?php namespace App\Repositories;
 
 use App\Models\News as News;
-use Carbon\Carbon, Auth;
+use App\Models\UrlHistory as UrlHistory;
+use Carbon\Carbon, Auth, cTrackChangesUrl;
 
 class NewsRepository extends BaseRepository {
     /**
@@ -73,9 +74,18 @@ class NewsRepository extends BaseRepository {
             $model = new $this->model;
         }
 
-        $news = $this->saveNews( $model, $inputs );
+        if ( $id > 0 && $model->url != $inputs['url'] ) {
+            $sSaveUrlHistory = cTrackChangesUrl::getItems(
+                array(
+                    'aData' => array(
+                        'content_type' => UrlHistory::TYPE_NEWS,
+                        'url' => $inputs['url'],
+                        'type_id' => $inputs['id']
+                    )
+                ));
+        }
 
-        // some post creation actions will be required
+        $news = $this->saveNews( $model, $inputs );
     }
 
     /**

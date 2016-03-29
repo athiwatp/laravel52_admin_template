@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\User as User;
-use Carbon\Carbon;
+use Carbon\Carbon, Hash;
 
 class UserRepository extends BaseRepository {
     /**
@@ -49,6 +49,25 @@ class UserRepository extends BaseRepository {
     }
 
     /**
+     * Create or update Message
+     *
+     * @param App\Models\User $user
+     *
+     * @return
+    */
+    public function registerUser( $user, $inputs )
+    {
+        $user->name         = $inputs['name'];
+        $user->email        = $inputs['email'];
+        $user->password     = Hash::make($inputs['password']);
+        $user->api_token    = str_random(60);
+
+        $user->save();
+
+        return true;
+    }
+
+    /**
      * Create a message
      *
      * @param array $inputs
@@ -61,11 +80,10 @@ class UserRepository extends BaseRepository {
         $id = $inputs['id'];
 
         if ( isset($id) && $id > 0 ) {
-            $model = $this->model->find( $id );
+            $news = $this->saveUser( $this->model->find( $id ), $inputs );
         } else {
-            $model = new $this->model;
+            $news = $this->registerUser( new $this->model, $inputs );
         }
-        $news = $this->saveUser( $model, $inputs );
     }
 
     /**

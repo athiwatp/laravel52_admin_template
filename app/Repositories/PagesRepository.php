@@ -1,7 +1,8 @@
 <?php namespace App\Repositories;
 
 use App\Models\Pages as Pages;
-use Carbon\Carbon, Auth, Lang;
+use App\Models\UrlHistory as UrlHistory;
+use Carbon\Carbon, Auth, Lang, cTrackChangesUrl;
 
 class PagesRepository extends BaseRepository {
     /**
@@ -66,6 +67,17 @@ class PagesRepository extends BaseRepository {
             $model = $this->model->find( $id );
         } else {
             $model = new $this->model;
+        }
+
+        if ( $id > 0 && $model->url != $inputs['url'] ) {
+            $sSaveUrlHistory = cTrackChangesUrl::getItems(
+                array(
+                    'aData' => array(
+                        'content_type' => UrlHistory::TYPE_PAGE,
+                        'url' => $inputs['url'],
+                        'type_id' => $inputs['id']
+                    )
+                ));
         }
 
         $pages = $this->savePage( $model, $inputs );

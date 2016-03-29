@@ -19,6 +19,7 @@ return array(
     'form' =>array(
         'main' => 'Main',
         'tegs' => 'Meta tags',
+        'title' => 'Title',
         ),
 
     );

@@ -24,7 +24,7 @@ return array(
         'editing_menues' => 'Редактирование меню',
         'create_new_menues' => 'Создание нового меню',
         'management_menues' => 'Управление меню',
-        'menues_saved_successfully' => 'Меню сохранено успешно',
+        'menues_saved_successfully' => 'Меню сохранено успешно!',
         ),
 
     'form' => array(

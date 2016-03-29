@@ -41,6 +41,7 @@ elixir(function(mix) {
 
     // Copy JavaScript libraries
     mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
+        .copy(bowerDir + 'jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js', 'public/js/vendor/inputmask.min.js')
         .copy(bowerDir + 'bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js/vendor/bootstrap.min.js')
         .copy(bowerDir + 'metisMenu/dist/metisMenu.min.js', 'public/js/vendor/metisMenu.min.js');
 });

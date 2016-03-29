@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Sergey Donchenko">
 
-    <title>Login page</title>
+    <title>{{ Lang::get('users.auth.login') }}</title>
 
     {!! Html::style('css/app.css') !!}
 </head>

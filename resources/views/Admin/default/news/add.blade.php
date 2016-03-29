@@ -1,19 +1,23 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('news.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control')) }}
+    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
 </div>
+
 <div class="form-group">
     {{ Form::label('url', Lang::get('news.form.url') ) }}
-    {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control')) }}
+    {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control data-url', 'readonly' => true)) }}
 </div>
+
 <div class="form-group">
     {{ Form::label('content', Lang::get('news.form.content') ) }}
     {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control')) }}
 </div>
+
 <div class="form-group">
     {{ Form::label('date', Lang::get('table_field.lists.date') ) }}
     {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control')) }}
 </div>
+
 <div class="form-group">
     {{ Form::label('chapter_id', Lang::get('news.form.chapter') ) }}
     {{ Form::select('chapter_id', $aChapters, ( isset($oData) ? $oData->chapter_id : null), array('class' => 'form-control')) }}

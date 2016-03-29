@@ -47,7 +47,7 @@ module.exports = {
 
     ajax: {
         url: system.getUrl( 'chapters', {
-            type: '1'
+            type: '0'
         } )
     },
 

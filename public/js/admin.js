@@ -34688,6 +34688,7 @@ var loader = require('./modules/_loader.js');
 require('./types/String.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
+require('./modules/_mask.js');
 
 //require('./modules/_datatables.js');
 require('bootstrap-datepicker');
@@ -34760,7 +34761,7 @@ $(function () {
     });
 });
 
-},{"./modules/_datatable.js":12,"./modules/_loader.js":13,"./modules/_metis.js":14,"./modules/_resizer.js":15,"./types/String.js":22,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
+},{"./modules/_datatable.js":12,"./modules/_loader.js":13,"./modules/_mask.js":14,"./modules/_metis.js":15,"./modules/_resizer.js":16,"./types/String.js":23,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35097,7 +35098,21 @@ module.exports = {
     }
 };
 
-},{"./chapters/list.js":16,"./menu/list.js":17,"./news/list.js":18,"./pages/list.js":19,"./users/list.js":20,"./video/list.js":21}],14:[function(require,module,exports){
+},{"./chapters/list.js":17,"./menu/list.js":18,"./news/list.js":19,"./pages/list.js":20,"./users/list.js":21,"./video/list.js":22}],14:[function(require,module,exports){
+'use strict';
+
+/**
+ * Mask phone number
+ */
+(function ($) {
+    'use strict';
+
+    if ($('.phone-mask').length > 0) {
+        $('.phone-mask').inputmask({ "mask": "+380(99)999-99-99" });
+    };
+})(jQuery);
+
+},{}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35111,7 +35126,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35149,7 +35164,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35188,13 +35203,13 @@ module.exports = {
 
     ajax: {
         url: system.getUrl('chapters', {
-            type: '1'
+            type: '0'
         })
     }
 
 };
 
-},{"../_System.js":11}],17:[function(require,module,exports){
+},{"../_System.js":11}],18:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35237,7 +35252,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],18:[function(require,module,exports){
+},{"../_System.js":11}],19:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35290,7 +35305,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],19:[function(require,module,exports){
+},{"../_System.js":11}],20:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35337,7 +35352,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],20:[function(require,module,exports){
+},{"../_System.js":11}],21:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35385,7 +35400,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],21:[function(require,module,exports){
+},{"../_System.js":11}],22:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35434,7 +35449,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],22:[function(require,module,exports){
+},{"../_System.js":11}],23:[function(require,module,exports){
 'use strict';
 
 /**

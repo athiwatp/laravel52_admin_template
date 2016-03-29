@@ -10,6 +10,7 @@ return array(
         'register' => 'Registration',
         'users_management' => 'User management',
         'user_saved_successfully' => 'User data is stored successfully!',
+        'user_register' => 'User registered successfully!',
         ),
 
     'form' => array(
@@ -22,6 +23,23 @@ return array(
         'profile' => 'Profile',
         'created' => 'Created',
         'updated' => 'Updated',
-        )
+        ),
+
+    'auth' => array(
+        'log_in' => 'Authorization',
+        'login' => 'Login',
+        'e-mail' => 'E-Mail Address',
+        'password' => 'Password',
+        'remember_me' => 'Remember Me',
+        'forgot_your_password' => 'Forgot Your Password?',
+        'reset_pass' => 'Reset Password',
+        'send_password_reset' => 'Send Password Reset Link',
+        ),
+
+    'reg' => array(
+        'name' => 'Name',
+        'confirm_pass' => 'Confirm Password',
+        'register' => 'Register',
+        ),
 
     );

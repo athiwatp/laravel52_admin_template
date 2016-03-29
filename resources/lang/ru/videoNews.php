@@ -7,7 +7,6 @@ return array(
         'video_news_management' => 'Управление видео новостями',
         'video_news_management_online' => 'Управление видео новостями на сайте',
         'create_video_news' => 'Создание видео новости',
-        'create_new_video_news' => 'Создание новости',
         'editing_video_news' => 'Редактирование видео новости',
         ),
 
@@ -15,7 +14,8 @@ return array(
         'title' => 'Заголовок',
         'url' => 'URL на Youtube',
         'picture' => 'Картинка',
+        'preview' => 'Предварительный просмотр',
         'date' => 'Дата',
-        'content' => 'Cодержание',
+        'content' => 'Содержание',
         )
     );
