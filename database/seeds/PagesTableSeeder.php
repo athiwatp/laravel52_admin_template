@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use App\Models\News as News;
+use App\Models\Pages as Pages;
 
-class NewsTableSeeder extends Seeder
+class PagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,19 +13,17 @@ class NewsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('news')->delete();
+        DB::table('static_pages')->delete();
 
         $faker = Faker::create('ru_RU');
 
         foreach (range(1,105) as $index) {
-            News::create([
+            Pages::create([
                 'title' => $faker->sentence(10),
+                'meta_keywords' => $faker->title,
+                'meta_descriptions' => $faker->title,
                 'content' => $faker->text,
-                'date' => $faker->dateTime,
-                'source' => $faker->company,
                 'is_published' =>  (int)($index % 2 === 0),
-                'is_main' => (int)($index % 10 === 0),
-                'is_important' => (int)($index % 4 === 0),
                 'created_at' => $faker->dateTime,
                 'updated_at' => $faker->dateTime,
                 'user_id' => 1

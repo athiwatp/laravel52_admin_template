@@ -8,8 +8,24 @@ return array(
         'settings_saved_successfully' => 'Настройки сохранены успешно!',
         ),
 
+    'social_networks' => array(
+        'facebook' => 'Facebook',
+        'twitter' => 'Twitter',
+        'linkedIn' => 'LinkedIn',
+        'google' => 'Google Plus+',
+
+        'set' => array(
+            'select_set' => 'Выберите настройку',
+            'activate' => 'Активировать',
+            'use_authorization' => 'Использовать при авторизации',
+            'repost_updates' => 'Репостить обновления',
+            'token' => 'Token',
+            ),
+        ),
+
     'form' => array(
         'main' => 'Главные',
+        'social_networks' => 'Социальные сети',
         'other' => 'Другие',
         'settings' => 'Настройки',
         'site_name' => 'Название сайта',

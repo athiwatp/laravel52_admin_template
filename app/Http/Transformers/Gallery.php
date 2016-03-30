@@ -17,7 +17,7 @@ class Gallery extends TransformerAbstract
         return [
             'id' => (int) $gallery->id,
             'title' => $gallery->title,
-            'filename' => $gallery->filename
+            'filename' => url($gallery->filename)
         ];
     }
 }

@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Settings as Settings;
-use Carbon\Carbon;
+use Carbon\Carbon, Lang;
 
 class SettingsRepository extends BaseRepository {
     /**
@@ -86,5 +86,13 @@ class SettingsRepository extends BaseRepository {
     public function destroy($settings)
     {
         $settings->delete();
+    }
+
+    public static function setSocialNetworks() {
+        return array(
+        '0' => Lang::get('settings.social_networks.set.select_set'),
+        'true' => Lang::get('table_field.lists.yes'),
+        'false' => Lang::get('table_field.lists.no')
+            );
     }
 }

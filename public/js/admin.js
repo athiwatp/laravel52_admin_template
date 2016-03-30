@@ -34764,7 +34764,7 @@ $(function () {
     });
 });
 
-},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":24,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
+},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":25,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35151,7 +35151,6 @@ module.exports = {
      **/
     getModule: function getModule(path) {
         var mod = null;
-
         switch (path) {
             case 'news/list':
                 mod = require('./news/list.js');
@@ -35159,6 +35158,10 @@ module.exports = {
 
             case 'chapters/list':
                 mod = require('./chapters/list.js');
+                break;
+
+            case 'gallery/list':
+                mod = require('./gallery/list.js');
                 break;
 
             case 'pages/list':
@@ -35182,7 +35185,7 @@ module.exports = {
     }
 };
 
-},{"./chapters/list.js":18,"./menu/list.js":19,"./news/list.js":20,"./pages/list.js":21,"./users/list.js":22,"./video/list.js":23}],15:[function(require,module,exports){
+},{"./chapters/list.js":18,"./gallery/list.js":19,"./menu/list.js":20,"./news/list.js":21,"./pages/list.js":22,"./users/list.js":23,"./video/list.js":24}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35304,6 +35307,48 @@ module.exports = {
      *
      * @var Object
      **/
+    columns: [{ data: 'id' }, { data: 'title' }, { data: 'filename' }],
+
+    /**
+     * Renderer for the columns by the index
+     *
+     * @var Object
+     **/
+    columnDefs: [{
+        render: function render(data, type, row) {
+            var noTags = system.stripTags(data);
+
+            return '<a href="/admin/gallery/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+        },
+        targets: 1
+    }, {
+        render: function render(data) {
+            var img = '';
+            // console.log( 'data =', data );
+            img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
+
+            return img;
+        },
+        targets: 2
+    }],
+
+    ajax: {
+        url: system.getUrl('gallery')
+    }
+
+};
+
+},{"../_System.js":11}],20:[function(require,module,exports){
+'use strict';
+
+var system = require('../_System.js').getInstance();
+
+module.exports = {
+    /**
+     * Define a list of columns for the grid
+     *
+     * @var Object
+     **/
     columns: [{ data: 'id' }, { data: 'title' }, { data: 'pos' }, { data: 'published' }, { data: 'created' }],
 
     /**
@@ -35336,7 +35381,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],20:[function(require,module,exports){
+},{"../_System.js":11}],21:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35389,7 +35434,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],21:[function(require,module,exports){
+},{"../_System.js":11}],22:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35436,7 +35481,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],22:[function(require,module,exports){
+},{"../_System.js":11}],23:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35484,7 +35529,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],23:[function(require,module,exports){
+},{"../_System.js":11}],24:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35533,7 +35578,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],24:[function(require,module,exports){
+},{"../_System.js":11}],25:[function(require,module,exports){
 'use strict';
 
 /**

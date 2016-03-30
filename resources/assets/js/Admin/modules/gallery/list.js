@@ -9,9 +9,7 @@ module.exports = {
     columns: [
         {data: 'id'},
         {data: 'title'},
-        {data: 'pos'},
-        {data: 'published'},
-        {data: 'created'}
+        {data: 'filename'}
     ],
 
     /**
@@ -21,31 +19,28 @@ module.exports = {
      **/
     columnDefs: [
         {
-            render: function( data ) {
-                return system.getFormattedDate( data );
-            },
-            targets: 4
-        },
-        {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data);
 
-                return '<a href="/admin/menu/'+ row.id + '/edit" title="' + noTags + '">' +
+                return '<a href="/admin/gallery/'+ row.id + '/edit" title="' + noTags + '">' +
                     system.ellipsis( noTags, 100 ) +
                     '</a>';
             },
             targets: 1
-        },
-        {
+        }, {
             render: function( data ) {
-                return system.getPublishedIcon(data);
+                var img = '';
+// console.log( 'data =', data );
+                img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
+
+                return img;
             },
-            targets: 3
+            targets: 2
         }
     ],
 
     ajax: {
-        url: system.getUrl( 'menu' )
+        url: system.getUrl( 'gallery' )
     },
 
 
