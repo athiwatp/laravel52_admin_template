@@ -90,7 +90,7 @@ class SettingsRepository extends BaseRepository {
 
     public static function setSocialNetworks() {
         return array(
-        '0' => Lang::get('settings.social_networks.set.select_set'),
+        '0' => Lang::get('settings.set.select_set'),
         'true' => Lang::get('table_field.lists.yes'),
         'false' => Lang::get('table_field.lists.no')
             );

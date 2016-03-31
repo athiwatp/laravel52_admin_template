@@ -164,6 +164,7 @@ return [
 
         App\Providers\HelperServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
 
 
@@ -214,6 +215,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',

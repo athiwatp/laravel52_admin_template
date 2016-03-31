@@ -13,14 +13,20 @@ return array(
         'twitter' => 'Twitter',
         'linkedIn' => 'LinkedIn',
         'google' => 'Google Plus+',
+        ),
 
-        'set' => array(
-            'select_set' => 'Выберите настройку',
-            'activate' => 'Активировать',
-            'use_authorization' => 'Использовать при авторизации',
-            'repost_updates' => 'Репостить обновления',
-            'token' => 'Token',
-            ),
+    'tune-up' =>array(
+        'news' => 'Настройки Новостей',
+        'gallery' => 'Настройки Галереи',
+        'post_updates_on_social_networks' => 'Размещать обновления в соц. сетях',
+        ),
+
+    'set' => array(
+        'select_set' => 'Выберите настройку',
+        'activate' => 'Активировать',
+        'use_authorization' => 'Использовать при авторизации',
+        'repost_updates' => 'Репостить обновления',
+        'token' => 'Token',
         ),
 
     'form' => array(

@@ -7824,4 +7824,27 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.social-login-buttons .facebook {
+  background: #3C5899;
+  color: #fff; }
+
+.social-login-buttons .twitter {
+  background: #41ABE1;
+  color: #fff; }
+
+.social-login-buttons .google-plus {
+  background: #D94A3A;
+  color: #fff; }
+
+.btn-link-2 {
+  display: inline-block;
+  height: 50px;
+  margin: 5px;
+  padding: 15px 20px 0 20px;
+  border: 1px solid #fff;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  border-radius: 4px; }
+
 /*# sourceMappingURL=app.css.map */

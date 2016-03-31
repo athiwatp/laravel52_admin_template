@@ -8,6 +8,12 @@
     <li class="">
         <a href="#social-networks-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.form.social_networks') }}</a>
     </li>
+    <li class="">
+        <a href="#news-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.tune-up.news') }}</a>
+    </li>
+    <li class="">
+        <a href="#gallery-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.tune-up.gallery') }}</a>
+    </li>
 </ul>
 <br>
 <div class="tab-content">
@@ -42,20 +48,19 @@
 
     <div class="tab-pane fade" id="social-networks-pills">
 
-
         <div class="col-lg-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     {{ Form::label('facebook', Lang::get('settings.social_networks.facebook') ) }}
                 </div>
                 <div class="panel-body">
-                    {{ Form::label('facebook_activate', Lang::get('settings.social_networks.set.activate') ) }}
+                    {{ Form::label('facebook_activate', Lang::get('settings.set.activate') ) }}
                     {!! Form::select('facebook_activate', $setSocialNetworks, ( array_key_exists('facebook_activate', $oData) ? $oData['facebook_activate'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('facebook_authorization', Lang::get('settings.social_networks.set.use_authorization') ) }}
+                    {{ Form::label('facebook_authorization', Lang::get('settings.set.use_authorization') ) }}
                     {!! Form::select('facebook_authorization', $setSocialNetworks, ( array_key_exists('facebook_authorization', $oData) ? $oData['facebook_authorization'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('facebook_repost', Lang::get('settings.social_networks.set.repost_updates') ) }}
+                    {{ Form::label('facebook_repost', Lang::get('settings.set.repost_updates') ) }}
                     {!! Form::select('facebook_repost', $setSocialNetworks, ( array_key_exists('facebook_repost', $oData) ? $oData['facebook_repost'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('facebook_token', Lang::get('settings.social_networks.set.token') ) }}
+                    {{ Form::label('facebook_token', Lang::get('settings.set.token') ) }}
                     {!! Form::text('facebook_token', ( array_key_exists('facebook_token', $oData) ? $oData['facebook_token'] : ''), array('class' => 'form-control')) !!}
                 </div>
                 <div class="panel-footer">
@@ -119,12 +124,26 @@
                     {{ Form::label('google_repost', Lang::get('settings.social_networks.set.repost_updates') ) }}
                     {!! Form::select('google_repost', $setSocialNetworks, ( array_key_exists('google_repost', $oData) ? $oData['google_repost'] : ''), array('class' => 'form-control')) !!}
                     {{ Form::label('google_token', Lang::get('settings.social_networks.set.token') ) }}
-                    {!! Form::text('google_token', ( array_key_exists('google_token', $oData) ? $oData['google_token'] : ''), array('class' => 'form-control')) !!}                </div>
+                    {!! Form::text('google_token', ( array_key_exists('google_token', $oData) ? $oData['google_token'] : ''), array('class' => 'form-control')) !!}
+                </div>
                 <div class="panel-footer">
                     <i class="fa fa-google-plus"></i>
                 </div>
             </div>
         </div>
 
+    </div>
+    <div class="tab-pane fade" id="news-pills">
+        <div class="form-group">
+            {{ Form::label('post_news_updates_on_social_networks', Lang::get('settings.tune-up.post_updates_on_social_networks') ) }}
+            {!! Form::select('post_news_updates_on_social_networks', $setSocialNetworks, ( array_key_exists('post_news_updates_on_social_networks', $oData) ? $oData['post_news_updates_on_social_networks'] : ''), array('class' => 'form-control')) !!}
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="gallery-pills">
+        <div class="form-group">
+            {{ Form::label('post_gallery_updates_on_social_networks', Lang::get('settings.tune-up.post_updates_on_social_networks') ) }}
+            {!! Form::select('post_gallery_updates_on_social_networks', $setSocialNetworks, ( array_key_exists('post_gallery_updates_on_social_networks', $oData) ? $oData['post_gallery_updates_on_social_networks'] : ''), array('class' => 'form-control')) !!}
+        </div>
     </div>
 </div>
