@@ -1,10 +1,11 @@
-<?php namespace App\Http\Controllers;
+<?php 
 
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Socialite;
+use Illuminate\Http\Request;
+use App\Repositories\SocialAccountRepository;
+use Socialite, Redirect, Lang;
 
 class SocialAuthController extends Controller
 {
@@ -17,70 +18,16 @@ class SocialAuthController extends Controller
      * when facebook call us a with token
      *
      */
-    public function facebookCallback()
+    public function facebookCallback( SocialAccountRepository $service )
     {
-        $providerUser = \Socialite::driver('facebook')->user();
-        // $providerUser->getId();
-        // $providerUser->getNickname();
-        // $providerUser->getName();
-        // $providerUser->getEmail();
-        // $providerUser->getAvatar();
+        $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
+
+        auth()->login($user);
+
+        return Redirect::route('home')
+            ->with('message', array(
+                'code'      => self::$statusOk,
+                'message'   => Lang::get('users.lists.users_logined_facebook') ));
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

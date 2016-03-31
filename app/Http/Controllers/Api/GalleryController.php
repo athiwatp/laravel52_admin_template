@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Sorskod\Larasponse\Larasponse;
-use App\Http\Requests;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use App\Http\Transformers\Gallery as GalleryTransformer;
