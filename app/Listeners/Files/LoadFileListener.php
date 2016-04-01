@@ -138,11 +138,9 @@ class LoadFileListener
             }
         }
 
-        $object = json_decode(json_encode(array(
+        return (object) array(
             'code' => $iReturnCode,
             'filepath' => $sResultFile
-        )), FALSE);
-
-        return $object;
+        );
     }
 }

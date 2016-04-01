@@ -10,6 +10,7 @@ use App\Repositories\ChaptersRepository;
 use Event;
 use Config;
 use App\Events\Files\FileWasLoaded;
+use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
 use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
@@ -134,18 +135,30 @@ class NewsController extends AdminController
     {
         if ( $news = $this->news->store( $request->all() ) ) {
             if ( $request->hasFile('image') ) {
+                $TYPE_NEWS = Config::get('constants.RESOURCES.NEWS');
+
+                // Delete related files
+                if ( false === empty($news['photo']) ) {
+                    Event::fire( new FileWasRemoved(array(
+                        'path' => $news['photo'],
+                        'content_id' => $news['id'],
+                        'content_type' => $TYPE_NEWS,
+                    )));
+                }
+
+                // Upload the the photo
                 $response = Event::fire( new FileWasLoaded(array(
-                    'type' => Config::get('constants.RESOURCES.NEWS'),
-                    'id' => $news->id,
+                    'type' => $TYPE_NEWS,
+                    'id' => $news['id'],
                     'file' => $request->file('image'),
                     'prefix' => '%s',
-                    'date' => $news->date
+                    'date' => $news['date']
                 )));
 
                 $response = $response ? current($response) : null;
 
-                if ($response && $response->code == Config::get('constants.DONE_STATUS.SUCCESS') ) {
-                    $this->news->fixChanges($news->id, [
+                if ($response && $response->code === Config::get('constants.DONE_STATUS.SUCCESS') ) {
+                    $this->news->fixChanges( $news['id'], [
                         'photo' => $response->filepath
                     ]);
                 }

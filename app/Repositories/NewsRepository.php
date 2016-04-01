@@ -46,7 +46,6 @@ class NewsRepository extends BaseRepository {
         $news->type_news    = '1';
         $news->date         = $inputs['date'];
         $news->source       = $inputs['source'];
-        $news->photo        = (isset($inputs['image']) ? $inputs['image'] : null);
         $news->is_published = $inputs['is_published'];
         $news->is_main      = $inputs['is_main'];
         $news->is_important = $inputs['is_important'];
@@ -86,16 +85,10 @@ class NewsRepository extends BaseRepository {
         }
 
         if ( $this->saveNews( $model, $inputs ) ) {
-            return $model;
+            return $model->toArray();
         } else {
             return false;
         }
-    }
-
-    public function fixChanges( $id, $aParams = [] )
-    {
-        $this->model->where('id', $id)
-            ->update($aParams);
     }
 
     /**
