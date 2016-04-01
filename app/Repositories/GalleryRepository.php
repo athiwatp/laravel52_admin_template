@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Gallery as Gallery;
-use Carbon\Carbon, Auth, Lang;
+use Carbon\Carbon, Auth, Lang, Config;
 
 class GalleryRepository extends BaseRepository {
     /**
@@ -41,8 +41,8 @@ class GalleryRepository extends BaseRepository {
         $gallery->description  = $inputs['description'];
         $gallery->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
         $gallery->user_id      = Auth::id();
-        $gallery->filename     = 'name'/*$inputs['filename']*/;
-        $gallery->tp           = '1';
+        // $gallery->filename     = $inputs['filename'];
+        $gallery->tp           = Config::get('constants.GALLERY.PHOTO');
         $gallery->pos          = $inputs['pos'];
 
         $gallery->save();
@@ -70,7 +70,12 @@ class GalleryRepository extends BaseRepository {
 
         $gallery = $this->saveGallery( $model, $inputs );
 
-        // some post creation actions will be required
+        if ( $this->saveGallery( $model, $inputs ) ) {
+            return $model->toArray();
+        } else {
+            return false;
+        }
+
     }
 
     /**
@@ -97,23 +102,23 @@ class GalleryRepository extends BaseRepository {
         $gallery->delete();
     }
 
-    /**
-    * Returns a list of menu types
-    */
-    public static function getTypes() {
-        return array(
-            Gallery::TYPE_VIDEO => Lang::get('gallery.form.type_video'),
-            Gallery::TYPE_PHOTO => Lang::get('gallery.form.type_photo')
-        );
-    }
+    // /**
+    // * Returns a list of menu types
+    // */
+    // public static function getTypes() {
+    //     return array(
+    //         Gallery::TYPE_VIDEO => Lang::get('gallery.form.type_video'),
+    //         Gallery::TYPE_PHOTO => Lang::get('gallery.form.type_photo')
+    //     );
+    // }
 
-    /**
-     * Static list for the menu types
-    */
-    public static function getGalleryTypes()
-    {
-        return array_merge( array(
-            '0' => ' --- ' . Lang::get('gallery.form.select_type_gallery') . ' --- ' ), self::getTypes()
-        );
-    }
+    // /**
+    //  * Static list for the menu types
+    // */
+    // public static function getGalleryTypes()
+    // {
+    //     return array_merge( array(
+    //         '0' => ' --- ' . Lang::get('gallery.form.select_type_gallery') . ' --- ' ), self::getTypes()
+    //     );
+    // }
 }

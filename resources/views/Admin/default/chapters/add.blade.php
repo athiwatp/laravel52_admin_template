@@ -8,11 +8,14 @@
 </div>
 <div class="form-group">
     {{ Form::label('pos', Lang::get('chapters.form.pos') ) }}
-    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
+    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
 </div>
 <div class="form-group">
     {{ Form::label('icon', Lang::get('chapters.form.icon')) }}
     {{ Form::file('icon', array() ) }}
+    @if ( isset($oData) && $oData->icon)
+        <img src="{{ get_file_url($oData->icon, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
+    @endif
 </div>
 <div class="form-group">
     {{ Form::label('is_important', Lang::get('chapters.form.is_active')) }}

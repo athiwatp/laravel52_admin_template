@@ -8,6 +8,7 @@ return array(
         'video_news_management_online' => 'Управление видео новостями на сайте',
         'create_video_news' => 'Создание видео новости',
         'editing_video_news' => 'Редактирование видео новости',
+        'video_news_saved_successfully' => 'Видео новость сохранен успешна!',
         ),
 
     'form' => array(

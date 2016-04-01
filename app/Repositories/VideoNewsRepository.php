@@ -68,8 +68,6 @@ class VideoNewsRepository extends BaseRepository {
         }
 
         $videoNews = $this->saveVideoNews( $model, $inputs );
-
-        // some post creation actions will be required
     }
 
     /**

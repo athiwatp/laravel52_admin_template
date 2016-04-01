@@ -75,13 +75,13 @@
                     {{ Form::label('twitter', Lang::get('settings.social_networks.twitter') ) }}
                 </div>
                 <div class="panel-body">
-                    {{ Form::label('twitter_activate', Lang::get('settings.social_networks.set.activate') ) }}
+                    {{ Form::label('twitter_activate', Lang::get('settings.set.activate') ) }}
                     {!! Form::select('twitter_activate', $setSocialNetworks, ( array_key_exists('twitter_activate', $oData) ? $oData['twitter_activate'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('twitter_authorization', Lang::get('settings.social_networks.set.use_authorization') ) }}
+                    {{ Form::label('twitter_authorization', Lang::get('settings.set.use_authorization') ) }}
                     {!! Form::select('twitter_authorization', $setSocialNetworks, ( array_key_exists('twitter_authorization', $oData) ? $oData['twitter_authorization'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('twitter_repost', Lang::get('settings.social_networks.set.repost_updates') ) }}
+                    {{ Form::label('twitter_repost', Lang::get('settings.set.repost_updates') ) }}
                     {!! Form::select('twitter_repost', $setSocialNetworks, ( array_key_exists('twitter_repost', $oData) ? $oData['twitter_repost'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('twitter_token', Lang::get('settings.social_networks.set.token') ) }}
+                    {{ Form::label('twitter_token', Lang::get('settings.set.token') ) }}
                     {!! Form::text('twitter_token', ( array_key_exists('twitter_token', $oData) ? $oData['twitter_token'] : ''), array('class' => 'form-control')) !!}
                 </div>
                 <div class="panel-footer">
@@ -96,13 +96,13 @@
                     {{ Form::label('linkedIn', Lang::get('settings.social_networks.linkedIn') ) }}
                 </div>
                 <div class="panel-body">
-                    {{ Form::label('linkedIn_activate', Lang::get('settings.social_networks.set.activate') ) }}
+                    {{ Form::label('linkedIn_activate', Lang::get('settings.set.activate') ) }}
                     {!! Form::select('linkedIn_activate', $setSocialNetworks, ( array_key_exists('linkedIn_activate', $oData) ? $oData['linkedIn_activate'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('linkedIn_authorization', Lang::get('settings.social_networks.set.use_authorization') ) }}
+                    {{ Form::label('linkedIn_authorization', Lang::get('settings.set.use_authorization') ) }}
                     {!! Form::select('linkedIn_authorization', $setSocialNetworks, ( array_key_exists('linkedIn_authorization', $oData) ? $oData['linkedIn_authorization'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('linkedIn_repost', Lang::get('settings.social_networks.set.repost_updates') ) }}
+                    {{ Form::label('linkedIn_repost', Lang::get('settings.set.repost_updates') ) }}
                     {!! Form::select('linkedIn_repost', $setSocialNetworks, ( array_key_exists('linkedIn_repost', $oData) ? $oData['linkedIn_repost'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('linkedIn_token', Lang::get('settings.social_networks.set.token') ) }}
+                    {{ Form::label('linkedIn_token', Lang::get('settings.set.token') ) }}
                     {!! Form::text('linkedIn_token', ( array_key_exists('linkedIn_token', $oData) ? $oData['linkedIn_token'] : ''), array('class' => 'form-control')) !!}
                 </div>
                 <div class="panel-footer">
@@ -117,13 +117,13 @@
                     {{ Form::label('google', Lang::get('settings.social_networks.google') ) }}
                 </div>
                 <div class="panel-body">
-                    {{ Form::label('google_activate', Lang::get('settings.social_networks.set.activate') ) }}
+                    {{ Form::label('google_activate', Lang::get('settings.set.activate') ) }}
                     {!! Form::select('google_activate', $setSocialNetworks, ( array_key_exists('google_activate', $oData) ? $oData['google_activate'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('google_authorization', Lang::get('settings.social_networks.set.use_authorization') ) }}
+                    {{ Form::label('google_authorization', Lang::get('settings.set.use_authorization') ) }}
                     {!! Form::select('google_authorization', $setSocialNetworks, ( array_key_exists('google_authorization', $oData) ? $oData['google_authorization'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('google_repost', Lang::get('settings.social_networks.set.repost_updates') ) }}
+                    {{ Form::label('google_repost', Lang::get('settings.set.repost_updates') ) }}
                     {!! Form::select('google_repost', $setSocialNetworks, ( array_key_exists('google_repost', $oData) ? $oData['google_repost'] : ''), array('class' => 'form-control')) !!}
-                    {{ Form::label('google_token', Lang::get('settings.social_networks.set.token') ) }}
+                    {{ Form::label('google_token', Lang::get('settings.set.token') ) }}
                     {!! Form::text('google_token', ( array_key_exists('google_token', $oData) ? $oData['google_token'] : ''), array('class' => 'form-control')) !!}
                 </div>
                 <div class="panel-footer">

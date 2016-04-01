@@ -2,6 +2,7 @@
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Gallery as mGallery;
+use App\Helpers\File as cFile;
 
 class Gallery extends TransformerAbstract
 {
@@ -17,7 +18,7 @@ class Gallery extends TransformerAbstract
         return [
             'id' => (int) $gallery->id,
             'title' => $gallery->title,
-            'filename' => url($gallery->filename)
+            'filename' => ( $gallery->filename ? cFile::getImagePathURL( $gallery->filename, 'box2' ) : '' )
         ];
     }
 }

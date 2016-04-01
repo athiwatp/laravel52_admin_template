@@ -140,7 +140,7 @@ class VideoNewsController extends AdminController
         return Redirect::route('admin.videoNews.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get('$sMessage')
+                'message'   => Lang::get('videoNews.lists.video_news_saved_successfully')
             ));
     }
 

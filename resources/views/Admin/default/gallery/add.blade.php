@@ -11,15 +11,14 @@
     {{ Form::select('chapter', $aChapter, ( isset($oData) ? $oData->chapter_id : null), array('class' => 'form-control')) }}
 </div>
 <div class="form-group">
-    {{ Form::label('type', Lang::get('gallery.form.type') ) }}
-    {{ Form::select('type', $sType, ( isset($oData) ? $oData->tp : null), array('class' => 'form-control')) }}
-</div>
-<div class="form-group">
     {{ Form::label('pos', Lang::get('table_field.lists.pos') ) }}
-    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control')) }}
+    {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
 </div>
 <div class="form-group">
-    {{ Form::label('file', Lang::get('gallery.form.file')) }}
-    {{ Form::file('file', array() ) }}
+    {{ Form::label('filename', Lang::get('gallery.form.file')) }}
+    {{ Form::file('filename', array() ) }}
+    @if ( isset($oData) && $oData->filename)
+        <img src="{{ get_file_url($oData->filename, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
+    @endif
 </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}

@@ -7,9 +7,11 @@ use App\Http\Requests\GalleryRequest;
 use App\Repositories\GalleryRepository;
 use App\Repositories\ChaptersRepository;
 
+use App\Events\Files\FileWasLoaded;
+use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config, Event;
 
 class GalleryController extends AdminController
 {
@@ -119,7 +121,6 @@ class GalleryController extends AdminController
             ),
             'formContent' => $this->renderView('gallery.add', array(
                 'oData' => null,
-                'sType' => $gallery->getGalleryTypes(),
                 'aChapter' => $chapters->getComboList( 1 /*Chapters::TYPE_GALLERY*/ ),
             )),
             'formUrl' => URL::route('admin.gallery.store'),
@@ -134,7 +135,38 @@ class GalleryController extends AdminController
      */
     public function store( GalleryRequest $request )
     {
-        $this->gallery->store( $request->all() );
+        // $this->gallery->store( $request->all() );
+        if ( $gallery = $this->gallery->store( $request->all() ) ) {
+            if ( $request->hasFile('filename') ) {
+                $TYPE_GALLERY = Config::get('constants.RESOURCES.PHOTO_GALLERY');
+
+                // Delete related files
+                if ( false === empty($gallery['filename']) ) {
+                    Event::fire( new FileWasRemoved(array(
+                        'path' => $gallery['filename'],
+                        'content_id' => $gallery['id'],
+                        'content_type' => $TYPE_GALLERY,
+                    )));
+                }
+
+                // Upload the the photo
+                $response = Event::fire( new FileWasLoaded(array(
+                    'type' => $TYPE_GALLERY,
+                    'id' => $gallery['id'],
+                    'file' => $request->file('filename'),
+                    'prefix' => '%s',
+                    'date' => Carbon::now()->toDateString()
+                )));
+
+                $response = $response ? current($response) : null;
+
+                if ($response && $response->code === Config::get('constants.DONE_STATUS.SUCCESS') ) {
+                    $this->gallery->fixChanges( $gallery['id'], [
+                        'filename' => $response->filepath
+                    ]);
+                }
+            }
+        }
 
         return Redirect::route('admin.gallery.index')
             ->with('message', array(
@@ -186,7 +218,6 @@ class GalleryController extends AdminController
             ),
             'formContent' => $this->renderView('gallery.add', array(
                 'oData' => $this->gallery->edit( $id ),
-                'sType' => $gallery->getGalleryTypes(),
                 'aChapter' => $chapters->getComboList( 1 /*Chapters::TYPE_GALLERY*/ ),
             )),
             'formUrl' => URL::route('admin.gallery.store'),

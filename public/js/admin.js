@@ -35278,7 +35278,7 @@ module.exports = {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data);
 
-            return '<a href="/admin/chapter/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/chapter/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>' + (row.icon ? '<br><img width="100" height="50" src="' + row.icon + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
     }, {

@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class VideoNews extends Model {
+class VideoNews extends Model
+{
 
     /**
      * The database table used by the model

@@ -2,7 +2,7 @@
 
 use App\Models\Menues as Menues;
 use App\Models\UrlHistory as UrlHistory;
-use Carbon\Carbon, Lang, Auth, cTrackChangesUrl;
+use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
 
 class MenuesRepository extends BaseRepository {
     /**
@@ -49,7 +49,7 @@ class MenuesRepository extends BaseRepository {
         $menu->url          = $inputs['url'];
         $menu->user_id      = Auth::id();
         $menu->redirect_url = ( isset($inputs['redirect_url']) ? $inputs['redirect_url'] : null );
-        $menu->children_count   = $oMenus['children_count'];
+        $menu->children_count   = ( isset($oMenus['children_count']) ? $oMenus['children_count'] : 0);
         $menu->is_published     = $inputs['is_published'];
         $menu->is_redirectable  = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
         $menu->is_loaded_by_default   = ( isset($inputs['is_loaded_by_default']) ? $inputs['is_loaded_by_default'] : 0);
@@ -82,7 +82,7 @@ class MenuesRepository extends BaseRepository {
             $sSaveUrlHistory = cTrackChangesUrl::getItems(
                 array(
                     'aData' => array(
-                        'content_type' => UrlHistory::TYPE_MENU,
+                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_MENU'),
                         'url' => $inputs['url'],
                         'type_id' => $inputs['id']
                     )
@@ -121,10 +121,10 @@ class MenuesRepository extends BaseRepository {
     */
     public static function getTypes() {
         return array(
-            Menues::TYPE_MAIN => Lang::get('menues.form.type_main'),
-            Menues::TYPE_SIDE => Lang::get('menues.form.type_side'),
-            Menues::TYPE_FOOTER => Lang::get('menues.form.type_footer'),
-            Menues::TYPE_HIDDEN_PAGE => Lang::get('menues.form.type_hidden_page')
+            Config::get('constants.TYPE_MENU.MAIN') => Lang::get('menues.form.type_main'),
+            Config::get('constants.TYPE_MENU.SIDE') => Lang::get('menues.form.type_side'),
+            Config::get('constants.TYPE_MENU.FOOTER') => Lang::get('menues.form.type_footer'),
+            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
         );
     }
 
@@ -146,21 +146,21 @@ class MenuesRepository extends BaseRepository {
             ->orderBy('title');
 
         if ($bAllMenu === false) {
-            $oAllMenu->where('is_published', '=', self::IS_PUBLISHED);
+            $oAllMenu->where('is_published', '=', Config::get('constants.DONE_STATUS.SUCCESS') );
         }
 
         return $oAllMenu;
     }
 
     public static function getReadyUrl( $children_count, $iParentId, $iOldParentId ) {
-        // var_dump( $children_count, $iParentId, $iOldParentId ); exit;
+
         if ( $iParentId != $iOldParentId ) {
             if ( empty($iParentId) && $iOldParentId > 0) {
                 if ($oParentMenu = Menues::find($iOldParentId)) {
                     $oMenus['children_count'] = $oParentMenu->children_count - 1;
                 }
 
-                $oMenus['path'] = Menues::getParentPath($iOldParentId, $oMenu->path, 'remove');
+                $oMenus['path'] = self::getParentPath($iOldParentId, $oMenu->path, 'remove');
             } else {
                 $oParentMenu = Menues::find($iParentId);
                 
@@ -239,18 +239,18 @@ class MenuesRepository extends BaseRepository {
     */
     public static function getComboList()
     {
+        $oItems = array();
         $aItems = array(
             '-1' => ' --- ' . Lang::get('menues.form.select_menu') . ' --- ',
             '0' => ' *** ' . Lang::get('menues.form.select_root_menu') . ' *** ',
         );
+
         $oAllMenu = self::getMenu(true)->orderBy('path')
             ->orderBy('pos')
             ->orderBy('title')
             ->get();
 
         $aTree  = self::buildTree($oAllMenu ? $oAllMenu->toArray() : array() );
-        // print_r( $oAllMenu->toArray() ); exit;
-        $oItems = array();
 
         if ( $aTree ) {
             $oItems = self::shifterForMenu($aTree);

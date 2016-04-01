@@ -76,7 +76,7 @@ class NewsRepository extends BaseRepository {
             cTrackChangesUrl::getItems(
                 array(
                     'aData' => array(
-                        'content_type' => UrlHistory::TYPE_NEWS,
+                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_NEWS'),
                         'url' => $inputs['url'],
                         'type_id' => $inputs['id']
                     )

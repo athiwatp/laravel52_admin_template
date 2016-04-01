@@ -2,7 +2,7 @@
 
 use App\Models\Pages as Pages;
 use App\Models\UrlHistory as UrlHistory;
-use Carbon\Carbon, Auth, Lang, cTrackChangesUrl;
+use Carbon\Carbon, Auth, Lang, Config, cTrackChangesUrl;
 
 class PagesRepository extends BaseRepository {
     /**
@@ -73,7 +73,7 @@ class PagesRepository extends BaseRepository {
             $sSaveUrlHistory = cTrackChangesUrl::getItems(
                 array(
                     'aData' => array(
-                        'content_type' => UrlHistory::TYPE_PAGE,
+                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_PAGE'),
                         'url' => $inputs['url'],
                         'type_id' => $inputs['id']
                     )
@@ -117,7 +117,7 @@ class PagesRepository extends BaseRepository {
             '-1' => ' --- ' . Lang::get('pages.lists.select_pages') . ' --- ',
             0 => ' *** ' . Lang::get('pages.lists.create_pages') . ' *** ' );
 
-        $oItems = Pages::where('is_published', '=', Pages::IS_PUBLISHED)
+        $oItems = Pages::where('is_published', '=', Config::get('constants.DONE_STATUS.SUCCESS') )
             ->orderBy('title')
             ->get();
 

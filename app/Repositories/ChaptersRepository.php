@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Chapters as Chapters;
-use Carbon\Carbon, Lang, Auth;
+use Carbon\Carbon, Lang, Auth, Config;
 
 class ChaptersRepository extends BaseRepository {
     /**
@@ -43,7 +43,6 @@ class ChaptersRepository extends BaseRepository {
         $chapter->is_active    = $inputs['is_active'];
         $chapter->type_chapter = ( isset($inputs['sType']) ? $inputs['sType'] : $chapter->type_chapter );
         $chapter->user_id      = Auth::id();
-        $chapter->icon         = ( isset($inputs['icon']) ? $inputs['icon'] : null );
 
         $chapter->save();
 
@@ -70,7 +69,11 @@ class ChaptersRepository extends BaseRepository {
 
         $chapters = $this->saveChapter( $model, $inputs );
 
-        // some post creation actions will be required
+        if ( $this->saveChapter( $model, $inputs ) ) {
+            return $model->toArray();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -102,14 +105,14 @@ class ChaptersRepository extends BaseRepository {
     */
     public static function getComboList( $sChaptersType )
     {
-        if ( $sChaptersType === Chapters::TYPE_CHAPTER ) {
+        if ( $sChaptersType === Config::get('constants.CHAPTER.CHAPTER') ) {
             $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter') . ' --- ' );
         } else {
             $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter_gallery') . ' --- ' );
         }
 
         $oItems = Chapters::where('type_chapter', '=', $sChaptersType)
-            ->where('is_active', '=', Chapters::IS_ACTIVE)
+            ->where('is_active', '=', Config::get('constants.DONE_STATUS.SUCCESS'))
             ->orderBy('pos')
             ->orderBy('title')
             ->get();

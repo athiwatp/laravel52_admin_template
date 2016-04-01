@@ -53,7 +53,7 @@ class UrlHistoryRepository extends BaseRepository {
     */
     public static function getTypeId($url, $aType = null )
     {
-        $aType = (empty($aType) ? UrlHistory::TYPE_MENU : $aType);
+        $aType = (empty($aType) ? Config::get('constants.URL_HISTORY.TYPE_MENU') : $aType);
 
         if ( is_array($aType) === false ) {
             $aType = array($aType);

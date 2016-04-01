@@ -34,7 +34,7 @@
 <div class="form-group">
     {{ Form::label('photo', Lang::get('news.form.photo')) }}
     {{ Form::file('image', array() ) }}
-    @if ($oData->photo)
+    @if ( isset($oData) && $oData->photo)
         <img src="{{ get_file_url($oData->photo, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
     @endif
 </div>

@@ -3,7 +3,6 @@
 use League\Fractal\TransformerAbstract;
 use App\Models\News as Model;
 use App\Helpers\File as cFile;
-use Event, Config;
 
 
 class News extends TransformerAbstract
@@ -25,9 +24,7 @@ class News extends TransformerAbstract
             'published' => (boolean) $news->is_published,
             'main' => (boolean) $news->is_main,
             'important' => (boolean) $news->is_important,
-            'photo' => ( $news->photo ? cFile::getImagePathURL( $news->photo, 'box2' ) : '' ),/*url('uploads/' . Event::fire('getThumbnailSizes', array(array(
-                    'type' => Config::get('constants.RESOURCES.NEWS'),
-                    'image' => $news->photo*/
+            'photo' => ( $news->photo ? cFile::getImagePathURL( $news->photo, 'box2' ) : '' )
         ];
     }
 }

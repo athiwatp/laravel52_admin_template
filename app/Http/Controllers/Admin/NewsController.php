@@ -7,12 +7,10 @@ use App\Http\Requests\NewsRequest;
 use App\Repositories\NewsRepository;
 use App\Repositories\ChaptersRepository;
 
-use Event;
-use Config;
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
 class NewsController extends AdminController
 {
@@ -118,7 +116,7 @@ class NewsController extends AdminController
             ),
             'formContent' => $this->renderView('news.add', array(
                 'oData' => null,
-                'aChapters' => $chapters->getComboList( 0 /*Chapters::TYPE_CHAPTER*/ )
+                'aChapters' => $chapters->getComboList( Config::get('constants.CHAPTER.CHAPTER') )
             )),
             'formUrl' => URL::route('admin.news.store'),
         ));
@@ -203,7 +201,7 @@ class NewsController extends AdminController
             ),
             'formContent' => $this->renderView('news.add', array(
                 'oData' => $this->news->edit( $id ),
-                'aChapters' => $chapters->getComboList(1/* Chapters::TYPE_CHAPTER */)
+                'aChapters' => $chapters->getComboList( Config::get('constants.CHAPTER.CHAPTER') )
             )),
             'formUrl' => URL::route('admin.news.store'),
         ));

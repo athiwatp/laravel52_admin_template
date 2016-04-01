@@ -20,7 +20,7 @@ class GalleryTableSeeder extends Seeder
         foreach (range(1,105) as $index) {
             Gallery::create([
                 'title' => $faker->sentence(10),
-                'tp' => Gallery::TYPE_PHOTO,
+                'tp' => Config::get('constants.GALLERY.PHOTO'),
                 'filename' => $faker->image('public/uploads/gallery/2016/03/30', 300, 300, 'cats'),
                 'pos' => (int)($index % 10 === 0),
                 'user_id' => 1

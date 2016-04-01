@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ChaptersRequest;
 use App\Repositories\ChaptersRepository;
 
+use App\Events\Files\FileWasLoaded;
+use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
 class ChaptersController extends AdminController
 {
@@ -146,7 +148,36 @@ class ChaptersController extends AdminController
      */
     public function store( ChaptersRequest $request )
     {
-        $this->chapters->store( $request->all() );
+        if ( $chapters = $this->chapters->store( $request->all() ) ) {
+            if ( $request->hasFile('icon') ) {
+                $TYPE_CHAPTER = Config::get('constants.RESOURCES.CHAPTER');
+                // Delete related files
+                if ( false === empty($chapters['icon']) ) {
+                    Event::fire( new FileWasRemoved(array(
+                        'path' => $chapters['icon'],
+                        'content_id' => $chapters['id'],
+                        'content_type' => $TYPE_CHAPTER,
+                    )));
+                }
+
+                // Upload the photo
+                $response = Event::fire( new FileWasLoaded(array(
+                    'type' => $TYPE_CHAPTER,
+                    'id' => $chapters['id'],
+                    'file' => $request->file('icon'),
+                    'prefix' => '%s',
+                    'date' => Carbon::now()->toDateString()
+                )));
+
+                $response = $response ? current($response) : null;
+                if ( $response && $response->code === Config::get('constants.DONE_STATUS.SUCCESS') ) {
+                    $this->chapters->fixChanges( $chapters['id'], [
+                        'icon' => $response->filepath
+                    ]);
+                }
+            }
+        }
+        // $this->chapters->store( $request->all() );
 
         return Redirect::route( ($request->sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery') )
             ->with('message', array(
