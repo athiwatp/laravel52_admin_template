@@ -9,13 +9,18 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('content', Lang::get('news.form.content') ) }}
-    {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control ck-edtor')) }}
+    {{ Form::label('date', Lang::get('table_field.lists.date')) }}
+    <div class="input-group date-group">
+        {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control date-controls')) }}
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+        </span>
+    </div>
 </div>
 
 <div class="form-group">
-    {{ Form::label('date', Lang::get('table_field.lists.date') ) }}
-    {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control')) }}
+    {{ Form::label('content', Lang::get('news.form.content') ) }}
+    {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control ck-edtor')) }}
 </div>
 
 <div class="form-group">

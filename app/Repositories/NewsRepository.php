@@ -57,12 +57,11 @@ class NewsRepository extends BaseRepository {
     }
 
     /**
-     * Create a message
+     * Create a news
      *
      * @param array $inputs
-     * @param int $user_id
      *
-     * @return void
+     * @return mixed ( App\Models\News | false )
     */
     public function store( $inputs )
     {
@@ -75,17 +74,28 @@ class NewsRepository extends BaseRepository {
         }
 
         if ( $id > 0 && $model->url != $inputs['url'] ) {
-            $sSaveUrlHistory = cTrackChangesUrl::getItems(
+            cTrackChangesUrl::getItems(
                 array(
                     'aData' => array(
                         'content_type' => UrlHistory::TYPE_NEWS,
                         'url' => $inputs['url'],
                         'type_id' => $inputs['id']
                     )
-                ));
+                )
+            );
         }
 
-        $news = $this->saveNews( $model, $inputs );
+        if ( $this->saveNews( $model, $inputs ) ) {
+            return $model;
+        } else {
+            return false;
+        }
+    }
+
+    public function fixChanges( $id, $aParams = [] )
+    {
+        $this->model->where('id', $id)
+            ->update($aParams);
     }
 
     /**

@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'noanswer@example.com', 'name' => 'Sergey Donchenko'],
 
     /*
     |--------------------------------------------------------------------------
@@ -107,5 +107,12 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    /*
+     |--------
+     |
+     |--------
+     */
+    'pretend' => false
 
 ];

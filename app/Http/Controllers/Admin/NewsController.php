@@ -7,8 +7,10 @@ use App\Http\Requests\NewsRequest;
 use App\Repositories\NewsRepository;
 use App\Repositories\ChaptersRepository;
 
+use Event;
+use Config;
+use App\Events\Files\FileWasLoaded;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
 class NewsController extends AdminController
@@ -130,23 +132,30 @@ class NewsController extends AdminController
      */
     public function store( NewsRequest $request )
     {
-        $this->news->store( $request->all() );
+        if ( $news = $this->news->store( $request->all() ) ) {
+            if ( $request->hasFile('image') ) {
+                $response = Event::fire( new FileWasLoaded(array(
+                    'type' => Config::get('constants.RESOURCES.NEWS'),
+                    'id' => $news->id,
+                    'file' => $request->file('image'),
+                    'prefix' => '%s',
+                    'date' => $news->date
+                )));
+
+                $response = $response ? current($response) : null;
+
+                if ($response && $response->code == Config::get('constants.DONE_STATUS.SUCCESS') ) {
+                    $this->news->fixChanges($news->id, [
+                        'photo' => $response->filepath
+                    ]);
+                }
+            }
+        }
 
         return Redirect::route('admin.news.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
                 'message'   => Lang::get('news.lists.news_saved_successfully') ));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
