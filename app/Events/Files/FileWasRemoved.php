@@ -11,13 +11,22 @@ class FileWasRemoved extends Event
     use SerializesModels;
 
     /**
+     * Set of parameters about the uploaded resource
+     *
+     * @var Array
+     */
+    public $aParams = [];
+
+    /**
      * Create a new event instance.
+     *
+     * @param Array $params - the event params
      *
      * @return void
      */
-    public function __construct()
+    public function __construct( $params )
     {
-        //
+        $this->aParams = $params;
     }
 
     /**

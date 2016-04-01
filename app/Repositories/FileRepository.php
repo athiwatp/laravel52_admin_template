@@ -112,12 +112,36 @@ class FileRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\Gallery
+     * @param Int $id - identificator of the file
      *
-     * @return void
+     * @return Int
      */
-    public function destroy($gallery)
+    public function destroy( $id )
     {
-        $gallery->delete();
+        return $this->model->where('id', $id)
+            ->delete();
+    }
+
+    /**
+     * Return files list by the path
+     *
+     * @param Array $params - paramethers for the query
+     *
+     * @return Array
+    */
+    public function getByPath( $params = [] )
+    {
+        $result = [];
+        $path   = array_key_exists('path', $params) ? str_replace('%s', '%', $params['path']) : '';
+
+        $oQuery = $this->model->where( function($q) use ($path) {
+            $q->whereRaw('path LIKE ?', array( $path ));
+        })->get();
+
+        if ( $oQuery && $oQuery->count() > 0 ) {
+            $result = $oQuery->toArray();
+        }
+
+        return $result;
     }
 }

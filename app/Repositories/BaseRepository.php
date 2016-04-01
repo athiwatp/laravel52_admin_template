@@ -45,4 +45,20 @@ abstract class BaseRepository {
     {
         return $this->model->findOrFail( $id );
     }
+
+    /**
+     * Updates the model by the params
+     *
+     * @param Int $id - identificator
+     * @param Array $aParams  - the list of fields that should be updated
+     *
+     * @return Object
+    */
+    public function fixChanges( $id, $aParams = [] )
+    {
+        $this->model->where('id', $id)
+            ->update($aParams);
+
+        return $this->model;
+    }
 }
