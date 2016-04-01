@@ -30,7 +30,7 @@ module.exports = {
         }, {
             render: function( data ) {
                 var img = '';
-// console.log( 'data =', data );
+
                 img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
 
                 return img;

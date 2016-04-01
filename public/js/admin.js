@@ -35324,7 +35324,7 @@ module.exports = {
     }, {
         render: function render(data) {
             var img = '';
-            // console.log( 'data =', data );
+
             img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
 
             return img;
@@ -35423,7 +35423,7 @@ module.exports = {
                 important = '<i class="fa fa-flag yellow"></i> ';
             }
 
-            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + main + important + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + main + important + system.ellipsis(noTags, 100) + '</a>' + (row.photo ? '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
     }],

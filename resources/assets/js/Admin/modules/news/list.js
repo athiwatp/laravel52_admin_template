@@ -44,7 +44,9 @@ module.exports = {
 
                 return '<a href="/admin/news/'+ row.id + '/edit" title="' + noTags + '">' +
                     published + ' ' + main + important + system.ellipsis( noTags, 100 ) +
-                '</a>';
+                '</a>' + ( row.photo?
+                    '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">':
+                    '');
             },
             targets: 2
         }

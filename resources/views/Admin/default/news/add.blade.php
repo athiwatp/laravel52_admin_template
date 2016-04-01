@@ -34,6 +34,9 @@
 <div class="form-group">
     {{ Form::label('photo', Lang::get('news.form.photo')) }}
     {{ Form::file('image', array() ) }}
+    @if ($oData->photo)
+        <img src="{{ get_file_url($oData->photo, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
+    @endif
 </div>
 <div class="form-group">
     {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}

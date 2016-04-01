@@ -77,6 +77,30 @@ class File {
     }
 
     /**
+    * Returns browser oriented path
+    */
+    public static function getURL( $sPath )
+    {
+        return url( self::getPublicPath() . DIRECTORY_SEPARATOR . $sPath);
+    }
+
+    /**
+     * Return specific path for the Image
+     * 
+     * @param  string $sPath Path like 2015/12/5/%sasdasdasdasdasdasdkaslkdlaskdlasld.jpeg
+     * @param  string $sBox  box type, for example box1
+     * 
+     * @return string        full path for the Image
+     */
+    public static function getImagePathURL($sPath, $sBox = '')
+    {
+        $sBox = empty($sBox) ? '' : $sBox . DIRECTORY_SEPARATOR;
+
+        return sprintf(self::getURL($sPath), $sBox);
+    }
+
+
+    /**
      * Check if file is image
      *
      * @param String $sMimeType - mime type
