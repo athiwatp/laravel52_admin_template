@@ -4,6 +4,10 @@
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
+    Route::get('/redirect', 'SocialAuthController@facebookRedirect');
+
+    Route::get('/callback', 'SocialAuthController@facebookCallback');
+
     Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index') );
 });
 
@@ -51,7 +55,6 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     Route::resource('users', 'Api\UsersController', ['only' => ['index', 'show']]);
     Route::resource('menu', 'Api\MenuController', ['only' => ['index', 'show']]);
     Route::resource('video-news', 'Api\VideoNewsController', ['only' => ['index', 'show']]);
-    Route::resource('menu', 'Api\MenuesController', ['only' => ['index', 'show']]);
     Route::resource('pages', 'Api\PagesController', ['only' => ['index', 'show']]);
     // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
     Route::resource('gallery', 'Api\GalleryController', ['only' => ['index', 'show']]);

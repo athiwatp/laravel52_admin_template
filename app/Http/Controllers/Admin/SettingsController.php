@@ -62,6 +62,7 @@ class SettingsController extends AdminController
             ),
             'formContent' => $this->renderView('settings.add', array(
                 'oData' => $aData,
+                'setSocialNetworks' => $this->settings->setSocialNetworks()
             )),
             'formUrl' => URL::route('admin.settings.store'),
         ));

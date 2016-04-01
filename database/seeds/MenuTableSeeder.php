@@ -12,14 +12,37 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
-        Menu::where('id', 'like', '%%')->delete();
+        Menu::create([
+            'id' => 1,
+            'title' => 'Главная',
+            'type_menu' => Menu::TYPE_MAIN,
+            'is_published' => Menu::IS_PUBLISHED,
+            'is_loaded_by_default' => 1,
+            'pos' => 0,
+            'url' => 'index',
+            'user_id' => 1
+        ]);
 
-        Menu::create(array(
-            'title'      => 'Главная',
-            'type_menu'  => Menu::TYPE_MAIN,
-            'pos'  => 0,
-            'is_published'  => '1',
-            'is_loaded_by_default'  => '1'
-        ));
+        Menu::create([
+            'id' => 2,
+            'title' => 'О Нас',
+            'type_menu' => Menu::TYPE_MAIN,
+            'is_published' => Menu::IS_PUBLISHED,
+            'is_loaded_by_default' => 1,
+            'pos' => 1,
+            'url' => 'about',
+            'user_id' => 1
+        ]);
+
+        Menu::create([
+            'id' => 3,
+            'title' => 'Контакты',
+            'type_menu' => Menu::TYPE_MAIN,
+            'is_published' => Menu::IS_PUBLISHED,
+            'is_loaded_by_default' => 1,
+            'pos' => 2,
+            'url' => 'contact',
+            'user_id' => 1
+        ]);
     }
 }

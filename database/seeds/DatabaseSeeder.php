@@ -11,8 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserTableSeeder::class);
-        $this->command->info('Таблица пользователей заполнена данными!');
+        // $this->call(UserTableSeeder::class);
+        // $this->command->info('Таблица пользователей заполнена данными!');
 
         $this->call(NewsChapterTableSeeder::class);
         $this->command->info('Таблица Разделов - заполнена данными!');
@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MenuTableSeeder::class);
         $this->command->info('Таблица Меню - заполнена данными!');
+
+        $this->call(PagesTableSeeder::class);
+        $this->command->info('Таблица Статические страници - заполнена данными!');
+
+        $this->call(GalleryTableSeeder::class);
+        $this->command->info('Таблица Геререя - заполнена данными!');
 
     }
 }

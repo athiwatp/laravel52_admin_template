@@ -8,7 +8,6 @@ module.exports = {
      **/
     getModule: function(path) {
         var mod = null;
-
         switch(path) {
             case 'news/list':
                 mod = require('./news/list.js');
@@ -16,6 +15,10 @@ module.exports = {
 
             case 'chapters/list':
                 mod = require('./chapters/list.js');
+                break;
+
+            case 'gallery/list':
+                mod = require('./gallery/list.js');
                 break;
 
             case 'pages/list':

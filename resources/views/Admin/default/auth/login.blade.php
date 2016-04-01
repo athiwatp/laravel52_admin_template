@@ -57,6 +57,20 @@
                                 <a class="btn btn-link" href="{{ url('/password/reset') }}">{{ Lang::get('users.auth.forgot_your_password') }}</a>
                             </div>
                         </div>
+                        <div class="col-sm-offset-3 social-login">
+                            <h3>Вход с помощью социальных сетей</h3>
+                            <div class="social-login-buttons">
+                                <a class="btn btn-link-2 facebook" href="redirect">
+                                    <i class="fa fa-facebook"></i> Facebook
+                                </a>
+                                <a class="btn btn-link-2 twitter" href="#">
+                                    <i class="fa fa-twitter"></i> Twitter
+                                </a>
+                                <a class="btn btn-link-2 google-plus" href="#">
+                                    <i class="fa fa-google-plus"></i> Google Plus
+                                </a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

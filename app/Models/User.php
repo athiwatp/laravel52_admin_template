@@ -7,6 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
 
+    const ADMIN = '1';
+    const USER = '0';
+
+    const IS_VERIFIED = '1';
+    const NOT_VERIFIED = '0';
+
     /**
      * The database table used by the model.
      *
