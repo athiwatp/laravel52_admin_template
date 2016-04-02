@@ -15,6 +15,10 @@ return array(
         'gallery' => 'Фото-галерея',
         'gallery_chapter' => 'Разделы',
         'photo_gallery' => 'Галерея',
+        'employment' => 'Трудоустройство',
+        'job_categories' => 'Категории вакансий',
+        'vacancies' => 'Вакансии',
+        'contracting_parties' => 'Контрагенты',
         ),
 
     'lists' => array(

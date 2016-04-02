@@ -315,6 +315,31 @@ class MenuesRepository extends BaseRepository {
                 ) 
             ),
 
+            'employment' => array(
+                'title' => Lang::get('menues.nav.employment'),
+                'leftIcon' => '<i class="fa fa-briefcase"></i>',
+                'rightIcon' => '<span class="fa arrow"></span>',
+                'children' => array(
+                    'job_categories' => array(
+                        'title' => Lang::get('menues.nav.job_categories'),
+                        'icon' => '<i class="fa fa-list-ol"></i>',
+                        'route' => 'admin.chapter.job'
+                    ),
+
+                    'vacancies' => array(
+                        'title' => Lang::get('menues.nav.vacancies'),
+                        'icon' => '<i class="fa fa-th-list"></i>',
+                        'route' => 'admin.vacancies.index'
+                    ),
+
+                    'contracting_parties' => array(
+                        'title' => Lang::get('menues.nav.contracting_parties'),
+                        'icon' => '<i class="fa fa-file-text"></i>',
+                        'route' => 'admin.contractingParties.index'
+                    )
+                ) 
+            ),
+
             'gallery' => array(
                 'title' => Lang::get('menues.nav.gallery'),
                 'leftIcon' => '<i class="fa fa-picture-o"></i>',

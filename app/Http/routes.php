@@ -23,6 +23,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // Module to handle the Chapters the system
     Route::get('chapter/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Admin\ChaptersController@indexGallery'));
 
+    // Module to handle the Chapters the system
+    Route::get('chapter/job', array('as' => 'admin.chapter.job', 'uses' => 'Admin\ChaptersController@indexJob'));
+
     // Chapters
     Route::resource('chapter', 'Admin\ChaptersController');
 
@@ -34,6 +37,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // User resource
     Route::resource('users', 'Admin\UsersController');
+
+    // Contracting Parties resource
+    Route::resource('contractingParties', 'Admin\ContractingPartiesController');
+
+    // Vacancies resource
+    Route::resource('vacancies', 'Admin\VacanciesController');
 
     // Module to handle the Video News in the system
     Route::resource('videoNews', 'Admin\VideoNewsController');
@@ -52,6 +61,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     Route::resource('news', 'Api\NewsController', ['only' => ['index', 'show']]);
     Route::resource('chapters', 'Api\ChapterController', ['only' => ['index', 'show']]);
     Route::resource('pages', 'Api\PagesController', ['only' => ['index', 'show']]);
+    Route::resource('vacancies', 'Api\VacanciesController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Api\UsersController', ['only' => ['index', 'show']]);
     Route::resource('menu', 'Api\MenuController', ['only' => ['index', 'show']]);
     Route::resource('video-news', 'Api\VideoNewsController', ['only' => ['index', 'show']]);

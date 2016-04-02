@@ -42,6 +42,17 @@ class ChaptersController extends AdminController
     {
         return $this->index( $sType );
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexJob( $sType = '2' )
+    {
+        return $this->index( $sType );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -51,14 +62,15 @@ class ChaptersController extends AdminController
     {
         $aBreadcrumbs = array(
             ($sType === '0' ? array('url' => '#', 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')) :
-            array('url' => '#', 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')) )
+            $sType === '1' ? array('url' => '#', 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')) :
+            array('url' => '#', 'icon' => '<i class="fa fa-list-ol"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_jobs')) )
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
             'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-            'sTitle' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
-            'sSubTitle' => ( $sType === '0' ? Lang::get('chapters.lists.chapters') : Lang::get('chapters.lists.gallery') ),
-            'sBoxTitle' => ( $sType === '0' ? Lang::get('chapters.lists.lists_chapters') : Lang::get('chapters.lists.lists_chapters_gallery') ),
+            'sTitle' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : $sType === '1' ? Lang::get('chapters.lists.management_chapters_gallery') : Lang::get('chapters.lists.management_chapters_job') ),
+            'sSubTitle' => ( $sType === '0' ? Lang::get('chapters.lists.chapters') : $sType === '1' ? Lang::get('chapters.lists.gallery') : Lang::get('chapters.lists.jobs') ),
+            'sBoxTitle' => ( $sType === '0' ? Lang::get('chapters.lists.lists_chapters') : $sType === '1' ? Lang::get('chapters.lists.lists_chapters_gallery') : Lang::get('chapters.lists.lists_chapters_jobs') ),
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('chapters.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
@@ -86,7 +98,10 @@ class ChaptersController extends AdminController
                         'url' => URL::route('admin.chapter.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_chapter', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.chapter.index') )
+                        'aParams' => array(
+                            'id' => 'refresh_chapter',
+                            'class' => 'refresh-btn',
+                            'data-url' => URL::route( ( $sType === '0' ? 'admin.chapter.index' : $sType === '1' ? 'admin.chapter.gallery' : 'admin.chapter.job') ) )
                     )
                 ),
                 'sType' => $sType
@@ -102,28 +117,33 @@ class ChaptersController extends AdminController
      */
     public function create( ChaptersRequest $request )
     {
-        if ( $request->sType === '0' ) {
+        if ( $request->sType === '1' ) {
+            $aBreadcrumbs = array(
+                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
+                array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_gallery'))
+            );
+        } else if ( $request->sType === '2' ) {
+            $aBreadcrumbs = array(
+                array('url' => URL::route('admin.chapter.job'), 'icon' => '<i class="fa fa-list-ol"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_jobs')),
+                array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_job'))
+            );
+        } else {
             $aBreadcrumbs = array(
                 array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
                 array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter'))
             );
-            
-        } else {
-            $aBreadcrumbs = array(
-                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
-                array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_gallery'))
-        );
         }
+
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => ( $request->sType === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
+            'formChapter' => ( $request->sType === '0' ? Lang::get('chapters.lists.management_chapters') : $request->sType === '1' ? Lang::get('chapters.lists.management_chapters_gallery') : Lang::get('chapters.lists.management_chapters_job') ),
             'formSubChapter' => '',
-            'formTitle' => ( $request->sType === '0' ? Lang::get('chapters.lists.create_new_chapter') : Lang::get('chapters.lists.create_new_chapter_gallery') ),
+            'formTitle' => ( $request->sType === '0' ? Lang::get('chapters.lists.create_new_chapter') : $request->sType === '1' ? Lang::get('chapters.lists.create_new_chapter_gallery') : Lang::get('chapters.lists.create_new_chapter_job') ),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => ( $request->sType === '0' ? URL::route('admin.chapter.index') : URL::route('admin.chapter.gallery') ), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => ( $request->sType === '0' ? URL::route('admin.chapter.index') : $request->sType === '1' ? URL::route('admin.chapter.gallery') : URL::route('admin.chapter.job') ), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -179,11 +199,11 @@ class ChaptersController extends AdminController
         }
         // $this->chapters->store( $request->all() );
 
-        return Redirect::route( ($request->sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery') )
+        return Redirect::route( ($request->sType === '0' ? 'admin.chapter.index' : $request->sType === '1' ? 'admin.chapter.gallery' : 'admin.chapter.job' ) )
             ->with('message', array(
                 'code'      => self::$statusOk,
                 'message'   => Lang::get(
-                    ($request->sType === '0' ? 'chapters.message.store_chapter' : 'chapters.message.store_gallery') 
+                    ($request->sType === '0' ? 'chapters.message.store_chapter' : $request->sType === '1' ? 'chapters.message.store_gallery' : 'chapters.message.store_chapter_job') 
             )));
     }
 
@@ -207,29 +227,35 @@ class ChaptersController extends AdminController
     public function edit( $id )
     {
         $oData = $this->chapters->edit( $id );
+        $sType = $oData->type_chapter;
 
-        if ( $oData->type_chapter === '0' ) {
-            $aBreadcrumbs = array(
-                array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
-                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter'))
-            );
-        } else {
+        if ( $sType === '1' ) {
             $aBreadcrumbs = array(
                 array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
                 array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_gallery'))
+            );
+        } else if ( $sType === '2') {
+            $aBreadcrumbs = array(
+                array('url' => URL::route('admin.chapter.job'), 'icon' => '<i class="fa fa-list-ol"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_jobs')),
+                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_job'))
+            );
+        } else {
+            $aBreadcrumbs = array(
+                array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
+                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter'))
             );
         }
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => ( $oData->type_chapter === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
+            'formChapter' => ( $sType === '0' ? Lang::get('chapters.lists.management_chapters') : $sType === '1' ? Lang::get('chapters.lists.management_chapters_gallery') : Lang::get('chapters.lists.management_chapters_job') ),
             'formSubChapter' => '',
-            'formTitle' => ( $oData->type_chapter === '0' ? Lang::get('chapters.lists.editing_chapter') : Lang::get('chapters.lists.editing_chapter_gallery') ),
+            'formTitle' => ( $sType === '0' ? Lang::get('chapters.lists.editing_chapter') : $sType === '1' ? Lang::get('chapters.lists.editing_chapter_gallery') : Lang::get('chapters.lists.editing_chapter_job') ),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route( ( $oData->type_chapter === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery' ) ), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route( ( $sType === '0' ? 'admin.chapter.index' : $sType === '1' ? 'admin.chapter.gallery' : 'admin.chapter.job' ) ), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
