@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingsRequest;
 use App\Repositories\SettingsRepository;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\Controller;
 use Lang, Redirect, cBreadcrumbs, cForms, URL;
 
 class SettingsController extends AdminController

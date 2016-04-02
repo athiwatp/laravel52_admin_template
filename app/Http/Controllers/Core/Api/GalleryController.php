@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Api;
+<?php namespace App\Http\Controllers\Core\Api;
 
 use Illuminate\Http\Request;
 use Sorskod\Larasponse\Larasponse;

@@ -1,35 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\MenuesRequest;
-use App\Repositories\MenuesRepository;
+use App\Http\Requests\PagesRequest;
 use App\Repositories\PagesRepository;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\Controller;
 use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
-class MenuesController extends AdminController
+class PagesController extends AdminController
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\MenuesRepository
+     * @var App\Repositories\PagesRepository
      */
-    protected $menues;
+    protected $pages;
 
     /**
-     * Create a new MenuesController instance
+     * Create a new PagesController instance
      *
-     * @param App\Repositories\MenuesRepository
+     * @param App\Repositories\PagesRepository
      *
      * @return void
      */
-    public function __construct( MenuesRepository $menues )
+    public function __construct( PagesRepository $pages )
     {
-        $this->menues = $menues;
+        $this->pages = $pages;
     }
 
     /**
@@ -40,51 +39,47 @@ class MenuesController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues'))
+            array('url' => '#', 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
             'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-            'sTitle' => Lang::get('menues.nav.menu_management'),
-            'sSubTitle' => Lang::get('menues.lists.menues_online'),
-            'sBoxTitle' => Lang::get('menues.lists.lists_menues'),
+            'sTitle' => Lang::get('pages.lists.pages_management'),
+            'sSubTitle' => Lang::get('pages.lists.pages_management_online'),
+            'sBoxTitle' => Lang::get('pages.lists.page_static_website'),
             'isShownSearchBox' => false,
-            'sContent' => $this->renderView('menues.index', array(
+            'sContent' => $this->renderView('pages.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-                'sColumnsJson' => json_encode(array(
-                    array( 'data'=> 'id' ),
-                    array( 'data' => 'title' )
-                )),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
-                        'url' => URL::route('admin.menu.create'),
+                        'url' => URL::route('admin.pages.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_menu', 'class' => 'add-btn')
+                        'aParams' => array('id' => 'add_page')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_menu', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.menu.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit_page', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_menu', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.menu.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete_pages', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.menu.index'),
+                        'url' => URL::route('admin.pages.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_menu', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu.index') )
+                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
                     )
-                )
+                ),
+                // 'aList' => $this->pages->index()
             ))
         ));
-
     }
 
     /**
@@ -92,23 +87,23 @@ class MenuesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( MenuesRepository $menues, PagesRepository $pages )
+    public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
-            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('menues.lists.create_menues'))
+            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('pages.lists.create_page'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('menues.lists.management_menues'),
+            'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('menues.lists.create_new_menues'),
+            'formTitle' => Lang::get('pages.lists.create_new_pages'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -116,15 +111,11 @@ class MenuesController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('menues.add', array(
-                'aTypeMenues' => $menues->getMenuTypes(),
-                'aMenues' => $menues->getComboList(),
-                'aPages' => $pages->getComboList(),
+            'formContent' => $this->renderView('pages.add', array(
                 'oData' => null
             )),
-            'formUrl' => URL::route('admin.menu.store'),
+            'formUrl' => URL::route('admin.pages.store'),
         ));
-
     }
 
     /**
@@ -133,14 +124,14 @@ class MenuesController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( MenuesRequest $request )
+    public function store( PagesRequest $request )
     {
-        $this->menues->store( $request->all() );
+        $this->pages->store( $request->all() );
 
-        return Redirect::route('admin.menu.index')
+        return Redirect::route('admin.pages.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get('menues.lists.menues_saved_successfully') ));
+                'message'   => Lang::get('pages.lists.pages_saved_successfully') ));
     }
 
     /**
@@ -160,23 +151,23 @@ class MenuesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, MenuesRepository $menues, PagesRepository $pages )
+    public function edit( $id, PagesRepository $pages )
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
-            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('menues.lists.editing_menues'))
+            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('pages.lists.editing_pages'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('menues.lists.management_menues'),
+            'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('menues.lists.editing_menues'),
+            'formTitle' => Lang::get('pages.lists.editing_page'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -184,15 +175,11 @@ class MenuesController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('menues.add', array(
-                'oData' => $this->menues->edit( $id ),
-                'aTypeMenues' => $menues->getMenuTypes(),
-                'aPages' => $pages->getComboList(),
-                'aMenues' => $menues->getComboList()
+            'formContent' => $this->renderView('pages.add', array(
+                'oData' => $this->pages->edit( $id )
             )),
-            'formUrl' => URL::route('admin.menu.store'),
+            'formUrl' => URL::route('admin.pages.store'),
         ));
-
     }
 
     /**

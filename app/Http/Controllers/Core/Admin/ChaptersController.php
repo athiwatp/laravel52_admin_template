@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ChaptersRequest;
@@ -9,7 +9,7 @@ use App\Repositories\ChaptersRepository;
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\Controller;
 use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
 class ChaptersController extends AdminController
