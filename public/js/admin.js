@@ -34764,7 +34764,7 @@ $(function () {
     });
 });
 
-},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":26,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
+},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":25,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35164,10 +35164,6 @@ module.exports = {
                 mod = require('./gallery/list.js');
                 break;
 
-            case 'vacancies/list':
-                mod = require('./vacancies/list.js');
-                break;
-
             case 'pages/list':
                 mod = require('./pages/list.js');
                 break;
@@ -35189,7 +35185,7 @@ module.exports = {
     }
 };
 
-},{"./chapters/list.js":18,"./gallery/list.js":19,"./menu/list.js":20,"./news/list.js":21,"./pages/list.js":22,"./users/list.js":23,"./vacancies/list.js":24,"./video/list.js":25}],15:[function(require,module,exports){
+},{"./chapters/list.js":18,"./gallery/list.js":19,"./menu/list.js":20,"./news/list.js":21,"./pages/list.js":22,"./users/list.js":23,"./video/list.js":24}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35536,43 +35532,6 @@ module.exports = {
 },{"../_System.js":11}],24:[function(require,module,exports){
 'use strict';
 
-var _module$exports;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var system = require('../_System.js').getInstance();
-
-module.exports = (_module$exports = {
-    stateSave: false,
-    /**
-     * Define a list of columns for the grid
-     *
-     * @var Object
-     **/
-    columns: [{ data: 'id' }, { data: 'title' }, { data: 'created' }, { data: 'updated' }, { data: 'published' }]
-
-}, _defineProperty(_module$exports, 'columns', [{ data: 'id' }, { data: 'title' }, { data: 'date' }, { data: 'employer' }, { data: 'city' }]), _defineProperty(_module$exports, 'columnDefs', [{
-    /**
-     * Render date
-     **/
-    render: function render(data) {
-        return system.getFormattedDate(data);
-    },
-    targets: 2
-}, {
-    render: function render(data, type, row) {
-        var noTags = system.stripTags(data);
-
-        return '<a href="/admin/vacancies/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
-    },
-    targets: 1
-}]), _defineProperty(_module$exports, 'ajax', {
-    url: system.getUrl('vacancies')
-}), _module$exports);
-
-},{"../_System.js":11}],25:[function(require,module,exports){
-'use strict';
-
 var system = require('../_System.js').getInstance();
 
 module.exports = {
@@ -35619,7 +35578,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],26:[function(require,module,exports){
+},{"../_System.js":11}],25:[function(require,module,exports){
 'use strict';
 
 /**

@@ -81,8 +81,7 @@ return [
     */
     'CHAPTER' => [
         'CHAPTER' => '0',
-        'GALLERY' => '1',
-        'JOB' => '2'
+        'GALLERY' => '1'
     ]
 
 ];

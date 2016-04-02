@@ -21,10 +21,6 @@ module.exports = {
                 mod = require('./gallery/list.js');
                 break;
 
-            case 'vacancies/list':
-                mod = require('./vacancies/list.js');
-                break;
-
             case 'pages/list':
                 mod = require('./pages/list.js');
                 break;
