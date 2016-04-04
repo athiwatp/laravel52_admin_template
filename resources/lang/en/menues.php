@@ -12,6 +12,7 @@ return array(
         'users_management' => 'URLsers management',
         'content' => 'Content',
         'sidebar_page' => 'Static pages',
+        'customer_reviews' => 'Customer reviews',
         'gallery' => 'Photo gallery',
         'gallery_chapter' => 'Chapters',
         'photo_gallery' => 'Gallery',

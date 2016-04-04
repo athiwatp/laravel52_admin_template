@@ -12,6 +12,7 @@ return array(
         'users_management' => 'Управління користувачами',
         'content' => 'Контент',
         'sidebar_page' => 'Статичні сторінки',
+        'customer_reviews' => 'Відгуки клієнтів',
         'gallery' => 'Фото-галерея',
         'gallery_chapter' => 'Розділи',
         'photo_gallery' => 'Галерея',

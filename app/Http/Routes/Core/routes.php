@@ -32,6 +32,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // Handle the Menu
     Route::resource('menu', 'Core\Admin\MenuesController');
 
+    // Handle the Menu
+    Route::resource('customerReviews', 'Core\Admin\CustomerReviewsController');
+
     // User resource
     Route::resource('users', 'Core\Admin\UsersController');
 
@@ -52,6 +55,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     Route::resource('news', 'Core\Api\NewsController', ['only' => ['index', 'show']]);
     Route::resource('chapters', 'Core\Api\ChapterController', ['only' => ['index', 'show']]);
     Route::resource('pages', 'Core\Api\PagesController', ['only' => ['index', 'show']]);
+    Route::resource('customerReviews', 'Core\Api\CustomerReviewsController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
     Route::resource('menu', 'Core\Api\MenuController', ['only' => ['index', 'show']]);
     Route::resource('video-news', 'Core\Api\VideoNewsController', ['only' => ['index', 'show']]);

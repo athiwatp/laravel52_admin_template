@@ -12,6 +12,7 @@ return array(
         'users_management' => 'Управление пользователями',
         'content' => 'Контент',
         'sidebar_page' => 'Статические страницы',
+        'customer_reviews' => 'Отзывы клиентов',
         'gallery' => 'Фото-галерея',
         'gallery_chapter' => 'Разделы',
         'photo_gallery' => 'Галерея',

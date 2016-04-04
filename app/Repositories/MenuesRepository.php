@@ -267,7 +267,7 @@ class MenuesRepository extends BaseRepository {
      * Sidebar menu for administrator
      * @return [type] [description]
      */
-    public static function getAdminSiderbarMenu() 
+    public static function getAdminSiderbarMenu()
     {
         return array(
 
@@ -286,6 +286,11 @@ class MenuesRepository extends BaseRepository {
                         'title' => Lang::get('menues.nav.sidebar_page'),
                         'icon' => '<i class="fa fa-sticky-note"></i>',
                         'route' => 'admin.pages.index'
+                    ),
+                    'customerReviews' => array(
+                        'title' => Lang::get('menues.nav.customer_reviews'),
+                        'icon' => '<i class="fa fa-comment"></i>',
+                        'route' => 'admin.customerReviews.index'
                     )
                 )
             ),

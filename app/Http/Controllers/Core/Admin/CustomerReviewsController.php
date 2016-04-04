@@ -3,32 +3,32 @@
 namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PagesRequest;
-use App\Repositories\PagesRepository;
+use App\Http\Requests\CustomerReviewsRequest;
+use App\Repositories\CustomerReviewsRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
 use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
 
-class PagesController extends AdminController
+class CustomerReviewsController extends AdminController
 {
     /**
      * The MessageRepository instance
      *
-     * @var App\Repositories\PagesRepository
+     * @var App\Repositories\CustomerReviewsRepository
      */
-    protected $pages;
+    protected $customerReviews;
 
     /**
-     * Create a new PagesController instance
+     * Create a new CustomerReviewsController instance
      *
-     * @param App\Repositories\PagesRepository
+     * @param App\Repositories\CustomerReviewsRepository
      *
      * @return void
      */
-    public function __construct( PagesRepository $pages )
+    public function __construct( CustomerReviewsRepository $customerReviews )
     {
-        $this->pages = $pages;
+        $this->customerReviews = $customerReviews;
     }
 
     /**
@@ -39,44 +39,45 @@ class PagesController extends AdminController
     public function index()
     {
         $aBreadcrumbs = array(
-            array('url' => '#', 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
+            array('url' => '#', 'icon' => '<i class="fa fa-comment"></i>', 'title' => Lang::get('customer_reviews.lists.lists_customer_reviews'))
         );
 
         return cTemplate::createSimpleTemplate( $this->getTheme(), array(
             'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
-            'sTitle' => Lang::get('pages.lists.pages_management'),
-            'sSubTitle' => Lang::get('pages.lists.pages_management_online'),
-            'sBoxTitle' => Lang::get('pages.lists.page_static_website'),
+            'sTitle' => Lang::get('customer_reviews.lists.customer_reviews_management'),
+            'sSubTitle' => '',
+            'sBoxTitle' => Lang::get('customer_reviews.lists.customer_reviews_website'),
             'isShownSearchBox' => false,
-            'sContent' => $this->renderView('pages.index', array(
+            'sContent' => $this->renderView('customerReviews.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
-                        'url' => URL::route('admin.pages.create'),
+                        'url' => URL::route('admin.customerReviews.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_page')
+                        'aParams' => array('id' => 'add_customerReviews')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_page', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit_customerReviews', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.customerReviews.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_pages', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete_customerReviews', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.customerReviews.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.pages.index'),
+                        'url' => URL::route('admin.customerReviews.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
+                        'aParams' => array('id' => 'refresh_customerReviews', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.customerReviews.index') )
                     )
-                )
+                ),
+                // 'aList' => $this->pages->index()
             ))
         ));
     }
@@ -89,20 +90,20 @@ class PagesController extends AdminController
     public function create()
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
-            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('pages.lists.create_page'))
+            array('url' => URL::route('admin.customerReviews.index'), 'icon' => '<i class="fa fa-comment"></i>', 'title' => Lang::get('customer_reviews.lists.lists_customer_reviews')),
+            array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('customer_reviews.lists.create_customer_reviews'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('pages.lists.pages_management'),
+            'formChapter' => Lang::get('customer_reviews.lists.customer_reviews_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('pages.lists.create_new_pages'),
+            'formTitle' => Lang::get('customer_reviews.lists.create_new_customer_reviews'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -110,10 +111,10 @@ class PagesController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('pages.add', array(
+            'formContent' => $this->renderView('customerReviews.add', array(
                 'oData' => null
             )),
-            'formUrl' => URL::route('admin.pages.store'),
+            'formUrl' => URL::route('admin.customerReviews.store'),
         ));
     }
 
@@ -123,14 +124,14 @@ class PagesController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( PagesRequest $request )
+    public function store(CustomerReviewsRequest $request)
     {
-        $this->pages->store( $request->all() );
+        $this->customerReviews->store( $request->all() );
 
-        return Redirect::route('admin.pages.index')
+        return Redirect::route('admin.customerReviews.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get('pages.lists.pages_saved_successfully') ));
+                'message'   => Lang::get('customer_reviews.lists.customer_reviews_saved_successfully') ));
     }
 
     /**
@@ -150,23 +151,23 @@ class PagesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
-            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('pages.lists.editing_pages'))
+            array('url' => URL::route('admin.customerReviews.index'), 'icon' => '<i class="fa fa-comment"></i>', 'title' => Lang::get('customer_reviews.lists.lists_customer_reviews')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('customer_reviews.lists.edit'))
         );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => Lang::get('pages.lists.pages_management'),
+            'formChapter' => Lang::get('customer_reviews.lists.customer_reviews_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('pages.lists.editing_page'),
+            'formTitle' => Lang::get('customer_reviews.lists.editing_customer_reviews'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
@@ -174,10 +175,10 @@ class PagesController extends AdminController
                     'params' => array('class'=>'btn-outline btn-primary')
                 )
             ),
-            'formContent' => $this->renderView('pages.add', array(
-                'oData' => $this->pages->edit( $id )
+            'formContent' => $this->renderView('customerReviews.add', array(
+                'oData' => $this->customerReviews->edit( $id )
             )),
-            'formUrl' => URL::route('admin.pages.store'),
+            'formUrl' => URL::route('admin.customerReviews.store'),
         ));
     }
 

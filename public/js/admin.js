@@ -34764,7 +34764,7 @@ $(function () {
     });
 });
 
-},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":25,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
+},{"./modules/_ckeditor.js":12,"./modules/_datatable.js":13,"./modules/_loader.js":14,"./modules/_mask.js":15,"./modules/_metis.js":16,"./modules/_resizer.js":17,"./types/String.js":26,"bootstrap-datepicker":1,"jquery":8}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35168,6 +35168,10 @@ module.exports = {
                 mod = require('./pages/list.js');
                 break;
 
+            case 'customerReviews/list':
+                mod = require('./customerReviews/list.js');
+                break;
+
             case 'menu/list':
                 mod = require('./menu/list.js');
                 break;
@@ -35185,7 +35189,7 @@ module.exports = {
     }
 };
 
-},{"./chapters/list.js":18,"./gallery/list.js":19,"./menu/list.js":20,"./news/list.js":21,"./pages/list.js":22,"./users/list.js":23,"./video/list.js":24}],15:[function(require,module,exports){
+},{"./chapters/list.js":18,"./customerReviews/list.js":19,"./gallery/list.js":20,"./menu/list.js":21,"./news/list.js":22,"./pages/list.js":23,"./users/list.js":24,"./video/list.js":25}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35307,6 +35311,49 @@ module.exports = {
      *
      * @var Object
      **/
+    columns: [{ data: 'id' }, { data: 'title' }, { data: 'date' }],
+
+    /**
+     * Renderer for the columns by the index
+     *
+     * @var Object
+     **/
+    columnDefs: [{
+        render: function render(data) {
+            return system.getFormattedDate(data);
+        },
+        targets: 2
+    }, {
+        render: function render(data, type, row) {
+            var noTags = system.stripTags(data),
+                published = '<i class="fa fa-eye green"></i>';
+
+            if (row.published === false) {
+                published = '<i class="fa fa-eye-slash red"></i>';
+            }
+
+            return '<a href="/admin/customerReviews/' + row.id + '/edit" title="' + noTags + '">' + published + system.ellipsis(noTags, 100) + '</a>';
+        },
+        targets: 1
+    }],
+
+    ajax: {
+        url: system.getUrl('customerReviews')
+    }
+
+};
+
+},{"../_System.js":11}],20:[function(require,module,exports){
+'use strict';
+
+var system = require('../_System.js').getInstance();
+
+module.exports = {
+    /**
+     * Define a list of columns for the grid
+     *
+     * @var Object
+     **/
     columns: [{ data: 'id' }, { data: 'title' }, { data: 'filename' }],
 
     /**
@@ -35338,7 +35385,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],20:[function(require,module,exports){
+},{"../_System.js":11}],21:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35381,7 +35428,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],21:[function(require,module,exports){
+},{"../_System.js":11}],22:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35434,7 +35481,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],22:[function(require,module,exports){
+},{"../_System.js":11}],23:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35481,7 +35528,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],23:[function(require,module,exports){
+},{"../_System.js":11}],24:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35529,7 +35576,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],24:[function(require,module,exports){
+},{"../_System.js":11}],25:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -35578,7 +35625,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":11}],25:[function(require,module,exports){
+},{"../_System.js":11}],26:[function(require,module,exports){
 'use strict';
 
 /**
