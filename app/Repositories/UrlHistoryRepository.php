@@ -65,15 +65,17 @@ class UrlHistoryRepository extends BaseRepository {
             ->first();
 
         if ( $oItems ) {
-            return json_decode(json_encode(array(
+            return (object) array(
                 'id' => $oItems->type_id,
-                'type' => $oItems->type
-            )), FALSE);
+                'type' => $oItems->type,
+                'status' => true
+            );
         }
 
-        return json_decode(json_encode(array(
+        return (object) array(
             'id' => $url,
-            'type' => reset($aType)
-        )), FALSE);
+            'type' => reset($aType),
+            'status' => false
+        );
     }
 }

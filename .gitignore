@@ -1,5 +1,6 @@
 # IDE
 .idea/
+.DS_Store
 
 vendor/
 node_modules/
@@ -8,6 +9,7 @@ node_modules/
 bootstrap/compiled.php
 app/storage/
 public/uploads
+public/.DS_Store
 
 # Laravel 5 & Lumen specific
 bootstrap/cache/
