@@ -13,9 +13,7 @@ class MenuesRequest extends Request {
     {
         //@TODO: Specify here a list of required and mandatory fields
         return [
-//            'name' => 'required|max:255',
-//            'email' => 'required|max:255|email',
-//            'message' => 'required|min:5'
+            //
         ];
     }
 

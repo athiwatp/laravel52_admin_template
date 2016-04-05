@@ -1,16 +1,28 @@
 
-.social-login-buttons{
-    .facebook {
-        background: #3C5899;
-        color: #fff;
+.social-login{
+    margin-left: 10%;
+    margin-right: 10%;
+    h3 {
+        text-align:  center;
     }
-    .twitter {
-        background: #41ABE1;
-        color: #fff;
-    }
-    .google-plus {
-        background: #D94A3A;
-        color: #fff;
+    .social-login-buttons{
+
+        .facebook {
+            background: #3C5899;
+            color: #fff;
+        }
+        .twitter {
+            background: #41ABE1;
+            color: #fff;
+        }
+        .google-plus {
+            background: #D94A3A;
+            color: #fff;
+        }
+        .linked-in {
+            background: #0177B5;
+            color: #fff;
+        }
     }
 }
 .btn-link-2 {

@@ -1,6 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\Menues as Menues;
+use Pingpong\Menus\MenuItem;
 use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
 
@@ -12,8 +13,11 @@ class MenuesRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(Menues $menues)
+    public function __construct( Menues $menues = null )
     {
+        if ( $menues === null ) {
+            $menues = new Menues();
+        }
         $this->model = $menues;
     }
 
@@ -134,10 +138,17 @@ class MenuesRepository extends BaseRepository {
     public static function getMenuTypes()
     {
         return array_merge( array(
-            '0' => ' --- ' . Lang::get('menues.form.select_type_main') . ' --- ' ), self::getTypes() 
+            '0' => ' --- ' . Lang::get('menues.form.select_type_main') . ' --- ' ), self::getTypes()
         );
     }
 
+    /**
+     * Edit or update Message
+     *
+     * @param App\Models\Menues $menues
+     *
+     * @return
+    */
     public static function getMenu($bAllMenu = false)
     {
         $oAllMenu = Menues::select(array('static_menues.*'))
@@ -190,7 +201,6 @@ class MenuesRepository extends BaseRepository {
 
     public static function buildTree(array $elements, $parentId = 0) {
         $branch = array();
-
         foreach ($elements as $element) {
             if ($element['parent_id'] == $parentId) {
                 $children = self::buildTree($elements, $element['id']);
@@ -261,6 +271,66 @@ class MenuesRepository extends BaseRepository {
         }
 
         return $aItems;
+    }
+
+    /**
+     * [getMainMenu description]
+     * @return [type] [description]
+     */
+    public static function getMainMenu()
+    {
+        return self::getMenu()
+            ->where('type_menu', '=', Config::get('constants.TYPE_MENU.MAIN'))
+            ->get();
+    }
+
+    /**
+     * [getFooterMenu description]
+     * @return [type] [description]
+     */
+    public static function getFooterMenu()
+    {
+        return self::getMenu()
+            ->where('type_menu', '=', Config::get('constants.TYPE_MENU.FOOTER') )
+            ->get();
+    }
+
+    /**
+     * [getVerticalMenu description]
+     * @return [type] [description]
+     */
+    public static function getVerticalMenu()
+    {
+        return self::getMenu()
+            ->where('type_menu', '=', Config::get('constants.TYPE_MENU.SIDE') )
+            ->get();
+    }
+
+    /**
+     * [createItem description]
+     * @param  [type] $oMenuItem  [description]
+     * @param  [type] $globalMenu [description]
+     * @return [type]             [description]
+     */
+    public static function createItem($oMenuItem, $globalMenu) {
+
+        if(array_key_exists('children', $oMenuItem) && count($oMenuItem['children']) > 0) {
+            $aSubMenu = $oMenuItem['children'];
+
+            $globalMenu->dropdown($oMenuItem['title'], function(MenuItem $sub) use ($aSubMenu) {
+                //$sub->setPresenter('RightSidebarPresenter');
+
+                foreach($aSubMenu as $subItem) {
+                    if (array_key_exists('children', $subItem) && count($subItem['children']) > 0) {
+                        self::createItem($subItem, $sub);
+                    } else {
+                        $sub->route('menu-show', $subItem['title'], $subItem['url']);
+                    }
+                }
+            });
+        } else {
+            $globalMenu->route('menu-show', $oMenuItem['title'], $oMenuItem['url']);
+        }
     }
 
         /**

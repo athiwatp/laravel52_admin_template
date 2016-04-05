@@ -4,9 +4,9 @@
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
-    Route::get('/redirect', 'Core\SocialAuthController@facebookRedirect');
+    Route::get('/redirect/{provider}', 'Core\SocialAuthController@redirect');
 
-    Route::get('/callback', 'Core\SocialAuthController@facebookCallback');
+    Route::get('/callback/{provider}', 'Core\SocialAuthController@callback');
 
     Route::get('/', array('as' => 'home', 'uses' => 'Core\Face\IndexController@index') );
 });

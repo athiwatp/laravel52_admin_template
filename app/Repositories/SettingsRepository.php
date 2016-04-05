@@ -11,8 +11,12 @@ class SettingsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(Settings $settings)
+    public function __construct(Settings $settings = null )
     {
+        if ( $settings === null ) {
+            $settings = new Settings();
+        }
+
         $this->model = $settings;
     }
 
@@ -53,11 +57,6 @@ class SettingsRepository extends BaseRepository {
             $bResult = $settings->insert($aToInsert);
         }
 
-        /**
-         * NEED TO IMPLEMENT SETTINGS SAVING PROCESS
-        */
-        //$settings->save();
-
         return $bResult;
     }
 
@@ -69,11 +68,9 @@ class SettingsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function store($inputs/*, $user_id*/)
+    public function store($inputs)
     {
-        $settings = $this->saveSettings(new $this->model, $inputs/*, $user_id*/);
-
-        // some post creation actions will be required
+        $settings = $this->saveSettings(new $this->model, $inputs);
     }
 
     /**
@@ -90,9 +87,19 @@ class SettingsRepository extends BaseRepository {
 
     public static function setSocialNetworks() {
         return array(
-        '0' => Lang::get('settings.set.select_set'),
-        'true' => Lang::get('table_field.lists.yes'),
-        'false' => Lang::get('table_field.lists.no')
+        0 => Lang::get('settings.set.select_set'),
+        1 => Lang::get('table_field.lists.yes'),
+        2 => Lang::get('table_field.lists.no')
             );
+    }
+
+    public function getSocialButtons()
+    {
+        $aData = array();
+
+        foreach($this->index() as $item) {
+            $aData[$item->key_name] = $item->value;
+        }
+        return $aData;
     }
 }

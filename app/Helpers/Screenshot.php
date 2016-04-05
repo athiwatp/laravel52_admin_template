@@ -5,9 +5,9 @@ namespace Screenshot;
 class Items {
 
     /**
-     * Return pre-defined list of the breadcrumbs
-     * @param  array  $aItems list of available items for the breadcrumb
-     * @return array           pre-defined list
+     * 
+     * @param  array
+     * @return string
      */
     public static function getItems( $sUrl, $aItems = array() )
     {

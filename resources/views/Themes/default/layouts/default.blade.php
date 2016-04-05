@@ -1,15 +1,15 @@
 <!doctype html>
 <html>
-<head>
-    <meta charset="utf-8">
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
 
-<h1>Default Layout!!!</h1>
+        <h1>Default Layout!!!</h1>
 
-<div class="container">
-    @yield('content')
-</div>
+        <div class="container">
+            @yield('content')
+        </div>
 
-</body>
+    </body>
 </html>
