@@ -8,7 +8,14 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/callback/{provider}', 'Core\SocialAuthController@callback');
 
+    // Home page
     Route::get('/', array('as' => 'home', 'uses' => 'Core\Face\IndexController@index') );
+
+    // Page viewer
+    Route::get('/s/{url}', array('as' => 'page-url', 'uses' => 'Core\Face\PagesController@show') );
+
+    // News viewer
+    Route::get('/n/{url}', array('as' => 'news-url', 'uses' => 'Core\Face\NewsController@show') );
 });
 
 /**
@@ -47,6 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // Module to handle the Gallery in the system
     Route::resource('gallery', 'Core\Admin\GalleryController');
 });
+
 /**
  * API
 */

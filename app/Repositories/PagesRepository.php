@@ -52,6 +52,20 @@ class PagesRepository extends BaseRepository {
     }
 
     /**
+     * Retrive page by the URL
+     *
+    */
+    public function get( $url )
+    {
+        $result = [];
+
+
+        dd( $url );
+
+        return $result;
+    }
+
+    /**
      * Create a message
      *
      * @param array $inputs
@@ -127,6 +141,8 @@ class PagesRepository extends BaseRepository {
 
         return $aItems;
     }
+
+
 
 
 }

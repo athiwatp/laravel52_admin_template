@@ -1,23 +1,21 @@
-<?php
-
-namespace App\Http\Controllers\Core\Face;
+<?php namespace App\Http\Controllers\Core\Face;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\NewsRepository as News;
 
-class IndexController extends FaceController
+class NewsController extends FaceController
 {
     /**
      * Injected news repository object
      *
      * @var Object
-    */
+     */
     protected $news = null;
 
     /**
      *
-    */
+     */
     public function __construct(News $news)
     {
         $this->news = $news;
@@ -26,12 +24,10 @@ class IndexController extends FaceController
     /**
      * Retrive the main page
      */
-    public function index()
+    public function show(Request $request, $url)
     {
-        $latestsNews = $this->news->getLatest( 10 );
-
-        return $this->renderView('index.index', [
-            'lNews' => $latestsNews
+        return $this->renderView('news.show', [
+            'news' => $this->news->getByUrl( $url )
         ]);
     }
 }

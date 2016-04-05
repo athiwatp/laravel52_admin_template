@@ -1,10 +1,18 @@
 <?php namespace App\Repositories;
 
 use App\Models\News as News;
-use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Auth, cTrackChangesUrl;
+use Config;
 
 class NewsRepository extends BaseRepository {
+
+    /**
+     * URL History
+     *
+     * @var Object history
+    */
+    protected $history = null;
+
     /**
      * Create a new Message instance
      *
@@ -12,21 +20,73 @@ class NewsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(News $news)
+    public function __construct(News $news, UrlHistoryRepository $history)
     {
+        // News Model
         $this->model = $news;
+
+        // History
+        $this->history = $history;
     }
 
-        /**
+    /**
      * Create or update Message
      *
      * @param App\Models\News $news
      *
-     * @return
+     * @return Collection of Object
     */
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Retrieve the latest news from DB
+     *
+     * @param int $amount - amount of records that we need to retrieve
+     *
+     * @return Array
+    */
+    public function getLatest( $amount )
+    {
+        $result = $this->model
+            ->orderBy('date', 'DESC')
+            ->take( $amount )
+            ->get();
+
+        if ( $result ) {
+            return $result->toArray();
+        }
+
+        return [];
+    }
+
+    /**
+     * Returns the NEWS item by the given URL
+     *
+     * @param String $url - url identifier
+     *
+     * @return Array
+    */
+    public function getByUrl( $url )
+    {
+        if ( empty($url) ) {
+            return [];
+        }
+
+        $obj = $this->history
+            ->getTypeId($url, Config::get('constants.URL_HISTORY.TYPE_NEWS'));
+
+        if ( $obj && $obj->status === true ) {
+            $result = $this->getById( $obj->id );
+
+            if ( $result ) {
+                return $result->toArray();
+            }
+        }
+
+        return [];
     }
 
     /**
