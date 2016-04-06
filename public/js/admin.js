@@ -45345,48 +45345,60 @@ module.exports = {
 var Vue = require('Vue');
 
 module.exports = new Vue({
-    el: '#admin_menu_form',
+  el: '#admin_menu_form',
 
-    data: {
-        menu: {
-            title: null
-        }
-    },
+  data: {
+    menu: {
+      title: null,
 
-    /**
-     * Init form
-     **/
-    init: function init() {},
+      parent: 0,
 
-    /**
-     * Defined methods
-     **/
-    methods: {
-        /**
-         *
-         **/
-        onTypeChange: function onTypeChange() {}
-    },
-
-    /**
-     * Computed properties
-     **/
-    computed: {
-
-        /**
-         * Check if data ready to be sent
-         **/
-        isParentDisabled: function isParentDisabled() {
-
-            //for (var key in this.message) {
-            //    if (!this.message[key]) {
-            //        return true;
-            //    }
-            //}
-
-            return true;
-        }
+      linked_to: 0
     }
+  },
+
+  /**
+   * Init form
+   **/
+  init: function init() {},
+
+  /**
+   * Defined methods
+   **/
+  methods: {
+    /**
+     *
+     **/
+    onTypeChange: function onTypeChange() {}
+  },
+
+  /**
+   * Computed properties
+   **/
+  computed: {
+
+    /**
+     * Check if data ready to be sent
+     **/
+    isParentDisabled: function isParentDisabled() {
+
+      //for (var key in this.message) {
+      //    if (!this.message[key]) {
+      //        return true;
+      //    }
+      //}
+
+      return true;
+    },
+
+    /**
+     *
+     **/
+    isLinkedDisabled: function isLinkedDisabled() {
+
+      return true;
+    }
+  }
 
 });
 

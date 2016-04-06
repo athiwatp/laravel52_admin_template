@@ -22,6 +22,18 @@
         ))
     }}
 </div>
+
+<div class="form-group">
+    {{ Form::label('linked_to_menu', 'Связан с' ) }}
+    {{
+        Form::select('linked_to_menu', [], null, array(
+            'class' => 'form-control',
+            'v-model' => 'menu.linked_to',
+            ':disabled' => 'isLinkedDisabled'
+        ))
+    }}
+</div>
+
 <div class="form-group">
     {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
     {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
@@ -31,6 +43,7 @@
     {{
         Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array(
             'class' => 'form-control',
+            'v-model' => 'menu.parent',
             ':disabled' => 'isParentDisabled'
         ))
     }}

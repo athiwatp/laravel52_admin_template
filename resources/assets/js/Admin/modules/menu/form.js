@@ -10,7 +10,11 @@ module.exports = new Vue({
 
     data: {
         menu: {
-            title: null
+            title: null,
+
+            parent: 0,
+
+            linked_to: 0
         }
     },
 
@@ -29,7 +33,7 @@ module.exports = new Vue({
          *
          **/
         onTypeChange: function() {
-            
+
         }
     },
 
@@ -49,6 +53,14 @@ module.exports = new Vue({
             //        return true;
             //    }
             //}
+
+            return true;
+        },
+
+        /**
+         *
+         **/
+        isLinkedDisabled: function() {
 
             return true;
         }
