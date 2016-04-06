@@ -18,6 +18,7 @@ class MenuesRepository extends BaseRepository {
         if ( $menues === null ) {
             $menues = new Menues();
         }
+
         $this->model = $menues;
     }
 
@@ -149,9 +150,9 @@ class MenuesRepository extends BaseRepository {
      *
      * @return
     */
-    public static function getMenu($bAllMenu = false)
+    public function getMenu($bAllMenu = false)
     {
-        $oAllMenu = Menues::select(array('static_menues.*'))
+        $oAllMenu = $this->model
             ->orderBy('parent_id')
             ->orderBy('pos')
             ->orderBy('title');
@@ -247,7 +248,7 @@ class MenuesRepository extends BaseRepository {
     /**
     * Prepare a list of menues for the combox
     */
-    public static function getComboList()
+    public function getComboList()
     {
         $oItems = array();
         $aItems = array(
@@ -255,7 +256,7 @@ class MenuesRepository extends BaseRepository {
             '0' => ' *** ' . Lang::get('menues.form.select_root_menu') . ' *** ',
         );
 
-        $oAllMenu = self::getMenu(true)->orderBy('path')
+        $oAllMenu = $this->getMenu(true)->orderBy('path')
             ->orderBy('pos')
             ->orderBy('title')
             ->get();
@@ -277,9 +278,9 @@ class MenuesRepository extends BaseRepository {
      * [getMainMenu description]
      * @return [type] [description]
      */
-    public static function getMainMenu()
+    public function getMainMenu()
     {
-        return self::getMenu()
+        return $this->getMenu()
             ->where('type_menu', '=', Config::get('constants.TYPE_MENU.MAIN'))
             ->get();
     }
@@ -288,9 +289,9 @@ class MenuesRepository extends BaseRepository {
      * [getFooterMenu description]
      * @return [type] [description]
      */
-    public static function getFooterMenu()
+    public function getFooterMenu()
     {
-        return self::getMenu()
+        return $this->getMenu()
             ->where('type_menu', '=', Config::get('constants.TYPE_MENU.FOOTER') )
             ->get();
     }
@@ -299,9 +300,9 @@ class MenuesRepository extends BaseRepository {
      * [getVerticalMenu description]
      * @return [type] [description]
      */
-    public static function getVerticalMenu()
+    public function getVerticalMenu()
     {
-        return self::getMenu()
+        return $this->getMenu()
             ->where('type_menu', '=', Config::get('constants.TYPE_MENU.SIDE') )
             ->get();
     }
@@ -324,12 +325,24 @@ class MenuesRepository extends BaseRepository {
                     if (array_key_exists('children', $subItem) && count($subItem['children']) > 0) {
                         self::createItem($subItem, $sub);
                     } else {
-                        $sub->route('menu-show', $subItem['title'], $subItem['url']);
+                        $sub->url(
+                            route('menu-url', [
+                                'url' => $subItem['url']
+                            ]),
+
+                            $subItem['title']
+                        );
                     }
                 }
             });
         } else {
-            $globalMenu->route('menu-show', $oMenuItem['title'], $oMenuItem['url']);
+            $globalMenu->url(
+                route('menu-url', [
+                    'url' => $oMenuItem['url']
+                ]),
+
+                $oMenuItem['title']
+            );
         }
     }
 

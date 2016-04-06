@@ -2,20 +2,95 @@
 
 use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
-use App\Repositories\MenuesRepository;
+use App\Repositories\MenuesRepository as rMenu;
+use Carbon\Carbon;
 
+/**
+ * Возвращает путь картинки.
+ *
+ * @param  string  $photo
+ * @param  spring  $box
+ * @return string
+ */
 if (! function_exists('get_file_url') ) {
 
-    /**
-     * Возвращает путь картинки.
-     *
-     * @param  string  $photo 
-     * @param  spring  $box
-     * @return string
-     */
     function get_file_url( $photo, $box )
     {
         return ( $photo ? cFile::getImagePathURL($photo, $box) : '' );
+    }
+}
+
+
+/**
+ * Build cooperates
+ *
+ * @return String
+*/
+if (! function_exists('build_copyright') ) {
+    function build_copyright() {
+        return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
+    }
+}
+
+/**
+ * Function to build the main menu
+ *
+ * @return String
+*/
+if (! function_exists('main_menu') ) {
+
+    function main_menu()
+    {
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('main', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\MainPresenter');
+
+            try {
+                $repoMenu = new rMenu();
+
+                $aTree = rMenu::buildTree( $repoMenu->getMainMenu()->toArray() );
+
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+            } catch (Exception $e) {}
+        });
+
+        return Menu::get('main');
+    }
+}
+
+
+/**
+ * Function to build the main menu
+ *
+ * @return String
+ */
+if (! function_exists('footer_menu') ) {
+
+    function footer_menu()
+    {
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('footer', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\FooterPresenter');
+
+            try {
+                $repoMenu = new rMenu();
+
+                $aTree = rMenu::buildTree( $repoMenu->getFooterMenu()->toArray() );
+
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+
+            } catch (Exception $e) {}
+        });
+
+        return Menu::get('footer');
     }
 }
 
@@ -30,37 +105,40 @@ if ( ! function_exists('getSocialButtons') ) {
     {
         $settings = new SettingsRepository();
 
-        return $settings->getSocialButtons()['facebook_authorization'];
+        return '';
+//        return $settings->getSocialButtons()['facebook_authorization'];
     }
 
     function getOnButtonTwitter()
     {
         $settings = new SettingsRepository();
-
-        return $settings->getSocialButtons()['twitter_authorization'];
+        return '';
+//     return $settings->getSocialButtons()['twitter_authorization'];
     }
 
     function getOnButtonGoogle()
     {
         $settings = new SettingsRepository();
+        return '';
 
-        return $settings->getSocialButtons()['google_authorization'];
+//        return $settings->getSocialButtons()['google_authorization'];
     }
 
     function getOnButtonLinkedIn()
     {
         $settings = new SettingsRepository();
 
-        return $settings->getSocialButtons()['linkedIn_authorization'];
+        return '';
+        //return $settings->getSocialButtons()['linkedIn_authorization'];
     }
 }
 
 
-if ( ! function_exists('main_menu') ) {
-
-    function main_menu()
-    {
-        $menu = new MenuesRepository();
-        return ;
-    }
-}
+//if ( ! function_exists('main_menu') ) {
+//
+//    function main_menu()
+//    {
+//        $menu = new MenuesRepository();
+//        return ;
+//    }
+//}

@@ -13,4 +13,11 @@ return [
 
     'ordering' => false,
 
+    'class' => [
+        'wrapper' => [
+            'main' => 'nav navbar-nav navbar-right',
+            'footer' => 'nav'
+        ]
+    ]
+
 ];
