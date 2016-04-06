@@ -1,6 +1,11 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('menues.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+    {{
+        Form::text('title', ( isset($oData) ? $oData->title : null), array(
+            'class' => 'form-control convert-to-url',
+            'v-model' => 'menu.title'
+        ))
+    }}
 </div>
 
 <div class="form-group">
@@ -10,7 +15,12 @@
 
 <div class="form-group">
     {{ Form::label('type_menu', Lang::get('menues.form.type_menu') ) }}
-    {{ Form::select('type_menu', $aTypeMenues,( isset($oData) ? $oData->type_menu : null), array('class' => 'form-control')) }}
+    {{
+        Form::select('type_menu', $aTypeMenues,( isset($oData) ? $oData->type_menu : null), array(
+            'class' => 'form-control',
+            '@change' => 'onTypeChange()'
+        ))
+    }}
 </div>
 <div class="form-group">
     {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
@@ -18,7 +28,12 @@
 </div>
 <div class="form-group">
     {{ Form::label('parent_id', Lang::get('menues.form.parent_id') ) }}
-    {{ Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array('class' => 'form-control')) }}
+    {{
+        Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array(
+            'class' => 'form-control',
+            ':disabled' => 'isParentDisabled'
+        ))
+    }}
 </div>
 <div class="form-group">
     {{ Form::label('page_id', Lang::get('menues.form.page_id') ) }}
@@ -49,3 +64,10 @@
     </div>
 </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
+
+
+@if ( Config::get('app.debug') == true )
+    <pre>
+        @{{ $data | json }}
+    </pre>
+@endif

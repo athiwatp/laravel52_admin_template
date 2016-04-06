@@ -6,7 +6,7 @@ module.exports = {
      *
      * @return Object
      **/
-    getModule: function(path) {
+    getListModule: function(path) {
         var mod = null;
         switch(path) {
             case 'news/list':
@@ -39,6 +39,26 @@ module.exports = {
 
             case 'video/list':
                 mod = require('./video/list.js');
+                break;
+        }
+
+        return mod;
+    },
+
+
+    /**
+     * Returns Form module
+     *
+     * @param String module path
+     *
+     * @return Object
+     **/
+    getFormModule: function(path) {
+        var mod = null;
+
+        switch(path) {
+            case 'menu/form':
+                mod = require('./menu/form.js');
                 break;
         }
 

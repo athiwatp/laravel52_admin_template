@@ -35,6 +35,7 @@ if (! function_exists('build_copyright') ) {
 /**
  * Function to build the main menu
  *
+ * @doc http://sky.pingpong-labs.com/docs/2.0/menus
  * @return String
 */
 if (! function_exists('main_menu') ) {

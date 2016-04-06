@@ -129,7 +129,7 @@ class MenuesRepository extends BaseRepository {
             Config::get('constants.TYPE_MENU.MAIN') => Lang::get('menues.form.type_main'),
             Config::get('constants.TYPE_MENU.SIDE') => Lang::get('menues.form.type_side'),
             Config::get('constants.TYPE_MENU.FOOTER') => Lang::get('menues.form.type_footer'),
-            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
+//            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
         );
     }
 
