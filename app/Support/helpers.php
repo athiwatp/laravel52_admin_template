@@ -19,8 +19,8 @@ if (! function_exists('get_file_url') ) {
     }
 }
 
-
 if ( ! function_exists('getSocialButtons') ) {
+
 
     /**
      * Возвращает статус кнопки авторизации соцсетей.
