@@ -43,10 +43,10 @@ class MenuesRepository extends BaseRepository {
     */
     public function saveMenues( $menu, $inputs )
     {
-        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0') );
+        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0'), $menu );
         
         $menu->title        = $inputs['title'];
-        $menu->parent_id    = ( $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
+        $menu->parent_id    = ( array_key_exists('parent_id', $inputs) && $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
         $menu->path         = $oMenus['path'];
         $menu->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : 0 );
         $menu->type_menu    = ( isset($inputs['type_menu']) ? $inputs['type_menu'] : 0 );
@@ -59,6 +59,7 @@ class MenuesRepository extends BaseRepository {
         $menu->is_redirectable  = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
         $menu->is_loaded_by_default   = ( isset($inputs['is_loaded_by_default']) ? $inputs['is_loaded_by_default'] : 0);
         $menu->is_shown_print_version = ( isset($inputs['is_shown_print_version']) ? $inputs['is_shown_print_version'] : 0 );
+        $menu->linked_to = ( array_key_exists('linked_to_menu', $inputs) ? $inputs['linked_to_menu'] : null);
 
         $menu->save();
 
@@ -164,7 +165,10 @@ class MenuesRepository extends BaseRepository {
         return $oAllMenu;
     }
 
-    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId ) {
+    /**
+     *
+    */
+    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId, $oMenu ) {
 
         if ( $iParentId != $iOldParentId ) {
             if ( empty($iParentId) && $iOldParentId > 0) {
@@ -182,6 +186,7 @@ class MenuesRepository extends BaseRepository {
                     $oMenus['path'] = self::getParentPath($iParentId, $oParentMenu->path);
                 }
             }
+
             return $oMenus;
         }
     }
