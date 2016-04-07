@@ -1,3 +1,7 @@
+{{--
+ $aFormParams - array of options
+    - formJsHandler - Vue handler for the form, placed in resources/assets/js/Admin/modules/<MODULE_NAME>/form.js
+--}}
 @extends( $__theme . '.layouts.default')
 
 
@@ -20,7 +24,18 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ $aFormParams['formTitle'] }}</h3>
                 </div>
-                {{ Form::open(array('role' => 'form', 'url' => $aFormParams['formUrl'], 'method'=>'POST', 'files'=>true, 'encrypt'=>'multipart/form-data', 'class' => (isset($aFormParams['formClass']) ? $aFormParams['formClass'] : '') )) }}
+                {{
+                    Form::open(array(
+                        'role' => 'form',
+                        'url' => $aFormParams['formUrl'],
+                        'method'=>'POST',
+                        'files'=>true,
+                        'encrypt'=>'multipart/form-data',
+                        'class' => 'admin-vue-form ' . (array_key_exists('formClass', $aFormParams) ? $aFormParams['formClass'] : ''),
+                        'data-handler' => ( array_key_exists('formJsHandler', $aFormParams) ? $aFormParams['formJsHandler'] : '' ),
+                        'id' => ( array_key_exists('formFormId', $aFormParams) ? $aFormParams['formFormId'] : 'auto-generated' ),
+                    ))
+                }}
                 <div class="box-body">
                     @if ( isset($errors) && $errors->all() )
                     <div class="alert alert-danger alert-dismissable">

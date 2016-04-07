@@ -14,6 +14,9 @@ Route::group(['middleware' => 'web'], function () {
     // Page viewer
     Route::get('/s/{url}', array('as' => 'page-url', 'uses' => 'Core\Face\PagesController@show') );
 
+    // Menu viewer
+    Route::get('/m/{url}', array('as' => 'menu-url', 'uses' => 'Core\Face\MenuController@show') );
+
     // News viewer
     Route::get('/n/{url}', array('as' => 'news-url', 'uses' => 'Core\Face\NewsController@show') );
 });
@@ -71,6 +74,9 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
     Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
+
+
+
 });
 
 

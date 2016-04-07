@@ -21,7 +21,7 @@ $(function() {
         var sModule = $(this).attr('data-module');
 
         if ( sModule ) {
-            var module = loader.getModule(sModule);
+            var module = loader.getListModule(sModule);
 
             if ( module ) {
                 var table = require('./modules/_datatable.js')($, { object: this, settings: module} );
@@ -44,6 +44,20 @@ $(function() {
                 $(resField).val( sTitle.translit() );
             }
         });
+
+    });
+
+    /**
+     * Form handler
+     **/
+    $('.admin-vue-form').each(function() {
+        var handler = $(this).attr('data-handler');
+
+        if ( handler ) {
+            var module = loader.getFormModule(handler);
+
+            console.log( handler, module );
+        }
 
     });
 

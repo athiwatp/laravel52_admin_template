@@ -1,6 +1,11 @@
 <div class="form-group">
     {{ Form::label('title', Lang::get('menues.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+    {{
+        Form::text('title', ( isset($oData) ? $oData->title : null), array(
+            'class' => 'form-control convert-to-url',
+            'v-model' => 'menu.title'
+        ))
+    }}
 </div>
 
 <div class="form-group">
@@ -10,15 +15,43 @@
 
 <div class="form-group">
     {{ Form::label('type_menu', Lang::get('menues.form.type_menu') ) }}
-    {{ Form::select('type_menu', $aTypeMenues,( isset($oData) ? $oData->type_menu : null), array('class' => 'form-control')) }}
+    {{
+        Form::select('type_menu', $aTypeMenues,( isset($oData) ? $oData->type_menu : null), array(
+            'class' => 'form-control',
+            'v-model' => 'menu.type',
+            '@change' => 'onTypeChange()'
+        ))
+    }}
+    <p class="help-block">Разделяя меню по типу, мы имеем возможность манипулировать элементами и показывать в соответсвующих местах</p>
 </div>
+
+<div class="form-group">
+    {{ Form::label('linked_to_menu', 'Связан с' ) }}
+
+    <select
+        name="linked_to_menu"
+        v-model="menu.linked_to"
+        class="form-control"
+        :disabled="isLinkedDisabled">
+        <option v-for="option in linkedList" :value="option.value">@{{ option.text }}</option>
+    </select>
+    <p class="help-block">Показывать текущий пункт меню, на связной странице (как сайдбар меню)</p>
+</div>
+
 <div class="form-group">
     {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
     {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
 </div>
 <div class="form-group">
     {{ Form::label('parent_id', Lang::get('menues.form.parent_id') ) }}
-    {{ Form::select('parent_id', $aMenues, ( isset($oData) ? $oData->parent_id : null), array('class' => 'form-control')) }}
+    <select
+            name="parent_id"
+            v-model="menu.parent"
+            class="form-control"
+            :disabled="isParentDisabled">
+        <option v-for="option in parentList" :value="option.value">@{{ option.text }}</option>
+    </select>
+
 </div>
 <div class="form-group">
     {{ Form::label('page_id', Lang::get('menues.form.page_id') ) }}
@@ -27,8 +60,18 @@
 
 <div class="form-group">
     {{ Form::label('url', Lang::get('menues.form.redirect_url') ) }}
-    {{ Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array('class' => 'form-control')) }}
-    {!! Form::_label('redirectable', Form::checkbox('is_redirectable', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'redirectable')) . ' ' . Lang::get('menues.form.is_redirectable') ) !!}
+    {{
+        Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array(
+            'class' => 'form-control',
+            ':disabled'=>'isRedirectTextDisabled'
+        ))
+    }}
+    {!!
+        Form::_label('redirectable', Form::checkbox('is_redirectable', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array(
+            'id' => 'redirectable',
+            'v-model' => 'menu.is_redirectable'
+        )) . ' ' . Lang::get('menues.form.is_redirectable') )
+    !!}
 </div>
 <div class="form-group">
     <div class="checkbox">
@@ -48,4 +91,30 @@
         {!! Form::_label('published_no', Form::radio('is_published', '0', isset($oData) ? $oData->is_published === '0' : false, array('id' => 'published_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
     </div>
 </div>
-{{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
+{{
+    Form::hidden('id', isset($oData) ? $oData->id : 0, [
+        'v-model' => 'menu.id'
+    ])
+}}
+
+{{-- @TODO: It should be re-written, since it has bad approach --}}
+{{
+    Form::hidden('hdn_prnt_id', isset($oData) ? $oData->parent_id : 0, [
+        'v-model' => 'retrieved.parent_id'
+    ])
+}}
+
+{{
+    Form::hidden('hdn_lnkd_id', isset($oData) ? $oData->linked_to : 0, [
+        'v-model' => 'retrieved.linked_id'
+    ])
+}}
+{{-- End --}}
+
+
+
+@if ( Config::get('app.debug') == true )
+    <pre>
+        @{{ $data | json }}
+    </pre>
+@endif
