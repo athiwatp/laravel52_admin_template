@@ -120,6 +120,14 @@ module.exports = new Vue({
         },
 
         /**
+         * Show module dialog
+         *
+         **/
+        showModulesDialog: function() {
+
+        },
+
+        /**
          * Retrieve data from server
          *
          **/
