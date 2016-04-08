@@ -3,8 +3,16 @@
 use App\Models\Pages as Pages;
 use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Auth, Lang, Config, cTrackChangesUrl;
+use App\Repositories\UrlHistoryRepository;
 
 class PagesRepository extends BaseRepository {
+    /**
+     * Url History instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $history = null;
+
     /**
      * Create a new Message instance
      *
@@ -12,12 +20,15 @@ class PagesRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(Pages $pages)
+    public function __construct(Pages $pages, UrlHistoryRepository $history = null)
     {
         $this->model = $pages;
+
+        // Inject url history object
+        $this->history = $history;
     }
 
-        /**
+    /**
      * Create or update Message
      *
      * @param App\Models\Pages $pages
@@ -52,16 +63,33 @@ class PagesRepository extends BaseRepository {
     }
 
     /**
-     * Retrive page by the URL
+     * Retrieve the menu item by the URL
      *
-    */
-    public function get( $url )
+     * @param String $url
+     *
+     * @return App\Models\Menues
+     */
+    public function getByUrl( $url )
     {
-        $result = [];
+        $mHistory = $this->history->getTypeId(
+            $url,
+            Config::get('constants.URL_HISTORY.TYPE_PAGE')
+        );
 
+        if ( $mHistory && $mHistory->status === true ) {
+            $result = $this->model->findById( $mHistory->id );
+        } else {
+            $result = $this->model
+                ->where( 'is_published', Config::get('constants.DONE_STATUS.SUCCESS') )
+                ->where('url', $url)
+                ->first();
+        }
 
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
 
-        return $result;
+        return false;
     }
 
     /**

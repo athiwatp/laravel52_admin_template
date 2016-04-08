@@ -51,7 +51,7 @@ class UrlHistoryRepository extends BaseRepository {
     /**
     * Prepare a list of chapters for the combox
     */
-    public static function getTypeId($url, $aType = null )
+    public function getTypeId($url, $aType = null )
     {
         $aType = (empty($aType) ? Config::get('constants.URL_HISTORY.TYPE_MENU') : $aType);
 
@@ -59,7 +59,7 @@ class UrlHistoryRepository extends BaseRepository {
             $aType = array($aType);
         }
 
-        $oItems = UrlHistory::where('url', '=', $url)
+        $oItems = $this->model->where('url', '=', $url)
             ->whereIn('type', $aType)
             ->orderBy('created_at', 'DESC')
             ->first();

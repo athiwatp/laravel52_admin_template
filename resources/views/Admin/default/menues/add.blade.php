@@ -59,7 +59,7 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('url', Lang::get('menues.form.redirect_url') ) }}
+    {!!  Form::_label('redirect_url', Lang::get('menues.form.redirect_url') . ' (<a href="#" :click="showModulesDialog">внутренние модули</a>)' ) !!}
     {{
         Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array(
             'class' => 'form-control',

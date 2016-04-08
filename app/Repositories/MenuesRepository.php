@@ -4,8 +4,16 @@ use App\Models\Menues as Menues;
 use Pingpong\Menus\MenuItem;
 use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
+use App\Repositories\UrlHistoryRepository;
 
 class MenuesRepository extends BaseRepository {
+    /**
+     * Url History instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $history = null;
+
     /**
      * Create a new Message instance
      *
@@ -13,13 +21,16 @@ class MenuesRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct( Menues $menues = null )
+    public function __construct( Menues $menues = null, UrlHistoryRepository $history = null )
     {
         if ( $menues === null ) {
             $menues = new Menues();
         }
 
         $this->model = $menues;
+
+        // Inject url history object
+        $this->history = $history;
     }
 
         /**
@@ -120,6 +131,36 @@ class MenuesRepository extends BaseRepository {
     {
         //
     }
+
+    /**
+     * Retrieve the menu item by the URL
+     *
+     * @param String $url
+     *
+     * @return App\Models\Menues
+    */
+    public function getByUrl( $url )
+    {
+        $mHistory = $this->history->getTypeId(
+            $url,
+            Config::get('constants.URL_HISTORY.TYPE_MENU')
+        );
+
+        if ( $mHistory && $mHistory->status === true ) {
+            $result = $this->model->findById( $mHistory->id );
+        } else {
+            $result = $this->getMenu()
+                ->where('url', $url)
+                ->first();
+        }
+
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
+
+        return false;
+    }
+
 
 
     /**

@@ -46981,6 +46981,12 @@ module.exports = new Vue({
         },
 
         /**
+         * Show module dialog
+         *
+         **/
+        showModulesDialog: function showModulesDialog() {},
+
+        /**
          * Retrieve data from server
          *
          **/
