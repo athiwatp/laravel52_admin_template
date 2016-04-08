@@ -34,10 +34,13 @@ class PagesController extends FaceController
     {
         $oPage = $this->page->getByUrl( $url );
 
-        dd( $oPage );
+        if ( $oPage ) {
+            return $this->renderView('pages.show', [
+                'page' => $oPage
+            ]);
+        }
 
-        return $this->renderView('pages.index', [
-            'page' => $page
-        ]);
+        return redirect()->route('home')
+            ->with('status', 'Страница - не найдена!');
     }
 }
