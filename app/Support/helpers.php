@@ -20,7 +20,6 @@ if (! function_exists('get_file_url') ) {
     }
 }
 
-
 /**
  * Build cooperates
  *
@@ -97,6 +96,7 @@ if (! function_exists('footer_menu') ) {
 
 
 if ( ! function_exists('getSocialButtons') ) {
+
 
     /**
      * Возвращает статус кнопки авторизации соцсетей.
