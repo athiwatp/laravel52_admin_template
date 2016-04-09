@@ -95,6 +95,37 @@ if (! function_exists('footer_menu') ) {
 }
 
 
+/**
+ * Function to build the main menu
+ *
+ * @return String
+ */
+if (! function_exists('sidebar_menu') ) {
+
+    function sidebar_menu()
+    {
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('sidebar_menu', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\SidebarPresenter');
+
+            try {
+                $repoMenu = new rMenu();
+
+                $aTree = rMenu::buildTree( $repoMenu->getSidebarMenu()->toArray() );
+
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+
+            } catch (Exception $e) {}
+        });
+
+        return Menu::get('sidebar_menu');
+    }
+}
+
 if ( ! function_exists('getSocialButtons') ) {
 
 

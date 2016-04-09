@@ -363,13 +363,14 @@ class MenuesRepository extends BaseRepository {
     }
 
     /**
-     * [getVerticalMenu description]
-     * @return [type] [description]
-     */
-    public function getVerticalMenu()
+     * Returns sidebar menu
+     *
+     * @return Object
+    */
+    public function getSidebarMenu()
     {
         return $this->getMenu()
-            ->where('type_menu', '=', Config::get('constants.TYPE_MENU.SIDE') )
+            ->where('type_menu', Config::get('constants.TYPE_MENU.SIDE') )
             ->get();
     }
 
