@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Repositories\NewsRepository as News;
+use App\Repositories\NewsRepository;
 
 class NewsController extends FaceController
 {
@@ -16,8 +16,12 @@ class NewsController extends FaceController
     /**
      *
      */
-    public function __construct(News $news)
+    public function __construct(NewsRepository $news)
     {
+        // Call the parent controller first
+        parent::__construct();
+
+        // Implement here custom logic
         $this->news = $news;
     }
 

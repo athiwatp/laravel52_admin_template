@@ -57,7 +57,6 @@
 <!-- Main Content -->
 <div class="container">
     @yield('content')
-
     {!! sidebar_menu() !!}
 </div>
 <hr>
