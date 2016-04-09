@@ -1,3 +1,36 @@
+{{--
+    VARIABLES:
+      1. lNews (Array of Objects)
+        id
+        title
+        chapter_id
+        content
+        date
+        user_id
+        source
+        photo
+        url
+        is_published
+        is_main
+        is_important
+        type_news
+        created_at
+        updated_at
+
+      2. currPage (Object)
+          id
+          title
+          subtitle
+          url
+          meta_keywords
+          meta_descriptions
+          content
+          is_published
+          user_id
+          created_at
+          updated_at
+
+--}}
 @extends( $__theme . '.layouts.default')
 
 {{-- Page Header --}}
@@ -8,9 +41,9 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="site-heading">
-                    <h1>Веб-мастер</h1>
+                    <h1>{{ $currPage->title }}</h1>
                     <hr class="small">
-                    <span class="subheading">Тема для Веб-сайта</span>
+                    <span class="subheading">{{ $currPage->subtitle }}</span>
                 </div>
             </div>
         </div>
@@ -20,6 +53,9 @@
 
 {{-- Content section --}}
 @section('content')
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">{{ $currPage->content }}</div>
+    </div>
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 

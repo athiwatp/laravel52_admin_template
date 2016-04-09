@@ -161,7 +161,27 @@ class MenuesRepository extends BaseRepository {
         return false;
     }
 
+    /**
+     * Returns menu, that marked as default
+     *
+     * @return Object
+    */
+    public function getDefaultMenu()
+    {
+        $OK = Config::get('constants.DONE_STATUS.SUCCESS');
 
+        $result = $this->model
+            ->where('is_loaded_by_default', $OK)
+            ->where('is_published', $OK )
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
+
+        return false;
+    }
 
     /**
     * Returns a list of menu types
