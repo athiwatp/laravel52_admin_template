@@ -22,6 +22,9 @@ class PagesController extends FaceController
      */
     public function __construct( PagesRepository $page )
     {
+        // Call the parent controller first
+        parent::__construct();
+
         // Inject the page instance
         $this->page = $page;
     }

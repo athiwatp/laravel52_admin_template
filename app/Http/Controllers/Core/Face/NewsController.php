@@ -26,12 +26,34 @@ class NewsController extends FaceController
     }
 
     /**
-     * Retrive the main page
+     * Retrive the news page
      */
     public function show(Request $request, $url)
     {
-        return $this->renderView('news.show', [
-            'news' => $this->news->getByUrl( $url )
+        $lNews = $this->news->getByUrl( $url );
+
+        if ( $lNews ) {
+            return $this->renderView('news.show', [
+                'news' => $lNews
+            ]);
+        }
+
+        return redirect()->route('home')
+            ->with('status', 'Страница - не найдена!');
+    }
+
+    /**
+     * Output the list of news
+     *
+    */
+    public function index(Request $request)
+    {
+        $lNews = $this->news->getPaginatedList( $request );
+
+
+        return $this->renderView('news.index', [
+            'lNews' => $lNews
         ]);
+
     }
 }

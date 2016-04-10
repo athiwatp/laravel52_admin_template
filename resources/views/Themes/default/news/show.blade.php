@@ -34,9 +34,9 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="page-heading">
-                    <h1>{{ $news['source'] }}</h1>
+                    <h1>{{ $news->source }}</h1>
                     <hr class="small">
-                    <span class="subheading">{{ $news['title'] }}</span>
+                    <span class="subheading">{{ $news->title }}</span>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            {{ $news['content'] }}
+            {{ $news->content }}
         </div>
     </div>
 @endsection

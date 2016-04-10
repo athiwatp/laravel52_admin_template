@@ -2,6 +2,7 @@
 
 use App\Models\News as News;
 use Carbon\Carbon, Auth, cTrackChangesUrl;
+use Illuminate\Http\Request;
 use Config;
 
 class NewsRepository extends BaseRepository {
@@ -56,11 +57,34 @@ class NewsRepository extends BaseRepository {
             ->get();
 
         if ( $result ) {
-            return $result->toArray();
+            return $result;
         }
 
         return [];
     }
+
+    /**
+     * Reprive the list of news
+     *
+     * @param Request $request
+     *
+     * @return Collection
+    */
+    public function getPaginatedList(Request $request)
+    {
+        $result = $this->model
+            ->orderBy('date', 'DESC')
+            ->paginate(50);
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+
+
+
 
     /**
      * Returns the NEWS item by the given URL
@@ -80,10 +104,14 @@ class NewsRepository extends BaseRepository {
 
         if ( $obj && $obj->status === true ) {
             $result = $this->getById( $obj->id );
+        } else {
+            $result = $this->model
+                ->where('url', $url)
+                ->first();
+        }
 
-            if ( $result ) {
-                return $result->toArray();
-            }
+        if ( $result ) {
+            return $result;
         }
 
         return [];

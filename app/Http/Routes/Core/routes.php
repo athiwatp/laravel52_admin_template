@@ -19,6 +19,9 @@ Route::group(['middleware' => 'web'], function () {
 
     // News viewer
     Route::get('/n/{url}', array('as' => 'news-url', 'uses' => 'Core\Face\NewsController@show') );
+
+    // News list
+    Route::get('/news', array('as' => 'news-list', 'uses' => 'Core\Face\NewsController@index') );
 });
 
 /**
