@@ -22,6 +22,12 @@ Route::group(['middleware' => 'web'], function () {
 
     // News list
     Route::get('/news', array('as' => 'news-list', 'uses' => 'Core\Face\NewsController@index') );
+
+    // Gallery viewer
+    Route::get('/g/{id}', array('as' => 'gallery-url', 'uses' => 'Core\Face\GalleryController@show') );
+
+    // Gallery list
+    Route::get('/gallery', array('as' => 'gallery-list', 'uses' => 'Core\Face\GalleryController@index') );
 });
 
 /**

@@ -1,23 +1,17 @@
 {{--
- ** Template for the NEWS details page
+ ** Template for the Gallery details page
  **
  ** Available variables:
  **
- ** Object => news
+ ** Object => gallery
  ****
  **** id
  **** title
  **** chapter_id
- **** content
- **** date
+ **** filename
+ **** tp
  **** user_id
- **** source
- **** photo
- **** url
- **** is_published
- **** is_main
- **** is_important
- **** type_news
+ **** pos
  **** created_at
  **** updated_at
  ****
@@ -27,16 +21,15 @@
 
 {{-- Page Header --}}
 @section('page_header')
-<!-- Page Header -->
+        <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
 <header class="intro-header" style="background-image: url('/uploads/defaults/home-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="page-heading">
-                    <h1>{{ $news->source }}</h1>
+                    <h1>{{ $gallery->title }}</h1>
                     <hr class="small">
-                    <span class="subheading">{{ $news->title }}</span>
                 </div>
             </div>
         </div>
@@ -48,7 +41,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            {{ $news->content }}
+            {{ $gallery->description }}
         </div>
     </div>
 @endsection

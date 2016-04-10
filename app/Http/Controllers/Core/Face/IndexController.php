@@ -21,6 +21,7 @@ class IndexController extends FaceController
      *
      * @var Object
     */
+    protected $pages = null;
 
     /**
      *
