@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Repositories\NewsRepository;
 use App\Repositories\PagesRepository;
 use App\Repositories\GalleryRepository;
+use App\Repositories\VideoNewsRepository;
 
 class IndexController extends FaceController
 {
@@ -25,11 +26,19 @@ class IndexController extends FaceController
     protected $pages = null;
 
     /**
-     * Inject Page repository to manage the pages
+     * Inject Galery repository to manage the photos
      *
      * @var Object
      */
     protected $gallery = null;
+
+    /**
+     * Inject Video news repository to manage the videos
+     *
+     * @var Object
+     */
+    protected $video = null;
+
 
     /**
      *
@@ -37,7 +46,8 @@ class IndexController extends FaceController
     public function __construct(
         NewsRepository $news,
         PagesRepository $pages,
-        GalleryRepository $gallery
+        GalleryRepository $gallery,
+        VideoNewsRepository $video
     )
     {
         // Call the parent controller first
@@ -51,6 +61,9 @@ class IndexController extends FaceController
 
         // Inject gallery
         $this->gallery = $gallery;
+
+        // Inject gallery
+        $this->video = $video;
     }
 
     /**
@@ -64,12 +77,16 @@ class IndexController extends FaceController
         // Get latest photo
         $lGallery = $this->gallery->getLatest( 20 );
 
+        // Get latest video
+        $lVideo = $this->video->getLatest( 10 );
+
         // Get the page to load by default
         $currPage = $this->pages->getDefaultPage();
 
         return $this->renderView('index.index', [
             'lNews' => $lNews,
             'lGallery' => $lGallery,
+            'lVideo' => $lVideo,
             'currPage' => $currPage
         ]);
     }

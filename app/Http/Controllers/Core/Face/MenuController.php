@@ -29,6 +29,9 @@ class MenuController extends FaceController
     */
     public function __construct( MenuesRepository $menu, PagesRepository $page )
     {
+        // Call the parent controller first
+        parent::__construct();
+
         // Inject the menu instance
         $this->menu = $menu;
 

@@ -71,6 +71,7 @@
 
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>News</h1>
             {{-- The list of news --}}
             @include('Themes.default.news.list', [ 'list' => $lNews ])
 
@@ -86,9 +87,21 @@
     <br>
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Photo</h1>
             {{-- Retrieve the list --}}
             <div class="row">
             @include('Themes.default.gallery.list', ['gList' => $lGallery])
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Video</h1>
+            {{-- Retrieve the list --}}
+            <div class="row">
+                @include('Themes.default.video.list', ['vList' => $lVideo])
             </div>
         </div>
     </div>

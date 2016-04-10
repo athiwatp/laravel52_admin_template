@@ -83,9 +83,6 @@ class NewsRepository extends BaseRepository {
         return [];
     }
 
-
-
-
     /**
      * Returns the NEWS item by the given URL
      *

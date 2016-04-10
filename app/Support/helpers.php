@@ -4,7 +4,7 @@ use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
 use App\Repositories\MenuesRepository as rMenu;
 use Carbon\Carbon;
-use Lang;
+
 
 /**
  * Возвращает путь картинки.
@@ -20,6 +20,18 @@ if (! function_exists('get_file_url') ) {
         return ( $photo ? cFile::getImagePathURL($photo, $box) : '' );
     }
 }
+
+/**
+ * build youtube preview url
+ *
+ * @return String
+ */
+if (! function_exists('get_youtube_preview') ) {
+    function get_youtube_preview( $url ) {
+        return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $url ) .  '/hqdefault.jpg';
+    }
+}
+
 
 /**
  * Build cooperates

@@ -28,6 +28,12 @@ Route::group(['middleware' => 'web'], function () {
 
     // Gallery list
     Route::get('/gallery', array('as' => 'gallery-list', 'uses' => 'Core\Face\GalleryController@index') );
+
+    // Gallery viewer
+    Route::get('/v/{id}', array('as' => 'video-url', 'uses' => 'Core\Face\VideoController@show') );
+
+    // Gallery list
+    Route::get('/video', array('as' => 'video-list', 'uses' => 'Core\Face\VideoController@index') );
 });
 
 /**

@@ -2,6 +2,7 @@
 
 use App\Models\VideoNews as VideoNews;
 use Carbon\Carbon, Auth;
+use Illuminate\Http\Request;
 
 class VideoNewsRepository extends BaseRepository {
     /**
@@ -26,6 +27,47 @@ class VideoNewsRepository extends BaseRepository {
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Retrieve the latest news from DB
+     *
+     * @param int $amount - amount of records that we need to retrieve
+     *
+     * @return Array
+     */
+    public function getLatest( $amount )
+    {
+        $result = $this->model
+            ->orderBy('date', 'DESC')
+            ->take( $amount )
+            ->get();
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+
+    /**
+     * Reprive the list of news
+     *
+     * @param Request $request
+     *
+     * @return Collection
+     */
+    public function getPaginatedList(Request $request)
+    {
+        $result = $this->model
+            ->orderBy('date', 'DESC')
+            ->paginate(50);
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
     }
 
     /**
