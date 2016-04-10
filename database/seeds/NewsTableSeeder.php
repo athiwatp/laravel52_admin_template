@@ -18,8 +18,10 @@ class NewsTableSeeder extends Seeder
         $faker = Faker::create('ru_RU');
 
         foreach (range(1,105) as $index) {
+            $title = $faker->sentence(10);
             News::create([
-                'title' => $faker->sentence(10),
+                'title' => $title,
+                'url' => substr(md5($title), 0, 255),
                 'content' => $faker->text,
                 'date' => $faker->dateTime,
                 'source' => $faker->company,

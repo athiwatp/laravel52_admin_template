@@ -21,7 +21,7 @@ class GalleryTableSeeder extends Seeder
             Gallery::create([
                 'title' => $faker->sentence(10),
                 'tp' => Config::get('constants.GALLERY.PHOTO'),
-                'filename' => $faker->image('public/uploads/gallery/2016/03/30', 300, 300, 'cats'),
+                'filename' => '',
                 'pos' => (int)($index % 10 === 0),
                 'user_id' => 1
             ]);
