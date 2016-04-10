@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\NewsRepository;
 use App\Repositories\PagesRepository;
+use App\Repositories\GalleryRepository;
 
 class IndexController extends FaceController
 {
@@ -24,9 +25,20 @@ class IndexController extends FaceController
     protected $pages = null;
 
     /**
+     * Inject Page repository to manage the pages
+     *
+     * @var Object
+     */
+    protected $gallery = null;
+
+    /**
      *
      */
-    public function __construct(NewsRepository $news, PagesRepository $pages)
+    public function __construct(
+        NewsRepository $news,
+        PagesRepository $pages,
+        GalleryRepository $gallery
+    )
     {
         // Call the parent controller first
         parent::__construct();
@@ -36,6 +48,9 @@ class IndexController extends FaceController
 
         // Inject pages
         $this->pages = $pages;
+
+        // Inject gallery
+        $this->gallery = $gallery;
     }
 
     /**
@@ -46,11 +61,15 @@ class IndexController extends FaceController
         // Get the latest news
         $lNews = $this->news->getLatest( 10 );
 
+        // Get latest photo
+        $lGallery = $this->gallery->getLatest( 20 );
+
         // Get the page to load by default
         $currPage = $this->pages->getDefaultPage();
 
         return $this->renderView('index.index', [
             'lNews' => $lNews,
+            'lGallery' => $lGallery,
             'currPage' => $currPage
         ]);
     }

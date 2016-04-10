@@ -36,13 +36,8 @@
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="row">
-            @foreach( $gallery as $gItem )
-                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a class="thumbnail" href="#">
-                        <img class="img-responsive" src="{!! get_file_url($gItem->filename,'box3') !!}" alt="{{ $gItem->title }}">
-                    </a>
-                </div>
-            @endforeach
+            {{-- Retrieve the list --}}
+            @include('Themes.default.gallery.list', ['gList' => $gallery]);
 
             {{-- Pagination --}}
             @if (method_exists($gallery, 'links') )

@@ -30,6 +30,26 @@ class GalleryRepository extends BaseRepository {
     }
 
     /**
+     * Retrieve the latest gallery from DB
+     *
+     * @param int $amount - amount of records that we need to retrieve
+     *
+     * @return Array
+     */
+    public function getLatest( $amount )
+    {
+        $result = $this->model
+            ->orderBy('created_at', 'DESC')
+            ->take( $amount )
+            ->get();
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+    /**
      * Reprive the list of news
      *
      * @param Request $request

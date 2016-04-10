@@ -56,6 +56,7 @@
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">{{ $currPage->content }}</div>
     </div>
+
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             {{-- The list of news --}}
@@ -67,6 +68,16 @@
                     <a href="#">Еще &rarr;</a>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {{-- Retrieve the list --}}
+            <div class="row">
+            @include('Themes.default.gallery.list', ['gList' => $lGallery]);
+            </div>
         </div>
     </div>
 @endsection
