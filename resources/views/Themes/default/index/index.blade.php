@@ -30,7 +30,19 @@
           created_at
           updated_at
 
+      3. lGallery (Object) - list of photos
+        **** id
+         **** title
+         **** chapter_id
+         **** filename
+         **** tp
+         **** user_id
+         **** pos
+         **** created_at
+         **** updated_at
+
 --}}
+
 @extends( $__theme . '.layouts.default')
 
 {{-- Page Header --}}
@@ -76,7 +88,7 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             {{-- Retrieve the list --}}
             <div class="row">
-            @include('Themes.default.gallery.list', ['gList' => $lGallery]);
+            @include('Themes.default.gallery.list', ['gList' => $lGallery])
             </div>
         </div>
     </div>

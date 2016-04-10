@@ -4,6 +4,7 @@ use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
 use App\Repositories\MenuesRepository as rMenu;
 use Carbon\Carbon;
+use Lang;
 
 /**
  * Возвращает путь картинки.
@@ -30,6 +31,31 @@ if (! function_exists('build_copyright') ) {
         return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
     }
 }
+
+/**
+ * Returns formated date
+ *
+ * @param String $date
+ * @param Boolean $time - show time
+ *
+ * @return String
+ */
+if (! function_exists('get_formatted_date') ) {
+    function get_formatted_date( $date, $time = false ) {
+        $dt = Carbon::parse( $date );
+        $months = Lang::get('datetime.months');
+
+        return $dt->day . ' ' .
+            (array_key_exists($dt->month, $months) ? $months[$dt->month] : '') . ' ' .
+            $dt->year .
+            (
+                $time && $dt->minute > 0  ?
+                    ' ' . $dt->minute . ':' . $dt->minute
+                    : ''
+            );
+    }
+}
+
 
 /**
  * Function to build the main menu
