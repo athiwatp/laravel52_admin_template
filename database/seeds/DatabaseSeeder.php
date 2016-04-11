@@ -11,23 +11,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserTableSeeder::class);
-        // $this->command->info('Таблица пользователей заполнена данными!');
-
-        $this->call(NewsChapterTableSeeder::class);
-        $this->command->info('Таблица Разделов - заполнена данными!');
-
-        $this->call(NewsTableSeeder::class);
-        $this->command->info('Таблица Новостей - заполнена данными!');
-
-        $this->call(MenuTableSeeder::class);
-        $this->command->info('Таблица Меню - заполнена данными!');
+        $this->call(UserTableSeeder::class);
 
         $this->call(PagesTableSeeder::class);
-        $this->command->info('Таблица Статические страници - заполнена данными!');
+        $this->call(MenuTableSeeder::class);
+
+        $this->call(NewsChapterTableSeeder::class);
+        $this->call(NewsTableSeeder::class);
 
         $this->call(GalleryTableSeeder::class);
-        $this->command->info('Таблица Геререя - заполнена данными!');
 
+        $this->command->info('========================================');
+        $this->command->info('Таблица пользователей заполнена данными!');
+        $this->command->info('Таблица Статические страници - заполнена данными!');
+        $this->command->info('Таблица Меню - заполнена данными!');
+        $this->command->info('Таблица Разделов - заполнена данными!');
+        $this->command->info('Таблица Новостей - заполнена данными!');
+        $this->command->info('Таблица Геререя - заполнена данными!');
     }
 }

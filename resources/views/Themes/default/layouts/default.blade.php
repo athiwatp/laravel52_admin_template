@@ -44,9 +44,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ route('home') }}">Home</a></li>
-            </ul>
+            {!! main_menu() !!}
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -57,10 +55,10 @@
 @yield('page_header')
 
 <!-- Main Content -->
-        <div class="container">
-            @yield('content')
-        </div>
-
+<div class="container">
+    @yield('content')
+    {!! sidebar_menu() !!}
+</div>
 <hr>
 
 <!-- Footer -->
@@ -68,6 +66,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
                 <ul class="list-inline text-center">
                     <li>
                         <a href="#">
@@ -94,7 +93,10 @@
                         </a>
                     </li>
                 </ul>
-                <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+
+                {!! footer_menu() !!}
+
+                <p class="copyright text-muted">{!! build_copyright() !!}</p>
             </div>
         </div>
     </div>

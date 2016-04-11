@@ -12,6 +12,8 @@ class NewsChapterTableSeeder extends Seeder
      */
     public function run()
     {
+        $constants = Config::get('constants');
+
         Chapter::where('id', 'like', '%%')->delete();
 
         $faker = Faker\Factory::create('ru_RU');
@@ -24,8 +26,7 @@ class NewsChapterTableSeeder extends Seeder
                 'pos' => 0,
                 'is_active' => (int)($index % 2 === 0),
                 'parent_id' => null,
-
-                'type_chapter' => Chapter::TYPE_CHAPTER,
+                'type_chapter' =>  $constants['CHAPTER']['CHAPTER'],
 
                 'created_at' => $faker->dateTime,
                 'updated_at' => $faker->dateTime,

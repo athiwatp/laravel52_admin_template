@@ -14,12 +14,28 @@ Route::group(['middleware' => 'web'], function () {
     // Page viewer
     Route::get('/s/{url}', array('as' => 'page-url', 'uses' => 'Core\Face\PagesController@show') );
 
+    // Menu viewer
+    Route::get('/m/{url}', array('as' => 'menu-url', 'uses' => 'Core\Face\MenuController@show') );
+
     // News viewer
     Route::get('/n/{url}', array('as' => 'news-url', 'uses' => 'Core\Face\NewsController@show') );
 
+    // News list
+    Route::get('/news', array('as' => 'news-list', 'uses' => 'Core\Face\NewsController@index') );
     // Contact viewer
     Route::get('/contact', array('as' => 'contact', 'uses' => 'Core\Face\ContactController@show'));
 
+    // Gallery viewer
+    Route::get('/g/{id}', array('as' => 'gallery-url', 'uses' => 'Core\Face\GalleryController@show') );
+
+    // Gallery list
+    Route::get('/gallery', array('as' => 'gallery-list', 'uses' => 'Core\Face\GalleryController@index') );
+
+    // Gallery viewer
+    Route::get('/v/{id}', array('as' => 'video-url', 'uses' => 'Core\Face\VideoController@show') );
+
+    // Gallery list
+    Route::get('/video', array('as' => 'video-list', 'uses' => 'Core\Face\VideoController@index') );
 });
 
 /**
@@ -83,7 +99,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
     Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
-    Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show']]);
+
 });
 
 

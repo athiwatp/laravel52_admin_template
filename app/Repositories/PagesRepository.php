@@ -1,23 +1,50 @@
 <?php namespace App\Repositories;
 
 use App\Models\Pages as Pages;
-use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Auth, Lang, Config, cTrackChangesUrl;
+use App\Repositories\UrlHistoryRepository;
+use App\Repositories\MenuesRepository;
 
 class PagesRepository extends BaseRepository {
+    /**
+     * Url History instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $history = null;
+
+    /**
+     * Menu instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $menu = null;
+
     /**
      * Create a new Message instance
      *
      * @param App\Models\Pages $pages
+     * @param UrlHistoryRepository $history
+     * @param MenuesRepository $menu
      *
      * @return void
     */
-    public function __construct(Pages $pages)
+    public function __construct(
+        Pages $pages,
+        UrlHistoryRepository $history = null,
+        MenuesRepository $menu
+    )
     {
         $this->model = $pages;
+
+        // Inject url history object
+        $this->history = $history;
+
+        // Inject menu object
+        $this->menu = $menu;
     }
 
-        /**
+    /**
      * Create or update Message
      *
      * @param App\Models\Pages $pages
@@ -38,13 +65,11 @@ class PagesRepository extends BaseRepository {
     */
     public function savePage( $page, $inputs )
     {
-        $page->title            = $inputs['title'];
-        $page->url              = $inputs['url'];
-        $page->meta_keywords    = $inputs['meta_keywords'];
-        $page->meta_descriptions = $inputs['meta_descriptions'];
-        $page->content          = $inputs['content'];
-        $page->user_id          = Auth::id();
-        $page->is_published     = $inputs['is_published'];
+        foreach( $inputs as $key => $val ) {
+            $page->$key = $val;
+        }
+
+        $page->user_id = Auth::id();
 
         $page->save();
 
@@ -52,17 +77,56 @@ class PagesRepository extends BaseRepository {
     }
 
     /**
-     * Retrive page by the URL
+     * Retrieve the menu item by the URL
      *
-    */
-    public function get( $url )
+     * @param String $url
+     *
+     * @return App\Models\Menues
+     */
+    public function getByUrl( $url )
     {
-        $result = [];
+        $mHistory = $this->history->getTypeId(
+            $url,
+            Config::get('constants.URL_HISTORY.TYPE_PAGE')
+        );
+
+        if ( $mHistory && $mHistory->status === true ) {
+            $result = $this->model->findById( $mHistory->id );
+        } else {
+            $result = $this->model
+                ->where( 'is_published', Config::get('constants.DONE_STATUS.SUCCESS') )
+                ->where('url', $url)
+                ->first();
+        }
+
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
+
+        return false;
+    }
+
+    /**
+     * Get page that should be load by default (this query should be based on menu)
+     *
+     * @return Object
+    */
+    public function getDefaultPage()
+    {
+        $defMenu = $this->menu->getDefaultMenu();
 
 
-        dd( $url );
 
-        return $result;
+        if ( $defMenu && $defMenu->page_id > 0 ) {
+
+            $result = $this->getById( $defMenu->page_id );
+
+            if ( $result ) {
+                return (object) $result->toArray();
+            }
+        }
+
+        return false;
     }
 
     /**

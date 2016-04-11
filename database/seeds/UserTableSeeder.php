@@ -15,13 +15,13 @@ class UserTableSeeder extends Seeder
         DB::table('users')->delete();
 
         User::create(array(
-                'name'      => 'Admin',
-                'email'     => 'admin@pervosoft.com',
-                'password'  => Hash::make('pervosoft'),
-                'is_admin'  => '1',
-                'is_verified' => '1',
-                'phone'     => 'pervosoft',
-            ));
-
+            'id' => '1',
+            'name'      => 'Admin',
+            'email'     => 'admin@pervosoft.com',
+            'password'  => Hash::make('pervosoft'),
+            'is_admin'  => '1',
+            'is_verified' => '1',
+            'phone'     => 'pervosoft',
+        ));
     }
 }

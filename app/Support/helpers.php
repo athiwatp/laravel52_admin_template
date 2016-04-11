@@ -1,101 +1,137 @@
 <?php
-
 use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
-use App\Repositories\MenuesRepository;
-
+use App\Repositories\MenuesRepository as rMenu;
+use Carbon\Carbon;
+/**
+ * Возвращает путь картинки.
+ *
+ * @param  string  $photo
+ * @param  spring  $box
+ * @return string
+ */
 if (! function_exists('get_file_url') ) {
-
-    /**
-     * Возвращает путь картинки.
-     *
-     * @param  string  $photo 
-     * @param  spring  $box
-     * @return string
-     */
     function get_file_url( $photo, $box )
     {
         return ( $photo ? cFile::getImagePathURL($photo, $box) : '' );
     }
 }
-
-if ( ! function_exists('getAdminContact') ) {
-    /**
-     * Returns the site name with the settings.
-     *
-     * @return string
-     */
-
-    function getAdminContact()
-    {
-        $data = get_settings_data();
-
-        return array_key_exists('contact', $data) ? $data['contact'] : '';
+/**
+ * build youtube preview url
+ *
+ * @return String
+ */
+if (! function_exists('get_youtube_preview') ) {
+    function get_youtube_preview( $url ) {
+        return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $url ) .  '/hqdefault.jpg';
     }
 }
-
-if ( ! function_exists('getContactAddress') ) {
-    /**
-     * Returns the site name with the settings.
-     *
-     * @return string
-     */
-
-    function getContactAddress()
-    {
-        $data = get_settings_data();
-
-        return array_key_exists('contact_address', $data) ? $data['contact_address'] : '';
+/**
+ * Build cooperates
+ *
+ * @return String
+*/
+if (! function_exists('build_copyright') ) {
+    function build_copyright() {
+        return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
     }
 }
-
-if ( ! function_exists('getCoordinates') ) {
-    /**
-     * Returns the site name with the settings.
-     *
-     * @return string
-     */
-
-    function getCoordinates()
-    {
-        $data = get_settings_data();
-
-        return array_key_exists('contact_coordinates', $data) ? $data['contact_coordinates'] : '';
+/**
+ * Returns formated date
+ *
+ * @param String $date
+ * @param Boolean $time - show time
+ *
+ * @return String
+ */
+if (! function_exists('get_formatted_date') ) {
+    function get_formatted_date( $date, $time = false ) {
+        $dt = Carbon::parse( $date );
+        $months = Lang::get('datetime.months');
+        return $dt->day . ' ' .
+            (array_key_exists($dt->month, $months) ? $months[$dt->month] : '') . ' ' .
+            $dt->year .
+            (
+                $time && $dt->minute > 0  ?
+                    ' ' . $dt->minute . ':' . $dt->minute
+                    : ''
+            );
     }
 }
-
-if ( ! function_exists('getSateName') ) {
-    /**
-     * Returns the site name with the settings.
-     *
-     * @return string
-     */
-
-    function getSateName()
+/**
+ * Function to build the main menu
+ *
+ * @doc http://sky.pingpong-labs.com/docs/2.0/menus
+ * @return String
+*/
+if (! function_exists('main_menu') ) {
+    function main_menu()
     {
-        $data = get_settings_data();
-
-        return array_key_exists('site_name', $data) ? $data['site_name'] : '';
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('main', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\MainPresenter');
+            try {
+                $repoMenu = new rMenu();
+                $aTree = rMenu::buildTree( $repoMenu->getMainMenu()->toArray() );
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+            } catch (Exception $e) {}
+        });
+        return Menu::get('main');
     }
 }
-
-if ( ! function_exists('getAdminEmail') ) {
-    /**
-     * Returns the email with the settings.
-     *
-     * @return string
-     */
-
-    function getAdminEmail()
+/**
+ * Function to build the main menu
+ *
+ * @return String
+ */
+if (! function_exists('footer_menu') ) {
+    function footer_menu()
     {
-        $data = get_settings_data();
-
-        return array_key_exists('admin_email', $data) ? $data['admin_email'] : '';
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('footer', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\FooterPresenter');
+            try {
+                $repoMenu = new rMenu();
+                $aTree = rMenu::buildTree( $repoMenu->getFooterMenu()->toArray() );
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+            } catch (Exception $e) {}
+        });
+        return Menu::get('footer');
     }
 }
-
-if ( ! function_exists('getOnButtonFacebook') ) {
-
+/**
+ * Function to build the main menu
+ *
+ * @return String
+ */
+if (! function_exists('sidebar_menu') ) {
+    function sidebar_menu()
+    {
+        /**
+         * Create main menu for the Front-end side
+         */
+        Menu::create('sidebar_menu', function($menu) {
+            $menu->setPresenter('App\Helpers\Menu\SidebarPresenter');
+            try {
+                $repoMenu = new rMenu();
+                $aTree = rMenu::buildTree( $repoMenu->getSidebarMenu()->toArray() );
+                foreach($aTree as $item) {
+                    rMenu::createItem($item, $menu);
+                }
+            } catch (Exception $e) {}
+        });
+        return Menu::get('sidebar_menu');
+    }
+}
+if ( ! function_exists('getSocialButtons') ) {
     /**
      * Возвращает статус кнопки авторизации соцсетей.
      * @return string
@@ -103,59 +139,33 @@ if ( ! function_exists('getOnButtonFacebook') ) {
     function getOnButtonFacebook()
     {
         $settings = new SettingsRepository();
-
-        return $settings->getSettings()['facebook_authorization'];
+        return '';
+//        return $settings->getSocialButtons()['facebook_authorization'];
     }
-}
-
-if ( ! function_exists('getOnButtonTwitter') ) {
-
-    /**
-     * Возвращает статус кнопки авторизации соцсетей.
-     * @return string
-     */
     function getOnButtonTwitter()
     {
         $settings = new SettingsRepository();
-
-        return $settings->getSettings()['twitter_authorization'];
+        return '';
+//     return $settings->getSocialButtons()['twitter_authorization'];
     }
-}
-
-if ( ! function_exists('getOnButtonGoogle') ) {
-
-    /**
-     * Возвращает статус кнопки авторизации соцсетей.
-     * @return string
-     */
     function getOnButtonGoogle()
     {
         $settings = new SettingsRepository();
-
-        return $settings->getSettings()['google_authorization'];
+        return '';
+//        return $settings->getSocialButtons()['google_authorization'];
     }
-}
-
-if ( ! function_exists('getOnButtonLinkedIn') ) {
-
-    /**
-     * Возвращает статус кнопки авторизации соцсетей.
-     * @return string
-     */
     function getOnButtonLinkedIn()
     {
         $settings = new SettingsRepository();
-
-        return $settings->getSettings()['linkedIn_authorization'];
+        return '';
+        //return $settings->getSocialButtons()['linkedIn_authorization'];
     }
 }
-
-
-if ( ! function_exists('main_menu') ) {
-
-    function main_menu()
-    {
-        $menu = new MenuesRepository();
-        return ;
-    }
-}
+//if ( ! function_exists('main_menu') ) {
+//
+//    function main_menu()
+//    {
+//        $menu = new MenuesRepository();
+//        return ;
+//    }
+//}

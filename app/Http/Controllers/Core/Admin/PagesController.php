@@ -126,7 +126,16 @@ class PagesController extends AdminController
      */
     public function store( PagesRequest $request )
     {
-        $this->pages->store( $request->all() );
+        $this->pages->store( $request->only([
+            'title',
+            'url',
+            'subtitle',
+            'content',
+            'is_published',
+            'meta_keywords',
+            'meta_descriptions',
+            'id',
+        ]));
 
         return Redirect::route('admin.pages.index')
             ->with('message', array(

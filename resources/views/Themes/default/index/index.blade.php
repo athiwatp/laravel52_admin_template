@@ -1,3 +1,48 @@
+{{--
+    VARIABLES:
+      1. lNews (Array of Objects)
+        id
+        title
+        chapter_id
+        content
+        date
+        user_id
+        source
+        photo
+        url
+        is_published
+        is_main
+        is_important
+        type_news
+        created_at
+        updated_at
+
+      2. currPage (Object)
+          id
+          title
+          subtitle
+          url
+          meta_keywords
+          meta_descriptions
+          content
+          is_published
+          user_id
+          created_at
+          updated_at
+
+      3. lGallery (Object) - list of photos
+        **** id
+         **** title
+         **** chapter_id
+         **** filename
+         **** tp
+         **** user_id
+         **** pos
+         **** created_at
+         **** updated_at
+
+--}}
+
 @extends( $__theme . '.layouts.default')
 
 {{-- Page Header --}}
@@ -8,9 +53,9 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="site-heading">
-                    <h1>Веб-мастер</h1>
+                    <h1>{{ $currPage->title }}</h1>
                     <hr class="small">
-                    <span class="subheading">Тема для Веб-сайта</span>
+                    <span class="subheading">{{ $currPage->subtitle }}</span>
                 </div>
             </div>
         </div>
@@ -21,19 +66,14 @@
 {{-- Content section --}}
 @section('content')
     <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">{{ $currPage->content }}</div>
+    </div>
+
+    <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-
-            @foreach( $lNews as $item )
-                <div class="post-preview">
-                    <a href="{{ route('news-url', ['url' => $item['url'] ]) }}">
-                        <h2 class="post-title">{{ $item['title'] }}</h2>
-                        <h3 class="post-subtitle">{{ $item['content'] }}</h3>
-                    </a>
-                    <p class="post-meta">{{ $item['source'] }}, {{ $item['date'] }}</p>
-                </div>
-                <hr>
-            @endforeach
-
+            <h1>News</h1>
+            {{-- The list of news --}}
+            @include('Themes.default.news.list', [ 'list' => $lNews ])
 
             <!-- Pager -->
             <ul class="pager">
@@ -41,6 +81,28 @@
                     <a href="#">Еще &rarr;</a>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Photo</h1>
+            {{-- Retrieve the list --}}
+            <div class="row">
+            @include('Themes.default.gallery.list', ['gList' => $lGallery])
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Video</h1>
+            {{-- Retrieve the list --}}
+            <div class="row">
+                @include('Themes.default.video.list', ['vList' => $lVideo])
+            </div>
         </div>
     </div>
 @endsection

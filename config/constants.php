@@ -72,7 +72,8 @@ return [
         'TYPE_MENU' => 'menu',
         'TYPE_NONE' => 'none',
         'TYPE_PAGE' => 'page',
-        'TYPE_NEWS' => 'news'
+        'TYPE_NEWS' => 'news',
+        'TYPE_VIDEO' => 'video',
     ],
 
     /**

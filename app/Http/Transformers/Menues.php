@@ -17,6 +17,7 @@ class Menues extends TransformerAbstract
         return [
             'id' => (int) $menu->id,
             'title' => $menu->title,
+            'type' => $menu->type_menu,
             'pos' => (int) $menu->pos,
             'published' => (boolean) $menu->is_published,
             'default' => (boolean) $menu->is_loaded_by_default,

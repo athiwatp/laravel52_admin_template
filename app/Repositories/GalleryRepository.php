@@ -2,6 +2,7 @@
 
 use App\Models\Gallery as Gallery;
 use Carbon\Carbon, Auth, Lang, Config;
+use Illuminate\Http\Request;
 
 class GalleryRepository extends BaseRepository {
     /**
@@ -26,6 +27,46 @@ class GalleryRepository extends BaseRepository {
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Retrieve the latest gallery from DB
+     *
+     * @param int $amount - amount of records that we need to retrieve
+     *
+     * @return Array
+     */
+    public function getLatest( $amount )
+    {
+        $result = $this->model
+            ->orderBy('created_at', 'DESC')
+            ->take( $amount )
+            ->get();
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+    /**
+     * Reprive the list of news
+     *
+     * @param Request $request
+     *
+     * @return Collection
+     */
+    public function getPaginatedList(Request $request)
+    {
+        $result = $this->model
+            ->orderBy('pos', 'DESC')
+            ->paginate(50);
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
     }
 
     /**

@@ -11,16 +11,20 @@
 
     <div class="tab-pane fade active in" id="main-pills">
         <div class="form-group">
-            {{ Form::label('title', Lang::get('news.form.title') ) }}
-            {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+            {{ Form::label('title', Lang::get('pages.form.title') ) }}
+            {{ Form::text('title', ( $oData ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
         </div>
         <div class="form-group">
             {{ Form::label('url', Lang::get('news.form.url_ident') ) }}
-            {{ Form::text('url', ( isset($oData) ? $oData->url : null), array('class' => 'form-control data-url', 'readonly' => true)) }}
+            {{ Form::text('url', ( $oData ? $oData->url : null), array('class' => 'form-control data-url', 'readonly' => true)) }}
+        </div>
+        <div class="form-group">
+            {{ Form::label('subtitle', Lang::get('pages.form.subtitle') ) }}
+            {{ Form::text('subtitle', ( $oData ? $oData->subtitle : null), array('class' => 'form-control')) }}
         </div>
         <div class="form-group">
             {{ Form::label('content', Lang::get('news.form.content') ) }}
-            {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control ck-edtor')) }}
+            {{ Form::textarea('content', ( $oData ? $oData->content : null), array('class' => 'form-control')) }}
         </div>
         <div class="form-group">
             {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}

@@ -4,8 +4,16 @@ use App\Models\Menues as Menues;
 use Pingpong\Menus\MenuItem;
 use App\Models\UrlHistory as UrlHistory;
 use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
+use App\Repositories\UrlHistoryRepository;
 
 class MenuesRepository extends BaseRepository {
+    /**
+     * Url History instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $history = null;
+
     /**
      * Create a new Message instance
      *
@@ -13,12 +21,16 @@ class MenuesRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct( Menues $menues = null )
+    public function __construct( Menues $menues = null, UrlHistoryRepository $history = null )
     {
         if ( $menues === null ) {
             $menues = new Menues();
         }
+
         $this->model = $menues;
+
+        // Inject url history object
+        $this->history = $history;
     }
 
         /**
@@ -42,10 +54,10 @@ class MenuesRepository extends BaseRepository {
     */
     public function saveMenues( $menu, $inputs )
     {
-        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0') );
+        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0'), $menu );
         
         $menu->title        = $inputs['title'];
-        $menu->parent_id    = ( $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
+        $menu->parent_id    = ( array_key_exists('parent_id', $inputs) && $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
         $menu->path         = $oMenus['path'];
         $menu->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : 0 );
         $menu->type_menu    = ( isset($inputs['type_menu']) ? $inputs['type_menu'] : 0 );
@@ -58,6 +70,7 @@ class MenuesRepository extends BaseRepository {
         $menu->is_redirectable  = ( isset($inputs['is_redirectable']) ? $inputs['is_redirectable'] : 0 );
         $menu->is_loaded_by_default   = ( isset($inputs['is_loaded_by_default']) ? $inputs['is_loaded_by_default'] : 0);
         $menu->is_shown_print_version = ( isset($inputs['is_shown_print_version']) ? $inputs['is_shown_print_version'] : 0 );
+        $menu->linked_to = ( array_key_exists('linked_to_menu', $inputs) ? $inputs['linked_to_menu'] : null);
 
         $menu->save();
 
@@ -119,6 +132,56 @@ class MenuesRepository extends BaseRepository {
         //
     }
 
+    /**
+     * Retrieve the menu item by the URL
+     *
+     * @param String $url
+     *
+     * @return App\Models\Menues
+    */
+    public function getByUrl( $url )
+    {
+        $mHistory = $this->history->getTypeId(
+            $url,
+            Config::get('constants.URL_HISTORY.TYPE_MENU')
+        );
+
+        if ( $mHistory && $mHistory->status === true ) {
+            $result = $this->model->findById( $mHistory->id );
+        } else {
+            $result = $this->getMenu()
+                ->where('url', $url)
+                ->first();
+        }
+
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns menu, that marked as default
+     *
+     * @return Object
+    */
+    public function getDefaultMenu()
+    {
+        $OK = Config::get('constants.DONE_STATUS.SUCCESS');
+
+        $result = $this->model
+            ->where('is_loaded_by_default', $OK)
+            ->where('is_published', $OK )
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if ( $result ) {
+            return (object) $result->toArray();
+        }
+
+        return false;
+    }
 
     /**
     * Returns a list of menu types
@@ -128,7 +191,7 @@ class MenuesRepository extends BaseRepository {
             Config::get('constants.TYPE_MENU.MAIN') => Lang::get('menues.form.type_main'),
             Config::get('constants.TYPE_MENU.SIDE') => Lang::get('menues.form.type_side'),
             Config::get('constants.TYPE_MENU.FOOTER') => Lang::get('menues.form.type_footer'),
-            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
+//            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
         );
     }
 
@@ -149,9 +212,9 @@ class MenuesRepository extends BaseRepository {
      *
      * @return
     */
-    public static function getMenu($bAllMenu = false)
+    public function getMenu($bAllMenu = false)
     {
-        $oAllMenu = Menues::select(array('static_menues.*'))
+        $oAllMenu = $this->model
             ->orderBy('parent_id')
             ->orderBy('pos')
             ->orderBy('title');
@@ -163,7 +226,10 @@ class MenuesRepository extends BaseRepository {
         return $oAllMenu;
     }
 
-    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId ) {
+    /**
+     *
+    */
+    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId, $oMenu ) {
 
         if ( $iParentId != $iOldParentId ) {
             if ( empty($iParentId) && $iOldParentId > 0) {
@@ -181,6 +247,7 @@ class MenuesRepository extends BaseRepository {
                     $oMenus['path'] = self::getParentPath($iParentId, $oParentMenu->path);
                 }
             }
+
             return $oMenus;
         }
     }
@@ -247,7 +314,7 @@ class MenuesRepository extends BaseRepository {
     /**
     * Prepare a list of menues for the combox
     */
-    public static function getComboList()
+    public function getComboList()
     {
         $oItems = array();
         $aItems = array(
@@ -255,7 +322,7 @@ class MenuesRepository extends BaseRepository {
             '0' => ' *** ' . Lang::get('menues.form.select_root_menu') . ' *** ',
         );
 
-        $oAllMenu = self::getMenu(true)->orderBy('path')
+        $oAllMenu = $this->getMenu(true)->orderBy('path')
             ->orderBy('pos')
             ->orderBy('title')
             ->get();
@@ -277,9 +344,9 @@ class MenuesRepository extends BaseRepository {
      * [getMainMenu description]
      * @return [type] [description]
      */
-    public static function getMainMenu()
+    public function getMainMenu()
     {
-        return self::getMenu()
+        return $this->getMenu()
             ->where('type_menu', '=', Config::get('constants.TYPE_MENU.MAIN'))
             ->get();
     }
@@ -288,21 +355,22 @@ class MenuesRepository extends BaseRepository {
      * [getFooterMenu description]
      * @return [type] [description]
      */
-    public static function getFooterMenu()
+    public function getFooterMenu()
     {
-        return self::getMenu()
+        return $this->getMenu()
             ->where('type_menu', '=', Config::get('constants.TYPE_MENU.FOOTER') )
             ->get();
     }
 
     /**
-     * [getVerticalMenu description]
-     * @return [type] [description]
-     */
-    public static function getVerticalMenu()
+     * Returns sidebar menu
+     *
+     * @return Object
+    */
+    public function getSidebarMenu()
     {
-        return self::getMenu()
-            ->where('type_menu', '=', Config::get('constants.TYPE_MENU.SIDE') )
+        return $this->getMenu()
+            ->where('type_menu', Config::get('constants.TYPE_MENU.SIDE') )
             ->get();
     }
 
@@ -324,12 +392,24 @@ class MenuesRepository extends BaseRepository {
                     if (array_key_exists('children', $subItem) && count($subItem['children']) > 0) {
                         self::createItem($subItem, $sub);
                     } else {
-                        $sub->route('menu-show', $subItem['title'], $subItem['url']);
+                        $sub->url(
+                            route('menu-url', [
+                                'url' => $subItem['url']
+                            ]),
+
+                            $subItem['title']
+                        );
                     }
                 }
             });
         } else {
-            $globalMenu->route('menu-show', $oMenuItem['title'], $oMenuItem['url']);
+            $globalMenu->url(
+                route('menu-url', [
+                    'url' => $oMenuItem['url']
+                ]),
+
+                $oMenuItem['title']
+            );
         }
     }
 

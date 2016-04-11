@@ -105,6 +105,8 @@ class MenuesController extends AdminController
             'formChapter' => Lang::get('menues.lists.management_menues'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('menues.lists.create_new_menues'),
+            'formJsHandler' => 'menu/form',
+            'formFormId' => 'admin_menu_form',
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -173,6 +175,8 @@ class MenuesController extends AdminController
             'formChapter' => Lang::get('menues.lists.management_menues'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('menues.lists.editing_menues'),
+            'formJsHandler' => 'menu/form',
+            'formFormId' => 'admin_menu_form',
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
