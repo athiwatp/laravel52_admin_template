@@ -37,9 +37,10 @@ class CustomerReviewsRepository extends BaseRepository {
     */
     public function saveCustomerReviews( $reviews, $inputs )
     {
-        $reviews->title        = $inputs['title'];
+        $reviews->client        = $inputs['client'];
         $reviews->comment      = $inputs['comment'];
         $reviews->date         = ( isset($inputs['date']) ? $inputs['date'] : Carbon::now()->toDateString() );
+        $reviews->signature    = $inputs['signature'];
         $reviews->is_published = $inputs['is_published'];
         $reviews->user_id      = Auth::id();
 

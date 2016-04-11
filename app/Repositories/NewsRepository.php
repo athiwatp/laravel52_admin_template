@@ -1,9 +1,8 @@
 <?php namespace App\Repositories;
 
 use App\Models\News as News;
-use Carbon\Carbon, Auth, cTrackChangesUrl;
+use Carbon\Carbon, Auth, cTrackChangesUrl, Config;
 use Illuminate\Http\Request;
-use Config;
 
 class NewsRepository extends BaseRepository {
 

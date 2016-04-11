@@ -1,6 +1,6 @@
 <div class="form-group">
-    {{ Form::label('title', Lang::get('customer_reviews.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+    {{ Form::label('client', Lang::get('customer_reviews.form.client') ) }}
+    {{ Form::text('client', ( isset($oData) ? $oData->client : null), array('class' => 'form-control convert-to-url')) }}
 </div>
 
 <div class="form-group">
@@ -16,6 +16,11 @@
 <div class="form-group">
     {{ Form::label('comment', Lang::get('customer_reviews.form.comment') ) }}
     {{ Form::textarea('comment', ( isset($oData) ? $oData->comment : null), array('class' => 'form-control ck-edtor')) }}
+</div>
+
+<div class="form-group">
+    {{ Form::label('signature', Lang::get('customer_reviews.form.signature') ) }}
+    {{ Form::text('signature', ( isset($oData) ? $oData->signature : null), array('class' => 'form-control')) }}
 </div>
 
 <div class="form-group">

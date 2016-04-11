@@ -3,7 +3,7 @@
  *
  * @url https://vuejs.org
  **/
-var Vue = require('Vue');
+var Vue = require('vue');
 var system = require('../_System.js').getInstance();
 
 Vue.use(require('vue-resource'));

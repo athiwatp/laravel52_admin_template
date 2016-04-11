@@ -8,7 +8,7 @@ module.exports = {
      **/
     columns: [
         {data: 'id'},
-        {data: 'title'},
+        {data: 'client'},
         {data: 'date'}
     ],
 
@@ -33,8 +33,8 @@ module.exports = {
                     published = '<i class="fa fa-eye-slash red"></i>';
                 }
 
-                return '<a href="/admin/customerReviews/'+ row.id + '/edit" title="' + noTags + '">' +
-                    published  + system.ellipsis( noTags, 100 ) +
+                return '<a href="/admin/customerReviews/'+ row.id + '/edit" client="' + noTags + '">' +
+                    published + ' ' + system.ellipsis( noTags, 100 ) +
                 '</a>';
             },
             targets: 1

@@ -98,6 +98,7 @@ class PagesController extends AdminController
             'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('pages.lists.create_new_pages'),
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -171,6 +172,7 @@ class PagesController extends AdminController
             'formChapter' => Lang::get('pages.lists.pages_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('pages.lists.editing_page'),
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),

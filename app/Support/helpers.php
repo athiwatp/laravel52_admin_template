@@ -1,11 +1,8 @@
 <?php
-
 use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
 use App\Repositories\MenuesRepository as rMenu;
 use Carbon\Carbon;
-
-
 /**
  * Возвращает путь картинки.
  *
@@ -14,13 +11,11 @@ use Carbon\Carbon;
  * @return string
  */
 if (! function_exists('get_file_url') ) {
-
     function get_file_url( $photo, $box )
     {
         return ( $photo ? cFile::getImagePathURL($photo, $box) : '' );
     }
 }
-
 /**
  * build youtube preview url
  *
@@ -31,8 +26,6 @@ if (! function_exists('get_youtube_preview') ) {
         return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $url ) .  '/hqdefault.jpg';
     }
 }
-
-
 /**
  * Build cooperates
  *
@@ -43,7 +36,6 @@ if (! function_exists('build_copyright') ) {
         return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
     }
 }
-
 /**
  * Returns formated date
  *
@@ -56,7 +48,6 @@ if (! function_exists('get_formatted_date') ) {
     function get_formatted_date( $date, $time = false ) {
         $dt = Carbon::parse( $date );
         $months = Lang::get('datetime.months');
-
         return $dt->day . ' ' .
             (array_key_exists($dt->month, $months) ? $months[$dt->month] : '') . ' ' .
             $dt->year .
@@ -67,8 +58,6 @@ if (! function_exists('get_formatted_date') ) {
             );
     }
 }
-
-
 /**
  * Function to build the main menu
  *
@@ -76,7 +65,6 @@ if (! function_exists('get_formatted_date') ) {
  * @return String
 */
 if (! function_exists('main_menu') ) {
-
     function main_menu()
     {
         /**
@@ -84,30 +72,23 @@ if (! function_exists('main_menu') ) {
          */
         Menu::create('main', function($menu) {
             $menu->setPresenter('App\Helpers\Menu\MainPresenter');
-
             try {
                 $repoMenu = new rMenu();
-
                 $aTree = rMenu::buildTree( $repoMenu->getMainMenu()->toArray() );
-
                 foreach($aTree as $item) {
                     rMenu::createItem($item, $menu);
                 }
             } catch (Exception $e) {}
         });
-
         return Menu::get('main');
     }
 }
-
-
 /**
  * Function to build the main menu
  *
  * @return String
  */
 if (! function_exists('footer_menu') ) {
-
     function footer_menu()
     {
         /**
@@ -115,31 +96,23 @@ if (! function_exists('footer_menu') ) {
          */
         Menu::create('footer', function($menu) {
             $menu->setPresenter('App\Helpers\Menu\FooterPresenter');
-
             try {
                 $repoMenu = new rMenu();
-
                 $aTree = rMenu::buildTree( $repoMenu->getFooterMenu()->toArray() );
-
                 foreach($aTree as $item) {
                     rMenu::createItem($item, $menu);
                 }
-
             } catch (Exception $e) {}
         });
-
         return Menu::get('footer');
     }
 }
-
-
 /**
  * Function to build the main menu
  *
  * @return String
  */
 if (! function_exists('sidebar_menu') ) {
-
     function sidebar_menu()
     {
         /**
@@ -147,26 +120,18 @@ if (! function_exists('sidebar_menu') ) {
          */
         Menu::create('sidebar_menu', function($menu) {
             $menu->setPresenter('App\Helpers\Menu\SidebarPresenter');
-
             try {
                 $repoMenu = new rMenu();
-
                 $aTree = rMenu::buildTree( $repoMenu->getSidebarMenu()->toArray() );
-
                 foreach($aTree as $item) {
                     rMenu::createItem($item, $menu);
                 }
-
             } catch (Exception $e) {}
         });
-
         return Menu::get('sidebar_menu');
     }
 }
-
 if ( ! function_exists('getSocialButtons') ) {
-
-
     /**
      * Возвращает статус кнопки авторизации соцсетей.
      * @return string
@@ -174,36 +139,28 @@ if ( ! function_exists('getSocialButtons') ) {
     function getOnButtonFacebook()
     {
         $settings = new SettingsRepository();
-
         return '';
 //        return $settings->getSocialButtons()['facebook_authorization'];
     }
-
     function getOnButtonTwitter()
     {
         $settings = new SettingsRepository();
         return '';
 //     return $settings->getSocialButtons()['twitter_authorization'];
     }
-
     function getOnButtonGoogle()
     {
         $settings = new SettingsRepository();
         return '';
-
 //        return $settings->getSocialButtons()['google_authorization'];
     }
-
     function getOnButtonLinkedIn()
     {
         $settings = new SettingsRepository();
-
         return '';
         //return $settings->getSocialButtons()['linkedIn_authorization'];
     }
 }
-
-
 //if ( ! function_exists('main_menu') ) {
 //
 //    function main_menu()

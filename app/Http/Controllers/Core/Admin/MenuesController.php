@@ -27,9 +27,10 @@ class MenuesController extends AdminController
      *
      * @return void
      */
-    public function __construct( MenuesRepository $menues )
+    public function __construct( MenuesRepository $menues, PagesRepository $pages )
     {
         $this->menues = $menues;
+        $this->pages = $pages;
     }
 
     /**
@@ -92,7 +93,7 @@ class MenuesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( MenuesRepository $menues, PagesRepository $pages )
+    public function create( MenuesRepository $menues )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
@@ -121,7 +122,7 @@ class MenuesController extends AdminController
             'formContent' => $this->renderView('menues.add', array(
                 'aTypeMenues' => $menues->getMenuTypes(),
                 'aMenues' => $menues->getComboList(),
-                'aPages' => $pages->getComboList(),
+                'aPages' => $this->pages->getComboList(),
                 'oData' => null
             )),
             'formUrl' => URL::route('admin.menu.store'),
@@ -162,7 +163,7 @@ class MenuesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, MenuesRepository $menues, PagesRepository $pages )
+    public function edit( $id, MenuesRepository $menues )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
@@ -191,7 +192,7 @@ class MenuesController extends AdminController
             'formContent' => $this->renderView('menues.add', array(
                 'oData' => $this->menues->edit( $id ),
                 'aTypeMenues' => $menues->getMenuTypes(),
-                'aPages' => $pages->getComboList(),
+                'aPages' => $this->pages->getComboList(),
                 'aMenues' => $menues->getComboList()
             )),
             'formUrl' => URL::route('admin.menu.store'),

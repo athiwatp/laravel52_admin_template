@@ -16,6 +16,9 @@ return array(
         'gallery' => 'Фото-галерея',
         'gallery_chapter' => 'Разделы',
         'photo_gallery' => 'Галерея',
+        'announcements_management' => 'Управление Анонсами',
+        'chapter_announcements_management' => 'Разделы Анонсов',
+        'announcements' => 'Анонсы',
         ),
 
     'lists' => array(

@@ -6,6 +6,9 @@
         <a href="#profile-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('pages.form.tegs') }}</a>
     </li>
     <li class="">
+        <a href="#contact" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.form.contact') }}</a>
+    </li>
+    <li class="">
         <a href="#social-networks-pills" data-toggle="tab" aria-expanded="false">{{ Lang::get('settings.form.social_networks') }}</a>
     </li>
     <li class="">
@@ -43,6 +46,21 @@
         <div class="form-group">
             {{ Form::label('meta_description', Lang::get('settings.form.meta_description')) }}
             {!! Form::textarea('meta_description', ( array_key_exists('meta_description', $oData) ? $oData['meta_description'] : ''), array('class' => 'form-control')) !!}
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="contact">
+        <div class="form-group">
+            {{ Form::label('contact', Lang::get('settings.form.page_contact') ) }}
+            {!! Form::textarea('contact', (array_key_exists('contact', $oData) ? $oData['contact'] : ''), array('class' => 'form-control ck-edtor')) !!}
+        </div>
+        <div class="form-group">
+            {{ Form::label('contact_address', Lang::get('settings.form.address') ) }}
+            {!! Form::text('contact_address', (array_key_exists('contact_address', $oData) ? $oData['contact_address'] : ''), array('class' => 'form-control')) !!}
+        </div>
+        <div class="form-group">
+            {{ Form::label('contact_coordinates', Lang::get('settings.form.contact_coordinates')) }}
+            {!! Form::text('contact_coordinates', ( array_key_exists('contact_coordinates', $oData) ? $oData['contact_coordinates'] : ''), array('class' => 'form-control')) !!}
         </div>
     </div>
 

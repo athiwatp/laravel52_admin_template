@@ -13,7 +13,8 @@
         "pingpong/menus": "^2.2",
         "yajra/laravel-datatables-oracle": "~6.0",
         "intervention/image": "^2.3",
-        "laravel/socialite": "^2.0"
+        "laravel/socialite": "^2.0",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

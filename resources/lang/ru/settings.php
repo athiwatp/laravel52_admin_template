@@ -31,15 +31,19 @@ return array(
 
     'form' => array(
         'main' => 'Главные',
-        'social_networks' => 'Социальные сети',
+        'address' => 'Адрес',
         'other' => 'Другие',
+        'contact' => 'Контакты',
         'settings' => 'Настройки',
         'site_name' => 'Название сайта',
         'admin_email' => 'Электронная почта Администрации сайта',
         'meta_keywords' => 'Meta Keywords',
+        'page_contact' => 'Страница контактов',
         'footer_content' => 'Контакты',
+        'social_networks' => 'Социальные сети',
         'meta_description' => 'Meta Description',
         'settings_this_site' => 'Настройки сайта',
+        'contact_coordinates' => 'Координаты',
     )
 
 
