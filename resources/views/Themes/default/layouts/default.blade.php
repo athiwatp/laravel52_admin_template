@@ -94,13 +94,32 @@
                     </li>
                 </ul>
 
-                {!! footer_menu() !!}
 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-9"></div>
+            <div class="col col-md-3" id="footer-subscriber">
+                <my-subscriber
+                        cmp-header="Підписка на новини"
+                        cmp-description="Підпишіться на нашу електронну розсилку, щоб отримувати останні новини, свіжі статті та іншу корисну інформацію."
+                        cmp-field-placeholder="Вкажіть e-mail">
+                </my-subscriber>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-5">{!! footer_menu() !!}</div>
+            <div class="col col-md-3">
                 <p class="copyright text-muted">{!! build_copyright() !!}</p>
             </div>
         </div>
     </div>
 </footer>
+
+
+
 
 {!! Html::script('js/vendor/jquery.min.js') !!}
 {!! Html::script('js/vendor/bootstrap.min.js') !!}
