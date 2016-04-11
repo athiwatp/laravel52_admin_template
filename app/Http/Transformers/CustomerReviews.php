@@ -16,7 +16,7 @@ class CustomerReviews extends TransformerAbstract
     {
         return [
             'id' => (int) $reviews->id,
-            'title' => $reviews->title,
+            'client' => $reviews->client,
             'date' => $reviews->date,
             'content' => $reviews->comment,
             'published' => (boolean) $reviews->is_published

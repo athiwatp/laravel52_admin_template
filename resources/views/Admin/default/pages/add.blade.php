@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('content', Lang::get('news.form.content') ) }}
-            {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control')) }}
+            {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control ck-edtor')) }}
         </div>
         <div class="form-group">
             {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}

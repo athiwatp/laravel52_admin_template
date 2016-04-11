@@ -53,6 +53,7 @@ class SettingsController extends AdminController
             'formChapter' => Lang::get('settings.lists.system_settings'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('settings.lists.manage_system_settings'),
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => Lang::get('table_field.lists.save'),

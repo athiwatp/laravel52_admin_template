@@ -25,6 +25,10 @@ module.exports = {
                 mod = require('./pages/list.js');
                 break;
 
+            case 'announcements/list':
+                mod = require('./announcements/list.js');
+                break;
+
             case 'customerReviews/list':
                 mod = require('./customerReviews/list.js');
                 break;

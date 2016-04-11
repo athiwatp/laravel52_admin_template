@@ -16,6 +16,10 @@ Route::group(['middleware' => 'web'], function () {
 
     // News viewer
     Route::get('/n/{url}', array('as' => 'news-url', 'uses' => 'Core\Face\NewsController@show') );
+
+    // Contact viewer
+    Route::get('/contact', array('as' => 'contact', 'uses' => 'Core\Face\ContactController@show'));
+
 });
 
 /**
@@ -29,6 +33,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Module to handle the Chapters the system
     Route::get('chapter/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Core\Admin\ChaptersController@indexGallery'));
+
+
+    // Handle the Announcements
+    Route::get('chapter/announcements', array('as' => 'admin.chapter.announcements', 'uses' => 'Core\Admin\ChaptersController@indexAnnouncements'));
 
     // Chapters
     Route::resource('chapter', 'Core\Admin\ChaptersController');
@@ -53,6 +61,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Module to handle the Gallery in the system
     Route::resource('gallery', 'Core\Admin\GalleryController');
+
+    // Handle the Announcements
+    Route::resource('announcements', 'Core\Admin\AnnouncementsController');
+
 });
 
 /**
@@ -71,6 +83,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
     Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
+    Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show']]);
 });
 
 

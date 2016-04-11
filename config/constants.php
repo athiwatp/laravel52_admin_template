@@ -15,7 +15,8 @@ return [
         'NEWS' => 'news',
         'PHOTO_GALLERY' => 'photo_gallery',
         'VIDEO' => 'video',
-        'CHAPTER' => 'chapter'
+        'CHAPTER' => 'chapter',
+        'ANNOUNCE' => 'announce'
     ],
 
     /**
@@ -81,7 +82,8 @@ return [
     */
     'CHAPTER' => [
         'CHAPTER' => '0',
-        'GALLERY' => '1'
+        'GALLERY' => '1',
+        'ANNOUNCE' => '2'
     ]
 
 ];

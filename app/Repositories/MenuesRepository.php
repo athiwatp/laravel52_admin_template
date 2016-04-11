@@ -347,6 +347,24 @@ class MenuesRepository extends BaseRepository {
                 'route' => 'admin.dashboard'
             ),
 
+            'announcements' => array(
+                'title' => Lang::get('menues.nav.announcements_management'),
+                'leftIcon' => '<i class="fa fa-bullhorn"></i>',
+                'rightIcon' => '<i class="fa arrow"></i>',
+                'children' => array(
+                    'chapter_announcements' => array(
+                        'title' => Lang::get('menues.nav.chapter_announcements_management'),
+                        'icon' => '<i class="fa fa-th-list"></i>',
+                        'route' => 'admin.chapter.announcements'
+                    ),
+                    'announcements' => array(
+                        'title' => Lang::get('menues.nav.announcements'),
+                        'icon' => '<i class="fa fa-bullhorn"></i>',
+                        'route' => 'admin.announcements.index'
+                    )
+                )
+            ),
+
             'content' => array(
                 'title' => Lang::get('menues.nav.content'),
                 'leftIcon' => '<i class="fa fa-book"></i>',

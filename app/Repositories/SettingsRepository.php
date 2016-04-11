@@ -93,7 +93,7 @@ class SettingsRepository extends BaseRepository {
             );
     }
 
-    public function getSocialButtons()
+    public function getSettings()
     {
         $aData = array();
 

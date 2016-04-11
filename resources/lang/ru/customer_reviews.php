@@ -16,7 +16,8 @@ return array(
         ),
 
     'form' => array(
-        'title' => 'Заголовок',
+        'client' => 'Клиент',
+        'signature' => 'Подпись',
         'comment' => 'Комментарий',
         )
     );
