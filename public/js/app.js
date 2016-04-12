@@ -25314,6 +25314,53 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     "use strict";
 
     var Vue = require('vue'),
+        elId = parameters && parameters.elId ? parameters.elId : '#header-search';
+
+    Vue.use(require('vue-resource'));
+
+    Vue.component('my-search', {
+        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i></button>' + '</span>' + '</div>' + '</div>'
+    });
+
+    return new Vue({
+        el: elId
+    });
+});
+
+},{"jquery":1,"vue":28,"vue-resource":17}],31:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function (factory) {
+    "use strict";
+
+    // AMD
+
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], {}, function ($, parameters, _system) {
+            return factory($, parameters, _system);
+        });
+    }
+    // CommonJS
+    else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+            module.exports = function ($, parameters, _system) {
+
+                if (!$) {
+                    $ = require('jquery');
+                }
+
+                return factory($, parameters, _system);
+            };
+        }
+        // Browser
+        else {
+                factory(jQuery, {}, _system);
+            }
+})(function ($, parameters, _system) {
+    "use strict";
+
+    var Vue = require('vue'),
         elId = parameters && parameters.elId ? parameters.elId : '#footer-subscriber';
 
     Vue.use(require('vue-resource'));
@@ -25368,7 +25415,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         data: function data() {
             return {
                 field: {
-                    email: "test@visp.com.ua"
+                    email: ""
                 },
                 /**
                  * Status object to determine the process
@@ -25376,20 +25423,67 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                  * @var Boolean
                  **/
                 status: {
+                    /**
+                     * Saving status for the process
+                     *
+                     * @var Boolean
+                     **/
                     saving: false,
 
+                    /**
+                     * Done status for the request
+                     *
+                     * @var Boolean
+                     **/
                     done: false,
 
+                    /**
+                     * Class for success
+                     *
+                     * @var String
+                     **/
                     SUCCESS: 'alert alert-success',
+
+                    /**
+                     * Class for failure
+                     *
+                     * @var String
+                     **/
                     FAILURE: 'alert alert-danger',
+
+                    /**
+                     * Class for warning
+                     *
+                     * @var String
+                     **/
                     WARNING: 'alert alert-warning'
                 },
 
+                /**
+                 * Notifier
+                 *
+                 * @var Object
+                 **/
                 notifier: {
+                    /**
+                     * Status text, which will mark as a bold font
+                     *
+                     * @var String
+                     **/
                     status: '',
 
+                    /**
+                     * Message
+                     *
+                     * @var String
+                     **/
                     message: '',
 
+                    /**
+                     * Class for notification block
+                     *
+                     * @var String
+                     **/
                     cls: ''
                 }
             };
@@ -25459,15 +25553,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         var r = response.data;
 
                         if (r.success === true) {
-                            self.notifier.cls = self.status.SUCCESS;
-                            self.notifier.message = r.message;
-                            self.notifier.status = 'Ok!';
+                            self._showMessage(self.status.SUCCESS, r.message);
 
                             self.field.email = '';
                         } else {
-                            self.notifier.cls = self.status.FAILURE;
-                            self.notifier.message = r.errors[0];
-                            self.notifier.status = 'Ошибка!';
+                            self._showMessage(self.status.FAILURE, r.errors[0]);
                         }
 
                         self.status.done = true;
@@ -25481,6 +25571,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         self.status.done = false;
                     }, 15000);
                 });
+            },
+
+            /**
+             * Show notification message
+             *
+             * @param String status - this.status.*
+             * @param String message - notification message
+             *
+             * @return void
+             **/
+            _showMessage: function _showMessage(status, message) {
+                var self = this,
+                    statMsg = status == self.status.SUCCESS ? 'OK!' : 'Ошибка';
+
+                self.notifier.cls = status;
+                self.notifier.message = message;
+                self.notifier.status = statMsg;
             }
         },
 
@@ -25513,13 +25620,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"jquery":1,"vue":28,"vue-resource":17}],31:[function(require,module,exports){
+},{"jquery":1,"vue":28,"vue-resource":17}],32:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
 var _system = require('./../../Admin/modules/_System').getInstance();
 
 $(function () {
+
+    /**
+     * Check if subscribe form is available by the ID
+     **/
+    if ($('#header-search').length > 0) {
+        var search = require('./components/my-search.js')($, {
+            elId: '#header-search'
+        }, _system);
+    }
 
     /**
      * Check if subscribe form is available by the ID
@@ -25531,10 +25647,10 @@ $(function () {
     }
 });
 
-},{"./../../Admin/modules/_System":29,"./components/my-subscriber.js":30,"jquery":1}],32:[function(require,module,exports){
+},{"./../../Admin/modules/_System":29,"./components/my-search.js":30,"./components/my-subscriber.js":31,"jquery":1}],33:[function(require,module,exports){
 "use strict";
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 /**
@@ -25547,6 +25663,6 @@ require('./Face/Core/scripts.js');
  **/
 require('./Face/Custom/scripts.js');
 
-},{"./Face/Core/scripts.js":31,"./Face/Custom/scripts.js":32}]},{},[33]);
+},{"./Face/Core/scripts.js":32,"./Face/Custom/scripts.js":33}]},{},[34]);
 
 //# sourceMappingURL=app.js.map

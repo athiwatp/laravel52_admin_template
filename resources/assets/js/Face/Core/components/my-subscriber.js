@@ -94,7 +94,7 @@
         data: function(){
             return {
                 field: {
-                    email: "test@visp.com.ua"
+                    email: ""
                 },
                 /**
                  * Status object to determine the process
@@ -102,20 +102,67 @@
                  * @var Boolean
                  **/
                 status: {
+                    /**
+                     * Saving status for the process
+                     *
+                     * @var Boolean
+                     **/
                     saving: false,
 
+                    /**
+                     * Done status for the request
+                     *
+                     * @var Boolean
+                     **/
                     done: false,
 
+                    /**
+                     * Class for success
+                     *
+                     * @var String
+                     **/
                     SUCCESS: 'alert alert-success',
+
+                    /**
+                     * Class for failure
+                     *
+                     * @var String
+                     **/
                     FAILURE: 'alert alert-danger',
+
+                    /**
+                     * Class for warning
+                     *
+                     * @var String
+                     **/
                     WARNING: 'alert alert-warning',
                 },
 
+                /**
+                 * Notifier
+                 *
+                 * @var Object
+                 **/
                 notifier: {
+                    /**
+                     * Status text, which will mark as a bold font
+                     *
+                     * @var String
+                     **/
                     status: '',
 
+                    /**
+                     * Message
+                     *
+                     * @var String
+                     **/
                     message: '',
 
+                    /**
+                     * Class for notification block
+                     *
+                     * @var String
+                     **/
                     cls: ''
                 }
             };
@@ -186,15 +233,11 @@
                                 var r = response.data;
 
                                 if ( r.success === true ) {
-                                    self.notifier.cls = self.status.SUCCESS;
-                                    self.notifier.message = r.message;
-                                    self.notifier.status = 'Ok!';
+                                    self._showMessage(self.status.SUCCESS, r.message);
 
                                     self.field.email = '';
                                 } else {
-                                    self.notifier.cls = self.status.FAILURE;
-                                    self.notifier.message = r.errors[0];
-                                    self.notifier.status = 'Ошибка!';
+                                    self._showMessage(self.status.FAILURE, r.errors[0]);
                                 }
 
                                 self.status.done = true;
@@ -210,6 +253,23 @@
                             self.status.done = false;
                         }, 15000);
                     });
+            },
+
+            /**
+             * Show notification message
+             *
+             * @param String status - this.status.*
+             * @param String message - notification message
+             *
+             * @return void
+             **/
+            _showMessage: function(status, message) {
+                var self = this,
+                    statMsg = (status == self.status.SUCCESS) ? 'OK!' : 'Ошибка';
+
+                self.notifier.cls = status;
+                self.notifier.message = message;
+                self.notifier.status = statMsg;
             }
         },
 
