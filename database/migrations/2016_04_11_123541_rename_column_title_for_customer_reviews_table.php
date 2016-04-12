@@ -25,7 +25,7 @@ class RenameColumnTitleForCustomerReviewsTable extends Migration
     public function down()
     {
         Schema::table('customer_reviews', function (Blueprint $table) {
-            //
+            $table->renameColumn('client', 'title');
         });
     }
 }

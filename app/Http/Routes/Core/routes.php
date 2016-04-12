@@ -99,6 +99,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
     Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
+    Route::resource('subscriber', 'Core\Api\SubscriberController', ['only' => ['store']]);
 
 });
 

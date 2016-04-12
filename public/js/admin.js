@@ -47195,8 +47195,6 @@ module.exports = new Vue({
                 type: self.menu.type
             });
 
-            console.log('Retrieving parents!!!!!');
-
             return this.$http.get(url).then(function (responce) {
                 var data = responce.data ? responce.data.data : [];
 
@@ -47206,8 +47204,6 @@ module.exports = new Vue({
                 for (var i in self.parentDefault) {
                     self.parents.push(self.parentDefault[i]);
                 }
-
-                console.log(data);
 
                 for (var i in data) {
                     self.parents.push({

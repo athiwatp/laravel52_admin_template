@@ -39,23 +39,17 @@ class SubscribersRepository extends BaseRepository {
      *
      * @return
      */
-    public function saveNews( $news, $inputs )
+    public function save( $subscriber, $inputs )
     {
-//        $news->title        = $inputs['title'];
-//        $news->content      = $inputs['content'];
-//        $news->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
-//        $news->user_id      = Auth::id();
-//        $news->url          = $inputs['url'];
-//        $news->type_news    = '1';
-//        $news->date         = $inputs['date'];
-//        $news->source       = $inputs['source'];
-//        $news->is_published = $inputs['is_published'];
-//        $news->is_main      = $inputs['is_main'];
-//        $news->is_important = $inputs['is_important'];
-//
-//        $news->save();
+        foreach($inputs as $field => $value) {
+            $subscriber->$field = $value;
+        }
 
-        return true;
+        if ($inputs) {
+            return $subscriber->save();
+        }
+
+        return false;
     }
 
     /**
@@ -65,33 +59,9 @@ class SubscribersRepository extends BaseRepository {
      *
      * @return mixed ( App\Models\News | false )
      */
-    public function store( $inputs )
+    public function add( $inputs )
     {
-//        $id = $inputs['id'];
-//
-//        if ( isset($id) && $id > 0 ) {
-//            $model = $this->model->find( $id );
-//        } else {
-//            $model = new $this->model;
-//        }
-//
-//        if ( $id > 0 && $model->url != $inputs['url'] ) {
-//            cTrackChangesUrl::getItems(
-//                array(
-//                    'aData' => array(
-//                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_NEWS'),
-//                        'url' => $inputs['url'],
-//                        'type_id' => $inputs['id']
-//                    )
-//                )
-//            );
-//        }
-//
-//        if ( $this->saveNews( $model, $inputs ) ) {
-//            return $model->toArray();
-//        } else {
-//            return false;
-//        }
+        return $this->save(new $this->model, $inputs);
     }
 
     /**
