@@ -92,13 +92,32 @@ class SettingsRepository extends BaseRepository {
             );
     }
 
-    public function getSettings()
+    /**
+     * Returns settings parameters
+     *
+     * @param String $key - the parameter key
+     * @param String $default - default value for the key
+     *
+     * @return mixed
+    */
+    public function getSettings( $key = null, $default = null )
     {
         $aData = array();
+        $list  = $this->index();
 
-        foreach($this->index() as $item) {
+        foreach($list as $item) {
+
+            if ( $key && $key == $item->key_name ) {
+                return $item->value;
+            }
+
             $aData[$item->key_name] = $item->value;
         }
+
+        if ( empty($key) === false ) {
+            return ($default === null ? '' : $default);
+        }
+
         return $aData;
     }
 }
