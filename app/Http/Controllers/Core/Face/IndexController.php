@@ -8,6 +8,7 @@ use App\Repositories\NewsRepository;
 use App\Repositories\PagesRepository;
 use App\Repositories\GalleryRepository;
 use App\Repositories\VideoNewsRepository;
+use App\Repositories\AnnouncementsRepository;
 
 class IndexController extends FaceController
 {
@@ -39,6 +40,12 @@ class IndexController extends FaceController
      */
     protected $video = null;
 
+    /**
+     * Inject announce repository to manage the announces
+     *
+     * @var Object
+     */
+    protected $announce = null;
 
     /**
      *
@@ -47,7 +54,8 @@ class IndexController extends FaceController
         NewsRepository $news,
         PagesRepository $pages,
         GalleryRepository $gallery,
-        VideoNewsRepository $video
+        VideoNewsRepository $video,
+        AnnouncementsRepository $announce
     )
     {
         // Call the parent controller first
@@ -64,6 +72,9 @@ class IndexController extends FaceController
 
         // Inject gallery
         $this->video = $video;
+
+        // Inject announce
+        $this->announce = $announce;
     }
 
     /**
@@ -83,11 +94,18 @@ class IndexController extends FaceController
         // Get the page to load by default
         $currPage = $this->pages->getDefaultPage();
 
+        //Get announces
+        $lImportantAnnounces = $this->announce->getLatest(10, true);
+        $lRegularAnnounces   = $this->announce->getLatest(10);
+
         return $this->renderView('index.index', [
             'lNews' => $lNews,
             'lGallery' => $lGallery,
             'lVideo' => $lVideo,
-            'currPage' => $currPage
+            'lImportantAnnounces' => $lImportantAnnounces,
+            'lRegularAnnounces' => $lRegularAnnounces,
+            'currPage' => $currPage,
+
         ]);
     }
 }

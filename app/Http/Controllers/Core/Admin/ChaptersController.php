@@ -107,6 +107,7 @@ class ChaptersController extends AdminController
             'isShownSearchBox' => false,
             'sContent' => $this->renderView('chapters.index', array(
                 'sBreadcrumbs' => cBreadcrumbs::getItems( $this->getTheme(), $aBreadcrumbs ),
+                'sChapterType' => $sType,
                 'aToolbar' => array(
                     'template' => $this->getTheme(),
                     'add' => array(
