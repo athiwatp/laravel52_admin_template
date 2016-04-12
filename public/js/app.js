@@ -1,4 +1,445 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Simple, lightweight, usable local autocomplete library for modern browsers
+ * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
+ * @author Lea Verou http://leaverou.github.io/awesomplete
+ * MIT license
+ */
+
+(function () {
+
+var _ = function (input, o) {
+	var me = this;
+
+	// Setup
+
+	this.input = $(input);
+	this.input.setAttribute("autocomplete", "off");
+	this.input.setAttribute("aria-autocomplete", "list");
+
+	o = o || {};
+
+	configure(this, {
+		minChars: 2,
+		maxItems: 10,
+		autoFirst: false,
+		data: _.DATA,
+		filter: _.FILTER_CONTAINS,
+		sort: _.SORT_BYLENGTH,
+		item: _.ITEM,
+		replace: _.REPLACE
+	}, o);
+
+	this.index = -1;
+
+	// Create necessary elements
+
+	this.container = $.create("div", {
+		className: "awesomplete",
+		around: input
+	});
+
+	this.ul = $.create("ul", {
+		hidden: "hidden",
+		inside: this.container
+	});
+
+	this.status = $.create("span", {
+		className: "visually-hidden",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-relevant": "additions",
+		inside: this.container
+	});
+
+	// Bind events
+
+	$.bind(this.input, {
+		"input": this.evaluate.bind(this),
+		"blur": this.close.bind(this),
+		"keydown": function(evt) {
+			var c = evt.keyCode;
+
+			// If the dropdown `ul` is in view, then act on keydown for the following keys:
+			// Enter / Esc / Up / Down
+			if(me.opened) {
+				if (c === 13 && me.selected) { // Enter
+					evt.preventDefault();
+					me.select();
+				}
+				else if (c === 27) { // Esc
+					me.close();
+				}
+				else if (c === 38 || c === 40) { // Down/Up arrow
+					evt.preventDefault();
+					me[c === 38? "previous" : "next"]();
+				}
+			}
+		}
+	});
+
+	$.bind(this.input.form, {"submit": this.close.bind(this)});
+
+	$.bind(this.ul, {"mousedown": function(evt) {
+		var li = evt.target;
+
+		if (li !== this) {
+
+			while (li && !/li/i.test(li.nodeName)) {
+				li = li.parentNode;
+			}
+
+			if (li && evt.button === 0) {  // Only select on left click
+				evt.preventDefault();
+				me.select(li, evt.target);
+			}
+		}
+	}});
+
+	if (this.input.hasAttribute("list")) {
+		this.list = "#" + this.input.getAttribute("list");
+		this.input.removeAttribute("list");
+	}
+	else {
+		this.list = this.input.getAttribute("data-list") || o.list || [];
+	}
+
+	_.all.push(this);
+};
+
+_.prototype = {
+	set list(list) {
+		if (Array.isArray(list)) {
+			this._list = list;
+		}
+		else if (typeof list === "string" && list.indexOf(",") > -1) {
+				this._list = list.split(/\s*,\s*/);
+		}
+		else { // Element or CSS selector
+			list = $(list);
+
+			if (list && list.children) {
+				var items = [];
+				slice.apply(list.children).forEach(function (el) {
+					if (!el.disabled) {
+						var text = el.textContent.trim();
+						var value = el.value || text;
+						var label = el.label || text;
+						if (value !== "") {
+							items.push({ label: label, value: value });
+						}
+					}
+				});
+				this._list = items;
+			}
+		}
+
+		if (document.activeElement === this.input) {
+			this.evaluate();
+		}
+	},
+
+	get selected() {
+		return this.index > -1;
+	},
+
+	get opened() {
+		return !this.ul.hasAttribute("hidden");
+	},
+
+	close: function () {
+		this.ul.setAttribute("hidden", "");
+		this.index = -1;
+
+		$.fire(this.input, "awesomplete-close");
+	},
+
+	open: function () {
+		this.ul.removeAttribute("hidden");
+
+		if (this.autoFirst && this.index === -1) {
+			this.goto(0);
+		}
+
+		$.fire(this.input, "awesomplete-open");
+	},
+
+	next: function () {
+		var count = this.ul.children.length;
+
+		this.goto(this.index < count - 1? this.index + 1 : -1);
+	},
+
+	previous: function () {
+		var count = this.ul.children.length;
+
+		this.goto(this.selected? this.index - 1 : count - 1);
+	},
+
+	// Should not be used, highlights specific item without any checks!
+	goto: function (i) {
+		var lis = this.ul.children;
+
+		if (this.selected) {
+			lis[this.index].setAttribute("aria-selected", "false");
+		}
+
+		this.index = i;
+
+		if (i > -1 && lis.length > 0) {
+			lis[i].setAttribute("aria-selected", "true");
+			this.status.textContent = lis[i].textContent;
+
+			$.fire(this.input, "awesomplete-highlight", {
+				text: this.suggestions[this.index]
+			});
+		}
+	},
+
+	select: function (selected, origin) {
+		if (selected) {
+			this.index = $.siblingIndex(selected);
+		} else {
+			selected = this.ul.children[this.index];
+		}
+
+		if (selected) {
+			var suggestion = this.suggestions[this.index];
+
+			var allowed = $.fire(this.input, "awesomplete-select", {
+				text: suggestion,
+				origin: origin || selected
+			});
+
+			if (allowed) {
+				this.replace(suggestion);
+				this.close();
+				$.fire(this.input, "awesomplete-selectcomplete", {
+					text: suggestion
+				});
+			}
+		}
+	},
+
+	evaluate: function() {
+		var me = this;
+		var value = this.input.value;
+
+		if (value.length >= this.minChars && this._list.length > 0) {
+			this.index = -1;
+			// Populate list with options that match
+			this.ul.innerHTML = "";
+
+			this.suggestions = this._list
+				.map(function(item) {
+					return new Suggestion(me.data(item, value));
+				})
+				.filter(function(item) {
+					return me.filter(item, value);
+				})
+				.sort(this.sort)
+				.slice(0, this.maxItems);
+
+			this.suggestions.forEach(function(text) {
+					me.ul.appendChild(me.item(text, value));
+				});
+
+			if (this.ul.children.length === 0) {
+				this.close();
+			} else {
+				this.open();
+			}
+		}
+		else {
+			this.close();
+		}
+	}
+};
+
+// Static methods/properties
+
+_.all = [];
+
+_.FILTER_CONTAINS = function (text, input) {
+	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+};
+
+_.FILTER_STARTSWITH = function (text, input) {
+	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+};
+
+_.SORT_BYLENGTH = function (a, b) {
+	if (a.length !== b.length) {
+		return a.length - b.length;
+	}
+
+	return a < b? -1 : 1;
+};
+
+_.ITEM = function (text, input) {
+	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	return $.create("li", {
+		innerHTML: html,
+		"aria-selected": "false"
+	});
+};
+
+_.REPLACE = function (text) {
+	this.input.value = text.value;
+};
+
+_.DATA = function (item/*, input*/) { return item; };
+
+// Private functions
+
+function Suggestion(data) {
+	var o = Array.isArray(data)
+	  ? { label: data[0], value: data[1] }
+	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+	this.label = o.label || o.value;
+	this.value = o.value;
+}
+Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+	get: function() { return this.label.length; }
+});
+Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+	return "" + this.label;
+};
+
+function configure(instance, properties, o) {
+	for (var i in properties) {
+		var initial = properties[i],
+		    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+
+		if (typeof initial === "number") {
+			instance[i] = parseInt(attrValue);
+		}
+		else if (initial === false) { // Boolean options must be false by default anyway
+			instance[i] = attrValue !== null;
+		}
+		else if (initial instanceof Function) {
+			instance[i] = null;
+		}
+		else {
+			instance[i] = attrValue;
+		}
+
+		if (!instance[i] && instance[i] !== 0) {
+			instance[i] = (i in o)? o[i] : initial;
+		}
+	}
+}
+
+// Helpers
+
+var slice = Array.prototype.slice;
+
+function $(expr, con) {
+	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
+}
+
+function $$(expr, con) {
+	return slice.call((con || document).querySelectorAll(expr));
+}
+
+$.create = function(tag, o) {
+	var element = document.createElement(tag);
+
+	for (var i in o) {
+		var val = o[i];
+
+		if (i === "inside") {
+			$(val).appendChild(element);
+		}
+		else if (i === "around") {
+			var ref = $(val);
+			ref.parentNode.insertBefore(element, ref);
+			element.appendChild(ref);
+		}
+		else if (i in element) {
+			element[i] = val;
+		}
+		else {
+			element.setAttribute(i, val);
+		}
+	}
+
+	return element;
+};
+
+$.bind = function(element, o) {
+	if (element) {
+		for (var event in o) {
+			var callback = o[event];
+
+			event.split(/\s+/).forEach(function (event) {
+				element.addEventListener(event, callback);
+			});
+		}
+	}
+};
+
+$.fire = function(target, type, properties) {
+	var evt = document.createEvent("HTMLEvents");
+
+	evt.initEvent(type, true, true );
+
+	for (var j in properties) {
+		evt[j] = properties[j];
+	}
+
+	return target.dispatchEvent(evt);
+};
+
+$.regExpEscape = function (s) {
+	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+};
+
+$.siblingIndex = function (el) {
+	/* eslint-disable no-cond-assign */
+	for (var i = 0; el = el.previousElementSibling; i++);
+	return i;
+};
+
+// Initialization
+
+function init() {
+	$$("input.awesomplete").forEach(function (input) {
+		new _(input);
+	});
+}
+
+// Are we in a browser? Check for Document constructor
+if (typeof Document !== "undefined") {
+	// DOM already loaded?
+	if (document.readyState !== "loading") {
+		init();
+	}
+	else {
+		// Wait for it
+		document.addEventListener("DOMContentLoaded", init);
+	}
+}
+
+_.$ = $;
+_.$$ = $$;
+
+// Make sure to export Awesomplete on self when in a browser
+if (typeof self !== "undefined") {
+	self.Awesomplete = _;
+}
+
+// Expose Awesomplete as a CJS module
+if (typeof module === "object" && module.exports) {
+	module.exports = _;
+}
+
+return _;
+
+}());
+
+},{}],2:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
@@ -9842,7 +10283,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 //! moment.js
 //! version : 2.12.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13531,7 +13972,7 @@ return jQuery;
     return _moment;
 
 }));
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -13624,7 +14065,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * Before Interceptor.
  */
@@ -13644,7 +14085,7 @@ module.exports = {
 
 };
 
-},{"../util":27}],5:[function(require,module,exports){
+},{"../util":28}],6:[function(require,module,exports){
 /**
  * Base client.
  */
@@ -13711,7 +14152,7 @@ function parseHeaders(str) {
     return headers;
 }
 
-},{"../../promise":20,"../../util":27,"./xhr":8}],6:[function(require,module,exports){
+},{"../../promise":21,"../../util":28,"./xhr":9}],7:[function(require,module,exports){
 /**
  * JSONP client.
  */
@@ -13761,7 +14202,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":20,"../../util":27}],7:[function(require,module,exports){
+},{"../../promise":21,"../../util":28}],8:[function(require,module,exports){
 /**
  * XDomain client (Internet Explorer).
  */
@@ -13800,7 +14241,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":20,"../../util":27}],8:[function(require,module,exports){
+},{"../../promise":21,"../../util":28}],9:[function(require,module,exports){
 /**
  * XMLHttp client.
  */
@@ -13852,7 +14293,7 @@ module.exports = function (request) {
     });
 };
 
-},{"../../promise":20,"../../util":27}],9:[function(require,module,exports){
+},{"../../promise":21,"../../util":28}],10:[function(require,module,exports){
 /**
  * CORS Interceptor.
  */
@@ -13891,7 +14332,7 @@ function crossOrigin(request) {
     return (requestUrl.protocol !== originUrl.protocol || requestUrl.host !== originUrl.host);
 }
 
-},{"../util":27,"./client/xdr":7}],10:[function(require,module,exports){
+},{"../util":28,"./client/xdr":8}],11:[function(require,module,exports){
 /**
  * Header Interceptor.
  */
@@ -13919,7 +14360,7 @@ module.exports = {
 
 };
 
-},{"../util":27}],11:[function(require,module,exports){
+},{"../util":28}],12:[function(require,module,exports){
 /**
  * Service for sending network requests.
  */
@@ -14019,7 +14460,7 @@ Http.headers = {
 
 module.exports = _.http = Http;
 
-},{"../promise":20,"../util":27,"./before":4,"./client":5,"./cors":9,"./header":10,"./interceptor":12,"./jsonp":13,"./method":14,"./mime":15,"./timeout":16}],12:[function(require,module,exports){
+},{"../promise":21,"../util":28,"./before":5,"./client":6,"./cors":10,"./header":11,"./interceptor":13,"./jsonp":14,"./method":15,"./mime":16,"./timeout":17}],13:[function(require,module,exports){
 /**
  * Interceptor factory.
  */
@@ -14066,7 +14507,7 @@ function when(value, fulfilled, rejected) {
     return promise.then(fulfilled, rejected);
 }
 
-},{"../promise":20,"../util":27}],13:[function(require,module,exports){
+},{"../promise":21,"../util":28}],14:[function(require,module,exports){
 /**
  * JSONP Interceptor.
  */
@@ -14086,7 +14527,7 @@ module.exports = {
 
 };
 
-},{"./client/jsonp":6}],14:[function(require,module,exports){
+},{"./client/jsonp":7}],15:[function(require,module,exports){
 /**
  * HTTP method override Interceptor.
  */
@@ -14105,7 +14546,7 @@ module.exports = {
 
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Mime Interceptor.
  */
@@ -14143,7 +14584,7 @@ module.exports = {
 
 };
 
-},{"../util":27}],16:[function(require,module,exports){
+},{"../util":28}],17:[function(require,module,exports){
 /**
  * Timeout Interceptor.
  */
@@ -14175,7 +14616,7 @@ module.exports = function () {
     };
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Install plugin.
  */
@@ -14230,7 +14671,7 @@ if (window.Vue) {
 
 module.exports = install;
 
-},{"./http":11,"./promise":20,"./resource":21,"./url":22,"./util":27}],18:[function(require,module,exports){
+},{"./http":12,"./promise":21,"./resource":22,"./url":23,"./util":28}],19:[function(require,module,exports){
 /**
  * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
  */
@@ -14411,7 +14852,7 @@ p.catch = function (onRejected) {
 
 module.exports = Promise;
 
-},{"../util":27}],19:[function(require,module,exports){
+},{"../util":28}],20:[function(require,module,exports){
 /**
  * URL Template v2.0.6 (https://github.com/bramstein/url-template)
  */
@@ -14563,7 +15004,7 @@ exports.encodeReserved = function (str) {
     }).join('');
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Promise adapter.
  */
@@ -14674,7 +15115,7 @@ p.always = function (callback) {
 
 module.exports = Promise;
 
-},{"./lib/promise":18,"./util":27}],21:[function(require,module,exports){
+},{"./lib/promise":19,"./util":28}],22:[function(require,module,exports){
 /**
  * Service for interacting with RESTful services.
  */
@@ -14786,7 +15227,7 @@ Resource.actions = {
 
 module.exports = _.resource = Resource;
 
-},{"./util":27}],22:[function(require,module,exports){
+},{"./util":28}],23:[function(require,module,exports){
 /**
  * Service for URL templating.
  */
@@ -14918,7 +15359,7 @@ function serialize(params, obj, scope) {
 
 module.exports = _.url = Url;
 
-},{"../util":27,"./legacy":23,"./query":24,"./root":25,"./template":26}],23:[function(require,module,exports){
+},{"../util":28,"./legacy":24,"./query":25,"./root":26,"./template":27}],24:[function(require,module,exports){
 /**
  * Legacy Transform.
  */
@@ -14966,7 +15407,7 @@ function encodeUriQuery(value, spaces) {
         replace(/%20/g, (spaces ? '%20' : '+'));
 }
 
-},{"../util":27}],24:[function(require,module,exports){
+},{"../util":28}],25:[function(require,module,exports){
 /**
  * Query Parameter Transform.
  */
@@ -14992,7 +15433,7 @@ module.exports = function (options, next) {
     return url;
 };
 
-},{"../util":27}],25:[function(require,module,exports){
+},{"../util":28}],26:[function(require,module,exports){
 /**
  * Root Prefix Transform.
  */
@@ -15010,7 +15451,7 @@ module.exports = function (options, next) {
     return url;
 };
 
-},{"../util":27}],26:[function(require,module,exports){
+},{"../util":28}],27:[function(require,module,exports){
 /**
  * URL Template (RFC 6570) Transform.
  */
@@ -15028,7 +15469,7 @@ module.exports = function (options) {
     return url;
 };
 
-},{"../lib/url-template":19}],27:[function(require,module,exports){
+},{"../lib/url-template":20}],28:[function(require,module,exports){
 /**
  * Utility functions.
  */
@@ -15152,7 +15593,7 @@ function merge(target, source, deep) {
     }
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.21
@@ -25078,7 +25519,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":3}],29:[function(require,module,exports){
+},{"_process":4}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -25280,7 +25721,7 @@ var AdminSingleton = function ($) {
 
 module.exports = AdminSingleton;
 
-},{"moment":2}],30:[function(require,module,exports){
+},{"moment":3}],31:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -25314,12 +25755,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     "use strict";
 
     var Vue = require('vue'),
+        Awesompelete = require('awesomplete'),
         elId = parameters && parameters.elId ? parameters.elId : '#header-search';
 
     Vue.use(require('vue-resource'));
 
     Vue.component('my-search', {
-        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i></button>' + '</span>' + '</div>' + '</div>'
+        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg awesomplete" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i></button>' + '</span>' + '</div>' + '</div>',
+
+        ready: function ready() {
+
+            $(elId + ' input').each(function () {
+
+                console.log(this);
+
+                new Awesompelete(this, {
+                    list: ['Java', 'JavaScript', 'Something', 'Index']
+                });
+            });
+        },
+
+        methods: {}
     });
 
     return new Vue({
@@ -25327,7 +25783,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"jquery":1,"vue":28,"vue-resource":17}],31:[function(require,module,exports){
+},{"awesomplete":1,"jquery":2,"vue":29,"vue-resource":18}],32:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -25620,7 +26076,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 });
 
-},{"jquery":1,"vue":28,"vue-resource":17}],32:[function(require,module,exports){
+},{"jquery":2,"vue":29,"vue-resource":18}],33:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -25647,10 +26103,10 @@ $(function () {
     }
 });
 
-},{"./../../Admin/modules/_System":29,"./components/my-search.js":30,"./components/my-subscriber.js":31,"jquery":1}],33:[function(require,module,exports){
+},{"./../../Admin/modules/_System":30,"./components/my-search.js":31,"./components/my-subscriber.js":32,"jquery":2}],34:[function(require,module,exports){
 "use strict";
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 /**
@@ -25663,6 +26119,6 @@ require('./Face/Core/scripts.js');
  **/
 require('./Face/Custom/scripts.js');
 
-},{"./Face/Core/scripts.js":32,"./Face/Custom/scripts.js":33}]},{},[34]);
+},{"./Face/Core/scripts.js":33,"./Face/Custom/scripts.js":34}]},{},[35]);
 
 //# sourceMappingURL=app.js.map
