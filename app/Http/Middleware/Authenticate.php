@@ -17,9 +17,16 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest()) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response('Unauthorized.', 401);
+        $token = $request->input('api_token');
+
+        if ( Auth::guard($guard)->guest() ) {
+            if ( $request->ajax() || $request->wantsJson() ) {
+
+                // @TODO: Here we should be able to check the guests using token
+                if (empty($token)) {
+                    return response('Unauthorized.', 401);
+                }
+
             } else {
                 return redirect()->guest('login');
             }
