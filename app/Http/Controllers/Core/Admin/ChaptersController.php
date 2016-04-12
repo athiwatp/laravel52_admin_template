@@ -168,7 +168,7 @@ class ChaptersController extends AdminController
                 array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_announces')));
 
             $formChapter = Lang::get('chapters.lists.management_chapters_announces');
-            $formTitle   = Lang::get('chapters.lists.create_new_chapter_announces');
+            $formTitle   = Lang::get('chapters.lists.create_new_chapter_announce');
             $sUrl        = 'admin.chapter.announcements';
         }
         return cForms::createForm( $this->getTheme(), array(
@@ -234,14 +234,24 @@ class ChaptersController extends AdminController
                 }
             }
         }
-        // $this->chapters->store( $request->all() );
+        if ( $request->sType === Config::get('constants.CHAPTER.CHAPTER') ) {
+            $sUrl = 'admin.chapter.index';
+            $aMessage = Lang::get('chapters.message.store_chapter');
+        } elseif ( $request->sType === Config::get('constants.CHAPTER.GALLERY') ) {
+            $sUrl = 'admin.chapter.gallery';
+            $aMessage = Lang::get('chapters.message.store_gallery');
+        } else {
+            $sUrl = 'admin.chapter.announcements';
+            $aMessage = Lang::get('chapters.message.store_announce');
 
-        return Redirect::route( ($request->sType === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery') )
+        }
+
+        return Redirect::route( $sUrl )
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get(
-                    ($request->sType === '0' ? 'chapters.message.store_chapter' : 'chapters.message.store_gallery') 
-            )));
+                'message'   => $aMessage
+                )
+            );
     }
 
     /**
@@ -265,28 +275,43 @@ class ChaptersController extends AdminController
     {
         $oData = $this->chapters->edit( $id );
 
-        if ( $oData->type_chapter === '0' ) {
+        if ( $oData->type_chapter === Config::get('constants.CHAPTER.CHAPTER') ) {
+
             $aBreadcrumbs = array(
                 array('url' => URL::route('admin.chapter.index'), 'icon' => '<i class="fa fa-object-group"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
-                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter'))
-            );
-        } else {
+                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter')));
+            $sformChapter = Lang::get('chapters.lists.management_chapters');
+            $sformTitle   = Lang::get('chapters.lists.editing_chapter');
+            $sUrl         = 'admin.chapter.index';
+
+        } elseif ( $oData->type_chapter === Config::get('constants.CHAPTER.GALLERY') ) {
+
             $aBreadcrumbs = array(
                 array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
-                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_gallery'))
-            );
+                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_gallery')));
+            $sformChapter = Lang::get('chapters.lists.management_chapters_gallery');
+            $sformTitle   = Lang::get('chapters.lists.editing_chapter_gallery');
+            $sUrl         = 'admin.chapter.gallery';
+
+        } else {
+            $aBreadcrumbs = array(
+                array('url' => URL::route('admin.chapter.announcements'), 'icon' => '<i class="fa fa-th-list"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_announces')),
+                array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_announce')));
+            $sformChapter = Lang::get('chapters.lists.management_chapters_announces');
+            $sformTitle   = Lang::get('chapters.lists.editing_chapter_announce');
+            $sUrl         = 'admin.chapter.announcements';
         }
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
-            'formChapter' => ( $oData->type_chapter === '0' ? Lang::get('chapters.lists.management_chapters') : Lang::get('chapters.lists.management_chapters_gallery') ),
+            'formChapter' => $sformChapter,
             'formSubChapter' => '',
-            'formTitle' => ( $oData->type_chapter === '0' ? Lang::get('chapters.lists.editing_chapter') : Lang::get('chapters.lists.editing_chapter_gallery') ),
+            'formTitle' => $sformTitle,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route( ( $oData->type_chapter === '0' ? 'admin.chapter.index' : 'admin.chapter.gallery' ) ), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route( $sUrl ), 'class'=>'btn-outline btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),

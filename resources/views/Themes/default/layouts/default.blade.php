@@ -68,30 +68,70 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
                 <ul class="list-inline text-center">
-                    <li>
-                        <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                    @if( getFacebookActivate() )
+                        <li>
+                            <a href="{{ getFacebookAccount() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                 </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                            </a>
+                        </li>
+                    @endif
+                    
+                    @if( getTwitterActivate() )
+                        <li>
+                            <a href="{{ getTwitterAccount() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                 </span>
+                            </a>
+                        </li>
+                    @endif
+                    {{--
+                    <!-- <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li> -->
+                    --}}
+
+                    @if( getGoogleActivate() )
+                    <li>
+                        <a href="{{ getGoogleAccount() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                            </span>
                         </a>
                     </li>
+                    @endif
+
+                    @if( getVkActivate() )
+                    <li>
+                        <a href="{{ getVkAccount() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-vk fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if( getLinkedInActivate() )
+                    <li>
+                        <a href="{{ getLinkedInAccount() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
 
 

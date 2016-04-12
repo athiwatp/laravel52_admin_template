@@ -7854,6 +7854,7 @@ button.close {
 
 .pervosoft-template a img:hover,
 .pervosoft-template a img:focus {
+  cursor: -webkit-zoom-in;
   cursor: zoom-in; }
 
 .pervosoft-template blockquote {

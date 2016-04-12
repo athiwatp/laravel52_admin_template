@@ -13,6 +13,7 @@ return array(
         'twitter' => 'Twitter',
         'linkedIn' => 'LinkedIn',
         'google' => 'Google Plus+',
+        'vk' => 'VK',
         ),
 
     'tune-up' =>array(
@@ -27,6 +28,11 @@ return array(
         'use_authorization' => 'Использовать при авторизации',
         'repost_updates' => 'Репостить обновления',
         'token' => 'Token',
+        'facebook_account' => 'Ваш аккаунт Facebook',
+        'twitter_account' => 'Ваш аккаунт Twitter',
+        'linkedIn_account' => 'Ваш аккаунт LinkedIn',
+        'google_account' => 'Ваш аккаунт Google Plus+',
+        'vk_account' => 'Ваш аккаунт VK',
         ),
 
     'form' => array(

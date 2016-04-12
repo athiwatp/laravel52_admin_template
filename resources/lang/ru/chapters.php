@@ -14,10 +14,10 @@ return array(
         'create_chapter_announces' => 'Создание раздела анонсов',
         'editing_chapter' => 'Редактирование раздела',
         'editing_chapter_gallery' => 'Редактирование раздела галереи',
-        'editing_chapter_announces' => 'Редактирование раздела анонсов',
+        'editing_chapter_announce' => 'Редактирование раздела анонсов',
         'create_new_chapter' => 'Создание нового раздела',
         'create_new_chapter_gallery' => 'Создание нового раздела галереи',
-        'create_new_chapter_announces' => 'Создание нового раздела анонсов',
+        'create_new_chapter_announce' => 'Создание нового раздела анонсов',
         'management_chapters' => 'Управление разделами',
         'management_chapters_gallery' => 'Управление разделами галереи',
         'management_chapters_announces' => 'Управление разделами анонсов',
@@ -29,6 +29,7 @@ return array(
     'message' => array(
         'store_chapter' => 'Раздел новостей был успешно сохранен!',
         'store_gallery' => 'Раздел галереи был успешно сохранен!',
+        'store_announce' => 'Раздел анонсов был успешно сохранен!',
         ),
 
     'form' => array(
