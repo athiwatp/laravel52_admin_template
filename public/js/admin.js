@@ -46324,7 +46324,7 @@ $(function () {
     });
 });
 
-},{"./modules/_ckeditor.js":38,"./modules/_datatable.js":39,"./modules/_loader.js":40,"./modules/_mask.js":41,"./modules/_metis.js":42,"./modules/_resizer.js":43,"./types/String.js":54,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+},{"./modules/_ckeditor.js":38,"./modules/_datatable.js":39,"./modules/_loader.js":40,"./modules/_mask.js":41,"./modules/_metis.js":42,"./modules/_resizer.js":43,"./types/String.js":55,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46744,6 +46744,10 @@ module.exports = {
                 mod = require('./users/list.js');
                 break;
 
+            case 'subscribers/list':
+                mod = require('./subscribers/list.js');
+                break;
+
             case 'video/list':
                 mod = require('./video/list.js');
                 break;
@@ -46772,7 +46776,7 @@ module.exports = {
     }
 };
 
-},{"./announcements/list.js":44,"./chapters/list.js":45,"./customerReviews/list.js":46,"./gallery/list.js":47,"./menu/form.js":48,"./menu/list.js":49,"./news/list.js":50,"./pages/list.js":51,"./users/list.js":52,"./video/list.js":53}],41:[function(require,module,exports){
+},{"./announcements/list.js":44,"./chapters/list.js":45,"./customerReviews/list.js":46,"./gallery/list.js":47,"./menu/form.js":48,"./menu/list.js":49,"./news/list.js":50,"./pages/list.js":51,"./subscribers/list.js":52,"./users/list.js":53,"./video/list.js":54}],41:[function(require,module,exports){
 'use strict';
 
 /**
@@ -47423,6 +47427,44 @@ module.exports = {
      *
      * @var Object
      **/
+    columns: [{ data: 'id' }, { data: 'email' }],
+
+    /**
+     * Renderer for the columns by the index
+     *
+     * @var Object
+     **/
+    columnDefs: [{
+        render: function render(data, type, row) {
+            var noTags = system.stripTags(data),
+                active = '<i class="fa fa-eye green"></i>';
+
+            if (row.active === false) {
+                active = '<i class="fa fa-eye-slash red"></i>';
+            }
+
+            return '<a href="/admin/subscribers/' + row.id + '/edit" title="' + noTags + '">' + active + ' ' + system.ellipsis(noTags, 100) + '</a>';
+        },
+        targets: 1
+    }],
+
+    ajax: {
+        url: system.getUrl('subscribers')
+    }
+
+};
+
+},{"../_System.js":37}],53:[function(require,module,exports){
+'use strict';
+
+var system = require('../_System.js').getInstance();
+
+module.exports = {
+    /**
+     * Define a list of columns for the grid
+     *
+     * @var Object
+     **/
     columns: [{ data: 'id' }, { data: 'name' }, { data: 'email' }, { data: 'phone' }, { data: 'created' }, { data: 'updated' }],
 
     /**
@@ -47460,7 +47502,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],53:[function(require,module,exports){
+},{"../_System.js":37}],54:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47509,7 +47551,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],54:[function(require,module,exports){
+},{"../_System.js":37}],55:[function(require,module,exports){
 'use strict';
 
 /**

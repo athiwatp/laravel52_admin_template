@@ -524,6 +524,12 @@ class MenuesRepository extends BaseRepository {
                         'route' => 'admin.users.index'
                     ),
 
+                    'subscribers' => array(
+                        'title' => Lang::get('menues.nav.subscribers_management'),
+                        'icon' => '<i class="fa fa-rss"></i>',
+                        'route' => 'admin.subscribers.index'
+                    ),
+
                     'settings' => array(
                         'title' => Lang::get('settings.form.settings'),
                         'icon' => '<i class="fa fa-cog"></i>',

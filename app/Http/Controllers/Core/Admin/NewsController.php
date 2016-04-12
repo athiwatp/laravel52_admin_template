@@ -82,7 +82,6 @@ class NewsController extends AdminController
                 )
             ))
         ));
-
     }
 
     /**

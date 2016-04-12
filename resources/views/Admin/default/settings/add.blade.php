@@ -61,6 +61,7 @@
         <div class="form-group">
             {{ Form::label('contact_coordinates', Lang::get('settings.form.contact_coordinates')) }}
             {!! Form::text('contact_coordinates', ( array_key_exists('contact_coordinates', $oData) ? $oData['contact_coordinates'] : ''), array('class' => 'form-control')) !!}
+            <p class="help-block">Координаты можно взять <a href="http://www.mapcoordinates.net/ru">здесь</a>, (пример: 37.38956107, -122.05471516)</p>
         </div>
     </div>
 
