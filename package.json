@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/sergey-donchenko/laravel52_admin_template#readme",
   "devDependencies": {
+    "awesomplete": "^1.1.0",
     "bootstrap-datepicker": "^1.6.0",
     "bower": "^1.7.7",
     "datatables.net": "^1.10.11",

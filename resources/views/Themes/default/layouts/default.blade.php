@@ -47,6 +47,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             {!! main_menu() !!}
         </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-6" id="header-search">
+                <my-search></my-search>
+            </div>
+        </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
