@@ -15,6 +15,9 @@
         </a>
         <ul class="dropdown-menu dropdown-user">
             <li>
+                {!! Html::_link( URL::route('home'), '<i class="fa fa-reply-all"></i> ' . Lang::get('table_field.lists.site', array( 'site' => getSateName() ) ), array('target' => '_blank') ) !!}
+            </li>
+            <li>
                 {!! Html::_link( URL::route( 'admin.users.edit', array( 'id' => Auth::id() ) ), '<i class="fa fa-user fa-fw"></i> ' . Lang::get('users.form.profile') ) !!}
             </li>
             <li>

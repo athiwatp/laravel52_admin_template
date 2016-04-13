@@ -11,8 +11,11 @@ class CustomerReviewsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(CustomerReviews $customerReviews)
+    public function __construct(CustomerReviews $customerReviews = null )
     {
+        if ( $customerReviews === null ) {
+            $customerReviews = new CustomerReviews();
+        }
         $this->model = $customerReviews;
     }
 
@@ -92,6 +95,14 @@ class CustomerReviewsRepository extends BaseRepository {
     public function destroy($customerReviews)
     {
         $customerReviews->delete();
+    }
+
+
+    public function getReviews()
+    {
+        return $this->model
+            ->where('is_published', '=', Config::get('constants.DONE_STATUS.SUCCESS'))
+            ->get();
     }
 
 }
