@@ -25761,7 +25761,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Vue.use(require('vue-resource'));
 
     Vue.component('my-search', {
-        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" @keyup="onSearchFieldKeyUp($event)" :disabled="isTextDisabled" v-model="field.search" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="button" @click="onSearchBtnClick()" :disabled="isButtonDisabled">' + '<i class="fa fa-search"></i>' + '</button>' + '</span>' + '</div>' + '</div>',
+        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" @keyup="onSearchFieldKeyUp($event)" :disabled="isTextDisabled" v-model="field.search" placeholder="{{ cmpFieldPlaceholder }}">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="button" @click="onSearchBtnClick()" :disabled="isButtonDisabled">' + '<i class="fa fa-search"></i>' + '</button>' + '</span>' + '</div>' + '</div>',
+        /**
+         * Describe the properties for the component
+         *
+         * @var Object
+         **/
+        props: {
+            /**
+             * Field placeholder
+             *
+             * @var String
+             **/
+            cmpFieldPlaceholder: {
+                type: String,
+                default: 'Search field'
+            }
+        },
 
         /**
          * Data

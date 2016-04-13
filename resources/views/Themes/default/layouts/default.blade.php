@@ -58,7 +58,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-6" id="header-search">
-            <my-search></my-search>
+            <my-search cmp-field-placeholder="Пошук по сайту"></my-search>
         </div>
     </div>
 </div>
