@@ -6,7 +6,6 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th class="sorting">{{ Lang::get('table_field.lists.date') }}</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
@@ -15,7 +14,6 @@
     <tfoot>
         <tr>
             <th>Id</th>
-            <th class="sorting">{{ Lang::get('table_field.lists.date') }}</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
