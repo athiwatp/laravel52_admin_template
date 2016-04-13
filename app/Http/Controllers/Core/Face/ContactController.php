@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\Core\Face;
+<?php namespace App\Http\Controllers\Core\Face;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;

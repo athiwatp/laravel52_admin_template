@@ -96,6 +96,7 @@
                 field: {
                     email: ""
                 },
+
                 /**
                  * Status object to determine the process
                  *

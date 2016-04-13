@@ -36,6 +36,9 @@ Route::group(['middleware' => 'web'], function () {
 
     // Gallery list
     Route::get('/video', array('as' => 'video-list', 'uses' => 'Core\Face\VideoController@index') );
+
+    // Search list
+    Route::get('/search', array('as' => 'search', 'uses' => 'Core\Face\SearchController@index') );
 });
 
 /**

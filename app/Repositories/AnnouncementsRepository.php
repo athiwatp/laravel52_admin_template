@@ -54,6 +54,29 @@ class AnnouncementsRepository extends BaseRepository {
         return true;
     }
 
+
+    /**
+     * Retrieve the latest IMPORTANT ANONCEs from DB
+     *
+     * @param int $amount - amount of records that we need to retrieve
+     *
+     * @return Array
+     */
+    public function getLatest( $amount, $important = false )
+    {
+        $result = $this->model
+            ->orderBy('date_start', 'DESC')
+            ->where('important', $important === true ? '1' : '0')
+            ->take( $amount )
+            ->get();
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+
     /**
      * Create a news
      *

@@ -46254,7 +46254,7 @@ $(function () {
             var module = loader.getListModule(sModule);
 
             if (module) {
-                var table = require('./modules/_datatable.js')($, { object: this, settings: module });
+                var table = require('./modules/_datatable.js')($, { object: this, settings: module, ident: sModule });
             }
         }
     });
@@ -46648,20 +46648,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         responsive: true,
         processing: true,
         serverSide: true
-
     };
 
-    //columns: JSON.parse(sColumn),
-
-    //columnDefs: [{
-    //    render: function ( data, type, row ) {
-    //
-    //        return '<a href="' + sEditUrl.replace('%id%', row.id) + '">' + data + '</a>';
-    //    },
-    //    targets: 1
-    //}]
     var object = parameters.object,
         options = parameters.settings,
+        ident = parameters.ident,
         objectSettings = {};
 
     if ($ && $.fn && !$.fn.dataTable) {
@@ -46672,6 +46663,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         require('datatables.net-buttons/js/buttons.html5.js')(); // HTML 5 file export
         require('datatables.net-buttons/js/buttons.flash.js')(); // Flash file export
         require('datatables.net-buttons/js/buttons.print.js')(); // Print view button
+    }
+
+    if (ident === 'chapters/list') {
+        options.ajax.url = options.ajax.url.replace('%TYPE%', $(object).attr('data-chapter-type'));
     }
 
     // Merge objects
@@ -46924,7 +46919,7 @@ module.exports = {
 
     ajax: {
         url: system.getUrl('chapters', {
-            type: '0'
+            type: '%TYPE%'
         })
     }
 

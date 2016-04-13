@@ -25319,7 +25319,100 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Vue.use(require('vue-resource'));
 
     Vue.component('my-search', {
-        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i></button>' + '</span>' + '</div>' + '</div>'
+        template: '<div>' + '<div class="input-group quick-search">' + '<input type="text" class="form-control input-lg" @keyup="onSearchFieldKeyUp($event)" :disabled="isTextDisabled" v-model="field.search" placeholder="Пошук по сайту">' + '<span class="input-group-btn">' + '<button class="btn btn-primary btn-lg" type="button" @click="onSearchBtnClick()" :disabled="isButtonDisabled">' + '<i class="fa fa-search"></i>' + '</button>' + '</span>' + '</div>' + '</div>',
+
+        /**
+         * Data
+         *
+         * @var Object
+         **/
+        data: function data() {
+            return {
+                field: {
+                    search: ""
+                },
+                /**
+                 * Status object to determine the process
+                 *
+                 * @var Boolean
+                 **/
+                status: {
+                    /**
+                     * Saving status for the process
+                     *
+                     * @var Boolean
+                     **/
+                    redirect: false
+                }
+            };
+        },
+
+        /**
+         * The list of available methods
+         *
+         * @var Object
+         **/
+        methods: {
+            /**
+             * Handle the button click event
+             *
+             * @var function
+             **/
+            onSearchBtnClick: function onSearchBtnClick() {
+                var search = this.field.search;
+
+                this._redirect(search);
+            },
+
+            /**
+             * Handling the key up event for the email field
+             *
+             * @param event
+             **/
+            onSearchFieldKeyUp: function onSearchFieldKeyUp(event) {
+                var search = this.field.search;
+
+                // Cancel all commands
+                event.preventDefault();
+
+                if (event.keyCode == 13 && this.field.search.length > 3) {
+                    this._redirect(search);
+                }
+            },
+
+            /**
+             * Redirect to the search page
+             *
+             **/
+            _redirect: function _redirect(txt) {
+                this.status.redirect = true;
+
+                window.location.href = '/search?keywords=' + txt;
+            }
+        },
+
+        /**
+         * Computed properties
+         *
+         * @var Object
+         **/
+        computed: {
+            /**
+             * Check if user can click on subscribe button
+             *
+             **/
+            isButtonDisabled: function isButtonDisabled() {
+                return this.status.redirect === true || this.field.search.length < 4;
+            },
+
+            /**
+             * Check if text field can be available
+             *
+             **/
+            isTextDisabled: function isTextDisabled() {
+                return this.status.redirect;
+            }
+        }
     });
 
     return new Vue({
@@ -25417,6 +25510,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 field: {
                     email: ""
                 },
+
                 /**
                  * Status object to determine the process
                  *

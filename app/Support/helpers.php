@@ -138,159 +138,159 @@ if (! function_exists('sidebar_menu') ) {
     }
 }
 
-if ( ! function_exists('getAdminContact') ) {
+if ( ! function_exists('get_admin_contact') ) {
     /**
      * Возвращает статус кнопки авторизации соцсетей.
      * @return string
      */
-    function getAdminContact()
+    function get_admin_contact()
     {
         $settings = new SettingsRepository();
 
-       return $settings->getSettings()['contact'];
+       return $settings->getSettings('contact');
     }
 }
 
-if ( ! function_exists('getContactCoordinates') ) {
+if ( ! function_exists('get_contact_coordinates') ) {
     /**
      * Возвращает статус кнопки авторизации соцсетей.
      * @return string
      */
-    function getContactCoordinates()
+    function get_contact_coordinates()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['contact_coordinates'] ? $settings->getSettings()['contact_coordinates'] : false);
+       return $settings->getSettings('contact_coordinates');
     }
 }
 
-if ( ! function_exists('getFacebookActivate') ) {
+if ( ! function_exists('get_facebook_activate') ) {
     /**
      * Return status Facebook (on\off).
      * @return string
      */
-    function getFacebookActivate()
+    function get_facebook_activate()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['facebook_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return ( $settings->getSettings('facebook_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
     }
 }
 
-if ( ! function_exists('getFacebookAccount') ) {
+if ( ! function_exists('get_facebook_account') ) {
     /**
      * Return status Facebook (on\off).
      * @return string
      */
-    function getFacebookAccount()
+    function get_facebook_account()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['facebook_account'] ? $settings->getSettings()['facebook_account'] : '#' );
+       return $settings->getSettings('facebook_account', '#');
     }
 }
 
-if ( ! function_exists('getTwitterActivate') ) {
+if ( ! function_exists('get_twitter_activate') ) {
     /**
      * Return status Twitter (on\off).
      * @return string
      */
-    function getTwitterActivate()
+    function get_twitter_activate()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['twitter_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return ($settings->getSettings('twitter_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
     }
 }
 
-if ( ! function_exists('getTwitterAccount') ) {
+if ( ! function_exists('get_twitter_account') ) {
     /**
      * Return account Twitter.
      * @return string
      */
-    function getTwitterAccount()
+    function get_twitter_account()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['twitter_account'] ? $settings->getSettings()['twitter_account'] : '#' );
+       return $settings->getSettings('twitter_account', '#');
     }
 }
 
-if ( ! function_exists('getGoogleActivate') ) {
+if ( ! function_exists('get_google_activate') ) {
     /**
      * Return status Google plus (on\off).
      * @return string
      */
-    function getGoogleActivate()
+    function get_google_activate()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['google_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return ( $settings->getSettings('google_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
     }
 }
 
-if ( ! function_exists('getGoogleAccount') ) {
+if ( ! function_exists('get_google_account') ) {
     /**
      * Return account Google plus.
      * @return string
      */
-    function getGoogleAccount()
+    function get_google_account()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['google_account'] ? $settings->getSettings()['google_account'] : '#' );
+       return $settings->getSettings('google_account', '#');
     }
 }
 
-if ( ! function_exists('getLinkedInActivate') ) {
+if ( ! function_exists('get_linkedIn_activate') ) {
     /**
      * Return status linkedIn (on\off).
      * @return string
      */
-    function getLinkedInActivate()
+    function get_linkedIn_activate()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['linkedIn_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return ( $settings->getSettings('linkedIn_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
     }
 }
 
-if ( ! function_exists('getLinkedInAccount') ) {
+if ( ! function_exists('get_linkedIn_account') ) {
     /**
      * Return account Twitter.
      * @return string
      */
-    function getLinkedInAccount()
+    function get_linkedIn_account()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['linkedIn_account'] ? $settings->getSettings()['linkedIn_account'] : '#' );
+       return $settings->getSettings('linkedIn_account', '#');
     }
 }
 
-if ( ! function_exists('getVkActivate') ) {
+if ( ! function_exists('get_vk_activate') ) {
     /**
      * Return status Vk (on\off).
      * @return string
      */
-    function getVkActivate()
+    function get_vk_activate()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['vk_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return ( $settings->getSettings('vk_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
     }
 }
 
-if ( ! function_exists('getVkAccount') ) {
+if ( ! function_exists('get_vk_account') ) {
     /**
      * Return account Vk.
      * @return string
      */
-    function getVkAccount()
+    function get_vk_account()
     {
         $settings = new SettingsRepository();
 
-       return ( $settings->getSettings()['vk_account'] ? $settings->getSettings()['vk_account'] : '#' );
+        return $settings->getSettings('vk_account', '#');
     }
 }
 

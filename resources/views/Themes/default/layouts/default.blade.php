@@ -75,9 +75,9 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
                 <ul class="list-inline text-center">
-                    @if( getFacebookActivate() )
+                    @if( get_facebook_activate() )
                         <li>
-                            <a href="{{ getFacebookAccount() }}">
+                            <a href="{{ get_facebook_account() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -86,9 +86,9 @@
                         </li>
                     @endif
                     
-                    @if( getTwitterActivate() )
+                    @if( get_twitter_activate() )
                         <li>
-                            <a href="{{ getTwitterAccount() }}">
+                            <a href="{{ get_twitter_account() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -107,9 +107,9 @@
                     </li> -->
                     --}}
 
-                    @if( getGoogleActivate() )
+                    @if( get_google_activate() )
                     <li>
-                        <a href="{{ getGoogleAccount() }}">
+                        <a href="{{ get_google_account() }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
@@ -118,9 +118,9 @@
                     </li>
                     @endif
 
-                    @if( getVkActivate() )
+                    @if( get_vk_activate() )
                     <li>
-                        <a href="{{ getVkAccount() }}">
+                        <a href="{{ get_vk_account() }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-vk fa-stack-1x fa-inverse"></i>
@@ -129,9 +129,9 @@
                     </li>
                     @endif
 
-                    @if( getLinkedInActivate() )
+                    @if( get_linkedIn_activate() )
                     <li>
-                        <a href="{{ getLinkedInAccount() }}">
+                        <a href="{{ get_linkedIn_account() }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

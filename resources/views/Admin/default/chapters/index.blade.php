@@ -1,6 +1,7 @@
 <div class="menu-toolbar">{!! Toolbar::getToolbarParams($aToolbar) !!}</div>
 <br>
 <table class="datatables display responsive no-wrap" data-url="chapters" data-module="chapters/list"
+       data-chapter-type="{{ $sChapterType }}"
        data-edit-url="{{ URL::route('admin.chapter.edit', ['id' => '%id%']) }}"
        cellspacing="0" width="100%">
     <thead>

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\Core\Admin;
+<?php namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AnnouncementsRequest;
