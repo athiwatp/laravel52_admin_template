@@ -1,6 +1,7 @@
 <?php
 use App\Helpers\File as cFile;
 use App\Repositories\SettingsRepository;
+use App\Repositories\CustomerReviewsRepository as CustomerReviews;
 use App\Repositories\MenuesRepository as rMenu;
 use Carbon\Carbon;
 /**
@@ -36,6 +37,17 @@ if (! function_exists('get_youtube_preview') ) {
 if (! function_exists('build_copyright') ) {
     function build_copyright() {
         return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
+    }
+}
+
+/**
+ * Returns settings data
+*/
+if ( ! function_exists('get_settings_data') ) {
+    function get_settings_data() {
+        $settings = new SettingsRepository();
+
+        return $settings->getSettings();
     }
 }
 
@@ -148,6 +160,38 @@ if ( ! function_exists('get_admin_contact') ) {
         $settings = new SettingsRepository();
 
        return $settings->getSettings('contact');
+    }
+}
+
+if ( ! function_exists('get_customer_reviews') ) {
+    /**
+     * Возвращает статус кнопки авторизации соцсетей.
+     * @return string
+     */
+    function get_customer_reviews()
+    {
+        $customerReviews = new CustomerReviews();
+
+        if ( $customerReviews->getReviews()->count() > 0 ) {
+            return $customerReviews->getReviews();
+        }
+
+        return array();
+    }
+}
+
+if ( ! function_exists('getSateName') ) {
+    /**
+     * Returns the site name with the settings.
+     *
+     * @return string
+     */
+
+    function getSateName()
+    {
+        $data = get_settings_data();
+
+        return array_key_exists('site_name', $data) ? $data['site_name'] : '';
     }
 }
 

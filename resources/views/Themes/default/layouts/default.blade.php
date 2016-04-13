@@ -66,8 +66,25 @@
     @yield('content')
     {!! sidebar_menu() !!}
 </div>
+@if( get_customer_reviews() )
+<section class="reviews">
+    <div class="container">
+        <div class="slider-container">
+            <h1 class="text-center"><i class="fa fa-comments-o"></i> Відгуги Наших Клієнтів</h1>
+            <div class="reviews-slider slider">
+            @forelse( get_customer_reviews() as $item )
+                <div class="slider-item">
+                    <p class="quote"><i class="fa fa-quote-left"></i> {{ $item->comment }}</p>
+                    <div class="title">{{ $item->signature }}</div>
+                </div>
+            @empty
+            @endforelse
+            </div>
+        </div>
+    </div>
+</section>
+@endif
 <hr>
-
 <!-- Footer -->
 <footer>
     <div class="container">
