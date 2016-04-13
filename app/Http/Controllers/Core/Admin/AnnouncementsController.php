@@ -8,7 +8,7 @@ use App\Repositories\ChaptersRepository;
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
 use App\Http\Requests;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
+use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
 class AnnouncementsController extends AdminController
 {
@@ -94,6 +94,10 @@ class AnnouncementsController extends AdminController
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('announce.lists.create_announce'))
         );
 
+        $aDate = array(
+            'thisDay' => Carbon::now()->toDateString(), 'thisDayPlusMonth' => Carbon::now()->addMonth()->toDateString()
+            );
+
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('announce.lists.announce_management'),
@@ -114,6 +118,7 @@ class AnnouncementsController extends AdminController
             ),
             'formContent' => $this->renderView('announcements.add', array(
                 'oData' => null,
+                'date' => $aDate,
                 'aChapters' => $this->chapters->getComboList( Config::get('constants.CHAPTER.ANNOUNCE') )
             )),
             'formUrl' => URL::route('admin.announcements.store'),
@@ -185,7 +190,34 @@ class AnnouncementsController extends AdminController
      */
     public function edit($id)
     {
-        //
+        $aBreadcrumbs = array(
+            array('url' => URL::route('admin.announcements.index'), 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('announce.lists.lists_announce')),
+            array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('announce.lists.editing_announce'))
+        );
+
+        return cForms::createForm( $this->getTheme(), array(
+            'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
+            'formChapter' => Lang::get('announce.lists.announce_management'),
+            'formSubChapter' => '',
+            'formTitle' => Lang::get('announce.lists.editing_announce'),
+            'formButtons' => array(
+                array(
+                    'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
+                    'type' => 'link',
+                    'params' => array('url' => URL::route('admin.announcements.index'), 'class'=>'btn-outline btn-default')
+                ),
+                array(
+                    'title' => Lang::get('table_field.lists.save'),
+                    'type' => 'submit',
+                    'params' => array('class'=>'btn-outline btn-primary')
+                )
+            ),
+            'formContent' => $this->renderView('announcements.add', array(
+                'oData' => $this->announce->edit( $id ),
+                'aChapters' => $this->chapters->getComboList( Config::get('constants.CHAPTER.ANNOUNCE') )
+            )),
+            'formUrl' => URL::route('admin.announcements.store'),
+        ));
     }
 
     /**

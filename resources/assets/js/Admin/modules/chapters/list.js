@@ -8,7 +8,6 @@ module.exports = {
      **/
     columns: [
         {data: 'id'},
-        {data: 'date'},
         {data: 'title'},
         {data: 'pos'},
         {data: 'active'},
@@ -21,12 +20,6 @@ module.exports = {
      **/
     columnDefs: [
         {
-            render: function( data ) {
-                return system.getFormattedDate( data );
-            },
-            targets: 1
-        },
-        {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data);
 
@@ -36,14 +29,14 @@ module.exports = {
                     '<br><img width="100" height="50" src="' + row.icon + '" ' + 'class="img-responsive img-thumbnail">':
                     '');
             },
-            targets: 2
+            targets: 1
         },
 
         {
             render: function( data ) {
                 return system.getPublishedIcon(data);
             },
-            targets: 4
+            targets: 3
         }
     ],
 

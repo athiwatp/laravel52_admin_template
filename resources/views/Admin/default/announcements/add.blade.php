@@ -11,7 +11,7 @@
 <div class="form-group">
     {{ Form::label('date_start', Lang::get('announce.form.date_start')) }}
     <div class="input-group date-group">
-        {{ Form::text('date_start', ( isset($oData) ? $oData->date_start : null), array('class' => 'form-control date-controls')) }}
+        {{ Form::text('date_start', ( isset($oData) ? $oData->date_start : $date['thisDay']), array('class' => 'form-control date-controls')) }}
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
         </span>
@@ -21,7 +21,7 @@
 <div class="form-group">
     {{ Form::label('date_end', Lang::get('announce.form.date_end')) }}
     <div class="input-group date-group">
-        {{ Form::text('date_end', ( isset($oData) ? $oData->date_end : null), array('class' => 'form-control date-controls')) }}
+        {{ Form::text('date_end', ( isset($oData) ? $oData->date_end : $date['thisDayPlusMonth']), array('class' => 'form-control date-controls')) }}
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
         </span>

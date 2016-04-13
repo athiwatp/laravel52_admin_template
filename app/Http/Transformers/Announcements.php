@@ -2,6 +2,7 @@
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Announcements as Model;
+use App\Helpers\File as cFile;
 
 class Announcements extends TransformerAbstract
 {
@@ -19,7 +20,7 @@ class Announcements extends TransformerAbstract
             'title' => $announce->title,
             'date_start' => $announce->date_start,
             'date_end' => $announce->date_end,
-            'image' => $announce->image,
+            'image' => ( $announce->image ? cFile::getImagePathURL( $announce->image, 'box2' ) : '' ),
             'published' => (boolean) $announce->is_published,
             'important' => (boolean) $announce->important,
         ];
