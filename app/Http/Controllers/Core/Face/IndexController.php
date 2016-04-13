@@ -97,6 +97,7 @@ class IndexController extends FaceController
         //Get announces
         $lImportantAnnounces = $this->announce->getLatest(10, true);
         $lRegularAnnounces   = $this->announce->getLatest(10);
+        $lTopicalAnnounces   = $this->announce->getLatest(10, null, true);
 
         return $this->renderView('index.index', [
             'lNews' => $lNews,
@@ -104,6 +105,7 @@ class IndexController extends FaceController
             'lVideo' => $lVideo,
             'lImportantAnnounces' => $lImportantAnnounces,
             'lRegularAnnounces' => $lRegularAnnounces,
+            'lTopicalAnnounces' => $lTopicalAnnounces,
             'currPage' => $currPage,
 
         ]);

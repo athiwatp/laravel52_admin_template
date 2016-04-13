@@ -103,6 +103,8 @@ class AnnouncementsController extends AdminController
             'formChapter' => Lang::get('announce.lists.announce_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('announce.lists.create_new_announce'),
+            'formJsHandler' => 'announcements/form',
+            'formFormId' => 'admin_announce_form',
             'useCKEditor' => true,
             'formButtons' => array(
                 array(
@@ -133,7 +135,8 @@ class AnnouncementsController extends AdminController
      */
     public function store( Request $request )
     {
-        if ( $announce = $this->announce->store( $request->all() ) ) {
+
+        if ( $announce = $this->announce->store( $request->except(['_token']) ) ) {
             if ( $request->hasFile('image') ) {
                 $TYPE_ANNOUNCE = Config::get('constants.RESOURCES.ANNOUNCE');
 
@@ -199,6 +202,9 @@ class AnnouncementsController extends AdminController
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('announce.lists.announce_management'),
             'formSubChapter' => '',
+            'formJsHandler' => 'announcements/form',
+            'formFormId' => 'admin_announce_form',
+            'useCKEditor' => true,
             'formTitle' => Lang::get('announce.lists.editing_announce'),
             'formButtons' => array(
                 array(

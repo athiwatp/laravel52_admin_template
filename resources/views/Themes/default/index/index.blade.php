@@ -135,6 +135,20 @@
         </div>
     </div>
 
+    @if ($lTopicalAnnounces && $lTopicalAnnounces->count() > 0 )
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Topical Announces</h1>
+            <a href="{{ route('announce-list') }}">All Events / Announcements</a>
+            {{-- Retrieve the list --}}
+            <div class="row">
+                @include('Themes.default.announces.list.topical', ['aTopicalList' => $lTopicalAnnounces])
+            </div>
+        </div>
+    </div>
+    @endif
+
     <br>
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

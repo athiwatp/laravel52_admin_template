@@ -46324,7 +46324,7 @@ $(function () {
     });
 });
 
-},{"./modules/_ckeditor.js":38,"./modules/_datatable.js":39,"./modules/_loader.js":40,"./modules/_mask.js":41,"./modules/_metis.js":42,"./modules/_resizer.js":43,"./types/String.js":55,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+},{"./modules/_ckeditor.js":38,"./modules/_datatable.js":39,"./modules/_loader.js":40,"./modules/_mask.js":41,"./modules/_metis.js":42,"./modules/_resizer.js":43,"./types/String.js":56,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46765,13 +46765,17 @@ module.exports = {
             case 'menu/form':
                 mod = require('./menu/form.js');
                 break;
+
+            case 'announcements/form':
+                mod = require('./announcements/form.js');
+                break;
         }
 
         return mod;
     }
 };
 
-},{"./announcements/list.js":44,"./chapters/list.js":45,"./customerReviews/list.js":46,"./gallery/list.js":47,"./menu/form.js":48,"./menu/list.js":49,"./news/list.js":50,"./pages/list.js":51,"./subscribers/list.js":52,"./users/list.js":53,"./video/list.js":54}],41:[function(require,module,exports){
+},{"./announcements/form.js":44,"./announcements/list.js":45,"./chapters/list.js":46,"./customerReviews/list.js":47,"./gallery/list.js":48,"./menu/form.js":49,"./menu/list.js":50,"./news/list.js":51,"./pages/list.js":52,"./subscribers/list.js":53,"./users/list.js":54,"./video/list.js":55}],41:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46840,6 +46844,65 @@ module.exports = {
 },{}],44:[function(require,module,exports){
 'use strict';
 
+/**
+ * Module to handle the admin forms
+ *
+ * @url https://vuejs.org
+ **/
+var Vue = require('vue');
+var system = require('../_System.js').getInstance();
+
+Vue.use(require('vue-resource'));
+
+module.exports = new Vue({
+  el: '#admin_announce_form',
+
+  /**
+   * Binded data
+   **/
+  data: {
+    announce: {
+      /**
+       * Current identifier
+       *
+       * @var Integer
+       **/
+      id: 0,
+
+      /**
+       * Is topical announce
+       *
+       * @var Boolean
+       **/
+      is_topical: false
+    }
+  },
+
+  /**
+   * Init form
+   **/
+  ready: function ready() {
+    var self = this;
+  },
+
+  /**
+   *
+   **/
+  computed: {
+    /**
+     * Check if is_topical field is disabled
+     *
+     * @return Boolean
+     **/
+    isTopDateDisabled: function isTopDateDisabled() {
+      return !this.announce.is_topical;
+    }
+  }
+});
+
+},{"../_System.js":37,"vue":35,"vue-resource":24}],45:[function(require,module,exports){
+'use strict';
+
 var system = require('../_System.js').getInstance();
 
 module.exports = {
@@ -46885,7 +46948,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],45:[function(require,module,exports){
+},{"../_System.js":37}],46:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -46925,7 +46988,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],46:[function(require,module,exports){
+},{"../_System.js":37}],47:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -46968,7 +47031,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],47:[function(require,module,exports){
+},{"../_System.js":37}],48:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47010,7 +47073,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],48:[function(require,module,exports){
+},{"../_System.js":37}],49:[function(require,module,exports){
 'use strict';
 
 /**
@@ -47263,7 +47326,7 @@ module.exports = new Vue({
 
 });
 
-},{"../_System.js":37,"vue":35,"vue-resource":24}],49:[function(require,module,exports){
+},{"../_System.js":37,"vue":35,"vue-resource":24}],50:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47306,7 +47369,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],50:[function(require,module,exports){
+},{"../_System.js":37}],51:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47359,7 +47422,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],51:[function(require,module,exports){
+},{"../_System.js":37}],52:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47406,7 +47469,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],52:[function(require,module,exports){
+},{"../_System.js":37}],53:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47444,7 +47507,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],53:[function(require,module,exports){
+},{"../_System.js":37}],54:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47492,7 +47555,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],54:[function(require,module,exports){
+},{"../_System.js":37}],55:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47541,7 +47604,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],55:[function(require,module,exports){
+},{"../_System.js":37}],56:[function(require,module,exports){
 'use strict';
 
 /**

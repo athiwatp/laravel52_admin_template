@@ -50,16 +50,25 @@ class AnnouncementsRepository extends BaseRepository {
     */
     public function saveAnnounce( $announce, $inputs )
     {
-        $announce->title        = $inputs['title'];
-        $announce->description  = $inputs['description'];
-        $announce->important    = ( isset($inputs['important']) ? $inputs['important'] : 0 );
-        $announce->date_start   = $inputs['date_start'];
-        $announce->date_end     = $inputs['date_end'];
-        $announce->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
-        $announce->user_id      = Auth::id();
-        $announce->is_published = $inputs['is_published'];
+        foreach( $inputs as $key => $val ) {
+            $announce->$key = $val;
+        }
 
-        $announce->save();
+        $announce->user_id    = Auth::id();
+        $announce->important  = ( isset($inputs['important']) ? $inputs['important'] : 0 );
+        $announce->is_topical = ( isset($inputs['is_topical']) ? $inputs['is_topical'] : 0 );
+
+        if ( ! $announce->is_topical ) {
+            $announce->top_date_end = null;
+        } else {
+            if ( empty($announce->top_date_end) ) {
+                $announce->top_date_end = Carbon::now()->addDays(3);
+            }
+        }
+
+        if ($announce && count($inputs) > 0 ) {
+            $announce->save();
+        }
 
         return true;
     }
@@ -69,17 +78,33 @@ class AnnouncementsRepository extends BaseRepository {
      * Retrieve the latest IMPORTANT ANONCEs from DB
      *
      * @param int $amount - amount of records that we need to retrieve
+     * @param Boolean $important
+     * @param Boolean $topical
      *
      * @return Array
      */
-    public function getLatest( $amount, $important = false )
+    public function getLatest( $amount, $important = false, $topical = false )
     {
-        $result = $this->model
+        $object = $this->model
             ->where( 'is_published', $this->PUBLISHED )
-            ->where('important', $important === true ? '1' : '0')
+
             ->orderBy('date_start', 'ASC')
-            ->take( $amount )
-            ->get();
+            ->take( $amount );
+
+        if ( $important === true ) {
+            $object->where('important', '1');
+        } elseif ( $important === false ) {
+            $object->where('important', '0');
+        }
+
+        if ( $topical === true ) {
+            $object->where('is_topical', '1')
+                ->where('top_date_end', '>=', date('Y-m-d') . ' 00:00:00');
+        } elseif ( $topical === false ) {
+            $object->where('is_topical', '0');
+        }
+
+        $result = $object->get();
 
         if ( $result ) {
             return $result;

@@ -5,7 +5,36 @@
 </div>
 
 <div class="form-group">
-    {!! Form::_label('important', Form::checkbox('important', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'important')) . ' ' . Lang::get('announce.form.important') ) !!}
+    {!!
+        Form::_label('important',
+            Form::checkbox('important', '1', isset($oData) && $oData->important === '1' ? true : false , array('id' => 'important')) . ' ' . Lang::get('announce.form.important')
+        )
+    !!}
+    <p class="help-block">{{ Lang::get('announce.form.important_help') }}</p>
+</div>
+
+<div class="form-group">
+    {!!
+        Form::_label('is_topical',
+            Form::checkbox('is_topical', '1', isset($oData) && $oData->is_topical === '1' ? true : false , array(
+                    'id' => 'is_topical',
+                    'v-model' => 'announce.is_topical'
+                )
+            ) . ' ' . Lang::get('announce.form.topical_to')
+        )
+    !!}
+    <div class="input-group date-group">
+        {{
+            Form::text('top_date_end', ( isset($oData) ? $oData->top_date_end : ''), array(
+                'class' => 'form-control date-controls',
+                ':disabled'=>'isTopDateDisabled'
+            ))
+        }}
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+        </span>
+    </div>
+    <p class="help-block">{{ Lang::get('announce.form.topical_help') }}</p>
 </div>
 
 <div class="form-group">
@@ -56,4 +85,15 @@
     </div>
 </div>
 
-{{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
+{{
+    Form::hidden('id', isset($oData) ? $oData->id : 0, [
+        'v-model' => 'announce.id'
+    ])
+}}
+
+
+@if ( Config::get('app.debug') == true )
+    <pre>
+        @{{ $data | json }}
+    </pre>
+@endif

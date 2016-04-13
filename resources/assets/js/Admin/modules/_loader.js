@@ -68,6 +68,10 @@ module.exports = {
             case 'menu/form':
                 mod = require('./menu/form.js');
                 break;
+
+            case 'announcements/form':
+                mod = require('./announcements/form.js');
+                break;
         }
 
         return mod;
