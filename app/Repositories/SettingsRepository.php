@@ -87,19 +87,37 @@ class SettingsRepository extends BaseRepository {
 
     public static function setSocialNetworks() {
         return array(
-        0 => Lang::get('settings.set.select_set'),
-        1 => Lang::get('table_field.lists.yes'),
-        2 => Lang::get('table_field.lists.no')
+        0 => Lang::get('table_field.lists.no'),
+        1 => Lang::get('table_field.lists.yes')
             );
     }
 
-    public function getSettings()
+    /**
+     * Returns settings parameters
+     *
+     * @param String $key - the parameter key
+     * @param String $default - default value for the key
+     *
+     * @return mixed
+    */
+    public function getSettings( $key = null, $default = null )
     {
         $aData = array();
+        $list  = $this->index();
 
-        foreach($this->index() as $item) {
+        foreach($list as $item) {
+
+            if ( $key && $key == $item->key_name ) {
+                return $item->value;
+            }
+
             $aData[$item->key_name] = $item->value;
         }
+
+        if ( empty($key) === false ) {
+            return ($default === null ? '' : $default);
+        }
+
         return $aData;
     }
 }

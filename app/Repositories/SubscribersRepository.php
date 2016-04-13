@@ -53,6 +53,52 @@ class SubscribersRepository extends BaseRepository {
     }
 
     /**
+     * Create or update Message
+     *
+     * @param App\Models\Subscribers $subscribers
+     *
+     * @return
+    */
+    public function saveSubscribers( $subscribers, $inputs )
+    {
+        if ( empty($inputs['id']) ) {
+            $subscribers->email    = $inputs['email'];
+        }
+        $subscribers->is_active    = $inputs['is_active'];
+
+        $subscribers->save();
+
+        return true;
+    }
+
+    /**
+     * Create a message
+     *
+     * @param array $inputs
+     * @param int $user_id
+     *
+     * @return void
+    */
+    public function store( $inputs )
+    {
+        $id = $inputs['id'];
+
+        if ( isset($id) && $id > 0 ) {
+            $model = $this->model->find( $id );
+        } else {
+            $model = new $this->model;
+        }
+
+        $subscribers = $this->saveSubscribers( $model, $inputs );
+
+        if ( $this->saveSubscribers( $model, $inputs ) ) {
+            return $model->toArray();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Create a news
      *
      * @param array $inputs

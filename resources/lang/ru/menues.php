@@ -19,6 +19,7 @@ return array(
         'announcements_management' => 'Управление Анонсами',
         'chapter_announcements_management' => 'Разделы Анонсов',
         'announcements' => 'Анонсы',
+        'subscribers_management' => 'Подписчики',
         ),
 
     'lists' => array(

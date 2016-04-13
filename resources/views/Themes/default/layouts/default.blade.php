@@ -47,12 +47,6 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             {!! main_menu() !!}
         </div>
-
-        <div class="row">
-            <div class="col-md-6 col-md-offset-6" id="header-search">
-                <my-search></my-search>
-            </div>
-        </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
@@ -60,6 +54,14 @@
 
 <!-- Page Header -->
 @yield('page_header')
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-6" id="header-search">
+            <my-search></my-search>
+        </div>
+    </div>
+</div>
 
 <!-- Main Content -->
 <div class="container">
@@ -75,30 +77,70 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
                 <ul class="list-inline text-center">
-                    <li>
-                        <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                    @if( get_facebook_activate() )
+                        <li>
+                            <a href="{{ get_facebook_account() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                 </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                            </a>
+                        </li>
+                    @endif
+                    
+                    @if( get_twitter_activate() )
+                        <li>
+                            <a href="{{ get_twitter_account() }}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                 </span>
+                            </a>
+                        </li>
+                    @endif
+                    {{--
+                    <!-- <li>
+                        <a href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li> -->
+                    --}}
+
+                    @if( get_google_activate() )
+                    <li>
+                        <a href="{{ get_google_account() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                            </span>
                         </a>
                     </li>
+                    @endif
+
+                    @if( get_vk_activate() )
+                    <li>
+                        <a href="{{ get_vk_account() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-vk fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if( get_linkedIn_activate() )
+                    <li>
+                        <a href="{{ get_linkedIn_account() }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
 
 

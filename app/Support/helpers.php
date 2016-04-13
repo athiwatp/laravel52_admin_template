@@ -16,6 +16,7 @@ if (! function_exists('get_file_url') ) {
         return ( $photo ? cFile::getImagePathURL($photo, $box) : '' );
     }
 }
+
 /**
  * build youtube preview url
  *
@@ -26,6 +27,7 @@ if (! function_exists('get_youtube_preview') ) {
         return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $url ) .  '/hqdefault.jpg';
     }
 }
+
 /**
  * Build cooperates
  *
@@ -36,6 +38,7 @@ if (! function_exists('build_copyright') ) {
         return 'Copyright &copy; Your Website ' .  Carbon::now()->year;
     }
 }
+
 /**
  * Returns formated date
  *
@@ -58,6 +61,7 @@ if (! function_exists('get_formatted_date') ) {
             );
     }
 }
+
 /**
  * Function to build the main menu
  *
@@ -83,6 +87,7 @@ if (! function_exists('main_menu') ) {
         return Menu::get('main');
     }
 }
+
 /**
  * Function to build the main menu
  *
@@ -107,6 +112,7 @@ if (! function_exists('footer_menu') ) {
         return Menu::get('footer');
     }
 }
+
 /**
  * Function to build the main menu
  *
@@ -131,7 +137,164 @@ if (! function_exists('sidebar_menu') ) {
         return Menu::get('sidebar_menu');
     }
 }
-if ( ! function_exists('getSocialButtons') ) {
+
+if ( ! function_exists('get_admin_contact') ) {
+    /**
+     * Возвращает статус кнопки авторизации соцсетей.
+     * @return string
+     */
+    function get_admin_contact()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('contact');
+    }
+}
+
+if ( ! function_exists('get_contact_coordinates') ) {
+    /**
+     * Возвращает статус кнопки авторизации соцсетей.
+     * @return string
+     */
+    function get_contact_coordinates()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('contact_coordinates');
+    }
+}
+
+if ( ! function_exists('get_facebook_activate') ) {
+    /**
+     * Return status Facebook (on\off).
+     * @return string
+     */
+    function get_facebook_activate()
+    {
+        $settings = new SettingsRepository();
+
+       return ( $settings->getSettings('facebook_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+    }
+}
+
+if ( ! function_exists('get_facebook_account') ) {
+    /**
+     * Return status Facebook (on\off).
+     * @return string
+     */
+    function get_facebook_account()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('facebook_account', '#');
+    }
+}
+
+if ( ! function_exists('get_twitter_activate') ) {
+    /**
+     * Return status Twitter (on\off).
+     * @return string
+     */
+    function get_twitter_activate()
+    {
+        $settings = new SettingsRepository();
+
+       return ($settings->getSettings('twitter_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+    }
+}
+
+if ( ! function_exists('get_twitter_account') ) {
+    /**
+     * Return account Twitter.
+     * @return string
+     */
+    function get_twitter_account()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('twitter_account', '#');
+    }
+}
+
+if ( ! function_exists('get_google_activate') ) {
+    /**
+     * Return status Google plus (on\off).
+     * @return string
+     */
+    function get_google_activate()
+    {
+        $settings = new SettingsRepository();
+
+       return ( $settings->getSettings('google_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+    }
+}
+
+if ( ! function_exists('get_google_account') ) {
+    /**
+     * Return account Google plus.
+     * @return string
+     */
+    function get_google_account()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('google_account', '#');
+    }
+}
+
+if ( ! function_exists('get_linkedIn_activate') ) {
+    /**
+     * Return status linkedIn (on\off).
+     * @return string
+     */
+    function get_linkedIn_activate()
+    {
+        $settings = new SettingsRepository();
+
+       return ( $settings->getSettings('linkedIn_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+    }
+}
+
+if ( ! function_exists('get_linkedIn_account') ) {
+    /**
+     * Return account Twitter.
+     * @return string
+     */
+    function get_linkedIn_account()
+    {
+        $settings = new SettingsRepository();
+
+       return $settings->getSettings('linkedIn_account', '#');
+    }
+}
+
+if ( ! function_exists('get_vk_activate') ) {
+    /**
+     * Return status Vk (on\off).
+     * @return string
+     */
+    function get_vk_activate()
+    {
+        $settings = new SettingsRepository();
+
+       return ( $settings->getSettings('vk_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+    }
+}
+
+if ( ! function_exists('get_vk_account') ) {
+    /**
+     * Return account Vk.
+     * @return string
+     */
+    function get_vk_account()
+    {
+        $settings = new SettingsRepository();
+
+        return $settings->getSettings('vk_account', '#');
+    }
+}
+
+if ( ! function_exists('getOnButtonFacebook') ) {
     /**
      * Возвращает статус кнопки авторизации соцсетей.
      * @return string
@@ -142,18 +305,27 @@ if ( ! function_exists('getSocialButtons') ) {
         return '';
 //        return $settings->getSocialButtons()['facebook_authorization'];
     }
+}
+
+if ( ! function_exists('getOnButtonTwitter') ) {
     function getOnButtonTwitter()
     {
         $settings = new SettingsRepository();
         return '';
 //     return $settings->getSocialButtons()['twitter_authorization'];
     }
+}
+
+if ( ! function_exists('getOnButtonGoogle') ) {
     function getOnButtonGoogle()
     {
         $settings = new SettingsRepository();
         return '';
 //        return $settings->getSocialButtons()['google_authorization'];
     }
+}
+
+if ( ! function_exists('getOnButtonLinkedIn') ) {
     function getOnButtonLinkedIn()
     {
         $settings = new SettingsRepository();
@@ -161,6 +333,7 @@ if ( ! function_exists('getSocialButtons') ) {
         //return $settings->getSocialButtons()['linkedIn_authorization'];
     }
 }
+
 //if ( ! function_exists('main_menu') ) {
 //
 //    function main_menu()

@@ -41,6 +41,34 @@
          **** created_at
          **** updated_at
 
+      4. $lImportantAnnounces,
+         **** id
+         **** title
+         **** description
+         **** important
+         **** date_start
+         **** date_end
+         **** chapter_id
+         **** user_id
+         **** image
+         **** is_published
+         **** created_at
+         **** updated_at
+
+      5. $lRegularAnnounces
+         **** id
+         **** title
+         **** description
+         **** important
+         **** date_start
+         **** date_end
+         **** chapter_id
+         **** user_id
+         **** image
+         **** is_published
+         **** created_at
+         **** updated_at
+
 --}}
 
 @extends( $__theme . '.layouts.default')
@@ -71,6 +99,17 @@
 
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Important Announces</h1>
+            {{-- Retrieve the list --}}
+            <div class="row">
+                @include('Themes.default.announces.list.important', ['aImportantList' => $lImportantAnnounces])
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <h1>News</h1>
             {{-- The list of news --}}
             @include('Themes.default.news.list', [ 'list' => $lNews ])
@@ -81,6 +120,17 @@
                     <a href="#">Еще &rarr;</a>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h1>Upcomming Announces</h1>
+            {{-- Retrieve the list --}}
+            <div class="row">
+                @include('Themes.default.announces.list.upcomming', ['aList' => $lRegularAnnounces])
+            </div>
         </div>
     </div>
 

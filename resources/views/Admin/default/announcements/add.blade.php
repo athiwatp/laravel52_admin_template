@@ -1,6 +1,11 @@
+
 <div class="form-group">
     {{ Form::label('title', Lang::get('announce.form.title') ) }}
     {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+</div>
+
+<div class="form-group">
+    {!! Form::_label('important', Form::checkbox('important', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'important')) . ' ' . Lang::get('announce.form.important') ) !!}
 </div>
 
 <div class="form-group">
@@ -39,10 +44,6 @@
     @if ( isset($oData) && $oData->image)
         <img src="{{ get_file_url($oData->image, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
     @endif
-</div>
-
-<div class="form-group">
-    {!! Form::_label('important', Form::checkbox('important', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array('id' => 'important')) . ' ' . Lang::get('announce.form.important') ) !!}
 </div>
 
 <div class="form-group">

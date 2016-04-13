@@ -41,6 +41,10 @@ module.exports = {
                 mod = require('./users/list.js');
                 break;
 
+            case 'subscribers/list':
+                mod = require('./subscribers/list.js');
+                break;
+
             case 'video/list':
                 mod = require('./video/list.js');
                 break;

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\Core\Admin;
+<?php namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AnnouncementsRequest;
@@ -149,7 +147,7 @@ class AnnouncementsController extends AdminController
                     'id' => $announce['id'],
                     'file' => $request->file('image'),
                     'prefix' => '%s',
-                    'date' => $announce['date']
+                    'date' => $announce['date_start']
                 )));
 
                 $response = $response ? current($response) : null;

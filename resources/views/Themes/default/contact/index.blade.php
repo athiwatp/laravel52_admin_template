@@ -32,6 +32,7 @@
 
   <section class="content smaller-margin">
       <div class="container">
+          @if( getContactCoordinates() )
           <div class="map">
               <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2667.469945459257!2d30.85061862789395!3d48.043263355823534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDAyJzMwLjkiTiAzMMKwNTEnMDUuMSJF!5e0!3m2!1sru!2sua!4v1460381023808"
@@ -43,28 +44,31 @@
                   marginwidth="0">
               </iframe>
           </div>
+          @endif
           <div class="contacts-wrap">
               <h1>Ви можете задати своє питання або відправити нам пропозицію <br> скориставшись контактною формою</h1>
               <div class="row">
                   <div class="col-md-6 col-lg-7">
                       <div class="info">
-                        {{ (! function_exists('getAdminContact') ? getAdminContact() : '' ) }}
+                        {!! getAdminContact() !!}
+                        {{--
                           <!-- <i class="fa fa-map-marker"></i> Україна, м. Первомайськ, Миколаївська область, <br> вул. Шевченка 15, № офіса 3<br>
                           <i class="fa fa-envelope-o"></i> <a href="mailto:office@tochka-vidliku.mk.ua">office@tochka-vidliku.mk.ua</a><br>
                           <i class="fa fa-skype"></i> tochka-vidliku<br>
                           <i class="fa fa-mobile"></i> (050) 391 65 90<br>
                           <i class="fa fa-mobile"></i> (067) 420 60 40 -->
+                        --}}
                       </div>
 
                       {{--
-                      <h2>Приєднуйтесь</h2>
+                      <!-- <h2>Приєднуйтесь</h2>
 
                       <div class="sosial-links">
                           <a href=""><i class="fa fa-odnoklassniki"></i></a>
                           <a href=""><i class="fa fa-facebook"></i></a>
                           <a href=""><i class="fa fa-vk"></i></a>
                           <a href=""><i class="fa fa-twitter"></i></a>
-                      </div>
+                      </div> -->
                       --}}
                   </div>
                   <div class="col-md-6 col-lg-5">

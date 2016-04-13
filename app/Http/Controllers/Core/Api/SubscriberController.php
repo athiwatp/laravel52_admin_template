@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\SubscribersRepository;
 use League\Fractal\Manager;
+use App\Http\Transformers\Subscribers as SubscribersTransformer;
+use Yajra\Datatables\Facades\Datatables;
+use App\Models\Subscribers;
 
 class SubscriberController extends ApiController
 {
@@ -26,6 +29,18 @@ class SubscriberController extends ApiController
         parent::__construct($fractal);
 
         $this->subscriber = $subscriber;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return Datatables::of(Subscribers::query())
+            ->setTransformer( new SubscribersTransformer() )
+            ->make(true);
     }
 
     /**

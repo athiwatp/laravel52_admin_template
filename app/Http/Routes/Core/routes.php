@@ -36,6 +36,12 @@ Route::group(['middleware' => 'web'], function () {
 
     // Gallery list
     Route::get('/video', array('as' => 'video-list', 'uses' => 'Core\Face\VideoController@index') );
+
+    // Search list
+    Route::get('/search', array('as' => 'search', 'uses' => 'Core\Face\SearchController@index') );
+
+    // Announce list
+    Route::get('/a/{id}', array('as' => 'announce-show', 'uses' => 'Core\Face\AnnouncementsController@show') );
 });
 
 /**
@@ -59,6 +65,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Module to handle the News in the system
     Route::resource('news', 'Core\Admin\NewsController');
+
+    // Handle the Subscribers
+    Route::resource('subscribers', 'Core\Admin\SubscribersController');
 
     // Handle the Menu
     Route::resource('menu', 'Core\Admin\MenuesController');
@@ -100,6 +109,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
     Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
     Route::resource('subscriber', 'Core\Api\SubscriberController', ['only' => ['store']]);
+    Route::resource('subscribers', 'Core\Api\SubscriberController', ['only' => ['index']]);
+    Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show']]);
 
 });
 

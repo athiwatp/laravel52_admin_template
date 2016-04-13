@@ -24,7 +24,7 @@ $(function() {
             var module = loader.getListModule(sModule);
 
             if ( module ) {
-                var table = require('./modules/_datatable.js')($, { object: this, settings: module} );
+                var table = require('./modules/_datatable.js')($, { object: this, settings: module, ident: sModule} );
             }
         }
     });

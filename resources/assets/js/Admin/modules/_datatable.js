@@ -35,23 +35,12 @@
         stateSave: true,
         responsive: true,
         processing: true,
-        serverSide: true,
-
-
-
-        //columns: JSON.parse(sColumn),
-
-        //columnDefs: [{
-        //    render: function ( data, type, row ) {
-        //
-        //        return '<a href="' + sEditUrl.replace('%id%', row.id) + '">' + data + '</a>';
-        //    },
-        //    targets: 1
-        //}]
+        serverSide: true
     };
 
     var object = parameters.object,
         options = parameters.settings,
+        ident = parameters.ident,
         objectSettings = {};
 
     if ( $ && $.fn && ! $.fn.dataTable ) {
@@ -62,6 +51,10 @@
         require('datatables.net-buttons/js/buttons.html5.js')();  // HTML 5 file export
         require('datatables.net-buttons/js/buttons.flash.js')();  // Flash file export
         require('datatables.net-buttons/js/buttons.print.js')();  // Print view button
+    }
+
+    if (ident === 'chapters/list') {
+        options.ajax.url = options.ajax.url.replace('%TYPE%', $(object).attr('data-chapter-type'));
     }
 
     // Merge objects
