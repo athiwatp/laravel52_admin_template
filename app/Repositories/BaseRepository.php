@@ -10,6 +10,13 @@ abstract class BaseRepository {
     protected $model;
 
     /**
+     * Pagination
+     *
+     * @var Integer
+     */
+    protected $paginationAmount = 50;
+
+    /**
      * Get number of records
      *
      * @return array

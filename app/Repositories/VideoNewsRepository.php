@@ -61,7 +61,7 @@ class VideoNewsRepository extends BaseRepository {
     {
         $result = $this->model
             ->orderBy('date', 'DESC')
-            ->paginate(50);
+            ->paginate( $this->paginationAmount );
 
         if ( $result ) {
             return $result;

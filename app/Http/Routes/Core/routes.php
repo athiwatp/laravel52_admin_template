@@ -42,6 +42,7 @@ Route::group(['middleware' => 'web'], function () {
 
     // Announce list
     Route::get('/a/{id}', array('as' => 'announce-show', 'uses' => 'Core\Face\AnnouncementsController@show') );
+    Route::get('/announcements', array('as' => 'announce-list', 'uses' => 'Core\Face\AnnouncementsController@index') );
 });
 
 /**

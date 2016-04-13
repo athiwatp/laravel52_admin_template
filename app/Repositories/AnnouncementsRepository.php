@@ -7,6 +7,13 @@ use Carbon\Carbon, Auth, Config;
 class AnnouncementsRepository extends BaseRepository {
 
     /**
+     * Published flag
+     *
+     * @var String
+     */
+    protected $PUBLISHED = 0;
+
+    /**
      * Create a new Message instance
      *
      * @param App\Models\Announce $announce
@@ -17,6 +24,9 @@ class AnnouncementsRepository extends BaseRepository {
     {
         // Announce Model
         $this->model = $announce;
+
+        // Retrieve the config settings
+        $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
     }
 
     /**
@@ -65,10 +75,32 @@ class AnnouncementsRepository extends BaseRepository {
     public function getLatest( $amount, $important = false )
     {
         $result = $this->model
+            ->where( 'is_published', $this->PUBLISHED )
             ->where('important', $important === true ? '1' : '0')
             ->orderBy('date_start', 'ASC')
             ->take( $amount )
             ->get();
+
+        if ( $result ) {
+            return $result;
+        }
+
+        return [];
+    }
+
+    /**
+     * Retrieve the list of the announces
+     *
+     * @param Request $request
+     *
+     * @return Collection
+     */
+    public function getPaginatedList(Request $request)
+    {
+        $result = $this->model
+            ->where( 'is_published', $this->PUBLISHED )
+            ->orderBy('date_start', 'DESC')
+            ->paginate( $this->paginationAmount );
 
         if ( $result ) {
             return $result;

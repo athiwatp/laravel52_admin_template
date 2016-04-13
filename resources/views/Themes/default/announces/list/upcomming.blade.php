@@ -13,6 +13,22 @@
      **** is_published
      **** created_at
      **** updated_at
+
+     **** chapter  <=== Object which represents the App\Models\Chapters
+     ******** id
+     ******** title
+     ******** description
+     ******** parent_id
+     ******** path
+     ******** pos
+     ******** is_active
+     ******** type_chapter
+     ******** date
+     ******** number
+     ******** user_id
+     ******** icon
+     ******** created_at
+     ******** updated_at
 --}}
 @if ( isset($aList) && $aList )
     @foreach( $aList as $aItem )

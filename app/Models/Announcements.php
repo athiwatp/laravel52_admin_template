@@ -12,4 +12,12 @@ class Announcements extends Model
      * @var string
     */
     protected $table = 'announcement';
+
+    /**
+     * Get the Chapter record associated with the user.
+     */
+    public function chapter()
+    {
+        return $this->hasOne('App\Models\Chapters', 'id', 'chapter_id');
+    }
 }

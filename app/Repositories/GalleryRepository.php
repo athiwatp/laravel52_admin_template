@@ -60,7 +60,7 @@ class GalleryRepository extends BaseRepository {
     {
         $result = $this->model
             ->orderBy('pos', 'DESC')
-            ->paginate(50);
+            ->paginate( $this->paginationAmount );
 
         if ( $result ) {
             return $result;
