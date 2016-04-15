@@ -8198,8 +8198,9 @@ button.close {
     webkit-tap-highlight-color: #0085a1; }
 
 .social-login {
-  margin-left: 10%;
-  margin-right: 10%; }
+  /*margin-left: 4%;
+    margin-right: 4%;*/
+  text-align: center; }
   .social-login h3 {
     text-align: center; }
   .social-login .social-login-buttons .facebook {
@@ -8214,11 +8215,14 @@ button.close {
   .social-login .social-login-buttons .linked-in {
     background: #0177B5;
     color: #fff; }
+  .social-login .social-login-buttons .vk {
+    background: #54769A;
+    color: #fff; }
 
 .btn-link-2 {
   display: inline-block;
   height: 50px;
-  margin: 5px;
+  margin: 2px;
   padding: 15px 20px 0 20px;
   border: 1px solid #fff;
   font-size: 16px;

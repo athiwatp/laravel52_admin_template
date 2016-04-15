@@ -57,30 +57,41 @@
                                 <a class="btn btn-link" href="{{ url('/password/reset') }}">{{ Lang::get('users.auth.forgot_your_password') }}</a>
                             </div>
                         </div>
-                        @if( getOnButtonFacebook() === '1' || getOnButtonTwitter() === '1' || getOnButtonLinkedIn() === '1' || getOnButtonGoogle() === '1' )
+                        @if( get_facebook_activate() || get_twitter_activate() || get_linkedIn_activate() || get_google_activate() )
                         <div class="social-login">
                             <h3>Вход с помощью социальных сетей</h3>
                             <div class="social-login-buttons">
-                                @if( getOnButtonFacebook() === '1' )
+
+                                @if( get_facebook_activate() )
                                 <a class="btn btn-link-2 facebook" href="redirect">
                                     <i class="fa fa-facebook"></i> Facebook
                                 </a>
                                 @endif
-                                @if( getOnButtonTwitter() === '1' )
+
+                                @if( get_twitter_activate() )
                                 <a class="btn btn-link-2 twitter" href="#">
                                     <i class="fa fa-twitter"></i> Twitter
                                 </a>
                                 @endif
-                                @if( getOnButtonLinkedIn() === '1' )
+
+                                @if( get_linkedIn_activate() )
                                 <a class="btn btn-link-2 linked-in" href="#">
                                     <i class="fa fa-linkedin"></i> LinkedIn
                                 </a>
                                 @endif
-                                @if( getOnButtonGoogle() === '1' )
+
+                                @if( get_google_activate() )
                                 <a class="btn btn-link-2 google-plus" href="#">
                                     <i class="fa fa-google-plus"></i> Google Plus
                                 </a>
                                 @endif
+
+                                @if( get_vk_activate() )
+                                <a class="btn btn-link-2 vk" href="#">
+                                    <i class="fa fa-vk"></i> VK
+                                </a>
+                                @endif
+
                             </div>
                         </div>
                         @endif

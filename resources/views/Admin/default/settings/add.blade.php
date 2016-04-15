@@ -178,7 +178,7 @@
                     <div class="panel-body panel-collapse collapse" id="collapseVk" aria-expanded="false">
                         {{ Form::label('vk_activate', Lang::get('settings.set.activate') ) }}
                         {!! Form::select('vk_activate', $setSocialNetworks, ( array_key_exists('vk_activate', $oData) ? $oData['vk_activate'] : ''), array('class' => 'form-control')) !!}
-                        {{ Form::label('google_authorization', Lang::get('settings.set.use_authorization') ) }}
+                        {{ Form::label('vk_authorization', Lang::get('settings.set.use_authorization') ) }}
                         {!! Form::select('vk_authorization', $setSocialNetworks, ( array_key_exists('vk_authorization', $oData) ? $oData['vk_authorization'] : ''), array('class' => 'form-control')) !!}
                         {{ Form::label('vk_repost', Lang::get('settings.set.repost_updates') ) }}
                         {!! Form::select('vk_repost', $setSocialNetworks, ( array_key_exists('vk_repost', $oData) ? $oData['vk_repost'] : ''), array('class' => 'form-control')) !!}
@@ -189,6 +189,31 @@
                     </div>
                     <div class="panel-footer">
                         <i class="fa fa-vk"> Vk</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOk">
+                            {{ Form::label('ok', Lang::get('settings.social_networks.ok') ) }}
+                        </a>
+                    </div>
+                    <div class="panel-body panel-collapse collapse" id="collapseOk" aria-expanded="false">
+                        {{ Form::label('ok_activate', Lang::get('settings.set.activate') ) }}
+                        {!! Form::select('ok_activate', $setSocialNetworks, ( array_key_exists('ok_activate', $oData) ? $oData['ok_activate'] : ''), array('class' => 'form-control')) !!}
+                        {{ Form::label('ok_authorization', Lang::get('settings.set.use_authorization') ) }}
+                        {!! Form::select('ok_authorization', $setSocialNetworks, ( array_key_exists('ok_authorization', $oData) ? $oData['ok_authorization'] : ''), array('class' => 'form-control')) !!}
+                        {{ Form::label('ok_repost', Lang::get('settings.set.repost_updates') ) }}
+                        {!! Form::select('ok_repost', $setSocialNetworks, ( array_key_exists('ok_repost', $oData) ? $oData['ok_repost'] : ''), array('class' => 'form-control')) !!}
+                        {{ Form::label('ok_account', Lang::get('settings.set.ok_account') ) }}
+                        {!! Form::text('ok_account', ( array_key_exists('ok_account', $oData) ? $oData['ok_account'] : ''), array('class' => 'form-control')) !!}
+                        {{ Form::label('ok_token', Lang::get('settings.set.token') ) }}
+                        {!! Form::text('ok_token', ( array_key_exists('ok_token', $oData) ? $oData['ok_token'] : ''), array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="panel-footer">
+                        <i class="fa fa-odnoklassniki"> Odnoklassniki</i>
                     </div>
                 </div>
             </div>

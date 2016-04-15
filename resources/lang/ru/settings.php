@@ -14,6 +14,7 @@ return array(
         'linkedIn' => 'LinkedIn',
         'google' => 'Google Plus+',
         'vk' => 'VK',
+        'ok' => 'Одноклассники',
         ),
 
     'tune-up' =>array(
@@ -33,6 +34,7 @@ return array(
         'linkedIn_account' => 'Ваш аккаунт LinkedIn',
         'google_account' => 'Ваш аккаунт Google Plus+',
         'vk_account' => 'Ваш аккаунт VK',
+        'ok_account' => 'Ваш аккаунт Одноклассников',
         ),
 
     'form' => array(

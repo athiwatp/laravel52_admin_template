@@ -215,9 +215,9 @@ if ( ! function_exists('get_facebook_activate') ) {
      */
     function get_facebook_activate()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return ( $settings->getSettings('facebook_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return array_key_exists('facebook_activate', $data) && $data['facebook_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
     }
 }
 
@@ -228,9 +228,9 @@ if ( ! function_exists('get_facebook_account') ) {
      */
     function get_facebook_account()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return $settings->getSettings('facebook_account', '#');
+       return array_key_exists('facebook_account', $data) ? $data['facebook_account'] : '';
     }
 }
 
@@ -241,9 +241,9 @@ if ( ! function_exists('get_twitter_activate') ) {
      */
     function get_twitter_activate()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return ($settings->getSettings('twitter_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+       return array_key_exists('twitter_activate', $data) && $data['twitter_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
     }
 }
 
@@ -254,9 +254,9 @@ if ( ! function_exists('get_twitter_account') ) {
      */
     function get_twitter_account()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return $settings->getSettings('twitter_account', '#');
+        return array_key_exists('twitter_account', $data) ? $data['twitter_account'] : '';
     }
 }
 
@@ -267,9 +267,9 @@ if ( ! function_exists('get_google_activate') ) {
      */
     function get_google_activate()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return ( $settings->getSettings('google_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+        return array_key_exists('google_activate', $data) && $data['google_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
     }
 }
 
@@ -280,9 +280,9 @@ if ( ! function_exists('get_google_account') ) {
      */
     function get_google_account()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return $settings->getSettings('google_account', '#');
+        return array_key_exists('google_account', $data) ? $data['google_account'] : '';
     }
 }
 
@@ -293,9 +293,9 @@ if ( ! function_exists('get_linkedIn_activate') ) {
      */
     function get_linkedIn_activate()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return ( $settings->getSettings('linkedIn_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+        return array_key_exists('linkedIn_activate', $data) && $data['linkedIn_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
     }
 }
 
@@ -306,9 +306,9 @@ if ( ! function_exists('get_linkedIn_account') ) {
      */
     function get_linkedIn_account()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return $settings->getSettings('linkedIn_account', '#');
+        return array_key_exists('linkedIn_account', $data) ? $data['linkedIn_account'] : '';
     }
 }
 
@@ -319,9 +319,9 @@ if ( ! function_exists('get_vk_activate') ) {
      */
     function get_vk_activate()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-       return ( $settings->getSettings('vk_activate') === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false );
+        return array_key_exists('vk_activate', $data) && $data['vk_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
     }
 }
 
@@ -332,9 +332,35 @@ if ( ! function_exists('get_vk_account') ) {
      */
     function get_vk_account()
     {
-        $settings = new SettingsRepository();
+        $data = get_settings_data();
 
-        return $settings->getSettings('vk_account', '#');
+        return array_key_exists('vk_account', $data) ? $data['vk_account'] : '';
+    }
+}
+
+if ( ! function_exists('get_ok_activate') ) {
+    /**
+     * Return status Odnoklassniki (on\off).
+     * @return string
+     */
+    function get_ok_activate()
+    {
+        $data = get_settings_data();
+
+       return array_key_exists('ok_activate', $data) && $data['ok_activate'] === Config::get('constants.DONE_STATUS.SUCCESS') ? true : false;
+    }
+}
+
+if ( ! function_exists('get_ok_account') ) {
+    /**
+     * Return account Odnoklassniki.
+     * @return string
+     */
+    function get_ok_account()
+    {
+        $data = get_settings_data();
+
+        return array_key_exists('ok_account', $data) ? $data['ok_account'] : '';
     }
 }
 

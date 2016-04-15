@@ -1,7 +1,8 @@
 
 .social-login{
-    margin-left: 10%;
-    margin-right: 10%;
+    /*margin-left: 4%;
+    margin-right: 4%;*/
+    text-align: center;
     h3 {
         text-align:  center;
     }
@@ -23,12 +24,16 @@
             background: #0177B5;
             color: #fff;
         }
+        .vk {
+            background: #54769A;
+            color: #fff;
+        }
     }
 }
 .btn-link-2 {
     display: inline-block;
     height: 50px;
-    margin: 5px;
+    margin: 2px;
     padding: 15px 20px 0 20px;
     border: 1px solid #fff;
     font-size: 16px;
