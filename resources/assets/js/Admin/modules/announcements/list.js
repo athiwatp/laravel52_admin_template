@@ -8,8 +8,7 @@ module.exports = {
      **/
     columns: [
         {data: 'id'},
-        {data: 'date_start'},
-        {data: 'date_end'},
+        {data: 'date'},
         {data: 'title'}
     ],
 
@@ -19,12 +18,12 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [
-        {
-            render: function( data ) {
-                return system.getFormattedDate( data );
-            },
-            targets: [1,2]
-        },
+        // {
+        //     render: function( data ) {
+        //         return system.getFormattedDate( data );
+        //     },
+        //     targets: [1]
+        // },
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
@@ -45,7 +44,7 @@ module.exports = {
                     '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">':
                     '');
             },
-            targets: 3
+            targets: 2
         }
     ],
 

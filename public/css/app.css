@@ -7917,6 +7917,7 @@ button.close {
     color: #0085a1; }
   .pervosoft-template a img:hover,
   .pervosoft-template a img:focus {
+    cursor: -webkit-zoom-in;
     cursor: zoom-in; }
   .pervosoft-template blockquote {
     color: #808080;

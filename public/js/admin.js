@@ -21148,7 +21148,7 @@ return Buttons;
 
 },{"jquery":8}],8:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.2
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -21158,7 +21158,7 @@ return Buttons;
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-03-17T17:51Z
  */
 
 (function( global, factory ) {
@@ -21214,7 +21214,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.2",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -30624,7 +30624,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}
@@ -46911,19 +46911,21 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'date_start' }, { data: 'date_end' }, { data: 'title' }],
+    columns: [{ data: 'id' }, { data: 'date' }, { data: 'title' }],
 
     /**
      * Renderer for the columns by the index
      *
      * @var Object
      **/
-    columnDefs: [{
-        render: function render(data) {
-            return system.getFormattedDate(data);
-        },
-        targets: [1, 2]
-    }, {
+    columnDefs: [
+    // {
+    //     render: function( data ) {
+    //         return system.getFormattedDate( data );
+    //     },
+    //     targets: [1]
+    // },
+    {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
                 published = '<i class="fa fa-eye green"></i>',
@@ -46939,7 +46941,7 @@ module.exports = {
 
             return '<a href="/admin/announcements/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + important + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
-        targets: 3
+        targets: 2
     }],
 
     ajax: {

@@ -38,22 +38,12 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('date_start', Lang::get('announce.form.date_start')) }}
-    <div class="input-group date-group">
-        {{ Form::text('date_start', ( isset($oData) ? $oData->date_start : $date['thisDay']), array('class' => 'form-control date-controls')) }}
-        <span class="input-group-addon">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-        </span>
-    </div>
-</div>
-
-<div class="form-group">
-    {{ Form::label('date_end', Lang::get('announce.form.date_end')) }}
-    <div class="input-group date-group">
-        {{ Form::text('date_end', ( isset($oData) ? $oData->date_end : $date['thisDayPlusMonth']), array('class' => 'form-control date-controls')) }}
-        <span class="input-group-addon">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-        </span>
+    {{ Form::label('date', Lang::get('announce.form.date')) }}
+    <div class="input-group col-md-5 input-daterange" id="datepicker" style="max-width: 500px">
+        <span class="input-group-addon">Start</span>
+        {{ Form::text('date_start', ( isset($oData) ? $oData->date_start : $date['thisDay']), array('class' => 'form-control date-controls input-sm')) }}
+        <span class="input-group-addon">End</span>
+        {{ Form::text('date_end', ( isset($oData) ? $oData->date_end : null ), array('class' => 'form-control date-controls input-sm')) }}
     </div>
 </div>
 

@@ -59,9 +59,11 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     {{ $sMessage }}
                 </div>
+
                 @endif
 
             @yield('content')
+            </section>
         </div>
         <!-- /#page-wrapper -->
 

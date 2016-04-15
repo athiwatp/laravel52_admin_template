@@ -18,8 +18,7 @@ class Announcements extends TransformerAbstract
         return [
             'id' => (int) $announce->id,
             'title' => $announce->title,
-            'date_start' => $announce->date_start,
-            'date_end' => $announce->date_end,
+            'date' => get_formatted_date($announce->date_start) . ' / ' . get_formatted_date($announce->date_end),
             'image' => ( $announce->image ? cFile::getImagePathURL( $announce->image, 'box2' ) : '' ),
             'published' => (boolean) $announce->is_published,
             'important' => (boolean) $announce->important,

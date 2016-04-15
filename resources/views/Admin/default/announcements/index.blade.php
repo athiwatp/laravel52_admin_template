@@ -6,16 +6,14 @@
     <thead>
     <tr>
         <th>Id</th>
-        <th>{{ Lang::get('announce.form.date_start') }}</th>
-        <th>{{ Lang::get('announce.form.date_end') }}</th>
+        <th>{{ Lang::get('announce.form.date') }}</th>
         <th>{{ Lang::get('announce.form.title') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
         <th>Id</th>
-        <th>{{ Lang::get('announce.form.date_start') }}</th>
-        <th>{{ Lang::get('announce.form.date_end') }}</th>
+        <th>{{ Lang::get('announce.form.date') }}</th>
         <th>{{ Lang::get('announce.form.title') }}</th>
     </tr>
     </tfoot>
