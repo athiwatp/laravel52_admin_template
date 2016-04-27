@@ -122,8 +122,8 @@ class File {
      */
     public static function getThumbnailSizes( $sType = null, $isImage = false )
     {
-        $aResources   = Config::get('RESOURCES');
-        $sType        = empty($sType) ?  $aResources['PHOTO_GALLERY'] : $sType;
+        $aResources   = Config::get('constants.RESOURCES');
+        $sType        = empty($sType) ? $aResources['PHOTO_GALLERY'] : $sType;
         $aCollections = array();
 
         if ( $isImage === false ) {
@@ -133,10 +133,22 @@ class File {
         if ( $sType === $aResources['NEWS'] ) {
             $aCollections[] = (object) array('ident' => 'box2', 'height' => '70', 'width'=> '120');
             $aCollections[] = (object) array('ident' => 'box3', 'height' => '140', 'width'=> '220');
+            $aCollections[] = (object) array('ident' => '140x100', 'height' => '100', 'width'=> '140');
+            $aCollections[] = (object) array('ident' => '140x_', 'height' => '0', 'width'=> '140');
+            $aCollections[] = (object) array('ident' => '200x_', 'height' => '0', 'width'=> '200');
+            $aCollections[] = (object) array('ident' => '455x_', 'height' => '0', 'width'=> '455');
+        } else if ( $sType === $aResources['ANNOUNCE'] ) {
+            $aCollections[] = (object) array('ident' => 'box2', 'height' => '70', 'width'=> '120');
+            $aCollections[] = (object) array('ident' => 'box3', 'height' => '140', 'width'=> '220');
+            $aCollections[] = (object) array('ident' => '140x_', 'height' => '0', 'width'=> '140');
+            $aCollections[] = (object) array('ident' => '200x_', 'height' => '0', 'width'=> '200');
+            $aCollections[] = (object) array('ident' => '650x330', 'height' => '330', 'width'=> '650');
+            $aCollections[] = (object) array('ident' => '455x_', 'height' => '0', 'width'=> '455');
         } else if ( $sType === $aResources['PHOTO_GALLERY'] || $isImage === true ) {
             $aCollections[] = (object) array('ident' => 'box1', 'height' => '50', 'width'=> '50');
             $aCollections[] = (object) array('ident' => 'box2', 'height' => '100', 'width'=> '100');
             $aCollections[] = (object) array('ident' => 'box3', 'height' => '200', 'width'=> '200');
+            $aCollections[] = (object) array('ident' => 'box4', 'height' => '170', 'width'=> '260');
         }
 
         return $aCollections;

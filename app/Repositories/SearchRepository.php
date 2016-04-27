@@ -25,6 +25,7 @@ class SearchRepository extends BaseRepository {
     */
     public function get( $keywords )
     {
-        return [];
+        return $this->pages->search( $keywords )
+            ->paginate( $this->paginationAmount );
     }
 }

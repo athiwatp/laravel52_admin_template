@@ -56,13 +56,15 @@ class LoadFileListener
 
         $file    = array_key_exists('file', $aParams) ? $aParams['file'] : null;
         $type    = array_key_exists('type', $aParams) ? $aParams['type'] : '---';
-        $id      = array_key_exists('id', $aParams) ? $aParams['id'] : null;
+        $id      = array_key_exists('id', $aParams) && $aParams['id'] > 0 ? $aParams['id'] : null;
         $prefix	 = array_key_exists('prefix', $aParams) ? $aParams['prefix'] : '';
+        $token   = array_key_exists('token_id', $aParams) ? $aParams['token_id'] : null;
         $date 	 = array_key_exists('date', $aParams) ? $aParams['date'] : Carbon::now();
 
         $sFolder     = cFile::getDestinationFolder($date) . $type;
         $sResultFile = '';
         $iReturnCode = Config::get('constants.DONE_STATUS.FAILURE');
+        $iResultId   = 0;
 
         if ( $file instanceof UploadedFile) {
             $sFileName = cFile::generateName() . '.';
@@ -96,12 +98,14 @@ class LoadFileListener
                     'file_name' => $sOrigFileName,
                     'file_size' => $iFileSize,
                     'content_id' => $id,
+                    'session_id' => $token,
                     'content_type' => $type
                 ]);
 
                 if ( $iFileId ) {
-                    $aThumbnails = cFile::getThumbnailSizes( $type, cFile::isImage($sMimeType) );
+                    $aThumbnails  = cFile::getThumbnailSizes( $type, cFile::isImage($sMimeType) );
                     $sStoragePath = cFile::getStoragePath();
+                    $iResultId    = $iFileId;
 
                     foreach($aThumbnails as $oThumb) {
 
@@ -120,7 +124,13 @@ class LoadFileListener
                         if ( $this->files->exists( $sStoragePath . DIRECTORY_SEPARATOR . $sPath ) ) {
                             Image::make($sStoragePath . DIRECTORY_SEPARATOR . $sPath)
 //                                ->insert( cFile::applyWatermark(), 'bottom-right', 10, 10 )
-                                ->resize($oThumb->width, $oThumb->height)
+                                ->resize(
+                                    $oThumb->width > 0 ? $oThumb->width : null,
+                                    $oThumb->height > 0 ? $oThumb->height : null,
+                                    function ($constraint) {
+                                        $constraint->aspectRatio();
+                                    }
+                                )
                                 ->save(sprintf($sXFolderFullPath . DIRECTORY_SEPARATOR . '%s', $sFileName));
 
                             $this->storage->store([
@@ -129,6 +139,7 @@ class LoadFileListener
                                 'file_name' => $sOrigFileName,
                                 'file_size' => $iFileSize,
                                 'content_id' => $id,
+                                'parent_id' => $iResultId,
                                 'content_type' => $type
                             ]);
                         }
@@ -140,6 +151,7 @@ class LoadFileListener
 
         return (object) array(
             'code' => $iReturnCode,
+            'id' => $iResultId,
             'filepath' => $sResultFile
         );
     }

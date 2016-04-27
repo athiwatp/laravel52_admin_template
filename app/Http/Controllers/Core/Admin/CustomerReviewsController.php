@@ -56,28 +56,27 @@ class CustomerReviewsController extends AdminController
                         'url' => URL::route('admin.customerReviews.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_customerReviews')
+                        'aParams' => array('id' => 'add')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_customerReviews', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.customerReviews.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.customerReviews.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_customerReviews', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.customerReviews.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.customerReviews.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.customerReviews.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_customerReviews', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.customerReviews.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.customerReviews.index') )
                     )
-                ),
-                // 'aList' => $this->pages->index()
+                )
             ))
         ));
     }
@@ -103,12 +102,18 @@ class CustomerReviewsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published'
                 )
             ),
             'formContent' => $this->renderView('customerReviews.add', array(
@@ -157,6 +162,7 @@ class CustomerReviewsController extends AdminController
             array('url' => URL::route('admin.customerReviews.index'), 'icon' => '<i class="fa fa-comment"></i>', 'title' => Lang::get('customer_reviews.lists.lists_customer_reviews')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('customer_reviews.lists.edit'))
         );
+        $oData = $this->customerReviews->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -167,16 +173,23 @@ class CustomerReviewsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.customerReviews.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published',
+                    'value' => $oData->is_published
                 )
             ),
             'formContent' => $this->renderView('customerReviews.add', array(
-                'oData' => $this->customerReviews->edit( $id )
+                'oData' => $oData
             )),
             'formUrl' => URL::route('admin.customerReviews.store'),
         ));

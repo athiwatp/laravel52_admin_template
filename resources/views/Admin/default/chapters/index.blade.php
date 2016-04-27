@@ -6,17 +6,15 @@
        cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>#</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
-            <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <th>Id</th>
+            <th>#</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
-            <th class="sorting">{{ Lang::get('chapters.form.pos') }}</th>
             <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </tfoot>

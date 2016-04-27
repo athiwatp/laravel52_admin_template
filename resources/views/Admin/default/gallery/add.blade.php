@@ -4,7 +4,7 @@
 </div>
 <div class="form-group">
     {{ Form::label('description', Lang::get('table_field.lists.descriptions') ) }}
-    {{ Form::textarea('description', ( isset($oData) ? $oData->description: null), array('class' => 'form-control')) }}
+    {{ Form::textarea('description', ( isset($oData) ? $oData->description: null), array('class' => 'form-control ck-edtor')) }}
 </div>
 <div class="form-group">
     {{ Form::label('chapter', Lang::get('gallery.form.chapter') ) }}
@@ -18,7 +18,7 @@
     {{ Form::label('filename', Lang::get('gallery.form.file')) }}
     {{ Form::file('filename', array() ) }}
     @if ( isset($oData) && $oData->filename)
-        <img src="{{ get_file_url($oData->filename, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
+        <br /><img src="{{ get_file_url($oData->filename, 'box2') }}" title="{{ $oData->title }}" class="img-responsive img-thumbnail">
     @endif
 </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}

@@ -52,6 +52,22 @@
                 @endif
                 {!! $aFormParams['formContent'] !!}
             </div>
+            @if (isset($aFormParams['formSwitcher']))
+            @foreach($aFormParams['formSwitcher'] as $item)
+            <div class="form-group">
+                {{ Form::label('active', $item['title']) }}
+                <div class="switcher">
+                    <my-switcher
+                        cmp-yes = "{{ Lang::get('table_field.lists.yes') }}"
+                        cmp-no = "{{ Lang::get('table_field.lists.no') }}"
+                        cmp-value = "{{ isset($item['value']) ? $item['value'] : '1' }}"
+                        cmp-name = "{{ $item['name'] }}">
+                    </my-switcher>
+                </div>
+            </div>
+            @endforeach
+            @endif
+            <br>
             @if (isset($aFormParams['formButtons']))
             <div class="box-footer">
                 @foreach($aFormParams['formButtons'] as $item)

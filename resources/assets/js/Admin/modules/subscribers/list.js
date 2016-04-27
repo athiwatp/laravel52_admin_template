@@ -7,9 +7,19 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'email'},
+        {data: 'id', name:'id', orderable: false},
+        {data: 'email', name:'email'},
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/subscribers/%n/edit',
+        del: system.getUrl( 'subscribers/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
@@ -17,6 +27,13 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [
+        {
+            className: 'select-checkbox',
+            render: function() {
+                return '';
+            },
+            targets:   0
+        },
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
@@ -33,6 +50,11 @@ module.exports = {
             targets: 1
         }
     ],
+
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
 
     ajax: {
         url: system.getUrl( 'subscribers' )

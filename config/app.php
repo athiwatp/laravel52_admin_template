@@ -154,6 +154,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         'Sorskod\Larasponse\LarasponseServiceProvider',
+        'Sofa\Eloquence\ServiceProvider',
 
         /*
          * Application Service Providers...

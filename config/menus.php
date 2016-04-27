@@ -15,7 +15,7 @@ return [
 
     'class' => [
         'wrapper' => [
-            'main' => 'nav navbar-nav navbar-right',
+            'main' => 'nav navbar-nav nav-pills',
             'footer' => 'nav',
             'sidebar' => 'nav'
         ]

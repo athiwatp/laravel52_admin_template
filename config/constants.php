@@ -16,7 +16,18 @@ return [
         'PHOTO_GALLERY' => 'photo_gallery',
         'VIDEO' => 'video',
         'CHAPTER' => 'chapter',
-        'ANNOUNCE' => 'announce'
+        'ANNOUNCE' => 'announce',
+        'PAGE' => 'page',
+        'CONTENT' => 'content'
+    ],
+
+    /**
+     * Document type
+     *
+    */
+    'DOCUMENTS' => [
+        'FILE_DOC' => 'document',
+        'FILE_IMAGE' => 'image'
     ],
 
     /**
@@ -84,7 +95,8 @@ return [
     'CHAPTER' => [
         'CHAPTER' => '0',
         'GALLERY' => '1',
-        'ANNOUNCE' => '2'
+        'ANNOUNCE' => '2',
+        'USEFUL_LINKS' => '3'
     ]
 
 ];

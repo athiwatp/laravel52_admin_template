@@ -8,28 +8,48 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'title'},
-        {data: 'created'},
-        {data: 'updated'},
-        {data: 'published'},
+        {data: 'id', name:'id'},
+        {data: 'title', name:'title'},
+        {data: 'published', name:'is_published'},
+        {data: 'subtitle', name:'subtitle', bVisible: false},
+        {data: 'content', name:'content', bVisible:false},
+        {data: 'created', name:'created_at', bVisible:false},
+        {data: 'updated', name:'updated_at', bVisible:false}
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/pages/%n/edit',
+        del: system.getUrl( 'pages/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
      *
      * @var Object
      **/
-    columnDefs: [
-        {
-            /**
-             * Render date
-             **/
-            render: function( data ) {
-                return system.getFormattedDate( data );
+    columnDefs: [{
+            className: 'select-checkbox',
+            render: function() {
+                return '';
             },
-            targets: [2,3]
+            targets:   0
         },
+
+        //{
+        //    /**
+        //     * Render date
+        //     **/
+        //    render: function( data ) {
+        //        return system.getFormattedDate( data );
+        //    },
+        //    targets: [2,3]
+        //},
+
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data);
@@ -45,13 +65,22 @@ module.exports = {
             render: function( data ) {
                 return system.getPublishedIcon(data);
             },
-            targets: 4
+            targets: 2
         }
     ],
 
     ajax: {
         url: system.getUrl( 'pages' )
     },
+
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+
+    order: [
+        [ 6, 'desc' ]
+    ]
 
 
 };

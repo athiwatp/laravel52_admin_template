@@ -14,7 +14,12 @@ abstract class BaseRepository {
      *
      * @var Integer
      */
-    protected $paginationAmount = 50;
+    protected $paginationAmount = 20;
+
+    /**
+     * Date format
+    */
+    protected $dateFormat = 'd/m/Y';
 
     /**
      * Get number of records
@@ -38,7 +43,7 @@ abstract class BaseRepository {
     */
     public function destroy($id)
     {
-        $this->getById($id)->delete();
+        return $this->getById($id)->delete();
     }
 
     /**
@@ -67,5 +72,20 @@ abstract class BaseRepository {
             ->update($aParams);
 
         return $this->model;
+    }
+
+    public function toSQL( $object )
+    {
+        return $object->toSql();
+    }
+
+    /**
+     * Return date format
+     *
+     * @return {String}
+    */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
     }
 }

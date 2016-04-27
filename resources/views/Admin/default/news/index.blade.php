@@ -5,14 +5,14 @@
        cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('table_field.lists.date') }}</th>
         <th>{{ Lang::get('news.form.title') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('table_field.lists.date') }}</th>
         <th>{{ Lang::get('news.form.title') }}</th>
     </tr>

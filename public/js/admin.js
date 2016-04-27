@@ -46231,11 +46231,11 @@ module.exports = Vue;
 
 var $ = require('jquery');
 var loader = require('./modules/_loader.js');
+var _system = require('./modules/_System.js').getInstance();
 
 require('./types/String.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
-
 require('./modules/_ckeditor.js');
 require('./modules/_mask.js');
 
@@ -46243,6 +46243,23 @@ require('./modules/_mask.js');
 require('bootstrap-datepicker');
 
 $(function () {
+
+    if ($('.switcher').length > 0) {
+        $('.switcher').each(function () {
+            var id = $(this).attr('id');
+
+            if (_system.isEmpty(id)) {
+                id = _system.generateId();
+
+                $(this).attr('id', id);
+            }
+            console.log(id);
+
+            var gallery = require('./components/my-switcher.js')($, {
+                elId: '#' + id
+            }, _system);
+        });
+    }
 
     /**
      * Handle the grids
@@ -46259,6 +46276,107 @@ $(function () {
         }
     });
     // -- end of grid handling
+
+    // Toolbar buttons
+    // 1. edit_menu
+    if ($('#edit').length > 0) {
+
+        console.log('Hey!!!!');
+
+        $('#edit').on('click', function (e) {
+            var self = this;
+
+            e.preventDefault();
+
+            $(self).attr('disabled', true);
+
+            $('.datatables').each(function () {
+                var tbl = $(this).dataTable().api();
+
+                if (_system.isEmpty(tbl) === false) {
+                    var initOption = tbl.init(),
+                        ids = $.map(tbl.rows('.selected').data(), function (item) {
+                        return _system.isObject(item) ? item.id : 0;
+                    });
+
+                    if (ids.length > 0 && initOption && initOption.custURL && initOption.custURL.edit) {
+                        var url = initOption.custURL.edit.sprintf(ids[0]);
+
+                        _system.redirectTo(url);
+                    }
+
+                    $(self).removeAttr('disabled');
+                }
+            });
+
+            return false;
+        });
+    }
+
+    // 2. delete_menu
+    if ($('#delete').length > 0) {
+        $('#delete').on('click', function (e) {
+            var self = this;
+
+            e.preventDefault();
+
+            if (_system.isEmpty($(self).attr('disabled')) === false) {
+                return false;
+            }
+
+            $(self).attr('disabled', 'disabled');
+
+            $('.datatables').each(function () {
+                var tbl = $(this).dataTable().api();
+
+                if (_system.isEmpty(tbl) === false) {
+                    var initOption = tbl.init(),
+                        ids = $.map(tbl.rows('.selected').data(), function (item) {
+                        return _system.isObject(item) ? item.id : 0;
+                    });
+
+                    if (ids.length > 0 && initOption && initOption.custURL && initOption.custURL.del) {
+                        var sUrl = initOption.custURL.del.sprintf(ids[0]);
+
+                        if (confirm("Удалить выбранную запись?") === true) {
+                            _system.ajax(sUrl, {
+                                type: 'DELETE',
+                                async: true
+                            }).then(function () {
+                                tbl.draw();
+                            }).done(function () {
+                                $(self).removeAttr('disabled');
+                            });
+                        } else {
+                            $(self).removeAttr('disabled');
+                        }
+                    }
+                }
+            });
+
+            return false;
+        });
+    }
+
+    // 3. refresh menu
+    if ($('#refresh').length > 0) {
+        $('#refresh').on('click', function (e) {
+            e.preventDefault();
+
+            $(this).attr('disabled', 'disabled');
+
+            $('.datatables').each(function () {
+                var tbl = $(this).dataTable().api();
+
+                tbl.draw();
+            });
+
+            $(this).removeAttr('disabled');
+
+            return false;
+        });
+    }
+    // End of Toolbar Handlers //
 
     /**
      * Convert to URL
@@ -46284,8 +46402,6 @@ $(function () {
 
         if (handler) {
             var module = loader.getFormModule(handler);
-
-            console.log(handler, module);
         }
     });
 
@@ -46296,35 +46412,152 @@ $(function () {
         if ($.fn.datepicker) {
 
             $(this).datepicker({
-                //format: 'YYYY-MM-DD'
-                format: 'yyyy-mm-dd',
-                //format: {
-                //    /*
-                //     * Say our UI should display a week ahead,
-                //     * but textbox should store the actual date.
-                //     * This is useful if we need UI to select local dates,
-                //     * but store in UTC
-                //     */
-                //    toDisplay: function (date, format, language) {
-                //        var d = new Date(date);
-                //        d.setDate(d.getDate() - 7);
-                //
-                //        return d.toISOString();
-                //    },
-                //
-                //    toValue: function (date, format, language) {
-                //        var d = new Date(date);
-                //        d.setDate(d.getDate() + 7);
-                //        return new Date(d);
-                //    }
-                //},
+                format: 'dd/mm/yyyy',
                 autoclose: true
             });
         }
     });
+    // ====== //
 });
 
-},{"./modules/_ckeditor.js":38,"./modules/_datatable.js":39,"./modules/_loader.js":40,"./modules/_mask.js":41,"./modules/_metis.js":42,"./modules/_resizer.js":43,"./types/String.js":56,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+},{"./components/my-switcher.js":37,"./modules/_System.js":38,"./modules/_ckeditor.js":39,"./modules/_datatable.js":40,"./modules/_loader.js":41,"./modules/_mask.js":42,"./modules/_metis.js":43,"./modules/_resizer.js":44,"./types/String.js":58,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function (factory) {
+    "use strict";
+
+    // AMD
+
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], {}, function ($, parameters, _system) {
+            return factory($, parameters, _system);
+        });
+    }
+    // CommonJS
+    else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+            module.exports = function ($, parameters, _system) {
+
+                if (!$) {
+                    $ = require('jquery');
+                }
+
+                return factory($, parameters, _system);
+            };
+        }
+        // Browser
+        else {
+                factory(jQuery, {}, _system);
+            }
+})(function ($, parameters, _system) {
+    "use strict";
+
+    var Vue = require('vue'),
+        elId = parameters && parameters.elId ? parameters.elId : '#switcher';
+
+    Vue.component('my-switcher', {
+        template: '<div class="btn-group btn-toggle" @click="onSwitcherClick($event, this)" v-el:wrapper>' + '<button class="btn btn-default">{{ cmpNo }}</button>' + '<input type="hidden" name="{{ cmpName }}" value="{{ cmpValue }}"  v-model="status">' + '<button class="btn btn-success active">{{ cmpYes }}</button>' + '</div>',
+        /**
+         * Describe the properties for the component
+         *
+         * @var Object
+         **/
+        props: {
+            cmpYes: {
+                type: String,
+                default: 'Yes'
+            },
+            cmpNo: {
+                type: String,
+                default: 'No'
+            },
+            cmpValue: {
+                type: String,
+                default: '1'
+            },
+            cmpName: {
+                type: String,
+                default: 'switcher'
+            }
+        },
+
+        ready: function ready() {
+            var val = this.$get('cmpValue');
+            this.status = val;
+
+            if (val === '0') {
+                console.log(this.$els.wrapper);
+                this._toggle(this.$els.wrapper);
+            }
+        },
+
+        /**
+         * Data
+         *
+         * @var Object
+         **/
+        data: function data() {
+            return {
+                status: ''
+            };
+        },
+
+        /**
+         * The list of available methods
+         *
+         * @var Object
+         **/
+        methods: {
+            onSwitcherClick: function onSwitcherClick(event, obj) {
+                // var target = event.target;
+                var element = obj.$el;
+                event.preventDefault();
+
+                if (this.status === '1') {
+                    this.status = '0';
+                } else {
+                    this.status = '1';
+                }
+
+                this._toggle(element);
+            },
+
+            _toggle: function _toggle(element) {
+                $(element).find('.btn').toggleClass('active');
+
+                if ($(element).find('.btn-primary').size() > 0) {
+                    $(element).find('.btn').toggleClass('btn-primary');
+                }
+                if ($(element).find('.btn-danger').size() > 0) {
+                    $(element).find('.btn').toggleClass('btn-danger');
+                }
+                if ($(element).find('.btn-success').size() > 0) {
+                    $(element).find('.btn').toggleClass('btn-success');
+                }
+                if ($(element).find('.btn-info').size() > 0) {
+                    $(element).find('.btn').toggleClass('btn-info');
+                }
+
+                $(element).find('.btn').toggleClass('btn-default');
+            }
+
+        },
+
+        /**
+         * Computed properties
+         *
+         * @var Object
+         **/
+        computed: {}
+    });
+
+    return new Vue({
+        el: elId
+    });
+});
+
+},{"jquery":8,"vue":35}],38:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46356,6 +46589,13 @@ var AdminSingleton = function ($) {
             api: '/api/v1',
 
             /**
+             * Root URL
+             *
+             * @var String
+             **/
+            rootURL: '/',
+
+            /**
              * Token
              *
              * @var String
@@ -46370,7 +46610,7 @@ var AdminSingleton = function ($) {
              **/
             _get: function _get(prop) {
                 if (config && config.hasOwnProperty(prop)) {
-                    return config[prop];
+                    return config[prop] || '';
                 }
 
                 return '';
@@ -46378,8 +46618,59 @@ var AdminSingleton = function ($) {
 
             /**
              * Returns API url
+             *
+             * @param String url
+             * @param Object params
+             *
+             * @return String
              **/
             getUrl: function getUrl(url, params) {
+                return this._get('api') + '/' + this.buildURL(url, params) + '&api_token=' + this._get('token');
+            },
+
+            /**
+             * Generate unique Identifier
+             *
+             **/
+            generateId: function generateId() {
+                //function s4() {
+                //    return Math.floor((1 + Math.random()) * 0x10000)
+                //        .toString(16)
+                //        .substring(1);
+                //}
+                //
+                //return s4() + s4() + s4()  + s4()  +
+                //    s4() + s4() + s4() + s4();
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+                for (var i = 0; i < 16; i++) {
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                }return text;
+            },
+
+            /**
+             * Returns a static URL
+             *
+             * @param String url
+             * @param Object params
+             *
+             * @return String
+             **/
+            getStaticURL: function getStaticURL(url, params) {
+                var link = this._get('rootURL');
+
+                return (link === '/' ? '' : '/') + '/' + this.buildURL(url, params);
+            },
+
+            /**
+             * buildURL
+             *
+             * @param String url
+             *
+             * @return String
+             **/
+            buildURL: function buildURL(url, params) {
                 var ext = '';
 
                 if (this.isObject(params)) {
@@ -46394,7 +46685,28 @@ var AdminSingleton = function ($) {
                     }
                 }
 
-                return this._get('api') + '/' + url + '/?api_token=' + this._get('token') + (ext ? '&' + ext : '');
+                return url + '?1' + (ext ? '&' + ext : '');
+            },
+
+            /**
+             * Execute AJAX request
+             *
+             * @return Promise
+             **/
+            ajax: function ajax(url, parameters) {
+                return $.ajax(url, parameters);
+            },
+
+            /**
+             * Redirect to the given URL
+             *
+             * @param String url
+             **/
+            redirectTo: function redirectTo(url) {
+
+                console.log(url);
+
+                window.location.href = url;
             },
 
             /**
@@ -46493,7 +46805,7 @@ var AdminSingleton = function ($) {
              * Get formatted data
              *
              **/
-            getFormattedDate: function getFormattedDate(data) {
+            getFormattedDate: function getFormattedDate(data, showTime) {
 
                 if (this.isEmpty(data)) {
                     return '';
@@ -46505,7 +46817,26 @@ var AdminSingleton = function ($) {
 
                 var date = moment(data);
 
-                return this.isObject(date) ? date.format('DD.MM.Y HH:mm') : '';
+                return this.isObject(date) ? date.format('DD/MM/Y' + (showTime === true ? ' HH:mm' : '')) : '';
+            },
+
+            /**
+             * Return lang file for the datepicker component
+             *
+             * @return Object
+             **/
+            getDatepickerLangObject: function getDatepickerLangObject() {
+                return {
+                    days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+                    daysShort: ["Нед", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+                    daysMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                    months: ["Cічень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+                    monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+                    today: "Сьогодні",
+                    clear: "Очистити",
+                    format: "dd.mm.yyyy",
+                    weekStart: 1
+                };
             }
         };
     }
@@ -46526,7 +46857,7 @@ var AdminSingleton = function ($) {
 
 module.exports = AdminSingleton;
 
-},{"moment":9}],38:[function(require,module,exports){
+},{"moment":9}],39:[function(require,module,exports){
 'use strict';
 
 //var system = require('./_System.js').getInstance();
@@ -46607,7 +46938,7 @@ if (typeof jQuery === 'undefined') {
 //// Simplify the dialog windows.
 //config.removeDialogTabs = 'image:advanced;link:advanced';
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -46693,7 +47024,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     return table;
 });
 
-},{"datatables.net":7,"datatables.net-buttons/js/buttons.colVis.js":2,"datatables.net-buttons/js/buttons.flash.js":3,"datatables.net-buttons/js/buttons.html5.js":4,"datatables.net-buttons/js/buttons.print.js":5,"jquery":8}],40:[function(require,module,exports){
+},{"datatables.net":7,"datatables.net-buttons/js/buttons.colVis.js":2,"datatables.net-buttons/js/buttons.flash.js":3,"datatables.net-buttons/js/buttons.html5.js":4,"datatables.net-buttons/js/buttons.print.js":5,"jquery":8}],41:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -46746,6 +47077,10 @@ module.exports = {
             case 'video/list':
                 mod = require('./video/list.js');
                 break;
+
+            case 'usefulLinks/list':
+                mod = require('./usefulLinks/list.js');
+                break;
         }
 
         return mod;
@@ -46775,7 +47110,7 @@ module.exports = {
     }
 };
 
-},{"./announcements/form.js":44,"./announcements/list.js":45,"./chapters/list.js":46,"./customerReviews/list.js":47,"./gallery/list.js":48,"./menu/form.js":49,"./menu/list.js":50,"./news/list.js":51,"./pages/list.js":52,"./subscribers/list.js":53,"./users/list.js":54,"./video/list.js":55}],41:[function(require,module,exports){
+},{"./announcements/form.js":45,"./announcements/list.js":46,"./chapters/list.js":47,"./customerReviews/list.js":48,"./gallery/list.js":49,"./menu/form.js":50,"./menu/list.js":51,"./news/list.js":52,"./pages/list.js":53,"./subscribers/list.js":54,"./usefulLinks/list.js":55,"./users/list.js":56,"./video/list.js":57}],42:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46789,7 +47124,7 @@ module.exports = {
     };
 })(jQuery);
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46803,7 +47138,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46841,7 +47176,7 @@ module.exports = {
     });
 })(jQuery);
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46900,7 +47235,7 @@ module.exports = new Vue({
   }
 });
 
-},{"../_System.js":37,"vue":35,"vue-resource":24}],45:[function(require,module,exports){
+},{"../_System.js":38,"vue":35,"vue-resource":24}],46:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -46911,21 +47246,41 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'date' }, { data: 'title' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date_start', name: 'date_start' },
+    //{data: 'date_end', name:'date_end', bVisible:false},
+    { data: 'title', name: 'title' }, { data: 'content', name: 'description', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/announcements/%n/edit',
+        del: system.getUrl('announcements/%n')
+    },
 
     /**
      * Renderer for the columns by the index
      *
      * @var Object
      **/
-    columnDefs: [
-    // {
-    //     render: function( data ) {
-    //         return system.getFormattedDate( data );
-    //     },
-    //     targets: [1]
-    // },
-    {
+    columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
+        render: function render(data, type, row) {
+
+            console.log(row);
+
+            return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate(data, false) + '<br />' + '<i class="fa fa-calendar"></i> ' + system.getFormattedDate(row.date_end, false) + (row.top_date_end ? '<br /><strong><i class="fa fa-exclamation-circle" title="Актуален до ' + system.getFormattedDate(row.top_date_end, false) + '"></i> ' + system.getFormattedDate(row.top_date_end, false) + ' </strong>' : '');
+        },
+        width: 100,
+        targets: 1
+    }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
                 published = '<i class="fa fa-eye green"></i>',
@@ -46945,12 +47300,19 @@ module.exports = {
     }],
 
     ajax: {
-        url: system.getUrl('announcements')
-    }
+        url: system.getUrl('announcements', { upcoming: false })
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[1, 'desc']]
 
 };
 
-},{"../_System.js":37}],46:[function(require,module,exports){
+},{"../_System.js":38}],47:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -46961,7 +47323,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'title' }, { data: 'pos' }, { data: 'active' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'title', name: 'title' }, { data: 'active', name: 'is_active' }, { data: 'content', name: 'description', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/chapter/%n/edit',
+        del: system.getUrl('chapters/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -46969,6 +47341,12 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data);
 
@@ -46979,18 +47357,25 @@ module.exports = {
         render: function render(data) {
             return system.getPublishedIcon(data);
         },
-        targets: 3
+        targets: 2
     }],
 
     ajax: {
         url: system.getUrl('chapters', {
             type: '%TYPE%'
         })
-    }
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[4, 'desc']]
 
 };
 
-},{"../_System.js":37}],47:[function(require,module,exports){
+},{"../_System.js":38}],48:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47033,7 +47418,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":37}],48:[function(require,module,exports){
+},{"../_System.js":38}],49:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47044,7 +47429,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'title' }, { data: 'filename' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'title', name: 'title' }, { data: 'filename', name: 'filename' }, { data: 'description', name: 'description', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/gallery/%n/edit',
+        del: system.getUrl('gallery/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47052,6 +47447,12 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data);
 
@@ -47060,9 +47461,11 @@ module.exports = {
         targets: 1
     }, {
         render: function render(data) {
-            var img = '';
+            var img = 'пусто';
 
-            img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
+            if (data) {
+                img = '<img width="100" height="50" src="' + data + '" ' + 'class="img-responsive img-thumbnail">';
+            }
 
             return img;
         },
@@ -47071,11 +47474,17 @@ module.exports = {
 
     ajax: {
         url: system.getUrl('gallery')
-    }
+    },
 
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[4, 'desc']]
 };
 
-},{"../_System.js":37}],49:[function(require,module,exports){
+},{"../_System.js":38}],50:[function(require,module,exports){
 'use strict';
 
 /**
@@ -47328,7 +47737,7 @@ module.exports = new Vue({
 
 });
 
-},{"../_System.js":37,"vue":35,"vue-resource":24}],50:[function(require,module,exports){
+},{"../_System.js":38,"vue":35,"vue-resource":24}],51:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47339,7 +47748,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'title' }, { data: 'pos' }, { data: 'published' }, { data: 'created' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'title', name: 'title' }, { data: 'pos', name: 'pos' }, { data: 'published', name: 'is_published' }, { data: 'created', name: 'created_at' }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/menu/%n/edit',
+        del: system.getUrl('menu/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47347,15 +47766,34 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render(data) {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data) {
             return system.getFormattedDate(data);
         },
         targets: 4
     }, {
         render: function render(data, type, row) {
-            var noTags = system.stripTags(data);
+            var noTags = system.stripTags(data),
+                sLinked = '';
 
-            return '<a href="/admin/menu/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+            if (system.isEmpty(row.linked) === false) {
+                console.log(row.linked, row.title);
+
+                sLinked = '<br />' + '<ul class="linked-menu">';
+
+                for (var i = 0; i < row.linked.length; i++) {
+                    sLinked += '<li><a href="/admin/menu/' + row.linked[i].id + '/edit">' + row.linked[i].title + '</a></li>';
+                }
+
+                sLinked += '</ul>';
+            }
+
+            return '<a href="/admin/menu/' + row.id + '/edit" title="' + noTags + '" class="edit-link">' + system.ellipsis(noTags, 100) + '</a>' + sLinked;
         },
         targets: 1
     }, {
@@ -47365,13 +47803,20 @@ module.exports = {
         targets: 3
     }],
 
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[4, 'desc']],
+
     ajax: {
         url: system.getUrl('menu')
     }
 
 };
 
-},{"../_System.js":37}],51:[function(require,module,exports){
+},{"../_System.js":38}],52:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47382,7 +47827,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'date' }, { data: 'title' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'content', name: 'content', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/news/%n/edit',
+        del: system.getUrl('news/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47390,6 +47845,12 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data) {
             return system.getFormattedDate(data);
         },
@@ -47420,11 +47881,18 @@ module.exports = {
 
     ajax: {
         url: system.getUrl('news')
-    }
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[1, 'desc']]
 
 };
 
-},{"../_System.js":37}],52:[function(require,module,exports){
+},{"../_System.js":38}],53:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47436,7 +47904,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'title' }, { data: 'created' }, { data: 'updated' }, { data: 'published' }],
+    columns: [{ data: 'id', name: 'id' }, { data: 'title', name: 'title' }, { data: 'published', name: 'is_published' }, { data: 'subtitle', name: 'subtitle', bVisible: false }, { data: 'content', name: 'content', bVisible: false }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/pages/%n/edit',
+        del: system.getUrl('pages/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47444,14 +47922,24 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
-        /**
-         * Render date
-         **/
-        render: function render(data) {
-            return system.getFormattedDate(data);
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
         },
-        targets: [2, 3]
-    }, {
+        targets: 0
+    },
+
+    //{
+    //    /**
+    //     * Render date
+    //     **/
+    //    render: function( data ) {
+    //        return system.getFormattedDate( data );
+    //    },
+    //    targets: [2,3]
+    //},
+
+    {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data);
 
@@ -47462,16 +47950,23 @@ module.exports = {
         render: function render(data) {
             return system.getPublishedIcon(data);
         },
-        targets: 4
+        targets: 2
     }],
 
     ajax: {
         url: system.getUrl('pages')
-    }
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[6, 'desc']]
 
 };
 
-},{"../_System.js":37}],53:[function(require,module,exports){
+},{"../_System.js":38}],54:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47482,7 +47977,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'email' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'email', name: 'email' }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/subscribers/%n/edit',
+        del: system.getUrl('subscribers/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47490,6 +47995,12 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
                 active = '<i class="fa fa-eye green"></i>';
@@ -47503,13 +48014,78 @@ module.exports = {
         targets: 1
     }],
 
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
     ajax: {
         url: system.getUrl('subscribers')
     }
 
 };
 
-},{"../_System.js":37}],54:[function(require,module,exports){
+},{"../_System.js":38}],55:[function(require,module,exports){
+'use strict';
+
+var system = require('../_System.js').getInstance();
+
+module.exports = {
+    stateSave: false,
+    /**
+     * Define a list of columns for the grid
+     *
+     * @var Object
+     **/
+    columns: [{ data: 'id', name: 'id' }, { data: 'title', name: 'title' }, { data: 'url', name: 'url' }, { data: 'active', name: 'is_active' }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/usefulLinks/%n/edit',
+        del: system.getUrl('usefulLinks/%n')
+    },
+
+    /**
+     * Renderer for the columns by the index
+     *
+     * @var Object
+     **/
+    columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
+        render: function render(data, type, row) {
+            var noTags = system.stripTags(data);
+
+            return '<a href="/admin/usefulLinks/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+        },
+        targets: 1
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 3
+    }],
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    ajax: {
+        url: system.getUrl('usefulLinks')
+    }
+
+};
+
+},{"../_System.js":38}],56:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47520,7 +48096,19 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'name' }, { data: 'email' }, { data: 'phone' }, { data: 'created' }, { data: 'updated' }],
+    columns: [{ data: 'id', id: 'id' }, { data: 'name', name: 'email' }, { data: 'email', name: 'email' }, { data: 'phone', name: 'phone' }],
+
+    //{data: 'created', name:'created_at', bVisible: false},
+    //{data: 'updated', name:'updated_at', bVisible: false}
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/users/%n/edit',
+        del: system.getUrl('users/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47528,11 +48116,20 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
-        render: function render(data) {
-            return system.getFormattedDate(data);
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
         },
-        targets: [4, 5]
-    }, {
+        targets: 0
+    },
+    //{
+    //    render: function( data ) {
+    //        return system.getFormattedDate( data );
+    //    },
+    //    targets: [4,5]
+    //},
+
+    {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
                 active = system.getPublishedIcon(row.is_verified),
@@ -47553,11 +48150,20 @@ module.exports = {
 
     ajax: {
         url: system.getUrl('users')
-    }
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [
+        //[ 5, 'desc' ]
+    ]
 
 };
 
-},{"../_System.js":37}],55:[function(require,module,exports){
+},{"../_System.js":38}],57:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47568,7 +48174,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'preview' }, { data: 'title' }, { data: 'created' }, { data: 'updated' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }, { data: 'content', name: 'content', bVisible: false }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/videoNews/%n/edit',
+        del: system.getUrl('video-news/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47576,38 +48192,52 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
+        render: function render() {
+            return '';
+        },
+        targets: 0
+    }, {
         render: function render(data) {
             return system.getFormattedDate(data);
         },
-        targets: [3, 4]
+        targets: [1, 3, 4]
     }, {
         render: function render(data, type, row) {
-            var noTags = system.stripTags(data);
+            var noTags = system.stripTags(data),
+                published = '<i class="fa fa-eye green"></i>',
+                img = '';
 
-            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
-        },
-        targets: 2
-    }, {
-        render: function render(data) {
-            var img = '';
-
-            if (system.isEmpty(data) === false) {
-                img = '<img width="100" height="50" src="http://img.youtube.com/vi/' + data + '/hqdefault.jpg" ' + 'class="img-responsive img-thumbnail">';
+            if (row.published === false) {
+                published = '<i class="fa fa-eye-slash red"></i>';
             }
 
-            return img;
+            if (system.isEmpty(row.preview) === false) {
+                img = '<br /><img width="100" height="50" src="http://img.youtube.com/vi/' + row.preview + '/hqdefault.jpg" ' + 'class="img-responsive img-thumbnail">';
+            }
+
+            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + system.ellipsis(noTags, 100) + '</a>' + img;
         },
-        targets: 1
+        targets: 2
     }],
 
     ajax: {
         url: system.getUrl('video-news')
-    }
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[1, 'desc']]
 
 };
 
-},{"../_System.js":37}],56:[function(require,module,exports){
+},{"../_System.js":38}],58:[function(require,module,exports){
 'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 /**
  * Translit
@@ -47725,6 +48355,30 @@ String.prototype.translit = function () {
         return this.toLowerCase().trim().replace(r, k);
     };
 }();
+
+/**
+ * A simple "sprintf" implementation for javascript
+ *  %s - represents a string
+ *  %n - represents a number
+ *  %b - represents a boolean
+ *
+ * @type {Function}
+ */
+String.prototype.sprintf = String.prototype.sprintf || function () {
+    var str = this.toString();
+    for (var i = 0; i < arguments.length; i++) {
+        var arg = arguments[i],
+            type = typeof arg === 'undefined' ? 'undefined' : _typeof(arg);
+        if ('string' === type) {
+            str = str.replace(/%s/, arg);
+        } else if ('number' === type) {
+            str = str.replace(/%n/, arg);
+        } else if ('boolean' == type) {
+            str = str.replace(/%b/, arg ? 'true' : 'false');
+        }
+    }
+    return str;
+};
 
 },{}]},{},[36]);
 

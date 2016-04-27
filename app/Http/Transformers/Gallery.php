@@ -18,6 +18,10 @@ class Gallery extends TransformerAbstract
         return [
             'id' => (int) $gallery->id,
             'title' => $gallery->title,
+            'description' => $gallery->description,
+            'tp' => $gallery->tp,
+            'created' => $gallery->created_at,
+            'updated' => $gallery->updated_at,
             'filename' => ( $gallery->filename ? cFile::getImagePathURL( $gallery->filename, 'box2' ) : '' )
         ];
     }

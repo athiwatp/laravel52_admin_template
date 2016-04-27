@@ -129,7 +129,7 @@ class MenuesRepository extends BaseRepository {
     */
     public function destroy($id)
     {
-        //
+        return parent::destroy($id);
     }
 
     /**
@@ -215,7 +215,7 @@ class MenuesRepository extends BaseRepository {
     public function getMenu($bAllMenu = false)
     {
         $oAllMenu = $this->model
-            ->orderBy('parent_id')
+            // ->orderBy('parent_id')
             ->orderBy('pos')
             ->orderBy('title');
 
@@ -367,11 +367,21 @@ class MenuesRepository extends BaseRepository {
      *
      * @return Object
     */
-    public function getSidebarMenu()
+    public function getSidebarMenu( $menu_id = 0 )
     {
-        return $this->getMenu()
-            ->where('type_menu', Config::get('constants.TYPE_MENU.SIDE') )
-            ->get();
+        $query = $this->getMenu()
+            ->where('type_menu', Config::get('constants.TYPE_MENU.SIDE') );
+
+        if ( $menu_id > 0 ) {
+            $query->where('linked_to', $menu_id);
+        } else {
+            $query->where(function($q){
+                $q->whereNull('linked_to')
+                    ->whereOr('linked_to', 0);
+            });
+        }
+
+        return $query->get();
     }
 
     /**
@@ -460,6 +470,24 @@ class MenuesRepository extends BaseRepository {
                         'icon' => '<i class="fa fa-comment"></i>',
                         'route' => 'admin.customerReviews.index'
                     )
+                )
+            ),
+
+            'links' => array(
+                'title' => Lang::get('menues.nav.useful-links'),
+                'leftIcon' => '<i class="fa fa-link"></i>',
+                'rightIcon' => '<i class="fa arrow"></i>',
+                'children' => array(
+                   'chapter_useful_links' => array(
+                       'title' => Lang::get('menues.nav.chapter_useful_links'),
+                       'icon' => '<i class="fa fa-qrcode"></i>',
+                       'route' => 'admin.chapter.usefulLinks'
+                   ),
+                    'useful_links' => array(
+                       'title' => Lang::get('menues.nav.useful-links'),
+                       'icon' => '<i class="fa fa-link"></i>',
+                       'route' => 'admin.usefulLinks.index'
+                   )
                 )
             ),
 

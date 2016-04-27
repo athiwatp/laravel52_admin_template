@@ -7,23 +7,53 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'date'},
-        {data: 'title'}
+        {data: 'id', name:'id', orderable: false},
+        {data: 'date_start', name: 'date_start'},
+        //{data: 'date_end', name:'date_end', bVisible:false},
+        {data: 'title', name:'title'},
+        {data: 'content', name:'description', bVisible:false}
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/announcements/%n/edit',
+        del: system.getUrl( 'announcements/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
      *
      * @var Object
      **/
-    columnDefs: [
-        // {
-        //     render: function( data ) {
-        //         return system.getFormattedDate( data );
-        //     },
-        //     targets: [1]
-        // },
+    columnDefs: [{
+            className: 'select-checkbox',
+            render: function() {
+                return '';
+            },
+            targets:   0
+        },
+
+        {
+            render: function( data, type, row ) {
+
+                console.log(row);
+
+                return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate( data, false ) + '<br />'+
+                    '<i class="fa fa-calendar"></i> ' + system.getFormattedDate( row.date_end, false ) +
+                    ( row.top_date_end ?
+                        '<br /><strong><i class="fa fa-exclamation-circle" title="Актуален до ' + system.getFormattedDate( row.top_date_end, false ) + '"></i> ' +
+                        system.getFormattedDate( row.top_date_end, false ) + ' </strong>'
+                        : ''
+                    );
+            },
+            width: 100,
+            targets: 1
+        },
+
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
@@ -49,8 +79,17 @@ module.exports = {
     ],
 
     ajax: {
-        url: system.getUrl( 'announcements' )
+        url: system.getUrl( 'announcements', { upcoming: false} )
     },
+
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+
+    order: [
+        [ 1, 'desc' ]
+    ]
 
 
 };

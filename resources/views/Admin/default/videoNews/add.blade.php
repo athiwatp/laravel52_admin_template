@@ -25,7 +25,7 @@
 <div class="form-group">
     {{ Form::label('date', Lang::get('videoNews.form.date')) }}
     <div class="input-group date-group">
-        {{ Form::text('date', ( isset($oData) ? $oData->date : null), array('class' => 'form-control date-controls')) }}
+        {{ Form::text('date', ( isset($oData) ? get_formatted_date($oData->date) : get_current_date() ), array('class' => 'form-control date-controls')) }}
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
         </span>

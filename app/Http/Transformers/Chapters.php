@@ -18,9 +18,12 @@ class Chapters extends TransformerAbstract
         return [
             'id' => (int) $chapter->id,
             'title' => $chapter->title,
+            'content' => $chapter->description,
             'icon' => ( $chapter->icon ? cFile::getImagePathURL( $chapter->icon, 'box2' ) : '' ),
             'pos' => (int) $chapter->pos,
-            'active' => (boolean) $chapter->is_active
+            'active' => (boolean) $chapter->is_active,
+            'created' => $chapter->created_at,
+            'updated' => $chapter->updated_at
         ];
     }
 }

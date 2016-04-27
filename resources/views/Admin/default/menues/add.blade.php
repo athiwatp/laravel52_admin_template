@@ -27,7 +27,6 @@
 
 <div class="form-group">
     {{ Form::label('linked_to_menu', 'Связан с' ) }}
-
     <select
         name="linked_to_menu"
         v-model="menu.linked_to"
@@ -42,6 +41,7 @@
     {{ Form::label('pos', Lang::get('menues.form.pos') ) }}
     {{ Form::number('pos', ( isset($oData) ? $oData->pos : null), array('class' => 'form-control data-pos')) }}
 </div>
+
 <div class="form-group">
     {{ Form::label('parent_id', Lang::get('menues.form.parent_id') ) }}
     <select
@@ -51,8 +51,8 @@
             :disabled="isParentDisabled">
         <option v-for="option in parentList" :value="option.value">@{{ option.text }}</option>
     </select>
-
 </div>
+
 <div class="form-group">
     {{ Form::label('page_id', Lang::get('menues.form.page_id') ) }}
     {{ Form::select('page_id', $aPages, ( isset($oData) ? $oData->page_id : null), array('class' => 'form-control')) }}
@@ -73,6 +73,7 @@
         )) . ' ' . Lang::get('menues.form.is_redirectable') )
     !!}
 </div>
+
 <div class="form-group">
     <div class="checkbox">
         {!! Form::_label('is_loaded_by_default', Form::checkbox('is_loaded_by_default', '1', isset($oData) && $oData->is_loaded_by_default === '1' ? true : false , array('id' => 'is_loaded_by_default')) . ' ' . Lang::get('menues.form.is_loaded_by_default') ) !!}
@@ -82,15 +83,6 @@
     </div>
 </div>
 
-<div class="form-group">
-    {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}
-    <div class="radio">
-        {!! Form::_label('published_yes', Form::radio('is_published', '1', isset($oData) ? $oData->is_published === '1' : true, array('id' => 'published_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
-    </div>
-    <div class="radio">
-        {!! Form::_label('published_no', Form::radio('is_published', '0', isset($oData) ? $oData->is_published === '0' : false, array('id' => 'published_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
-    </div>
-</div>
 {{
     Form::hidden('id', isset($oData) ? $oData->id : 0, [
         'v-model' => 'menu.id'

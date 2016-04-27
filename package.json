@@ -29,6 +29,8 @@
   "homepage": "https://github.com/sergey-donchenko/laravel52_admin_template#readme",
   "devDependencies": {
     "awesomplete": "^1.1.0",
+    "blueimp-bootstrap-image-gallery": "^3.4.2",
+    "blueimp-gallery": "^2.20.0",
     "bootstrap-datepicker": "^1.6.0",
     "bower": "^1.7.7",
     "datatables.net": "^1.10.11",
@@ -40,9 +42,10 @@
     "jquery": "^2.2.2",
     "jquery.inputmask": "^3.2.7",
     "laravel-elixir": "^5.0.0",
+    "lightbox2": "^2.8.2",
     "moment": "^2.12.0",
     "path": "^0.12.7",
-    "vue": "^1.0.20",
+    "vue": "^1.0.21",
     "vue-resource": "^0.7.0"
   },
   "dependencies": {

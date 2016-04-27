@@ -35,7 +35,7 @@
     Vue.component('my-search', {
         template: '<div>' +
             '<div class="input-group quick-search">'+
-            '<input type="text" class="form-control input-lg" @keyup="onSearchFieldKeyUp($event)" :disabled="isTextDisabled" v-model="field.search" placeholder="{{ cmpFieldPlaceholder }}">'+
+            '<input type="text" class="form-control input-lg" @keyup="onSearchFieldKeyUp($event)" :disabled="isTextDisabled" v-model="field.search" placeholder="{{ cmpFieldPlaceholder }}" value="{{ cmpSearchValue }}">'+
             '<span class="input-group-btn">'+
             '<button class="btn btn-primary btn-lg" type="button" @click="onSearchBtnClick()" :disabled="isButtonDisabled">'+
             '<i class="fa fa-search"></i>'+
@@ -57,6 +57,17 @@
             cmpFieldPlaceholder: {
                 type: String,
                 default: 'Search field'
+            },
+
+
+            /**
+             * Value for the search field
+             *
+             * @var String
+             **/
+            cmpSearchValue: {
+                type: String,
+                default: ''
             }
         },
 

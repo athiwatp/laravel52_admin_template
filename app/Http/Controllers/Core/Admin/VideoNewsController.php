@@ -62,22 +62,21 @@ class VideoNewsController extends AdminController
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_videoNews', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.videoNews.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.videoNews.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_videoNews', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.videoNews.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.videoNews.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.videoNews.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_videoNews')
+                        'aParams' => array('id' => 'refresh')
                     )
-                ),
-                // 'aList' => $this->videoNews->index()
+                )
             ))
         ));
     }
@@ -107,17 +106,24 @@ class VideoNewsController extends AdminController
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('videoNews.lists.video_news_management'),
             'formSubChapter' => '',
+            'useCKEditor' => true,
             'formTitle' => Lang::get('videoNews.lists.create_video_news'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.videoNews.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.videoNews.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published'
                 )
             ),
             'formContent' => $this->renderView('videoNews.add', array(
@@ -175,26 +181,35 @@ class VideoNewsController extends AdminController
                 'title' => Lang::get('videoNews.lists.editing_video_news')
             )
         );
+        $oData = $this->videoNews->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('videoNews.lists.video_news_management'),
             'formSubChapter' => '',
+            'useCKEditor' => true,
             'formTitle' => Lang::get('videoNews.lists.editing_video_news'),
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.videoNews.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.videoNews.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published',
+                    'value' => $oData->is_published
                 )
             ),
             'formContent' => $this->renderView('videoNews.add', array(
-                'oData' => $this->videoNews->edit( $id )
+                'oData' => $oData
             )),
             'formUrl' => URL::route('admin.videoNews.store'),
         ));

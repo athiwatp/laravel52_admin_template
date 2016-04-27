@@ -8,6 +8,11 @@ class ApiController extends Controller
 {
     protected $statusCode = IlluminateResponse::HTTP_OK;
 
+    /**
+     * Injected variable for the fractal
+     *
+     * @var {League\Fractal\Manager}
+     */
     protected $fractal;
 
     /**
@@ -15,6 +20,10 @@ class ApiController extends Controller
      */
     public function __construct(Manager $fractal)
     {
+        // apply parent implementation
+        parent::__construct();
+
+        // Inject fractal
         $this->fractal = $fractal;
     }
 

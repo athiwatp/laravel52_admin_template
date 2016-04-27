@@ -57,6 +57,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // Module to handle the Chapters the system
     Route::get('chapter/gallery', array('as' => 'admin.chapter.gallery', 'uses' => 'Core\Admin\ChaptersController@indexGallery'));
 
+    // Module to handle the Chapters the system
+    Route::get('chapter/useful-links', array('as' => 'admin.chapter.usefulLinks', 'uses' => 'Core\Admin\ChaptersController@indexUsefulLinks'));
 
     // Handle the Announcements
     Route::get('chapter/announcements', array('as' => 'admin.chapter.announcements', 'uses' => 'Core\Admin\ChaptersController@indexAnnouncements'));
@@ -91,6 +93,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
     // Handle the Announcements
     Route::resource('announcements', 'Core\Admin\AnnouncementsController');
 
+    // Files list
+    Route::get('/files', array('as' => 'files-list', 'uses' => 'Core\Admin\FilesController@index') );
+    Route::post('/files/upload', array('as' => 'file-upload', 'uses' => 'Core\Admin\FilesController@store') );
+    Route::get('/files/thanks', array('as' => 'file-thanks-page', 'uses' => 'Core\Admin\FilesController@thanks') );
+
+    // Handle the useful links
+    Route::resource('usefulLinks', 'Core\Admin\UsefulLinksController');
+
 });
 
 /**
@@ -98,20 +108,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 */
 Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], function () {
     // Module to handle the News in the system
-    Route::resource('news', 'Core\Api\NewsController', ['only' => ['index', 'show']]);
-    Route::resource('chapters', 'Core\Api\ChapterController', ['only' => ['index', 'show']]);
-    Route::resource('pages', 'Core\Api\PagesController', ['only' => ['index', 'show']]);
-    Route::resource('customerReviews', 'Core\Api\CustomerReviewsController', ['only' => ['index', 'show']]);
-    Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
-    Route::resource('menu', 'Core\Api\MenuController', ['only' => ['index', 'show']]);
-    Route::resource('video-news', 'Core\Api\VideoNewsController', ['only' => ['index', 'show']]);
-    Route::resource('pages', 'Core\Api\PagesController', ['only' => ['index', 'show']]);
-    // Route::resource('chapters-gallery', 'Api\GalleryChaptersController', ['only' => ['index', 'show']]);
-    Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show']]);
-    Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show']]);
+    Route::resource('news', 'Core\Api\NewsController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('chapters', 'Core\Api\ChapterController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('pages', 'Core\Api\PagesController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('customerReviews', 'Core\Api\CustomerReviewsController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('menu', 'Core\Api\MenuController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('video-news', 'Core\Api\VideoNewsController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('pages', 'Core\Api\PagesController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('gallery', 'Core\Api\GalleryController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('users', 'Core\Api\UsersController', ['only' => ['index', 'show', 'destroy']]);
     Route::resource('subscriber', 'Core\Api\SubscriberController', ['only' => ['store']]);
-    Route::resource('subscribers', 'Core\Api\SubscriberController', ['only' => ['index']]);
-    Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show']]);
+    Route::resource('subscribers', 'Core\Api\SubscriberController', ['only' => ['index', 'destroy']]);
+    Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('usefulLinks', 'Core\Api\UsefulLinksController', ['only' => ['index', 'show', 'destroy']]);
 
 });
 

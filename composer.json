@@ -9,12 +9,14 @@
         "laravel/framework": "5.2.*",
         "sorskod/larasponse": "dev-L5",
         "laravelcollective/html": "^5.2",
+        "sofa/eloquence": "~5.2@dev",
         "nesbot/carbon": "^1.21",
         "pingpong/menus": "^2.2",
         "yajra/laravel-datatables-oracle": "~6.0",
         "intervention/image": "^2.3",
         "laravel/socialite": "^2.0",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "league/fractal": "^0.13.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -14,6 +14,13 @@ class Announcements extends Model
     protected $table = 'announcement';
 
     /**
+     * The list of fields that should be handled by Carbon
+     *
+     * @var Array
+    */
+    protected $dates = ['date_end', 'date_start', 'top_date_end'];
+
+    /**
      * Get the Chapter record associated with the user.
      */
     public function chapter()

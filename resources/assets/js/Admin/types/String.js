@@ -114,3 +114,29 @@ String.prototype.translit = (function() {
         return this.toLowerCase().trim().replace(r, k);
     };
 })();
+
+
+/**
+ * A simple "sprintf" implementation for javascript
+ *  %s - represents a string
+ *  %n - represents a number
+ *  %b - represents a boolean
+ *
+ * @type {Function}
+ */
+String.prototype.sprintf =
+    String.prototype.sprintf || function () {
+        var str = this.toString();
+        for (var i = 0; i < arguments.length; i++) {
+            var arg = arguments[i],
+                type = typeof(arg);
+            if ('string' === type) {
+                str = str.replace(/%s/, arg);
+            } else if ('number' === type) {
+                str = str.replace(/%n/, arg);
+            } else if ('boolean' == type) {
+                str = str.replace(/%b/, arg ? 'true' : 'false');
+            }
+        }
+        return str;
+    };

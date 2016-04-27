@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 class GalleryRepository extends BaseRepository {
     /**
+     * Published flag
+     *
+     * @var String
+     */
+    protected $PUBLISHED = 0;
+
+    /**
      * Create a new Message instance
      *
      * @param App\Models\Gallery $gallery
@@ -15,6 +22,9 @@ class GalleryRepository extends BaseRepository {
     public function __construct(Gallery $gallery)
     {
         $this->model = $gallery;
+
+        // Retrieve the config settings
+        $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
     }
 
         /**
@@ -40,6 +50,7 @@ class GalleryRepository extends BaseRepository {
     {
         $result = $this->model
             ->orderBy('created_at', 'DESC')
+            ->whereNotNull('filename')
             ->take( $amount )
             ->get();
 
@@ -134,13 +145,13 @@ class GalleryRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\Gallery
+     * @param {int} $id
      *
-     * @return void
+     * @return {Boolean}
     */
-    public function destroy($gallery)
+    public function destroy($id)
     {
-        $gallery->delete();
+        return parent::destroy( $id );
     }
 
     // /**

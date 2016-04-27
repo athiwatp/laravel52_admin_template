@@ -7,8 +7,9 @@ var customJs  = './resources/assets/js/';
 
 // Sass Paths
 var sassPaths = {
-    'bootstrap': bowerDir + 'bootstrap-sass/assets/stylesheets',
-    'font_awesome': bowerDir + 'font-awesome/scss'
+    bootstrap: bowerDir + 'bootstrap-sass/assets/stylesheets',
+    font_awesome: bowerDir + 'font-awesome/scss',
+    flag_icon_css: bowerDir + 'flag-icon-css/sass'
 };
 
 // The regular elixir handler
@@ -22,7 +23,8 @@ elixir(function(mix) {
     // SaSS for the Front-End
     mix.sass('app.scss', 'public/css', { includePaths: [
         sassPaths.bootstrap,
-        sassPaths.font_awesome
+        sassPaths.font_awesome,
+        sassPaths.flag_icon_css
     ]});
 
     // SaSS implementation for Admin Area
@@ -35,6 +37,7 @@ elixir(function(mix) {
     mix.copy('resources/assets/images/**', 'public/images')
         .copy(bowerDir + 'datatables/media/images', 'public/css/images')
         .copy(bowerDir + 'font-awesome/fonts', 'public/fonts')
+        .copy(bowerDir + 'flag-icon-css/flags', 'public/flags')
         .copy(bowerDir + 'bootstrap-sass/assets/fonts', 'public/fonts')
         .copy(bowerDir + 'datatables/media/css/jquery.dataTables.min.css', 'public/css/vendor/jquery.dataTables.min.css')
         .copy(bowerDir + 'metisMenu/dist/metisMenu.min.css', 'public/css/vendor/metisMenu.min.css')
@@ -51,6 +54,7 @@ elixir(function(mix) {
         .copy(bowerDir + 'ckeditor/styles.js', 'public/js/vendor/ckeditor/styles.js')
         .copy(bowerDir + 'ckeditor/lang/ru.js', 'public/js/vendor/ckeditor/lang/ru.js')
         .copy(bowerDir + 'ckeditor/skins/moono', 'public/js/vendor/ckeditor/skins/moono')
+        .copy(bowerDir + 'ckeditor/contents.css', 'public/js/vendor/ckeditor/contents.css')
         .copy(customJs + 'Admin/libs/ckeditor/config.js', 'public/js/vendor/ckeditor/config.js')
         .copy(bowerDir + 'ckeditor/plugins', 'public/js/vendor/ckeditor/plugins');
 });

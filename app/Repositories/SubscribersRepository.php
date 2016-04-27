@@ -129,8 +129,8 @@ class SubscribersRepository extends BaseRepository {
      *
      * @return void
      */
-    public function destroy($news)
+    public function destroy($id)
     {
-        $news->delete();
+        return parent::destroy($id);
     }
 }

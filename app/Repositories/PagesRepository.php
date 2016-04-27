@@ -91,7 +91,7 @@ class PagesRepository extends BaseRepository {
         );
 
         if ( $mHistory && $mHistory->status === true ) {
-            $result = $this->model->findById( $mHistory->id );
+            $result = $this->getById( $mHistory->id );
         } else {
             $result = $this->model
                 ->where( 'is_published', Config::get('constants.DONE_STATUS.SUCCESS') )
@@ -100,7 +100,7 @@ class PagesRepository extends BaseRepository {
         }
 
         if ( $result ) {
-            return (object) $result->toArray();
+            return $result;
         }
 
         return false;
@@ -127,6 +127,18 @@ class PagesRepository extends BaseRepository {
         }
 
         return false;
+    }
+
+    /**
+     * Full text search
+     *
+     * @param Array [$keywords] - the list of text phrases we age going to search for
+     *
+     * @return Array of page collections
+    */
+    public function search($keywords)
+    {
+        return $this->model->search( $keywords );
     }
 
     /**
@@ -158,7 +170,11 @@ class PagesRepository extends BaseRepository {
                 ));
         }
 
-        $pages = $this->savePage( $model, $inputs );
+        if ( $this->savePage( $model, $inputs ) ) {
+            return $model->toArray();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -177,13 +193,13 @@ class PagesRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\Pages
+     * @param {Int} id - identifier for the page
      *
      * @return void
     */
-    public function destroy($pages)
+    public function destroy($id)
     {
-        $pages->delete();
+        return parent::destroy($id);
     }
 
     /**

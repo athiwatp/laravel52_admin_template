@@ -48,6 +48,10 @@ module.exports = {
             case 'video/list':
                 mod = require('./video/list.js');
                 break;
+
+            case 'usefulLinks/list':
+                mod = require('./usefulLinks/list.js');
+                break;
         }
 
         return mod;

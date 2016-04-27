@@ -1,14 +1,13 @@
-<?php
-
-namespace App\Http\Controllers\Core\Admin;
+<?php namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PagesRequest;
 use App\Repositories\PagesRepository;
+use App\Repositories\FileRepository;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config;
 
 class PagesController extends AdminController
 {
@@ -20,15 +19,32 @@ class PagesController extends AdminController
     protected $pages;
 
     /**
+     * Chapter repository
+     *
+     * @var Object
+     */
+    protected $chapters;
+
+    /**
+     * File repository
+     *
+     * @var Object repository
+     */
+    protected $file = null;
+
+    /**
      * Create a new PagesController instance
      *
      * @param App\Repositories\PagesRepository
      *
      * @return void
      */
-    public function __construct( PagesRepository $pages )
+    public function __construct( PagesRepository $pages, FileRepository $file )
     {
         $this->pages = $pages;
+
+        // File repository
+        $this->file = $file;
     }
 
     /**
@@ -62,19 +78,19 @@ class PagesController extends AdminController
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_page', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.pages.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_pages', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.pages.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.pages.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_pages', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.pages.index') )
                     )
                 )
             ))
@@ -103,12 +119,18 @@ class PagesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published'
                 )
             ),
             'formContent' => $this->renderView('pages.add', array(
@@ -126,7 +148,7 @@ class PagesController extends AdminController
      */
     public function store( PagesRequest $request )
     {
-        $this->pages->store( $request->only([
+        if ($page = $this->pages->store( $request->only([
             'title',
             'url',
             'subtitle',
@@ -135,7 +157,12 @@ class PagesController extends AdminController
             'meta_keywords',
             'meta_descriptions',
             'id',
-        ]));
+        ]))) {
+            $TYPE_PAGE = Config::get('constants.RESOURCES.PAGE');
+
+            // Check the files for current content
+            $this->file->correct($request->get('_token'), $page['id'], $TYPE_PAGE);
+        }
 
         return Redirect::route('admin.pages.index')
             ->with('message', array(
@@ -166,6 +193,7 @@ class PagesController extends AdminController
             array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('pages.lists.editing_pages'))
         );
+        $oData = $this->pages->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -177,16 +205,23 @@ class PagesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.pages.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published',
+                    'value' => $oData->is_published
                 )
             ),
             'formContent' => $this->renderView('pages.add', array(
-                'oData' => $this->pages->edit( $id )
+                'oData' => $oData
             )),
             'formUrl' => URL::route('admin.pages.store'),
         ));

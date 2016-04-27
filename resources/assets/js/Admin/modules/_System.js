@@ -27,6 +27,13 @@ var AdminSingleton = (function($) {
             api: '/api/v1',
 
             /**
+             * Root URL
+             *
+             * @var String
+             **/
+            rootURL: '/',
+
+            /**
              * Token
              *
              * @var String
@@ -41,7 +48,7 @@ var AdminSingleton = (function($) {
              **/
             _get: function(prop) {
                 if (config && config.hasOwnProperty(prop)) {
-                    return config[ prop ];
+                    return config[ prop ] || '';
                 }
 
                 return '';
@@ -49,23 +56,97 @@ var AdminSingleton = (function($) {
 
             /**
              * Returns API url
+             *
+             * @param String url
+             * @param Object params
+             *
+             * @return String
              **/
             getUrl: function(url, params) {
+                return this._get( 'api' ) + '/' + this.buildURL(url, params) + '&api_token=' + this._get('token');
+            },
+
+            /**
+             * Generate unique Identifier
+             *
+             **/
+            generateId: function() {
+                //function s4() {
+                //    return Math.floor((1 + Math.random()) * 0x10000)
+                //        .toString(16)
+                //        .substring(1);
+                //}
+                //
+                //return s4() + s4() + s4()  + s4()  +
+                //    s4() + s4() + s4() + s4();
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+                for( var i=0; i < 16; i++ )
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                return text;
+            },
+
+            /**
+             * Returns a static URL
+             *
+             * @param String url
+             * @param Object params
+             *
+             * @return String
+             **/
+            getStaticURL: function(url, params) {
+                var link = this._get( 'rootURL' );
+
+                return (link === '/' ? '' : '/') + '/' +
+                    this.buildURL(url, params);
+            },
+
+            /**
+             * buildURL
+             *
+             * @param String url
+             *
+             * @return String
+             **/
+            buildURL: function(url, params) {
                 var ext = '';
 
                 if ( this.isObject(params) ) {
                     var tmp = [];
 
                     for( var index in params) {
-                        tmp.push(index + '=' + params[index]); 
+                        tmp.push(index + '=' + params[index]);
                     }
 
                     if (tmp.length > 0) {
                         ext = tmp.join('&');
-                    } 
+                    }
                 }
 
-                return this._get('api') + '/' + url + '/?api_token=' + this._get('token') + ( ext ? '&' + ext : '');
+                return url + '?1' + ( ext ? '&' + ext : '') ;
+            },
+
+            /**
+             * Execute AJAX request
+             *
+             * @return Promise
+             **/
+            ajax: function(url, parameters) {
+                return $.ajax(url, parameters);
+            },
+
+            /**
+             * Redirect to the given URL
+             *
+             * @param String url
+             **/
+            redirectTo: function(url) {
+
+                console.log(url);
+
+                window.location.href = url;
             },
 
             /**
@@ -168,7 +249,7 @@ var AdminSingleton = (function($) {
              * Get formatted data
              *
              **/
-            getFormattedDate: function( data ) {
+            getFormattedDate: function( data, showTime ) {
 
                 if ( this.isEmpty(data) ) {
                     return '';
@@ -181,7 +262,28 @@ var AdminSingleton = (function($) {
                 var date = moment(data);
 
                 return this.isObject(date) ?
-                    date.format('DD.MM.Y HH:mm') : '';
+                    date.format( 'DD/MM/Y' + (showTime === true ? ' HH:mm' : '') ) : '';
+            },
+
+            /**
+             * Return lang file for the datepicker component
+             *
+             * @return Object
+             **/
+            getDatepickerLangObject: function() {
+                return {
+                    days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+                    daysShort: ["Нед", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+                    daysMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                    months: ["Cічень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+                        "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
+                    ],
+                    monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+                    today: "Сьогодні",
+                    clear: "Очистити",
+                    format: "dd.mm.yyyy",
+                    weekStart: 1
+                };
             }
         };
     }

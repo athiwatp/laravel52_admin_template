@@ -99,14 +99,14 @@ class UserRepository extends BaseRepository {
     }
 
     /**
-     * Destroy a message
+     * Destroy a user
      *
-     * @param App\Models\User
+     * @param {int} $id
      *
-     * @return void
+     * @return {Boolean}
     */
-    public function destroy($user)
+    public function destroy($id)
     {
-        $user->delete();
+        return parent::destroy($id);
     }
 }

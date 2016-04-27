@@ -62,25 +62,25 @@ class MenuesController extends AdminController
                         'url' => URL::route('admin.menu.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_menu', 'class' => 'add-btn')
+                        'aParams' => array('id' => 'add', 'class' => 'add-btn')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_menu', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.menu.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.menu.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_menu', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.menu.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.menu.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.menu.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_menu', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.menu.index') )
                     )
                 )
             ))
@@ -93,7 +93,7 @@ class MenuesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( MenuesRepository $menues )
+    public function create()
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
@@ -111,17 +111,23 @@ class MenuesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published'
                 )
             ),
             'formContent' => $this->renderView('menues.add', array(
-                'aTypeMenues' => $menues->getMenuTypes(),
-                'aMenues' => $menues->getComboList(),
+                'aTypeMenues' => $this->menues->getMenuTypes(),
+                'aMenues' => $this->menues->getComboList(),
                 'aPages' => $this->pages->getComboList(),
                 'oData' => null
             )),
@@ -163,12 +169,13 @@ class MenuesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, MenuesRepository $menues )
+    public function edit( $id )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.menu.index'), 'icon' => '<i class="fa fa-circle-o"></i>', 'title' => Lang::get('menues.lists.lists_menues')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('menues.lists.editing_menues'))
         );
+        $oData = $this->menues->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -181,19 +188,26 @@ class MenuesController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.menu.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published',
+                    'value' => $oData->is_published
                 )
             ),
             'formContent' => $this->renderView('menues.add', array(
-                'oData' => $this->menues->edit( $id ),
-                'aTypeMenues' => $menues->getMenuTypes(),
+                'oData' => $oData,
+                'aTypeMenues' => $this->menues->getMenuTypes(),
                 'aPages' => $this->pages->getComboList(),
-                'aMenues' => $menues->getComboList()
+                'aMenues' => $this->menues->getComboList()
             )),
             'formUrl' => URL::route('admin.menu.store'),
         ));

@@ -30,7 +30,7 @@ return array(
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Опис',
         'published' => 'Опубліковано',
-        'empty' => 'Запит до Бази Даних - повернув порожнiй набiр даних.',
+        'site' => 'Переходна на :site',
         'actions' => 'Дії',
         'created' => 'Створений',
         'updated' => 'Оновлений',

@@ -17,6 +17,7 @@ class Pages extends TransformerAbstract
         return [
             'id' => (int) $page->id,
             'title' => $page->title,
+            'subtitle' => $page->subtitle,
             'url' => $page->url,
             'created' => $page->created_at,
             'updated' => $page->updated_at,

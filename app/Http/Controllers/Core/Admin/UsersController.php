@@ -66,22 +66,21 @@ class UsersController extends AdminController
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_user', 'disabled' => true,'class' => 'edit-btn', 'data-url' => URL::route('admin.users.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true,'class' => 'edit-btn', 'data-url' => URL::route('admin.users.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#',
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_user', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.users.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.users.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.users.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_user', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.users.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.users.index') )
                     )
-                ),
-                // 'aList' => $this->users->index()
+                )
             ))
         ));
 
@@ -108,12 +107,12 @@ class UsersController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.users.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.users.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('users.reg.register'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-default')
+                    'params' => array('class'=>'btn-success')
                 )
             ),
             'formContent' => $this->renderView('user.register', array(
@@ -159,12 +158,13 @@ class UsersController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id, UserRepository $users )
+    public function edit( $id )
     {
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.users.index'), 'icon' => '<i class="fa fa-users"></i>', 'title' => Lang::get('users.lists.lists_users')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('users.lists.editing_user'))
         );
+        $oData = $this->users->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -175,16 +175,23 @@ class UsersController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.users.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.users.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('users.form.is_admin'),
+                    'name' => 'is_admin',
+                    'value' => $oData->is_admin
                 )
             ),
             'formContent' => $this->renderView('user.edit', array(
-                'oData' => $this->users->edit( $id )
+                'oData' => $oData
             )),
             'formUrl' => URL::route('admin.users.store'),
         ));

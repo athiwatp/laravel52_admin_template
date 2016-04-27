@@ -7,10 +7,21 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'date'},
-        {data: 'title'}
+        {data: 'id', name:'id', orderable: false},
+        {data: 'date', name:'date'},
+        {data: 'title', name:'title'},
+        {data: 'content', name:'content', bVisible: false}
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/news/%n/edit',
+        del: system.getUrl( 'news/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
@@ -19,11 +30,20 @@ module.exports = {
      **/
     columnDefs: [
         {
+            className: 'select-checkbox',
+            render: function() {
+                return '';
+            },
+            targets:   0
+        },
+
+        {
             render: function( data ) {
                 return system.getFormattedDate( data );
             },
             targets: 1
         },
+
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
@@ -55,6 +75,15 @@ module.exports = {
     ajax: {
         url: system.getUrl( 'news' )
     },
+
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+
+    order: [
+        [ 1, 'desc' ]
+    ]
 
 
 };

@@ -81,7 +81,7 @@ class VideoNewsRepository extends BaseRepository {
     {
         $videoNews->title        = $inputs['title'];
         $videoNews->content      = $inputs['content'];
-        $videoNews->date         = $inputs['date'];
+        $videoNews->date         = $inputs['date'] ? Carbon::createFromFormat($this->dateFormat, $inputs['date'] ) : Carbon::now()->toDateString();
         $videoNews->url          = $inputs['url'];
         $videoNews->is_published = $inputs['is_published'];
         $videoNews->user_id      = Auth::id();
@@ -131,9 +131,9 @@ class VideoNewsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function destroy($videoNews)
+    public function destroy($id)
     {
-        $videoNews->delete();
+        return parent::destroy($id);
     }
 
 }

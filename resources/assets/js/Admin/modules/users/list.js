@@ -7,26 +7,44 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'name'},
-        {data: 'email'},
-        {data: 'phone'},
-        {data: 'created'},
-        {data: 'updated'}
+        {data: 'id', id:'id'},
+        {data: 'name', name:'email'},
+        {data: 'email', name:'email'},
+        {data: 'phone', name:'phone'},
+        //{data: 'created', name:'created_at', bVisible: false},
+        //{data: 'updated', name:'updated_at', bVisible: false}
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/users/%n/edit',
+        del: system.getUrl( 'users/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
      *
      * @var Object
      **/
-    columnDefs: [
-        {
-            render: function( data ) {
-                return system.getFormattedDate( data );
+    columnDefs: [{
+            className: 'select-checkbox',
+            render: function() {
+                return '';
             },
-            targets: [4,5]
-        }, {
+            targets:   0
+        },
+        //{
+        //    render: function( data ) {
+        //        return system.getFormattedDate( data );
+        //    },
+        //    targets: [4,5]
+        //},
+
+        {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
                     active = system.getPublishedIcon( row.is_verified),
@@ -51,5 +69,13 @@ module.exports = {
         url: system.getUrl( 'users' )
     },
 
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+
+    order: [
+        //[ 5, 'desc' ]
+    ]
 
 };

@@ -95,9 +95,9 @@ class ChaptersRepository extends BaseRepository {
      *
      * @return void
     */
-    public function destroy($chapters)
+    public function destroy($id)
     {
-        $chapters->delete();
+        return parent::destroy($id);
     }
 
     /**
@@ -105,11 +105,7 @@ class ChaptersRepository extends BaseRepository {
     */
     public static function getComboList( $sChaptersType )
     {
-        if ( $sChaptersType === Config::get('constants.CHAPTER.CHAPTER') ) {
-            $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter') . ' --- ' );
-        } else {
-            $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter_gallery') . ' --- ' );
-        }
+        $aItems = array( 0 => ' --- ' . Lang::get('chapters.lists.select_chapter') . ' --- ' );
 
         $oItems = Chapters::where('type_chapter', '=', $sChaptersType)
             ->where('is_active', '=', Config::get('constants.DONE_STATUS.SUCCESS'))

@@ -85,13 +85,6 @@ class SettingsRepository extends BaseRepository {
         $settings->delete();
     }
 
-    public static function setSocialNetworks() {
-        return array(
-        0 => Lang::get('table_field.lists.no'),
-        1 => Lang::get('table_field.lists.yes')
-            );
-    }
-
     /**
      * Returns settings parameters
      *

@@ -70,4 +70,24 @@ class SubscriberController extends ApiController
             'errors' => $errors
         ]);
     }
+
+    /**
+     * Destroy the subscribers item
+     *
+     * @param id {Integer} - subscribers identifier
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        $result = [
+            'deleted' => false
+        ];
+
+        if ($id > 0) {
+            $result['deleted'] = $this->subscriber->destroy($id);
+        }
+
+        return $this->respond( $result );
+    }
 }

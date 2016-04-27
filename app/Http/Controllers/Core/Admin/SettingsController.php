@@ -58,12 +58,11 @@ class SettingsController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
                 )
             ),
             'formContent' => $this->renderView('settings.add', array(
-                'oData' => $aData,
-                'setSocialNetworks' => $this->settings->setSocialNetworks()
+                'oData' => $aData
             )),
             'formUrl' => URL::route('admin.settings.store'),
         ));
@@ -85,48 +84,4 @@ class SettingsController extends AdminController
                 'message'   => Lang::get('settings.lists.settings_saved_successfully') ));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

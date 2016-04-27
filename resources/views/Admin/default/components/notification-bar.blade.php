@@ -10,13 +10,13 @@
 <!-- /.navbar-header -->
 <ul class="nav navbar-top-links navbar-right">
     <li class="dropdown">
+        {!! Html::_link( URL::route('home'), '<i class="fa fa-reply-all"></i> ', array('target' => '_blank', 'title' => Lang::get('table_field.lists.site') )) !!}
+    </li>
+    <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li>
-                {!! Html::_link( URL::route('home'), '<i class="fa fa-reply-all"></i> ' . Lang::get('table_field.lists.site', array( 'site' => getSateName() ) ), array('target' => '_blank') ) !!}
-            </li>
             <li>
                 {!! Html::_link( URL::route( 'admin.users.edit', array( 'id' => Auth::id() ) ), '<i class="fa fa-user fa-fw"></i> ' . Lang::get('users.form.profile') ) !!}
             </li>

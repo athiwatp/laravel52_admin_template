@@ -14,6 +14,13 @@ class NewsRepository extends BaseRepository {
     protected $history = null;
 
     /**
+     * Published flag
+     *
+     * @var String
+     */
+    protected $PUBLISHED = 0;
+
+    /**
      * Create a new Message instance
      *
      * @param App\Models\News $news
@@ -27,6 +34,9 @@ class NewsRepository extends BaseRepository {
 
         // History
         $this->history = $history;
+
+        // Retrieve the config settings
+        $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
     }
 
     /**
@@ -45,21 +55,58 @@ class NewsRepository extends BaseRepository {
      * Retrieve the latest news from DB
      *
      * @param int $amount - amount of records that we need to retrieve
+     * @param Boolean $main
      *
      * @return Array
     */
-    public function getLatest( $amount )
+    public function getLatest( $amount, $main = false )
     {
-        $result = $this->model
+        $object = $this->model
+            ->where('is_published', $this->PUBLISHED)
             ->orderBy('date', 'DESC')
-            ->take( $amount )
-            ->get();
+            ->take( $amount );
+
+        if ($main === true) {
+            $object->where('is_main', '1');
+        } elseif ($main === false) {
+            $object->where('is_main', '0');
+        }
+
+        $result = $object->get();
 
         if ( $result ) {
             return $result;
         }
 
         return [];
+    }
+
+    /**
+     * Get news for the calendar
+    */
+    public function getNewsForCalendar()
+    {
+        // Init the result array
+        $result = [];
+
+        // get the list of announces
+        $list = $this->model
+            ->where( 'is_published', $this->PUBLISHED )
+            ->whereDate('date', '>=', Carbon::today()->subYear()->toDateString())
+            ->orderBy('date', 'ASC')
+            ->get();
+
+        if ( $list ) {
+            foreach($list as $item) {
+                $result[ $item->date->year ][ $item->date->month ][ $item->date->day ][] = [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'date_start' => $item->date
+                ];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -71,9 +118,29 @@ class NewsRepository extends BaseRepository {
     */
     public function getPaginatedList(Request $request)
     {
-        $result = $this->model
-            ->orderBy('date', 'DESC')
-            ->paginate( $this->paginationAmount );
+        $chapter = $request->get( 'chapter' );
+        $tag = $request->get( 'tag' );
+        $timestamp = $request->get( 'timestamp' );
+
+        $object = $this->model
+            ->where('is_published', $this->PUBLISHED)
+            ->orderBy('date', 'DESC');
+
+        if ( $chapter && $chapter > 0) {
+            $object->where('chapter_id', $chapter);
+        }
+
+        if ( $tag ) {
+            $object->whereRaw('UPPER(tags) LIKE ?', [ '%' . $tag . '%'] );
+        }
+
+        if ( $timestamp && $timestamp > 0) {
+            $dt = Carbon::createFromTimestamp( $timestamp )->addDay();
+
+            $object->where('date', '=', $dt->toDateString() );
+        }
+
+        $result = $object->paginate( $this->paginationAmount );
 
         if ( $result ) {
             return $result;
@@ -128,11 +195,12 @@ class NewsRepository extends BaseRepository {
         $news->user_id      = Auth::id();
         $news->url          = $inputs['url'];
         $news->type_news    = '1';
-        $news->date         = $inputs['date'];
+        $news->date         = $inputs['date'] ? Carbon::createFromFormat($this->dateFormat, $inputs['date'] ) : null;
         $news->source       = $inputs['source'];
         $news->is_published = $inputs['is_published'];
         $news->is_main      = $inputs['is_main'];
         $news->is_important = $inputs['is_important'];
+        $news->tags         = $inputs['tags'];
 
         $news->save();
 
@@ -190,12 +258,12 @@ class NewsRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\News
+     * @param {Int} $id
      *
-     * @return void
+     * @return {Boolean}
     */
-    public function destroy($news)
+    public function destroy($id)
     {
-        $news->delete();
+        return parent::destroy($id);
     }
 }

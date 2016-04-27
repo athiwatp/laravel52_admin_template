@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AnnouncementsRequest;
 use App\Repositories\AnnouncementsRepository;
 use App\Repositories\ChaptersRepository;
+use App\Repositories\FileRepository;
 
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
@@ -20,16 +21,34 @@ class AnnouncementsController extends AdminController
     protected $announce;
 
     /**
+     * Chapter repository
+     *
+     * @var Object
+     */
+    protected $chapters;
+
+    /**
+     * File repository
+     *
+     * @var Object repository
+     */
+    protected $file = null;
+
+    /**
      * Create a new NewsController instance
      *
      * @param App\Repositories\AnnouncementsRepository
      *
      * @return void
      */
-    public function __construct( AnnouncementsRepository $announce, ChaptersRepository $chapters )
+    public function __construct( AnnouncementsRepository $announce, ChaptersRepository $chapters, FileRepository $file )
     {
         $this->announce = $announce;
+
         $this->chapters = $chapters;
+
+        // File repository
+        $this->file = $file;
     }
 
     /**
@@ -57,25 +76,25 @@ class AnnouncementsController extends AdminController
                         'url' => URL::route('admin.announcements.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add_announcements')
+                        'aParams' => array('id' => 'add')
                     ),
                     'edit' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.edit'),
                         'icon' => '<i class="fa fa-pencil"></i>',
-                        'aParams' => array('id' => 'edit_announcements', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.announcements.edit', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'edit', 'disabled' => true, 'class' => 'edit-btn', 'data-url' => URL::route('admin.announcements.edit', array('id' => '%id%')) )
                     ),
                     'delete' => array(
                         'url' => '#', 
                         'title' => Lang::get('table_field.toolbar.remove'),
                         'icon' => '<i class="fa fa-trash-o"></i>',
-                        'aParams' => array('id' => 'delete_announcements', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.announcements.destroy', array('id' => '%id%')) )
+                        'aParams' => array('id' => 'delete', 'disabled' => true, 'class' => 'delete-btn', 'data-url' => URL::route('admin.announcements.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
                         'url' => URL::route('admin.announcements.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh_announcements', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.announcements.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.announcements.index') )
                     )
                 )
             ))
@@ -95,8 +114,8 @@ class AnnouncementsController extends AdminController
         );
 
         $aDate = array(
-            'thisDay' => Carbon::now()->toDateString(), 'thisDayPlusMonth' => Carbon::now()->addMonth()->toDateString()
-            );
+            'thisDay' => Carbon::now()->format( $this->announce->getDateFormat() ), 'thisDayPlusMonth' => Carbon::now()->addMonth()->format( $this->announce->getDateFormat() )
+        );
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -110,12 +129,18 @@ class AnnouncementsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.announcements.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.announcements.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published'
                 )
             ),
             'formContent' => $this->renderView('announcements.add', array(
@@ -137,9 +162,9 @@ class AnnouncementsController extends AdminController
     {
 
         if ( $announce = $this->announce->store( $request->except(['_token']) ) ) {
-            if ( $request->hasFile('image') ) {
-                $TYPE_ANNOUNCE = Config::get('constants.RESOURCES.ANNOUNCE');
+            $TYPE_ANNOUNCE = Config::get('constants.RESOURCES.ANNOUNCE');
 
+            if ( $request->hasFile('image') ) {
                 // Delete related files
                 if ( false === empty($announce['image']) ) {
                     Event::fire( new FileWasRemoved(array(
@@ -166,6 +191,9 @@ class AnnouncementsController extends AdminController
                     ]);
                 }
             }
+
+            // Check the files for current content
+            $this->file->correct($request->get('_token'), $announce['id'], $TYPE_ANNOUNCE);
         }
 
         return Redirect::route('admin.announcements.index')
@@ -194,9 +222,11 @@ class AnnouncementsController extends AdminController
     public function edit($id)
     {
         $aBreadcrumbs = array(
-            array('url' => URL::route('admin.announcements.index'), 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('announce.lists.lists_announce')),
+            array('url' => URL::route('admin.announcements.index'), 'icon' => '<i class="fa fa-bullhorn"></i>', 'title' => Lang::get('announce.lists.lists_announce')),
             array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('announce.lists.editing_announce'))
         );
+
+        $oData = $this->announce->edit($id);
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -210,16 +240,23 @@ class AnnouncementsController extends AdminController
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
                     'type' => 'link',
-                    'params' => array('url' => URL::route('admin.announcements.index'), 'class'=>'btn-outline btn-default')
+                    'params' => array('url' => URL::route('admin.announcements.index'), 'class'=>'btn-default')
                 ),
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-outline btn-primary')
+                    'params' => array('class'=>'btn-success')
+                )
+            ),
+            'formSwitcher' => array(
+                array(
+                    'title' => Lang::get('table_field.lists.published'),
+                    'name' => 'is_published',
+                    'value' => $oData->is_published
                 )
             ),
             'formContent' => $this->renderView('announcements.add', array(
-                'oData' => $this->announce->edit( $id ),
+                'oData' => $oData,
                 'aChapters' => $this->chapters->getComboList( Config::get('constants.CHAPTER.ANNOUNCE') )
             )),
             'formUrl' => URL::route('admin.announcements.store'),

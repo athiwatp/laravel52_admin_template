@@ -5,19 +5,15 @@
        cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('pages.form.title') }}</th>
-        <th>{{ Lang::get('table_field.lists.created') }}</th>
-        <th>{{ Lang::get('table_field.lists.updated') }}</th>
         <th>{{ Lang::get('table_field.lists.published') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('pages.form.title') }}</th>
-        <th>{{ Lang::get('table_field.lists.created') }}</th>
-        <th>{{ Lang::get('table_field.lists.updated') }}</th>
         <th>{{ Lang::get('table_field.lists.published') }}</th>
     </tr>
     </tfoot>
