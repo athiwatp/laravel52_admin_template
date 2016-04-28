@@ -10,6 +10,7 @@ return array(
         'create_new_news' => 'Редагування новини',
         'news_management' => 'Управління новинами',
         'news_saved_successfully' => 'Новина збережений успішна!',
+        'news' => 'Новини',
         ),
 
     'form' => array(
@@ -22,5 +23,6 @@ return array(
         'content' => 'Зміст',
         'source' => 'Джерело',
         'photo' => 'Фото',
+        'tags' => 'Теги'
         )
     );

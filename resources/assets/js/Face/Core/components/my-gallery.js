@@ -164,7 +164,7 @@
                         }
 
                     }, function( response ) {
-                        console.log('Fail!!!!');
+                        // console.log('Fail!!!!');
                     })
                     .finally(function(response){
 

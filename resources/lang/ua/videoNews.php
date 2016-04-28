@@ -8,6 +8,8 @@ return array(
         'video_news_management_online' => 'Управління відео новинами на сайті',
         'create_video_news' => 'Створення відео новини',
         'editing_video_news' => 'Редагування відео новини',
+        'video_news_saved_successfully' => 'Відео новина збережена успішно!',
+        'video_news' => 'Відео новини',
         ),
 
     'form' => array(
@@ -15,6 +17,6 @@ return array(
         'url' => 'URL на Youtube',
         'picture' => 'Картинка',
         'date' => 'Дата',
-        'content' => 'Зміст',
+        'content' => 'Зміст'
         )
     );

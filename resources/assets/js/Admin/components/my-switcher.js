@@ -64,7 +64,7 @@
             this.status = val;
 
             if ( val === '0' ) {
-                console.log(this.$els.wrapper);
+                // console.log(this.$els.wrapper);
                 this._toggle(this.$els.wrapper);
             }
         },

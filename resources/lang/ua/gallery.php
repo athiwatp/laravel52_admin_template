@@ -9,6 +9,7 @@ return array(
         'create_new_gallery' => 'Створення нового файлу',
         'create_gallery' => 'Новий файл',
         'editing_gallery' => 'Редагування файлу',
+        'gallery' => 'Галерея',
         ),
 
     'message' => array(

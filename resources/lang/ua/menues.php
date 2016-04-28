@@ -16,6 +16,12 @@ return array(
         'gallery' => 'Фото-галерея',
         'gallery_chapter' => 'Розділи',
         'photo_gallery' => 'Галерея',
+        'announcements_management' => 'Управління Анонсами',
+        'chapter_announcements_management' => 'Розділи анонсів',
+        'chapter_useful_links' => 'Розділи корисних посилань',
+        'announcements' => 'Анонси',
+        'subscribers_management' => 'Підписчики',
+        'useful-links' => 'Корисні посилання',
         ),
 
     'lists' => array(

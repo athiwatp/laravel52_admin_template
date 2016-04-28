@@ -53,6 +53,8 @@ if (! function_exists('get_formatted_date') ) {
     }
 }
 
+
+
 /**
  * Limit the outputting for the list information
  *
@@ -63,6 +65,7 @@ if (! function_exists('str_custom_limit') ) {
         return str_limit( strip_tags($str), $limit);
     }
 }
+
 
 /**
  * build youtube preview url
@@ -147,6 +150,8 @@ if (! function_exists('get_useful_links') ) {
     }
 }
 
+
+
 /**
  * Returns settings data
 */
@@ -158,6 +163,7 @@ if ( ! function_exists('get_settings_data') ) {
     }
 }
 
+
 /**
  * Returns settings data
  */
@@ -168,6 +174,8 @@ if ( ! function_exists('get_contact_address') ) {
         return empty($s) ? $default : $s;
     }
 }
+
+
 
 if ( ! function_exists('get_search_data') ) {
     function get_search_data() {
@@ -271,9 +279,11 @@ if (! function_exists('sidebar_menu') ) {
                 }
             } catch (Exception $e) {}
         });
+
         return Menu::get('sidebar_menu');
     }
 }
+
 
 /**
  * Build breadcrumbs for page
@@ -295,6 +305,7 @@ if ( ! function_exists('breadcrumbs_for_page') ) {
         }
     }
 }
+
 
 /**
  * Function to build the main menu
@@ -331,7 +342,7 @@ if ( ! function_exists('get_admin_contact') ) {
      */
     function get_admin_contact()
     {
-       return get_settings_data('contact');
+        return get_settings_data('contact');
     }
 }
 
@@ -363,7 +374,7 @@ if ( ! function_exists('get_site_name') ) {
     {
         $data = get_settings_data('site_name');
 
-        return array_key_exists('site_name', $data) ? $data['site_name'] : '';
+        return $data;
     }
 }
 
@@ -409,6 +420,8 @@ if ( ! function_exists('get_short_site_name') ) {
         return 'Admin.pervosoft.com';
     }
 }
+
+
 
 if ( ! function_exists('get_contact_coordinates') ) {
     /**
@@ -483,6 +496,7 @@ if ( ! function_exists('get_google_account') ) {
      */
     function get_google_account()
     {
+
         return get_settings_data('google_account', '#');
     }
 }

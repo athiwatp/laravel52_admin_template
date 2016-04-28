@@ -5,10 +5,10 @@ var _system = require( './modules/_System.js').getInstance();
 require( './types/String.js' );
 require( './modules/_metis.js' );
 require( './modules/_resizer.js' );
-require( './modules/_ckeditor.js' );
-require( './modules/_mask.js' );
 
-//require('./modules/_datatables.js');
+require( './modules/_ckeditor.js' )($, window);
+
+require( './modules/_mask.js' );
 require( 'bootstrap-datepicker' );
 
 $(function() {
@@ -22,7 +22,7 @@ $(function() {
 
                 $(this).attr('id', id);
             }
-            console.log(id);
+            // console.log(id);
 
             var gallery = require('./components/my-switcher.js')($, {
                 elId: '#' + id
@@ -50,7 +50,7 @@ $(function() {
     // 1. edit_menu
     if ( $('#edit').length > 0 ) {
 
-        console.log('Hey!!!!');
+        // console.log('Hey!!!!');
 
         $('#edit').on('click', function(e) {
             var self = this;

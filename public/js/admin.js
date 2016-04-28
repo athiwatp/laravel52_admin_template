@@ -46236,10 +46236,10 @@ var _system = require('./modules/_System.js').getInstance();
 require('./types/String.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
-require('./modules/_ckeditor.js');
-require('./modules/_mask.js');
 
-//require('./modules/_datatables.js');
+require('./modules/_ckeditor.js')($, window);
+
+require('./modules/_mask.js');
 require('bootstrap-datepicker');
 
 $(function () {
@@ -46253,7 +46253,7 @@ $(function () {
 
                 $(this).attr('id', id);
             }
-            console.log(id);
+            // console.log(id);
 
             var gallery = require('./components/my-switcher.js')($, {
                 elId: '#' + id
@@ -46281,7 +46281,7 @@ $(function () {
     // 1. edit_menu
     if ($('#edit').length > 0) {
 
-        console.log('Hey!!!!');
+        // console.log('Hey!!!!');
 
         $('#edit').on('click', function (e) {
             var self = this;
@@ -46487,7 +46487,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             this.status = val;
 
             if (val === '0') {
-                console.log(this.$els.wrapper);
+                // console.log(this.$els.wrapper);
                 this._toggle(this.$els.wrapper);
             }
         },
@@ -46704,7 +46704,7 @@ var AdminSingleton = function ($) {
              **/
             redirectTo: function redirectTo(url) {
 
-                console.log(url);
+                // console.log(url);
 
                 window.location.href = url;
             },
@@ -46860,85 +46860,60 @@ module.exports = AdminSingleton;
 },{"moment":9}],39:[function(require,module,exports){
 'use strict';
 
-//var system = require('./_System.js').getInstance();
-if (typeof jQuery === 'undefined') {
-    throw new Error('AdminPS area requires jQuery');
-}
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-/**
- * CKEDITOR implementation
- **/
-(function (w, $) {
+(function (factory) {
+    "use strict";
+
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], {}, function ($) {
+            return factory($, window, document);
+        });
+    } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+        // CommonJS
+        module.exports = function ($, root) {
+            if (!root) {
+                // CommonJS environments without a window global must pass a
+                // root. This will give an error otherwise
+                root = window;
+            }
+
+            if (!$) {
+                $ = typeof window !== 'undefined' ? // jQuery's factory checks for a global window
+                require('jquery') : require('jquery')(root);
+            }
+
+            return factory($, root, root.document);
+        };
+    } else {
+        // Browser
+        factory(jQuery, window, document);
+    }
+})(function ($, w) {
     'use strict';
 
-    if (typeof CKEDITOR === 'undefined') {
+    var system = require('./_System.js').getInstance();
+    if (typeof jQuery === 'undefined') {
+        throw new Error('AdminPS area requires jQuery');
+    }
+
+    // CKEDITOR implementation
+    if (typeof w.CKEDITOR === 'undefined') {
         return false;
     }
 
-    // Set base Path for the editor
-    w.CKEDITOR_BASEPATH = '/js/vendor/ckeditor/';
-
     if ($('.ck-edtor').length > 0) {
-        CKEDITOR.basePath = w.CKEDITOR_BASEPATH;
+        w.CKEDITOR.basePath = w.CKEDITOR_BASEPATH;
+        w.CKEDITOR.plugins.basePath = CKEDITOR.basePath + 'plugins/';
 
-        CKEDITOR.replaceAll('ck-edtor', {
+        w.CKEDITOR.replaceAll('ck-edtor', {
             customConfig: '/js/vendor/ckeditor/config.js'
         });
     }
+});
 
-    console.log('The direct implementation of that code here with ', CKEDITOR);
-})(window, jQuery);
-
-//// config.extraPlugins = 'imageuploader';
-//config.extraPlugins = 'lightbox,clipboard,pastefromword,tabletools,quicktable,button,toolbar,floating-tools,youtube,justify,colorbutton,colordialog,lineutils,widget,image2,imageuploader';
-//// config.filebrowserImageUploadUrl = CKEDITOR.basePath + 'plugins/imgupload.php';
-//config.extraAllowedContent = 'audio[*]{*},a[data-lightbox,data-title,data-lightbox-saved]';
-//
-//
-//config.filebrowserBrowseUrl = '/admin/files/browse';
-//config.filebrowserUploadUrl = '/admin/files/upload';
-//config.filebrowserWindowWidth = '640';
-//config.filebrowserWindowHeight = '480';
-
-// The toolbar groups arrangement, optimized for two toolbar rows.
-//config.toolbarGroups = [
-//
-//     {
-//        name: 'document',
-//        groups: ['mode', 'document', 'doctools']
-//    }, {
-//        name: 'others'
-//    },
-//    '/', {
-//        name: 'basicstyles',
-//        groups: ['basicstyles', 'cleanup', 'justify']
-//    }, {
-//        name: 'paragraph',
-//        groups: ['list', 'indent', 'blocks', 'align', 'bidi']
-//    }, {
-//        name: 'styles'
-//    }, {
-//        name: 'colors'
-//    }, {
-//        name: 'about'
-//    }
-//
-//];
-
-// Remove some buttons provided by the standard plugins, which are
-// not needed in the Standard(s) toolbar.
-//config.removeButtons = 'Underline,Subscript,Superscript,elementspath';
-//
-//// Remove Plugins
-//config.removePlugins = 'elementspath';
-//
-//// Set the most common block elements.
-//config.format_tags = 'p;h1;h2;h3;pre';
-//
-//// Simplify the dialog windows.
-//config.removeDialogTabs = 'image:advanced;link:advanced';
-
-},{}],40:[function(require,module,exports){
+},{"./_System.js":38,"jquery":8}],40:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -47273,8 +47248,6 @@ module.exports = {
         targets: 0
     }, {
         render: function render(data, type, row) {
-
-            console.log(row);
 
             return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate(data, false) + '<br />' + '<i class="fa fa-calendar"></i> ' + system.getFormattedDate(row.date_end, false) + (row.top_date_end ? '<br /><strong><i class="fa fa-exclamation-circle" title="Актуален до ' + system.getFormattedDate(row.top_date_end, false) + '"></i> ' + system.getFormattedDate(row.top_date_end, false) + ' </strong>' : '');
         },
@@ -47782,7 +47755,7 @@ module.exports = {
                 sLinked = '';
 
             if (system.isEmpty(row.linked) === false) {
-                console.log(row.linked, row.title);
+                // console.log(row.linked, row.title);
 
                 sLinked = '<br />' + '<ul class="linked-menu">';
 

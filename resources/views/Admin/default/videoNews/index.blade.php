@@ -5,20 +5,16 @@
        cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('videoNews.form.preview') }}</th>
+        <th>#</th>
+        <th>{{ Lang::get('table_field.lists.date') }}</th>
         <th>{{ Lang::get('videoNews.form.title') }}</th>
-        <th>{{ Lang::get('table_field.lists.created') }}</th>
-        <th>{{ Lang::get('table_field.lists.updated') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('videoNews.form.preview') }}</th>
+        <th>#</th>
+        <th>{{ Lang::get('table_field.lists.date') }}</th>
         <th>{{ Lang::get('videoNews.form.title') }}</th>
-        <th>{{ Lang::get('table_field.lists.created') }}</th>
-        <th>{{ Lang::get('table_field.lists.updated') }}</th>
     </tr>
     </tfoot>
 </table>

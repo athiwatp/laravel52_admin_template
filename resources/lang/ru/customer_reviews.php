@@ -5,8 +5,8 @@ return array(
     'lists' => array(
         'customer_reviews_management' => 'Управление отзывами клиентов',
         'lists_customer_reviews' => 'Список отзывов клиентов',
-        'customer_reviews_website' => 'Отзывы на сайта',
-        'create_customer_reviews' => 'Новай отзыв',
+        'customer_reviews_website' => 'Отзывы на сайте',
+        'create_customer_reviews' => 'Новый отзыв',
         'create_new_customer_reviews' => 'Создание нового отзыва',
         'show_customer_reviews' => 'Изменение',
         'edit' => 'Редактирование',

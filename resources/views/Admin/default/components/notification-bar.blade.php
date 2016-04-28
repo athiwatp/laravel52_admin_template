@@ -10,7 +10,7 @@
 <!-- /.navbar-header -->
 <ul class="nav navbar-top-links navbar-right">
     <li class="dropdown">
-        {!! Html::_link( URL::route('home'), '<i class="fa fa-reply-all"></i> ', array('target' => '_blank', 'title' => Lang::get('table_field.lists.site') )) !!}
+        {!! Html::_link( URL::route('home'), '<i class="fa fa-reply-all"></i> ', array('target' => '_blank', 'title' => Lang::get('table_field.lists.site', array( 'site' => get_site_name() ) ) )) !!}
     </li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">

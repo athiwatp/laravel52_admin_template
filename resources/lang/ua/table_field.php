@@ -30,7 +30,7 @@ return array(
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Опис',
         'published' => 'Опубліковано',
-        'site' => 'Переходна на :site',
+        'site' => 'Переходна на ":site"',
         'actions' => 'Дії',
         'created' => 'Створений',
         'updated' => 'Оновлений',

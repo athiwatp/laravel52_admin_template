@@ -5,22 +5,18 @@
        cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('users.form.name') }}</th>
         <th class="sorting">{{ Lang::get('users.form.email') }}</th>
         <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.created') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.updated') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>{{ Lang::get('users.form.name') }}</th>
         <th class="sorting">{{ Lang::get('users.form.email') }}</th>
         <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.created') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.updated') }}</th>
     </tr>
     </tfoot>
 </table>

@@ -49,7 +49,7 @@ module.exports = {
                     sLinked = '';
 
                 if ( system.isEmpty(row.linked) === false ) {
-                    console.log(row.linked, row.title);
+                    // console.log(row.linked, row.title);
 
                     sLinked = '<br />' +
                             '<ul class="linked-menu">';

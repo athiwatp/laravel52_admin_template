@@ -41,7 +41,14 @@ elixir(function(mix) {
         .copy(bowerDir + 'bootstrap-sass/assets/fonts', 'public/fonts')
         .copy(bowerDir + 'datatables/media/css/jquery.dataTables.min.css', 'public/css/vendor/jquery.dataTables.min.css')
         .copy(bowerDir + 'metisMenu/dist/metisMenu.min.css', 'public/css/vendor/metisMenu.min.css')
-        .copy(nodeDir + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css', 'public/css/vendor/datepicker.min.css');
+        .copy(nodeDir + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css', 'public/css/vendor/datepicker.min.css')
+        // Blueimp
+        .copy(nodeDir + 'blueimp-gallery/css/blueimp-gallery.min.css', 'public/css/vendor/blueimp.min.css')
+        .copy(nodeDir + 'blueimp-gallery/img/**', 'public/css/img')
+
+        // Lightbox2
+        .copy(nodeDir + 'lightbox2/dist/css/lightbox.min.css', 'public/css/vendor/lightbox.min.css')
+        .copy(nodeDir + 'lightbox2/dist/images', 'public/css/images');
 
     // Copy JavaScript libraries
     mix.copy(bowerDir + 'jquery/dist/jquery.min.js', 'public/js/vendor/jquery.min.js')
@@ -56,6 +63,12 @@ elixir(function(mix) {
         .copy(bowerDir + 'ckeditor/skins/moono', 'public/js/vendor/ckeditor/skins/moono')
         .copy(bowerDir + 'ckeditor/contents.css', 'public/js/vendor/ckeditor/contents.css')
         .copy(customJs + 'Admin/libs/ckeditor/config.js', 'public/js/vendor/ckeditor/config.js')
+        // Extra plugins
+        .copy(customJs + 'Admin/libs/ckeditor/floating-tools', 'public/js/vendor/ckeditor/plugins/floating-tools')
+        .copy(customJs + 'Admin/libs/ckeditor/lightbox', 'public/js/vendor/ckeditor/plugins/lightbox')
+        .copy(customJs + 'Admin/libs/ckeditor/quicktable', 'public/js/vendor/ckeditor/plugins/quicktable')
+        .copy(customJs + 'Admin/libs/ckeditor/imageuploader', 'public/js/vendor/ckeditor/plugins/imageuploader')
+
         .copy(bowerDir + 'ckeditor/plugins', 'public/js/vendor/ckeditor/plugins');
 });
 

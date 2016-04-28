@@ -40,8 +40,6 @@ module.exports = {
         {
             render: function( data, type, row ) {
 
-                console.log(row);
-
                 return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate( data, false ) + '<br />'+
                     '<i class="fa fa-calendar"></i> ' + system.getFormattedDate( row.date_end, false ) +
                     ( row.top_date_end ?

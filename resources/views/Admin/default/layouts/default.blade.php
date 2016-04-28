@@ -59,7 +59,6 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     {{ $sMessage }}
                 </div>
-
                 @endif
 
             @yield('content')
@@ -78,6 +77,11 @@
 {!! Html::script('js/vendor/metisMenu.min.js') !!}
 
 {{-- Custom javascript --}}
+<script type="text/javascript">
+    <!--
+    var CKEDITOR_BASEPATH = '/js/vendor/ckeditor/';
+    //--
+</script>
 @yield('javascript')
 
 <!-- Custom Theme JavaScript -->

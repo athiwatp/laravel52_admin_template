@@ -29617,7 +29617,7 @@ var AdminSingleton = function ($) {
              **/
             redirectTo: function redirectTo(url) {
 
-                console.log(url);
+                // console.log(url);
 
                 window.location.href = url;
             },
@@ -29910,7 +29910,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         self.dates = response.data;
                     }
                 }, function (response) {
-                    console.log('Fail!!!!');
+                    // console.log('Fail!!!!');
                 }).finally(function (response) {});
             }
         }
@@ -30073,7 +30073,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         self.items = response.data;
                     }
                 }, function (response) {
-                    console.log('Fail!!!!');
+                    // console.log('Fail!!!!');
                 }).finally(function (response) {});
             }
         }
@@ -30246,7 +30246,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         self.dates = response.data;
                     }
                 }, function (response) {
-                    console.log('Fail!!!!');
+                    // console.log('Fail!!!!');
                 }).finally(function (response) {});
             }
         }
@@ -30663,7 +30663,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         self.status.done = true;
                     }
                 }, function (response) {
-                    console.log('Fail!!!!');
+                    // console.log('Fail!!!!');
                 }).finally(function (response) {
                     self.status.saving = false;
 
