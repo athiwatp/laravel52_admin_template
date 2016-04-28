@@ -29,6 +29,7 @@ return array(
         'meta_keywords' => 'Meta keywords',
         'meta_descriptions' => 'Meta descriptions',
         'descriptions' => 'Опис',
+        'active' => 'Активований',
         'published' => 'Опубліковано',
         'site' => 'Переходна на ":site"',
         'actions' => 'Дії',

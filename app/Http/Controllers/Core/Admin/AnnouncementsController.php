@@ -141,6 +141,11 @@ class AnnouncementsController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.published'),
                     'name' => 'is_published'
+                ),
+                array(
+                    'title' => Lang::get('news.form.important'),
+                    'name' => 'important',
+                    'value' => '0'
                 )
             ),
             'formContent' => $this->renderView('announcements.add', array(

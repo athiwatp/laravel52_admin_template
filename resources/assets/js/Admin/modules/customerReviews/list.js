@@ -7,10 +7,21 @@ module.exports = {
      * @var Object
      **/
     columns: [
-        {data: 'id'},
-        {data: 'client'},
-        {data: 'date'}
+        {data: 'id', name: 'id'},
+        {data: 'date', name: 'date'},
+        {data: 'client', name: 'client'},
+        {data: 'published', name: 'is_published'}
     ],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/customerReviews/%n/edit',
+        del: system.getUrl( 'customerReviews/%n' )
+    },
 
     /**
      * Renderer for the columns by the index
@@ -19,10 +30,17 @@ module.exports = {
      **/
     columnDefs: [
         {
+            className: 'select-checkbox',
             render: function( data ) {
-                return system.getFormattedDate( data );
+                return '';
             },
-            targets: 2
+            targets: 0
+        },
+        {
+            render: function( data ) {
+                return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate( data );
+            },
+            targets: 1
         },
         {
             render: function ( data, type, row ) {
@@ -34,12 +52,23 @@ module.exports = {
                 }
 
                 return '<a href="/admin/customerReviews/'+ row.id + '/edit" client="' + noTags + '">' +
-                    published + ' ' + system.ellipsis( noTags, 100 ) +
+                    system.ellipsis( noTags, 100 ) +
                 '</a>';
             },
-            targets: 1
+            targets: 2
+        },
+        {
+            render: function( data ) {
+                return system.getPublishedIcon(data);
+            },
+            targets: 3
         }
     ],
+
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
 
     ajax: {
         url: system.getUrl( 'customerReviews' )

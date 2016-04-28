@@ -17,4 +17,17 @@
             }
         }
     }
+    .col-xs-12 {
+      .dataTables_wrapper {
+        table {
+          .select-checkbox {
+            width: 50px;
+          }
+        }
+      }
+    }
+}
+
+.box-footer {
+  margin-bottom: 100px;
 }

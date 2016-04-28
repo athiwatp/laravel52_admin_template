@@ -4,15 +4,17 @@
        data-module="subscribers/list"
        cellspacing="0" width="100%">
     <thead>
-    <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('subscribers.form.email') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('subscribers.form.email') }}</th>
+            <th class="sorting">{{ Lang::get('table_field.lists.active') }}</th>
+        </tr>
     </thead>
     <tfoot>
-    <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('subscribers.form.email') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('subscribers.form.email') }}</th>
+            <th class="sorting">{{ Lang::get('table_field.lists.active') }}</th>
+        </tr>
     </tfoot>
 </table>

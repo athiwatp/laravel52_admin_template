@@ -4,17 +4,21 @@
        data-module="news/list"
        cellspacing="0" width="100%">
     <thead>
-    <tr>
-        <th>#</th>
-        <th>{{ Lang::get('table_field.lists.date') }}</th>
-        <th>{{ Lang::get('news.form.title') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('table_field.lists.date') }}</th>
+            <th>{{ Lang::get('news.form.title') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+        </tr>
     </thead>
     <tfoot>
-    <tr>
-        <th>#</th>
-        <th>{{ Lang::get('table_field.lists.date') }}</th>
-        <th>{{ Lang::get('news.form.title') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('table_field.lists.date') }}</th>
+            <th>{{ Lang::get('news.form.title') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+        </tr>
     </tfoot>
 </table>

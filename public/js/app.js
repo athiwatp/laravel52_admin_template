@@ -30749,8 +30749,8 @@ $(function () {
     }
 
     /**
-         * Check if event calendar is available
-         **/
+     * Check if event calendar is available
+     **/
     if ($('#event-calendar').length > 0) {
         var calendar = require('./components/my-event-calendar.js')($, {
             elId: '#event-calendar'

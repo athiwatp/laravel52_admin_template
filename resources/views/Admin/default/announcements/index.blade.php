@@ -4,17 +4,19 @@
        data-module="announcements/list"
        cellspacing="0" width="100%">
     <thead>
-    <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('announce.form.date') }}</th>
-        <th>{{ Lang::get('announce.form.title') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('announce.form.date') }}</th>
+            <th>{{ Lang::get('announce.form.title') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+        </tr>
     </thead>
     <tfoot>
-    <tr>
-        <th>Id</th>
-        <th>{{ Lang::get('announce.form.date') }}</th>
-        <th>{{ Lang::get('announce.form.title') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('announce.form.date') }}</th>
+            <th>{{ Lang::get('announce.form.title') }}</th>
+            <th>{{ Lang::get('table_field.lists.published') }}</th>
+        </tr>
     </tfoot>
 </table>

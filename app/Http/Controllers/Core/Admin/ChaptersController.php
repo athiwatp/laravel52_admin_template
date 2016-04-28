@@ -185,7 +185,7 @@ class ChaptersController extends AdminController
             $sUrl        = 'admin.chapter.index';
         } elseif ( $request->sType === Config::get('constants.CHAPTER.GALLERY') ) {
             $aBreadcrumbs = array(
-                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
+                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
                 array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('chapters.lists.create_chapter_gallery')));
 
             $formChapter = Lang::get('chapters.lists.management_chapters_gallery');
@@ -337,7 +337,7 @@ class ChaptersController extends AdminController
         } elseif ( $oData->type_chapter === Config::get('constants.CHAPTER.GALLERY') ) {
 
             $aBreadcrumbs = array(
-                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters_gallery')),
+                array('url' => URL::route('admin.chapter.gallery'), 'icon' => '<i class="fa fa-clone"></i>', 'title' => Lang::get('chapters.lists.lists_chapters')),
                 array('url' => '#', 'icon' => '<i class="fa fa-pencil"></i>', 'title' => Lang::get('chapters.lists.editing_chapter_gallery')));
             $sformChapter = Lang::get('chapters.lists.management_chapters_gallery');
             $sformTitle   = Lang::get('chapters.lists.editing_chapter_gallery');

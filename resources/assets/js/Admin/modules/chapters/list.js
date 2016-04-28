@@ -31,11 +31,12 @@ module.exports = {
      **/
     columnDefs: [{
             className: 'select-checkbox',
-            render: function() {
+            render: function( data ) {
                 return '';
             },
-            targets:   0
-        }, {
+            targets: 0
+        },
+        {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data);
 
@@ -47,7 +48,6 @@ module.exports = {
             },
             targets: 1
         },
-
         {
             render: function( data ) {
                 return system.getPublishedIcon(data);

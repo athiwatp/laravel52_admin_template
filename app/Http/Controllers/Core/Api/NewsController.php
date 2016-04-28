@@ -41,7 +41,7 @@ class NewsController extends ApiController
             ->make(true);
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

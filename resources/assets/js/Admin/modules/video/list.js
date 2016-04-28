@@ -12,7 +12,7 @@ module.exports = {
         {data: 'title', name:'title'},
         {data: 'created', name:'created_at', bVisible: false },
         {data: 'updated', name:'updated_at', bVisible: false },
-        {data: 'content', name:'content', bVisible: false }
+        {data: 'published', name:'is_published'}
     ],
 
     /**
@@ -32,28 +32,21 @@ module.exports = {
      **/
     columnDefs: [{
             className: 'select-checkbox',
-            render: function() {
+            render: function( data ) {
                 return '';
             },
-            targets:   0
+            targets: 0
         },
-
         {
             render: function( data ) {
                 return system.getFormattedDate( data );
             },
             targets: [1,3,4]
         },
-
         {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
-                published = '<i class="fa fa-eye green"></i>',
                 img = '';
-
-                if ( row.published === false ) {
-                    published = '<i class="fa fa-eye-slash red"></i>';
-                }
 
                 if (system.isEmpty( row.preview ) === false ) {
                     img = '<br /><img width="100" height="50" src="http://img.youtube.com/vi/' + row.preview + '/hqdefault.jpg" ' +
@@ -61,10 +54,16 @@ module.exports = {
                 }
 
                 return '<a href="/admin/videoNews/'+ row.id + '/edit" title="' + noTags + '">' +
-                    published + ' ' + system.ellipsis( noTags, 100 ) +
+                    system.ellipsis( noTags, 100 ) +
                     '</a>' + img;
             },
             targets: 2
+        },
+        {
+            render: function( data ) {
+                return system.getPublishedIcon(data);
+            },
+            targets: 5
         }
     ],
 

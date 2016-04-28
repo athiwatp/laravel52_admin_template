@@ -4,19 +4,19 @@
        data-module="users/list"
        cellspacing="0" width="100%">
     <thead>
-    <tr>
-        <th>#</th>
-        <th>{{ Lang::get('users.form.name') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.email') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('users.form.name') }}</th>
+            <th class="sorting">{{ Lang::get('users.form.email') }}</th>
+            <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
+        </tr>
     </thead>
     <tfoot>
-    <tr>
-        <th>#</th>
-        <th>{{ Lang::get('users.form.name') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.email') }}</th>
-        <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
-    </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ Lang::get('users.form.name') }}</th>
+            <th class="sorting">{{ Lang::get('users.form.email') }}</th>
+            <th class="sorting">{{ Lang::get('users.form.phone') }}</th>
+        </tr>
     </tfoot>
 </table>

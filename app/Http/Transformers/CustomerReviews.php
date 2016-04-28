@@ -18,7 +18,6 @@ class CustomerReviews extends TransformerAbstract
             'id' => (int) $reviews->id,
             'client' => $reviews->client,
             'date' => $reviews->date,
-            'content' => $reviews->comment,
             'published' => (boolean) $reviews->is_published
         ];
     }

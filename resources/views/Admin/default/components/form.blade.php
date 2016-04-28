@@ -55,7 +55,7 @@
             @if (isset($aFormParams['formSwitcher']))
             @foreach($aFormParams['formSwitcher'] as $item)
             <div class="form-group">
-                {{ Form::label('active', $item['title']) }}
+                {{ Form::label($item['name'], $item['title']) }}
                 <div class="switcher">
                     <my-switcher
                         cmp-yes = "{{ Lang::get('table_field.lists.yes') }}"

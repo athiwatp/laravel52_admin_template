@@ -1,0 +1,43 @@
+.file-uploader {
+  .file-uploader-header {
+    .logo {
+      color:#fff;
+    }
+  }
+
+  .toolbar-filters {
+    select {
+      margin-bottom: 5px;
+    }
+  }
+
+  .file-list {
+    .panel{
+      padding: 5px;
+    }
+  }
+
+  .uploadP {
+    max-width: none;
+    padding:10px;
+    &:hover {
+      background-color: #2C3E50;
+
+    }
+  }
+
+  .settingsh3 {
+    max-width: none;
+  }
+
+  .fullWidthimgDiv {
+    width:auto;
+    max-width: 400px;
+  }
+
+  .fullWidthfileImg {
+    height: auto;
+    max-height: 400px;
+  }
+}
+

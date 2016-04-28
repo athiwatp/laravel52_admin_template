@@ -29,7 +29,8 @@ module.exports = {
      *
      * @var Object
      **/
-    columnDefs: [{
+    columnDefs: [
+        {
             className: 'select-checkbox',
             render: function( data ) {
                 return '';

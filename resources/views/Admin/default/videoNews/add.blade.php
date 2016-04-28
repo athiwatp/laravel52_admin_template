@@ -36,14 +36,4 @@
     {{ Form::label('content', Lang::get('videoNews.form.content')) }}
     {{ Form::textarea('content', ( isset($oData) ? $oData->content : null), array('class' => 'form-control ck-edtor')) }}
 </div>
-
-<div class="form-group">
-    {{ Form::label('is_published', Lang::get('table_field.lists.published')) }}
-    <div class="radio">
-        {!! Form::_label('is_published_yes', Form::radio('is_published', '1', isset($oData) ? $oData->is_published === '1' : true, array('id' => 'is_published_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
-    </div>
-    <div class="radio">
-        {!! Form::_label('is_published_no', Form::radio('is_published', '0', isset($oData) ? $oData->is_published === '0' : false, array('id' => 'is_published_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
-    </div>
-</div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}

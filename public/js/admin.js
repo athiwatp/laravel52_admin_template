@@ -47223,7 +47223,7 @@ module.exports = {
      **/
     columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date_start', name: 'date_start' },
     //{data: 'date_end', name:'date_end', bVisible:false},
-    { data: 'title', name: 'title' }, { data: 'content', name: 'description', bVisible: false }],
+    { data: 'title', name: 'title' }, { data: 'published', name: 'is_published' }],
 
     /**
      * Define the URLs
@@ -47259,17 +47259,18 @@ module.exports = {
                 published = '<i class="fa fa-eye green"></i>',
                 important = '';
 
-            if (row.published === false) {
-                published = '<i class="fa fa-eye-slash red"></i>';
-            }
-
             if (row.important === true) {
                 important = '<i class="fa fa-flag yellow"></i> ';
             }
 
-            return '<a href="/admin/announcements/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + important + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
+            return '<a href="/admin/announcements/' + row.id + '/edit" title="' + noTags + '">' + important + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 3
     }],
 
     ajax: {
@@ -47315,7 +47316,7 @@ module.exports = {
      **/
     columnDefs: [{
         className: 'select-checkbox',
-        render: function render() {
+        render: function render(data) {
             return '';
         },
         targets: 0
@@ -47359,7 +47360,17 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id' }, { data: 'client' }, { data: 'date' }],
+    columns: [{ data: 'id', name: 'id' }, { data: 'date', name: 'date' }, { data: 'client', name: 'client' }, { data: 'published', name: 'is_published' }],
+
+    /**
+     * Define the URLs
+     *
+     * @var {object}
+     **/
+    custURL: {
+        edit: '/admin/customerReviews/%n/edit',
+        del: system.getUrl('customerReviews/%n')
+    },
 
     /**
      * Renderer for the columns by the index
@@ -47367,10 +47378,16 @@ module.exports = {
      * @var Object
      **/
     columnDefs: [{
+        className: 'select-checkbox',
         render: function render(data) {
-            return system.getFormattedDate(data);
+            return '';
         },
-        targets: 2
+        targets: 0
+    }, {
+        render: function render(data) {
+            return '<i class="fa fa-calendar"></i> ' + system.getFormattedDate(data);
+        },
+        targets: 1
     }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
@@ -47380,10 +47397,20 @@ module.exports = {
                 published = '<i class="fa fa-eye-slash red"></i>';
             }
 
-            return '<a href="/admin/customerReviews/' + row.id + '/edit" client="' + noTags + '">' + published + ' ' + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/customerReviews/' + row.id + '/edit" client="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
         },
-        targets: 1
+        targets: 2
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 3
     }],
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
 
     ajax: {
         url: system.getUrl('customerReviews')
@@ -47800,7 +47827,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'content', name: 'content', bVisible: false }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'content', name: 'content', bVisible: false }, { data: 'published', name: 'is_published' }],
 
     /**
      * Define the URLs
@@ -47831,13 +47858,8 @@ module.exports = {
     }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
-                published = '<i class="fa fa-eye green"></i>',
                 main = '',
                 important = '';
-
-            if (row.published === false) {
-                published = '<i class="fa fa-eye-slash red"></i>';
-            }
 
             if (row.main === true) {
                 main = '<i class="fa fa-bolt light-yellow"></i> ';
@@ -47847,9 +47869,14 @@ module.exports = {
                 important = '<i class="fa fa-flag yellow"></i> ';
             }
 
-            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + main + important + system.ellipsis(noTags, 100) + '</a>' + (row.photo ? '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">' : '');
+            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + main + important + system.ellipsis(noTags, 100) + '</a>' + (row.photo ? '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 4
     }],
 
     ajax: {
@@ -47950,7 +47977,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'email', name: 'email' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'email', name: 'email' }, { data: 'active', name: 'is_active' }],
 
     /**
      * Define the URLs
@@ -47982,9 +48009,14 @@ module.exports = {
                 active = '<i class="fa fa-eye-slash red"></i>';
             }
 
-            return '<a href="/admin/subscribers/' + row.id + '/edit" title="' + noTags + '">' + active + ' ' + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/subscribers/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
         },
         targets: 1
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 2
     }],
 
     select: {
@@ -48147,7 +48179,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }, { data: 'content', name: 'content', bVisible: false }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }, { data: 'published', name: 'is_published' }],
 
     /**
      * Define the URLs
@@ -48166,7 +48198,7 @@ module.exports = {
      **/
     columnDefs: [{
         className: 'select-checkbox',
-        render: function render() {
+        render: function render(data) {
             return '';
         },
         targets: 0
@@ -48178,20 +48210,20 @@ module.exports = {
     }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
-                published = '<i class="fa fa-eye green"></i>',
                 img = '';
-
-            if (row.published === false) {
-                published = '<i class="fa fa-eye-slash red"></i>';
-            }
 
             if (system.isEmpty(row.preview) === false) {
                 img = '<br /><img width="100" height="50" src="http://img.youtube.com/vi/' + row.preview + '/hqdefault.jpg" ' + 'class="img-responsive img-thumbnail">';
             }
 
-            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + system.ellipsis(noTags, 100) + '</a>' + img;
+            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>' + img;
         },
         targets: 2
+    }, {
+        render: function render(data) {
+            return system.getPublishedIcon(data);
+        },
+        targets: 5
     }],
 
     ajax: {

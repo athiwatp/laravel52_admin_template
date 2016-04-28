@@ -9,6 +9,7 @@ module.exports = {
     columns: [
         {data: 'id', name:'id', orderable: false},
         {data: 'email', name:'email'},
+        {data: 'active', name:'is_active'}
     ],
 
     /**
@@ -44,10 +45,16 @@ module.exports = {
                 }
 
                 return '<a href="/admin/subscribers/'+ row.id + '/edit" title="' + noTags + '">' +
-                    active + ' ' + system.ellipsis( noTags, 100 ) +
+                    system.ellipsis( noTags, 100 ) +
                 '</a>';
             },
             targets: 1
+        },
+        {
+            render: function( data ) {
+                return system.getPublishedIcon(data);
+            },
+            targets: 2
         }
     ],
 

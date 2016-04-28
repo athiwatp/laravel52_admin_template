@@ -5,14 +5,14 @@
        cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th></th>
+            <th>#</th>
             <th class="sorting">{{  Lang::get('gallery.form.title') }}</th>
             <th>{{ Lang::get('gallery.form.file') }}</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <th></th>
+            <th>#</th>
             <th class="sorting">{{  Lang::get('gallery.form.title') }}</th>
             <th>{{ Lang::get('gallery.form.file') }}</th>
         </tr>

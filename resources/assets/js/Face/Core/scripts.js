@@ -23,7 +23,7 @@ $(function() {
         }, _system);
     }
 
-/**
+    /**
      * Check if event calendar is available
      **/
     if ( $('#event-calendar').length > 0 ) {
