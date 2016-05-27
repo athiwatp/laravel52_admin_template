@@ -71,6 +71,8 @@ class SettingsRepository extends BaseRepository {
     public function store($inputs)
     {
         $settings = $this->saveSettings(new $this->model, $inputs);
+
+        return $settings;
     }
 
     /**

@@ -10,11 +10,14 @@ return array(
         'editing_video_news' => 'Редагування відео новини',
         'video_news_saved_successfully' => 'Відео новина збережена успішно!',
         'video_news' => 'Відео новини',
+        'go_to_video_news' => 'Перейти до відео новин',
+        'count_video_news' => '(:num) відео сюжет(ів)',
         ),
 
     'form' => array(
         'title' => 'Заголовок',
-        'url' => 'URL на Youtube',
+        'url' => 'URL',
+        'youtube_url' => 'URL на Youtube',
         'picture' => 'Картинка',
         'date' => 'Дата',
         'content' => 'Зміст'

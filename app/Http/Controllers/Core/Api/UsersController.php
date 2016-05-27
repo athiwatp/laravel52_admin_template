@@ -7,6 +7,8 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Models\User;
 use League\Fractal\Manager;
 use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class UsersController extends ApiController
 {
@@ -63,6 +65,18 @@ class UsersController extends ApiController
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $destroy_user = $this->user->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $destroy_user['name'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\User',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

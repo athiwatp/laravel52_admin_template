@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\VideoNewsRepository;
+use Lang;
 
 class VideoController extends FaceController
 {
@@ -34,12 +35,13 @@ class VideoController extends FaceController
 
         if ( $lVideo ) {
             return $this->renderView('video.show', [
-                'lVideo' => $lVideo
+                'lVideo' => $lVideo,
+                'aTitle' => $lVideo->title
             ]);
         }
 
         return redirect()->route('home')
-            ->with('status', 'Страница - не найдена!');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 
     /**
@@ -52,7 +54,8 @@ class VideoController extends FaceController
 
 
         return $this->renderView('video.index', [
-            'lVideo' => $lVideo
+            'lVideo' => $lVideo,
+            'aTitle' => Lang::get('videoNews.lists.video_news')
         ]);
 
     }

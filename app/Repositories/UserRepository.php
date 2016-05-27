@@ -1,7 +1,7 @@
 <?php namespace App\Repositories;
 
 use App\Models\User as User;
-use Carbon\Carbon, Hash;
+use Carbon\Carbon, Hash, Lang, Config;
 
 class UserRepository extends BaseRepository {
     /**
@@ -40,12 +40,14 @@ class UserRepository extends BaseRepository {
         $user->name         = $inputs['name'];
         $user->email        = $inputs['email'];
         $user->is_admin     = ( isset($inputs['is_admin']) ? $inputs['is_admin'] : 0 );
-        $user->is_verified  = ( isset($inputs['is_verified']) ? $inputs['is_verified'] : 0 );
+        $user->is_verified  = ( isset($inputs['is_verified']) ? $inputs['is_verified'] : $user->is_verified );
         $user->phone        = ( isset($inputs['phone']) ? $inputs['phone'] : null );
+        $user->group        = $inputs['group'];
 
-        $user->save();
-
-        return true;
+        if ( $user->save() ) {
+            return $user;
+        }
+        return false;
     }
 
     /**
@@ -61,10 +63,12 @@ class UserRepository extends BaseRepository {
         $user->email        = $inputs['email'];
         $user->password     = Hash::make($inputs['password']);
         $user->api_token    = str_random(60);
+        $user->group        = $inputs['group'];
 
-        $user->save();
-
-        return true;
+        if ( $user->save() ) {
+            return $user;
+        }
+        return false;
     }
 
     /**
@@ -80,10 +84,15 @@ class UserRepository extends BaseRepository {
         $id = $inputs['id'];
 
         if ( isset($id) && $id > 0 ) {
-            $news = $this->saveUser( $this->model->find( $id ), $inputs );
+            $user = $this->saveUser( $this->model->find( $id ), $inputs );
         } else {
-            $news = $this->registerUser( new $this->model, $inputs );
+            $user = $this->registerUser( new $this->model, $inputs );
         }
+
+        if ( $user ) {
+            return $user;
+        }
+        return false;
     }
 
     /**
@@ -99,6 +108,20 @@ class UserRepository extends BaseRepository {
     }
 
     /**
+     * Find or update Message
+     *
+     * @param App\Models\User $user
+     *
+     * @return
+    */
+    public function findUserByToken( $api_token )
+    {
+        return $this->model
+            ->where('api_token', '=', $api_token)
+            ->first();
+    }
+
+    /**
      * Destroy a user
      *
      * @param {int} $id
@@ -108,5 +131,21 @@ class UserRepository extends BaseRepository {
     public function destroy($id)
     {
         return parent::destroy($id);
+    }
+
+    /**
+    * Prepare a list of chapters for the combox
+    */
+    public static function getCheckGroup()
+    {
+        $aItems = array(
+            -1 => ' --- ' . Lang::get('users.check.select_group') . ' --- ',
+            Config::get('constants.USERS.USER') => Lang::get('users.check.user'),
+            Config::get('constants.USERS.ADMIN') => Lang::get('users.check.administrator'),
+            Config::get('constants.USERS.EDITOR') => Lang::get('users.check.editor'),
+        );
+
+
+        return $aItems;
     }
 }

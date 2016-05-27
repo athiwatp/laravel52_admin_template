@@ -7,26 +7,33 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Models\News;
 use League\Fractal\Manager;
 use App\Repositories\NewsRepository;
+use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class NewsController extends ApiController
 {
     /**
-     * Injected variable for the chapters
+     * Injected variable for the news
      *
-     * @var {App\Repositories\ChaptersRepository}
+     * @var {App\Repositories\NewsRepository}
      */
     protected $news = null;
+    protected $user = null;
 
     /**
      * Constructor
      */
-    public function __construct(Manager $fractal, NewsRepository $news)
+    public function __construct( Manager $fractal, NewsRepository $news, UserRepository $user )
     {
         // apply parent implementation
         parent::__construct($fractal);
 
         // page repository
         $this->news = $news;
+
+        // User repository
+        $this->user = $user;
     }
 
     /**
@@ -36,6 +43,14 @@ class NewsController extends ApiController
      */
     public function index( Request $request )
     {
+        $isDashboard = $request->get('dashboard');
+
+        if ( $isDashboard ) {
+            return Datatables::of( $this->news->getLatestNews() )
+                ->setTransformer( new NewsTransformer() )
+                ->make(true);
+        }
+
         return Datatables::of(News::query())
             ->setTransformer( new NewsTransformer() )
             ->make(true);
@@ -65,14 +80,26 @@ class NewsController extends ApiController
     }
 
     /**
-     * Destroy the announce item
+     * Destroy the news item
      *
-     * @param id {Integer} - menu identifier
+     * @param id {Integer} - news identifier
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $news = $this->news->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $news['title'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\News',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

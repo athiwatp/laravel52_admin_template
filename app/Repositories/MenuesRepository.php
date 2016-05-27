@@ -1,10 +1,11 @@
 <?php namespace App\Repositories;
 
 use App\Models\Menues as Menues;
+use App\Models\MenuLinked;
 use Pingpong\Menus\MenuItem;
 use App\Models\UrlHistory as UrlHistory;
-use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
 use App\Repositories\UrlHistoryRepository;
+use Carbon\Carbon, Lang, Auth, Config, cTrackChangesUrl;
 
 class MenuesRepository extends BaseRepository {
     /**
@@ -15,19 +16,28 @@ class MenuesRepository extends BaseRepository {
     protected $history = null;
 
     /**
+     * inject the LinkedMenu model
+    */
+    protected $linkedmenu = null;
+
+    /**
      * Create a new Message instance
      *
      * @param App\Models\Menues $menues
      *
      * @return void
     */
-    public function __construct( Menues $menues = null, UrlHistoryRepository $history = null )
+    public function __construct( Menues $menues = null, UrlHistoryRepository $history = null, MenuLinked $linked = null )
     {
         if ( $menues === null ) {
             $menues = new Menues();
         }
 
         $this->model = $menues;
+
+        if ( $linked === null ) {
+            $linked = new MenuLinked();
+        }
 
         // Inject url history object
         $this->history = $history;
@@ -54,10 +64,15 @@ class MenuesRepository extends BaseRepository {
     */
     public function saveMenues( $menu, $inputs )
     {
-        $oMenus    = self::getReadyUrl( $menu->children_count, $inputs['parent_id'], (isset($menu->parent_id) ? $menu->parent_id : '0'), $menu );
-        
-        $menu->title        = $inputs['title'];
+        $oMenus = self::getReadyUrl(
+            $menu->children_count,
+            array_key_exists('parent_id', $inputs) ? $inputs['parent_id'] : null,
+            $menu->parent_id > 0 ? $menu->parent_id : 0,
+            $menu
+        );
+
         $menu->parent_id    = ( array_key_exists('parent_id', $inputs) && $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
+        $menu->title        = $inputs['title'];
         $menu->path         = $oMenus['path'];
         $menu->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : 0 );
         $menu->type_menu    = ( isset($inputs['type_menu']) ? $inputs['type_menu'] : 0 );
@@ -72,9 +87,22 @@ class MenuesRepository extends BaseRepository {
         $menu->is_shown_print_version = ( isset($inputs['is_shown_print_version']) ? $inputs['is_shown_print_version'] : 0 );
         $menu->linked_to = ( array_key_exists('linked_to_menu', $inputs) ? $inputs['linked_to_menu'] : null);
 
-        $menu->save();
+        if ( $menu->save() ) {
 
-        return true;
+            $this->linkedmenu
+                ->where('id_linked_menu', $menu->id)
+                ->delete();
+
+            if ( $menu->linked_to > 0 ) {
+                $this->linkedmenu->insert([
+                    ['id_menu' => $menu->linked_to, 'id_linked_menu' => $menu->id]
+                ]);
+            }
+
+            return $menu;
+        }
+
+        return false;
     }
 
     /**
@@ -87,25 +115,27 @@ class MenuesRepository extends BaseRepository {
     */
     public function store( $inputs )
     {
-        $id = $inputs['id'];
+        $id   = array_key_exists('id', $inputs) ? $inputs['id'] : 0;
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_MENU');
 
         if ( isset($id) && $id > 0 ) {
             $model = $this->model->find( $id );
         } else {
             $model = new $this->model;
         }
+        $oldUrl = $model->url;
 
-        if ( $id > 0 && $model->url != $inputs['url'] ) {
-            $sSaveUrlHistory = cTrackChangesUrl::getItems(
-                array(
-                    'aData' => array(
-                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_MENU'),
-                        'url' => $inputs['url'],
-                        'type_id' => $inputs['id']
-                    )
-                ));
+        $aMenues = $this->saveMenues( $model, $inputs );
+
+        if ( $oldUrl != $inputs['url'] ) {
+            $changeUrl = get_url_history($aMenues['id'], $TYPE, $inputs['url'] );
+            $this->fixChanges( $aMenues['id'], ['url' => $changeUrl] );
         }
-        $menues = $this->saveMenues( $model, $inputs );
+
+        if ( $aMenues ) {
+            return $aMenues;
+        }
+        return false;
     }
 
     /**
@@ -121,6 +151,18 @@ class MenuesRepository extends BaseRepository {
     }
 
     /**
+     * Where Message
+     *
+     * @param App\Models\Menues $menues
+     *
+     * @return
+    */
+    public function where( $field, $sign ,$request )
+    {
+        return $this->model->where($field, $sign, $request );
+    }
+
+    /**
      * Destroy a message
      *
      * @param App\Models\Menues
@@ -129,6 +171,10 @@ class MenuesRepository extends BaseRepository {
     */
     public function destroy($id)
     {
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_MENU');
+
+        $this->history->getDestroyById( $id, $TYPE );
+
         return parent::destroy($id);
     }
 
@@ -147,7 +193,7 @@ class MenuesRepository extends BaseRepository {
         );
 
         if ( $mHistory && $mHistory->status === true ) {
-            $result = $this->model->findById( $mHistory->id );
+            $result = $this->getById( $mHistory->id );
         } else {
             $result = $this->getMenu()
                 ->where('url', $url)
@@ -190,8 +236,7 @@ class MenuesRepository extends BaseRepository {
         return array(
             Config::get('constants.TYPE_MENU.MAIN') => Lang::get('menues.form.type_main'),
             Config::get('constants.TYPE_MENU.SIDE') => Lang::get('menues.form.type_side'),
-            Config::get('constants.TYPE_MENU.FOOTER') => Lang::get('menues.form.type_footer'),
-//            Config::get('constants.TYPE_MENU.HIDDEN_PAGE') => Lang::get('menues.form.type_hidden_page')
+            Config::get('constants.TYPE_MENU.FOOTER') => Lang::get('menues.form.type_footer')
         );
     }
 
@@ -229,9 +274,15 @@ class MenuesRepository extends BaseRepository {
     /**
      *
     */
-    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId, $oMenu ) {
+    public static function getReadyUrl( $children_count, $iParentId, $iOldParentId, $oMenu )
+    {
+        $oMenus = [
+            'path' => $oMenu ? $oMenu->path : null,
+            'children_count' => $oMenu ? $oMenu->children_count : 0
+        ];
 
         if ( $iParentId != $iOldParentId ) {
+
             if ( empty($iParentId) && $iOldParentId > 0) {
                 if ($oParentMenu = Menues::find($iOldParentId)) {
                     $oMenus['children_count'] = $oParentMenu->children_count - 1;
@@ -247,9 +298,9 @@ class MenuesRepository extends BaseRepository {
                     $oMenus['path'] = self::getParentPath($iParentId, $oParentMenu->path);
                 }
             }
-
-            return $oMenus;
         }
+
+        return $oMenus;
     }
 
     public static function getParentPath($iParentId, $sParentPath = '', $sAction = 'add')
@@ -266,10 +317,20 @@ class MenuesRepository extends BaseRepository {
         return $sResult;
     }
 
-    public static function buildTree(array $elements, $parentId = 0) {
-        $branch = array();
+    /**
+     * Build a tree for the menu
+     *
+    */
+    public static function buildTree(array $elements, $parentId = 0, $linked = false ) {
+        $branch = [];
+
         foreach ($elements as $element) {
-            if ($element['parent_id'] == $parentId) {
+            if ($element['parent_id'] == $parentId || $linked === true) {
+
+                if ( $linked === true && $element['linked_to'] == 0) {
+                    continue;
+                }
+
                 $children = self::buildTree($elements, $element['id']);
 
                 if ($children) {
@@ -363,6 +424,16 @@ class MenuesRepository extends BaseRepository {
     }
 
     /**
+     * Retrieve child elements
+     */
+    public function child( $parentId )
+    {
+        return $this->model->whereRaw('path LIKE ?', ['%zZ' . $parentId . 'zZ%'])
+            ->orderBy('path')
+            ->get();
+    }
+
+    /**
      * Returns sidebar menu
      *
      * @return Object
@@ -376,8 +447,8 @@ class MenuesRepository extends BaseRepository {
             $query->where('linked_to', $menu_id);
         } else {
             $query->where(function($q){
-                $q->whereNull('linked_to')
-                    ->whereOr('linked_to', 0);
+                $q->whereNull( 'linked_to' )
+                    ->orWhere( 'linked_to', 0);
             });
         }
 
@@ -421,6 +492,24 @@ class MenuesRepository extends BaseRepository {
                 $oMenuItem['title']
             );
         }
+    }
+
+    /**
+     *
+     *
+     *
+    */
+    public static function getRoute()
+    {
+        $aRoute = array(
+            '/' => Lang::get('menues.route.dashboard'),
+            '/announce' => Lang::get('menues.route.announce'),
+            '/news' => Lang::get('menues.route.news'),
+            '/video' => Lang::get('menues.route.video_news'),
+            '/gallery' => Lang::get('menues.route.gallery'),
+            );
+
+        return $aRoute;
     }
 
         /**
@@ -519,7 +608,7 @@ class MenuesRepository extends BaseRepository {
             'gallery' => array(
                 'title' => Lang::get('menues.nav.gallery'),
                 'leftIcon' => '<i class="fa fa-picture-o"></i>',
-                'rightIcon' => '<i class="fa fa-angle-left pull-right"></i>',
+                'rightIcon' => '<i class="fa arrow"></i>',
                 'children' => array(
                     'gallery-chapters' => array(
                         'title' => Lang::get('menues.nav.gallery_chapter'),
@@ -562,6 +651,12 @@ class MenuesRepository extends BaseRepository {
                         'title' => Lang::get('settings.form.settings'),
                         'icon' => '<i class="fa fa-cog"></i>',
                         'route' => 'admin.settings.index'
+                    ),
+
+                    'logs' => array(
+                        'title' => Lang::get('menues.nav.logs'),
+                        'icon' => '<i class="fa fa-wrench"></i>',
+                        'route' => 'admin.logs'
                     )
                 )
             )

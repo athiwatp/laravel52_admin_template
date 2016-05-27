@@ -1,7 +1,36 @@
+<div class="modal fade" id="myRoute" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Внутрішні модулі</h4>
+            </div>
+            <div class="modal-body">
+                <p class="help-block">{!! Lang::get('menues.form.modules') !!}</p>
+                @forelse($getRoute as $key => $value)
+                    <div class="alert alert-info">
+                        <a class="route-model" data-dismiss="modal" data-toggle="getModal" data-target="#thisModel">
+                            {{ $key }} => "{{ $value }}"
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            {{--
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+            --}}
+        </div>
+    </div>
+</div>
+
 <div class="form-group">
     {{ Form::label('title', Lang::get('menues.form.title') ) }}
     {{
         Form::text('title', ( isset($oData) ? $oData->title : null), array(
+            'required',
+            'minlength' => 3,
+            'maxlength' => 255,
             'class' => 'form-control convert-to-url',
             'v-model' => 'menu.title'
         ))
@@ -22,11 +51,11 @@
             '@change' => 'onTypeChange()'
         ))
     }}
-    <p class="help-block">Разделяя меню по типу, мы имеем возможность манипулировать элементами и показывать в соответсвующих местах</p>
+    <p class="help-block">{{ Lang::get('menues.form.message_type_menu') }}</p>
 </div>
 
 <div class="form-group">
-    {{ Form::label('linked_to_menu', 'Связан с' ) }}
+    {{ Form::label('linked_to_menu', Lang::get('menues.form.connected_with') ) }}
     <select
         name="linked_to_menu"
         v-model="menu.linked_to"
@@ -34,7 +63,7 @@
         :disabled="isLinkedDisabled">
         <option v-for="option in linkedList" :value="option.value">@{{ option.text }}</option>
     </select>
-    <p class="help-block">Показывать текущий пункт меню, на связной странице (как сайдбар меню)</p>
+    <p class="help-block">{{ Lang::get('menues.form.message_linked_to_menu') }}</p>
 </div>
 
 <div class="form-group">
@@ -48,21 +77,33 @@
             name="parent_id"
             v-model="menu.parent"
             class="form-control"
-            :disabled="isParentDisabled">
+            /*:disabled="isParentDisabled"*/>
         <option v-for="option in parentList" :value="option.value">@{{ option.text }}</option>
     </select>
 </div>
 
 <div class="form-group">
     {{ Form::label('page_id', Lang::get('menues.form.page_id') ) }}
-    {{ Form::select('page_id', $aPages, ( isset($oData) ? $oData->page_id : null), array('class' => 'form-control')) }}
+    {{
+        Form::select(
+            'page_id',
+            $aPages,
+            isset($oData) && $oData ? $oData->page_id : -1,
+            [
+                'class' => 'form-control',
+                 'v-model' => 'menu.page_id',
+                ':disabled'=>'isRedirectDisabledPage'
+            ]
+        )
+    }}
 </div>
 
 <div class="form-group">
-    {!!  Form::_label('redirect_url', Lang::get('menues.form.redirect_url') . ' (<a href="#" :click="showModulesDialog">внутренние модули</a>)' ) !!}
+    {!!  Form::_label('redirect_url', Lang::get('menues.form.redirect_url') . ' (<a data-toggle="modal" data-target="#myRoute">' . Lang::get('menues.form.internal_modules') . '</a>)' ) !!}
     {{
         Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array(
             'class' => 'form-control',
+            'id' => 'thisModel',
             ':disabled'=>'isRedirectTextDisabled'
         ))
     }}
@@ -101,9 +142,12 @@
         'v-model' => 'retrieved.linked_id'
     ])
 }}
+
+@if( env('APP_ENV', 'testing') )
+    {{ Form::hidden('parent_id', '-1') }}
+    {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 0) }}
+@endif
 {{-- End --}}
-
-
 
 @if ( Config::get('app.debug') == true )
     <pre>

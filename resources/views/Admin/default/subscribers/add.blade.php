@@ -1,15 +1,31 @@
-<div class="form-group">
-    {{ Form::label('email', Lang::get('subscribers.form.email') ) }}
-    {{ Form::text('email', ( isset($oData) ? $oData->email : null), array('class' => 'form-control', ( empty($oData) ? '' : 'disabled') )) }}
+<div class="form-group input-group">
+    <span class="input-group-addon">@</span>
+    {{ 
+        Form::text('email', ( isset($oData) ? $oData->email : null), array(
+            'required',
+            'minlength' => 3,
+            'maxlength' => 255,
+            'placeholder' => Lang::get('subscribers.form.email'),
+            'class' => 'form-control',
+            ( empty($oData) ? '' : 'readonly')
+            )
+        )
+    }}
 </div>
 
+@if ( empty($oData) || ( $oData && $oData->is_active == '0' ) )
 <div class="form-group">
-    {{ Form::label('is_active', Lang::get('subscribers.form.active')) }}
-    <div class="radio">
-        {!! Form::_label('is_active_yes', Form::radio('is_active', '1', isset($oData) ? $oData->is_active === '1' : true, array('id' => 'is_active_yes')) . ' ' . Lang::get('table_field.lists.yes') ) !!}
-    </div>
-    <div class="radio">
-        {!! Form::_label('is_active_no', Form::radio('is_active', '0', isset($oData) ? $oData->is_active === '0' : false, array('id' => 'is_active_no')) . ' ' . Lang::get('table_field.lists.no')) !!}
-    </div>
+    {!!
+        Form::_label('send_activation_email',
+            Form::checkbox('send_activation_email', '1', false, ['id' => 'send_activation_email']) .
+            ' ' . Lang::get('subscribers.form.send_activation_email')
+        )
+    !!}
 </div>
+@endif
+
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
+
+@if( env('APP_ENV', 'testing') )
+    {{ Form::hidden('is_active', isset($oData) ? $oData->is_active : 1) }}
+@endif

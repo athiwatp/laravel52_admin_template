@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Core\Admin;
+<?php
+
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ChaptersRequest;
@@ -6,6 +8,7 @@ use App\Repositories\ChaptersRepository;
 
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
+use App\Events\Logs\LogsWasChanged;
 use App\Http\Requests;
 use App\Repositories\FileRepository;
 use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
@@ -142,7 +145,7 @@ class ChaptersController extends AdminController
                         'url' => URL::route('admin.chapter.create', array('sType' => $sType)),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add', 'class' => 'add-btn')
+                        'aParams' => array('id' => 'add_chapter', 'class' => 'add-btn')
                     ),
                     'edit' => array(
                         'url' => '#',
@@ -214,6 +217,7 @@ class ChaptersController extends AdminController
             'formChapter' => $formChapter,
             'formSubChapter' => '',
             'formTitle' =>  $formTitle,
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -247,8 +251,15 @@ class ChaptersController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( ChaptersRequest $request )
+    public function store( Request $request )
     {
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'pos' => 'required|numeric',
+                'image' => 'image'
+                ));
+
         if ( $chapters = $this->chapters->store( $request->all() ) ) {
             $TYPE_CHAPTER = Config::get('constants.RESOURCES.CHAPTER');
 
@@ -278,6 +289,11 @@ class ChaptersController extends AdminController
                     ]);
                 }
             }
+            Event::fire( new LogsWasChanged(array(
+                'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+                'object_id'    => $chapters['id'],
+                'object_type'  => 'App\Models\Chapters'
+            )));
 
             // Check the files for current content
             $this->file->correct($request->get('_token'), $chapters['id'], $TYPE_CHAPTER);
@@ -364,6 +380,7 @@ class ChaptersController extends AdminController
             'formChapter' => $sformChapter,
             'formSubChapter' => '',
             'formTitle' => $sformTitle,
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),

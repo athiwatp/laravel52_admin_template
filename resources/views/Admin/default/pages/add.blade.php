@@ -15,8 +15,31 @@
             {{ Form::text('title', ( $oData ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
         </div>
         <div class="form-group">
-            {{ Form::label('url', Lang::get('news.form.url_ident') ) }}
-            {{ Form::text('url', ( $oData ? $oData->url : null), array('class' => 'form-control data-url', 'readonly' => true)) }}
+            {{ Form::label('url', Lang::get('news.form.url') ) }}
+            {{
+                Form::text(
+                    'url', ( $oData ? $oData->url : null), array(
+                        'id' => 'url',
+                        'v-model' => 'pages.url',
+                        'class' => 'form-control data-url',
+                        'readonly' => true
+                    )
+                )
+            }}
+        </div>
+        <div class="form-group">
+            {{ Form::label('public_url', Lang::get('pages.form.public_url') ) }}
+            {{
+                Form::text(
+                    'public_url', ( $oData ? route('page-url', ['url' => $oData->url]) : route('page-url', ['url' => '%'])) , array(
+                        'id' => 'public_url',
+                        'url' => route('page-url', ['url' => 'url']),
+                        'v-model' => 'pages.public_url',
+                        'class' => 'form-control data-public_url',
+                        'disabled'
+                    )
+                )
+            }}
         </div>
         <div class="form-group">
             {{ Form::label('subtitle', Lang::get('pages.form.subtitle') ) }}
@@ -39,4 +62,15 @@
         </div>
     </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
+@if( env('APP_ENV', 'testing') )
+    {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 1) }}
+@endif
+{{ Form::hidden('template_url', route('page-url', ['url' => '%%url%%']), ['v-model' => 'pages.template_url'] ) }}
+{{ Form::hidden('menu_id', isset($oMenuId) ? $oMenuId : 0) }}
 </div>
+
+@if ( Config::get('app.debug') == true )
+    <pre>
+        @{{ $data | json }}
+    </pre>
+@endif

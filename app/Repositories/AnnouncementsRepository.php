@@ -1,10 +1,18 @@
 <?php namespace App\Repositories;
 
 use App\Models\Announcements as Announce;
+use App\Repositories\UrlHistoryRepository;
 use Illuminate\Http\Request;
-use Carbon\Carbon, Auth, Config;
+use Carbon\Carbon, Auth, Config, cTrackChangesUrl;
 
 class AnnouncementsRepository extends BaseRepository {
+
+    /**
+     * Url History instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $history = null;
 
     /**
      * Published flag
@@ -20,10 +28,13 @@ class AnnouncementsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct( Announce $announce )
+    public function __construct( Announce $announce, UrlHistoryRepository $history = null )
     {
         // Announce Model
         $this->model = $announce;
+
+        // Inject url history object
+        $this->history = $history;
 
         // Retrieve the config settings
         $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
@@ -39,6 +50,18 @@ class AnnouncementsRepository extends BaseRepository {
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Create or update Message
+     *
+     * @param App\Models\Announce $announce
+     *
+     * @return Collection of Object
+    */
+    public function getIndex()
+    {
+        return $this->model->where('is_published', '=', $this->PUBLISHED)->get();
     }
 
     /**
@@ -66,16 +89,18 @@ class AnnouncementsRepository extends BaseRepository {
         if ( ! $announce->is_topical ) {
             $announce->top_date_end = null;
         } else {
-            if ( empty($announce->top_date_end) ) {
+            $top_date_end = test_for_materiality_date( $announce->top_date_end, Carbon::now()->subYear() );
+            if ( empty($announce->top_date_end) || ($top_date_end !== true) ) {
                 $announce->top_date_end = Carbon::now()->addDays(3);
             }
         }
 
         if ($announce && count($inputs) > 0 ) {
             $announce->save();
+            return $announce;
         }
 
-        return true;
+        return false;
     }
 
 
@@ -128,6 +153,19 @@ class AnnouncementsRepository extends BaseRepository {
         }
 
         return [];
+    }
+
+    /**
+     * Get todays announces
+     *
+    */
+    public function getTodaysAnnounces()
+    {
+        return $this->model->whereRaw('DATE_FORMAT(created_at, "%Y-%m-%d") = ?', [Carbon::today()->toDateString()])
+            ->where('is_published', $this->PUBLISHED)
+            ->orderBy('date_start', 'ASC')
+            ->take(10)
+            ->get();
     }
 
     /**
@@ -205,8 +243,6 @@ class AnnouncementsRepository extends BaseRepository {
 
         $result = $object->paginate( $this->paginationAmount );
 
-//        dd($object->toSql(), $dt->toDateString() );
-
         if ( $result ) {
             return $result;
         }
@@ -224,15 +260,26 @@ class AnnouncementsRepository extends BaseRepository {
     public function store( $inputs )
     {
         $id = $inputs['id'];
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_ANNOUNCE');
+        $url = cTrackChangesUrl::addUrl(['content_title' => $inputs['title']]);
 
         if ( isset($id) && $id > 0 ) {
             $model = $this->model->find( $id );
+            $oldUrl = $this->history->getFindUrl( $id, $TYPE, $url->url );
         } else {
             $model = new $this->model;
+            $oldUrl = null;
         }
 
-        if ( $this->saveAnnounce( $model, $inputs ) ) {
-            return $model->toArray();
+        $aAnnounce = $this->saveAnnounce( $model, $inputs );
+
+        if ( ( isset($oldUrl) && $oldUrl['url'] != $url->url ) || ( empty($oldUrl['url']) && isset($url->url) ) ) {
+
+            $changeUrl = get_url_history($aAnnounce['id'], $TYPE, $url->url );
+        }
+
+        if ( $aAnnounce ) {
+            return $aAnnounce->toArray();
         } else {
             return false;
         }
@@ -259,6 +306,57 @@ class AnnouncementsRepository extends BaseRepository {
     */
     public function destroy($id)
     {
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_ANNOUNCE');
+
+        $this->history->getDestroyById( $id, $TYPE );
+
         return parent::destroy($id);
     }
+
+    public function getLatestAnnounce()
+    {
+        return $this->model->orderBy('created_at', 'DESC')->take(10)->get();
+    }
+
+    //// TEMP: SHOULD BE REMOVED
+    public function sync( $start )
+    {
+        $iAmount = 100;
+        $iIndex  = 0;
+
+        $aAnnounces = $this->index();
+
+        $oldAnnounces = DB::connection('old_db')->table('ogolosh')
+            ->take($iAmount)
+            ->offset($start * $iAmount)
+            ->get();
+
+        foreach($oldAnnounces as $oldItem) {
+            $announce = $this->model
+                ->where( 'title','=', htmlspecialchars_decode($oldItem->title) )
+                ->where( 'description', '=', htmlspecialchars_decode($oldItem->full_text))
+                ->first();
+
+            if ($announce && $announce->count() > 0) {
+                continue;
+            }
+
+            $nAnnounce = new $this->model;
+
+            $nAnnounce->title        = htmlspecialchars_decode($oldItem->title);
+            $nAnnounce->description  = htmlspecialchars_decode($oldItem->full_text);
+            $nAnnounce->date_start   = $oldItem->dat;
+            $nAnnounce->date_end     = $oldItem->dat;
+            $nAnnounce->user_id      = 1;
+            $nAnnounce->is_published = 0;
+
+            $nAnnounce->save();
+            $iIndex++;
+        }
+        $start++;
+
+        return array('start' => $start, 'index' => $iIndex);
+    }
+    ////
+
 }

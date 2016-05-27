@@ -91,9 +91,8 @@ class GalleryRepository extends BaseRepository {
     {
         $gallery->title        = $inputs['title'];
         $gallery->description  = $inputs['description'];
-        $gallery->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
+        $gallery->chapter_id   = $inputs['chapter_id'];
         $gallery->user_id      = Auth::id();
-        // $gallery->filename     = $inputs['filename'];
         $gallery->tp           = Config::get('constants.GALLERY.PHOTO');
         $gallery->pos          = $inputs['pos'];
 

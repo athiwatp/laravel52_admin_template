@@ -39,12 +39,12 @@
                 @if ( isset($errors) && $errors->all() )
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h4><i class="icon fa fa-ban"></i> {{ Lang::get('admin_page.form.attention') }}</h4>
-                    {{ Lang::get('admin_page.form.save_issue') }}
+                    <h4><i class="icon fa fa-ban"></i> {{ Lang::get('table_field.lists.attention') }}</h4>
+                    {{ Lang::get('table_field.lists.save_issue') }}
                     <ul>
                         @foreach($errors->all() as $error)
                         <li>
-                            {{ $error }}
+                            {!! $error !!}
                         </li>
                         @endforeach
                     </ul>

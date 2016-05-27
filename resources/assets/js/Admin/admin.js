@@ -3,6 +3,7 @@ var loader = require( './modules/_loader.js' );
 var _system = require( './modules/_System.js').getInstance();
 
 require( './types/String.js' );
+require( './types/Array.js' );
 require( './modules/_metis.js' );
 require( './modules/_resizer.js' );
 
@@ -13,22 +14,36 @@ require( 'bootstrap-datepicker' );
 
 $(function() {
 
-    if ( $('.switcher').length > 0 ) {
-        $('.switcher').each(function() {
-            var id = $(this).attr('id');
+    /// ========== VUE Components ============ ///
+    $('.switcher').each(function() {
+        var id = $(this).attr('id');
 
-            if ( _system.isEmpty(id) ) {
-                id = _system.generateId();
+        if ( _system.isEmpty(id) ) {
+            id = _system.generateId();
 
-                $(this).attr('id', id);
-            }
-            // console.log(id);
+            $(this).attr('id', id);
+        }
 
-            var gallery = require('./components/my-switcher.js')($, {
-                elId: '#' + id
-            }, _system);
-        });
-    }
+        require('./components/my-switcher.js')($, {
+            elId: '#' + id
+        }, _system);
+    });
+
+    $('.street-switcher').each(function() {
+        var id = $(this).attr('id');
+
+        if ( _system.isEmpty(id) ) {
+            id = _system.generateId();
+
+            $(this).attr('id', id);
+        }
+
+        require('../Core/components/my-location-switcher.js')($, {
+            elId: '#' + id
+        }, _system);
+    });
+    /// ====================== ///
+
 
     /**
      * Handle the grids
@@ -46,12 +61,10 @@ $(function() {
     });
     // -- end of grid handling
 
+
     // Toolbar buttons
     // 1. edit_menu
     if ( $('#edit').length > 0 ) {
-
-        // console.log('Hey!!!!');
-
         $('#edit').on('click', function(e) {
             var self = this;
 
@@ -158,10 +171,14 @@ $(function() {
 
         $(this).on('keyup', function() {
             var sTitle = $(this).val(),
-                resField = $('.data-url');
+                resField = $('.data-url'),
+                resFieldPublic = $('.data-public_url');
 
             if (resField) {
                 $(resField).val( sTitle.translit() );
+            }
+            if (resFieldPublic.length > 0 ) {
+                $(resFieldPublic).val(public_url.value.substring(0,26) + url.value);
             }
         });
 
@@ -174,9 +191,8 @@ $(function() {
         var handler = $(this).attr('data-handler');
 
         if ( handler ) {
-            var module = loader.getFormModule(handler);
+            loader.getFormModule(handler);
         }
-
     });
 
     /**
@@ -190,6 +206,22 @@ $(function() {
                 autoclose: true
             });
         }
+    });
+
+    $(function() {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('[data-role="page-scroller"]').fadeIn();
+            } else {
+                $('[data-role="page-scroller"]').fadeOut();
+            }
+        });
+
+        $('[data-role="page-scroller"]').click(function() {
+            $('body, html').animate({
+                scrollTop: 0
+            }, 500);
+        });
     });
     // ====== //
 

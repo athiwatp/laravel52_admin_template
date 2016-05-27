@@ -27,4 +27,18 @@ class Announcements extends Model
     {
         return $this->hasOne('App\Models\Chapters', 'id', 'chapter_id');
     }
+
+    /**
+     * Returns the list of logs which are related to current announce
+     *
+    */
+    public function logs()
+    {
+       return $this->morphMany('App\Modules\Logs', 'object');
+    }
+
+    public function getEditurlAttribute()
+    {
+        return route( 'admin.announcements.edit', array('id' => $this->id) );
+    }
 }

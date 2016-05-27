@@ -42,7 +42,7 @@ class CustomerReviewsRepository extends BaseRepository {
     {
         $reviews->client        = $inputs['client'];
         $reviews->comment      = $inputs['comment'];
-        $reviews->date         = $inputs['date'] ? Carbon::createFromFormat($this->dateFormat, $inputs['date'] ) : null;
+        $reviews->date         = ( isset($inputs['date']) ? $inputs['date'] : Carbon::now()->toDateString() );
         $reviews->signature    = $inputs['signature'];
         $reviews->is_published = $inputs['is_published'];
         $reviews->user_id      = Auth::id();
@@ -90,7 +90,7 @@ class CustomerReviewsRepository extends BaseRepository {
      *
      * @param {Int} $id
      *
-     * @return {Boolean}
+     * @return void
     */
     public function destroy($id)
     {

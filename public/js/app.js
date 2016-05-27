@@ -29617,8 +29617,6 @@ var AdminSingleton = function ($) {
              **/
             redirectTo: function redirectTo(url) {
 
-                // console.log(url);
-
                 window.location.href = url;
             },
 
@@ -29815,6 +29813,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         template: '<div id="event-calendar-wrapper"></div>',
 
         /**
+         * Describe the properties for the component
+         *
+         * @var Object
+         **/
+        props: {
+            /**
+             * Current date
+             *
+             * @var String
+             **/
+            currDate: {
+                type: String,
+                default: null
+            }
+        },
+
+        /**
          * Data structure
          *
          **/
@@ -29835,7 +29850,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
          **/
         ready: function ready() {
             var self = this,
-                wrapper = '#event-calendar-wrapper';
+                wrapper = '#event-calendar-wrapper',
+                currDate = self.$get('currDate') || new Date(),
+                defaultDate = new Date(currDate);
 
             // Senf ajax request
             self._sendRequest().then(function () {
@@ -29844,6 +29861,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 $(wrapper).datepicker({
                     language: 'uk',
                     todayHighlight: true,
+                    defaultViewDate: {
+                        year: defaultDate.getFullYear(),
+                        month: defaultDate.getMonth(),
+                        day: defaultDate.getDate()
+                    },
                     beforeShowDay: function beforeShowDay(date) {
                         var year = date.getFullYear(),
                             month = date.getMonth() + 1,
@@ -30181,7 +30203,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                     todayHighlight: true,
                     defaultViewDate: {
                         year: defaultDate.getFullYear(),
-                        month: defaultDate.getMonth() + 1,
+                        month: defaultDate.getMonth(),
                         day: defaultDate.getDate()
                     },
 
@@ -30785,9 +30807,41 @@ $(function () {
             }, _system);
         });
     }
+
+    /**
+     * Handle the photo item
+     *
+     **/
+    var photoItemSelector = '.photo-gallery-item';
+    if ($(photoItemSelector).length > 0) {
+
+        $(photoItemSelector).each(function () {
+
+            $(this).on('click', function (event) {
+                event = event || window.event;
+
+                var target = event.target || event.srcElement,
+                    link = target.src ? target.parentNode : target,
+                    options = { index: link, event: event, titleProperty: 'title' },
+                    links = $('a.link-item');
+
+                // Inlcude Blueimp library
+                require('blueimp-gallery');
+
+                // Cancel all commands
+                event.preventDefault();
+
+                blueimp.Gallery(links, options);
+
+                return false;
+            });
+        });
+
+        $(photoItemSelector).append('<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">' + '<div class="slides"></div>' + '<h3 class="title"></h3>' + '<a class="prev">‹</a>' + '<a class="next">›</a>' + '<a class="close">×</a>' + '<a class="play-pause"></a>' + '<ol class="indicator"></ol>' + '</div>');
+    }
 });
 
-},{"./../../Admin/modules/_System":33,"./components/my-event-calendar.js":34,"./components/my-gallery.js":35,"./components/my-news-calendar.js":36,"./components/my-search.js":37,"./components/my-subscriber.js":38,"jquery":4,"lightbox2":5}],40:[function(require,module,exports){
+},{"./../../Admin/modules/_System":33,"./components/my-event-calendar.js":34,"./components/my-gallery.js":35,"./components/my-news-calendar.js":36,"./components/my-search.js":37,"./components/my-subscriber.js":38,"blueimp-gallery":2,"jquery":4,"lightbox2":5}],40:[function(require,module,exports){
 'use strict';
 
 var jQuery = require('jquery');
@@ -30846,10 +30900,94 @@ var jQuery = require('jquery');
 },{"jquery":4}],41:[function(require,module,exports){
 'use strict';
 
+/**
+ * Module to handle the menu on the front end
+ *
+ *
+ **/
+module.exports = {
+
+    /**
+     * The entry point for the module
+     *
+     **/
+    init: function init() {
+        var pathname = window.location.pathname;
+        var url = window.location.href,
+            menu_token = jQuery('meta[name="menu_token"]').attr('content'),
+            main_menu_token = jQuery('meta[name="main_menu_token"]').attr('content'),
+            selector = 'a[href' + (pathname === '/' ? '' : '*') + '="' + (pathname === '/' ? url : pathname) + '"],' + 'a[href*="' + menu_token.trim() + '"],' + 'a[href*="' + main_menu_token.trim() + '"]';
+
+        jQuery(selector).each(function () {
+            jQuery(this).addClass('active');
+        });
+    }
+};
+
+},{}],42:[function(require,module,exports){
+'use strict';
+
+var jQuery = require('jquery');
+
+(function ($) {
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('[data-role="page-scroller"]').fadeIn();
+            } else {
+                $('[data-role="page-scroller"]').fadeOut();
+            }
+        });
+
+        $('[data-role="page-scroller"]').click(function () {
+            $('body, html').animate({
+                scrollTop: 0
+            }, 500);
+        });
+    });
+})(jQuery);
+
+},{"jquery":4}],43:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+    /**
+     *
+     **/
+    init: function init() {
+
+        var popupSize = {
+            width: 780,
+            height: 550
+        };
+
+        jQuery(document).on('click', '.social-buttons > a', function (e) {
+            var verticalPos = Math.floor(($(window).width() - popupSize.width) / 2),
+                horisontalPos = Math.floor(($(window).height() - popupSize.height) / 2);
+
+            var popup = window.open($(this).prop('href'), 'social', 'width=' + popupSize.width + ',height=' + popupSize.height + ',left=' + verticalPos + ',top=' + horisontalPos + ',location=0,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1');
+
+            if (popup) {
+                popup.focus();
+                e.preventDefault();
+            }
+        });
+    }
+
+};
+
+},{}],44:[function(require,module,exports){
+'use strict';
+
 // Include the core implementation
 require('./../Core/scripts.js');
 
 require('./modules/_langSwitcher.js');
+require('./modules/_pageScroller.js');
+
+var social = require('./modules/_social.js');
+var menu = require('./modules/_menu.js');
 
 // Include jquery
 var $ = require('jquery');
@@ -30858,9 +30996,17 @@ $(function () {
     if ($.fn.langSwitch) {
         $('.lang-switch').langSwitch();
     }
+
+    if (social) {
+        social.init();
+    }
+
+    if (menu) {
+        menu.init();
+    }
 });
 
-},{"./../Core/scripts.js":39,"./modules/_langSwitcher.js":40,"jquery":4}],42:[function(require,module,exports){
+},{"./../Core/scripts.js":39,"./modules/_langSwitcher.js":40,"./modules/_menu.js":41,"./modules/_pageScroller.js":42,"./modules/_social.js":43,"jquery":4}],45:[function(require,module,exports){
 'use strict';
 
 /**
@@ -30873,6 +31019,6 @@ require('./Face/Core/scripts.js');
  **/
 require('./Face/Custom/scripts.js');
 
-},{"./Face/Core/scripts.js":39,"./Face/Custom/scripts.js":41}]},{},[42]);
+},{"./Face/Core/scripts.js":39,"./Face/Custom/scripts.js":44}]},{},[45]);
 
 //# sourceMappingURL=app.js.map

@@ -15,5 +15,6 @@ return array(
         'logout' => 'Вихід',
         'you_are_logged' => 'Ви увійшли в систему',
         'you_went_out_account' => 'Ви вийшли з облікового запису',
+        'dashboard' => 'Головна',
         )
     );

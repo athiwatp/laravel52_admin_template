@@ -90,7 +90,7 @@
                     todayHighlight: true,
                     defaultViewDate: {
                         year: defaultDate.getFullYear(),
-                        month: defaultDate.getMonth() + 1,
+                        month: defaultDate.getMonth(),
                         day: defaultDate.getDate()
                     },
 

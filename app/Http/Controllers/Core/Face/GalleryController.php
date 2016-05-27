@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Core\Face;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\GalleryRepository;
+use Lang;
 
 class GalleryController extends FaceController
 {
@@ -36,12 +37,13 @@ class GalleryController extends FaceController
 
         if ( $lGallery ) {
             return $this->renderView('gallery.show', [
-                'gallery' => $lGallery
+                'gallery' => $lGallery,
+                'aTitle'    => $lGallery->title
             ]);
         }
 
         return redirect()->route('home')
-            ->with('status', 'Страница - не найдена!');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 
     /**
@@ -53,7 +55,8 @@ class GalleryController extends FaceController
         $lGallery = $this->gallery->getPaginatedList( $request );
 
         return $this->renderView('gallery.index', [
-            'gallery' => $lGallery
+            'gallery' => $lGallery,
+            'aTitle'    => Lang::get('gallery.lists.gallery')
         ]);
 
     }

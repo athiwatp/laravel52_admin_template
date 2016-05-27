@@ -9,20 +9,27 @@ class SubscribersRepository extends BaseRepository {
     /**
      * Create a new Message instance
      *
-     * @param App\Models\News $news
+     * @param App\Models\Subscribers $subscribers
      *
      * @return void
      */
     public function __construct( Subscribers $subscribers )
     {
-        // News Model
+        if ( $subscribers === null ) {
+            $subscribers = new Subscribers();
+        }
+
+        // Subscribers Model
         $this->model = $subscribers;
+
+        // Retrieve the config settings
+        $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
     }
 
     /**
      * Create or update Message
      *
-     * @param App\Models\News $news
+     * @param App\Models\Subscribers $subscribers
      *
      * @return Collection of Object
      */
@@ -35,7 +42,7 @@ class SubscribersRepository extends BaseRepository {
     /**
      * Create or update Message
      *
-     * @param App\Models\News $news
+     * @param App\Models\Subscribers $subscribers
      *
      * @return
      */
@@ -64,11 +71,21 @@ class SubscribersRepository extends BaseRepository {
         if ( empty($inputs['id']) ) {
             $subscribers->email    = $inputs['email'];
         }
+        $subscribers->activation_code = $this->_generateActivationCode();
         $subscribers->is_active    = $inputs['is_active'];
 
-        $subscribers->save();
+        if ( $subscribers->save() ) {
+            return $subscribers;
+        }
+        return false;
+    }
 
-        return true;
+    /**
+     * Generate code
+    */
+    private function _generateActivationCode()
+    {
+        return md5( 'subscription-code-' . time() );
     }
 
     /**
@@ -91,29 +108,70 @@ class SubscribersRepository extends BaseRepository {
 
         $subscribers = $this->saveSubscribers( $model, $inputs );
 
-        if ( $this->saveSubscribers( $model, $inputs ) ) {
-            return $model->toArray();
+        if ( $subscribers ) {
+            return $subscribers;
         } else {
             return false;
         }
     }
 
     /**
-     * Create a news
+     * Create a subscribers
      *
      * @param array $inputs
      *
-     * @return mixed ( App\Models\News | false )
+     * @return mixed ( App\Models\Subscribers | false )
      */
     public function add( $inputs )
     {
-        return $this->save(new $this->model, $inputs);
+        $inputs['activation_code'] = $this->_generateActivationCode();
+
+        $model = new $this->model;
+
+        if ($this->save($model, $inputs)) {
+            return $model;
+        }  else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns a list of subscribers
+     *
+     * @return Colelction
+    */
+    public function getActiveSubscribers()
+    {
+        return $this->model->where('is_active', $this->PUBLISHED)
+            ->take(1000)
+            ->get();
+    }
+
+    /**
+     * Check if email exists (in case when User deactivated his account and then just decided to subscribe againe)
+     *
+    */
+    public function checkIfEmailExists( $email )
+    {
+        return $this->model->whereEmail( $email )
+            ->first();
+    }
+
+    /**
+     * Get subscriber data by the code
+     *
+    */
+    public function getByActivationCode( $code, $active = '1' )
+    {
+        return $this->model->where('activation_code', $code)
+            ->where('is_active', '!=', $active)
+            ->first();
     }
 
     /**
      * Edit or update Message
      *
-     * @param App\Models\News $news
+     * @param App\Models\Subscribers $subscribers
      *
      * @return
      */
@@ -125,7 +183,7 @@ class SubscribersRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param App\Models\News
+     * @param App\Models\Subscribers
      *
      * @return void
      */

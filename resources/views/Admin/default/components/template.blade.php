@@ -7,7 +7,7 @@
 
 {{-- Header section --}}
 @section('page_header')
-    <h1> {{ $aParams['sTitle'] }} <br><small>{{ $aParams['sSubTitle'] }}</small></h1>
+    <h1> {{ isset($aParams['sTitle']) ? $aParams['sTitle'] : '' }} <br><small>{{ isset($aParams['sSubTitle']) ? $aParams['sSubTitle'] : '' }}</small></h1>  
     @if( null !== $aParams['sBreadcrumbs'] )
     {!! $aParams['sBreadcrumbs'] !!}
     @endif

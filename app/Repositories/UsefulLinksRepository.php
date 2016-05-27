@@ -55,9 +55,11 @@ class UsefulLinksRepository extends BaseRepository {
         $link->description  = $inputs['description'];
         $link->is_active    = $inputs['is_active'];
 
-        $link->save();
+        if ( $link->save() ) {
+            return $link;
+        }
 
-        return true;
+        return false;
     }
 
     /**
@@ -77,13 +79,18 @@ class UsefulLinksRepository extends BaseRepository {
             $model = new $this->model;
         }
 
-        $this->saveUsefulLinks( $model, $inputs );
+        $link = $this->saveUsefulLinks( $model, $inputs );
+
+        if ( $link ) {
+            return $link;
+        }
+        return false;
     }
 
     /**
      * Edit or update Message
      *
-     * @param App\Models\Pages $pages
+     * @param App\Models\UsefulLinks $usefulLinks
      *
      * @return
     */
@@ -96,7 +103,7 @@ class UsefulLinksRepository extends BaseRepository {
     /**
      * Destroy a message
      *
-     * @param {Int} id - identifier for the page
+     * @param {Int} id - identifier for the usefulLinks
      *
      * @return void
     */
@@ -106,19 +113,19 @@ class UsefulLinksRepository extends BaseRepository {
     }
 
     /**
-     * Retrieve the latest news from DB
+     * Retrieve the active usefulLinks from DB
      *
      * @param int $amount - amount of records that we need to retrieve
      *
      * @return Array
     */
-    public function getUsefulLinks()
+    public function getUsefulLinks( $aChapterId )
     {
-        $object = $this->model
+        $result = $this->model
             ->where('is_active', Config::get('constants.DONE_STATUS.SUCCESS'))
-            ->orderBy('chapter_id', 'ASC');
-
-        $result = $object->get();
+            ->where('chapter_id', '=', $aChapterId)
+            ->orderBy('title')
+            ->get();
 
         if ( $result ) {
             return $result;

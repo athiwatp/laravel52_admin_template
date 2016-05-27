@@ -9,6 +9,7 @@ use App\Repositories\PagesRepository;
 use App\Repositories\GalleryRepository;
 use App\Repositories\VideoNewsRepository;
 use App\Repositories\AnnouncementsRepository;
+use Lang;
 
 class IndexController extends FaceController
 {
@@ -83,10 +84,10 @@ class IndexController extends FaceController
     public function index()
     {
         // Get the latest news
-        $lNews = $this->news->getLatest( 10 );
+        $lNews = $this->news->getLatest( 10, null );
 
         // Get latest photo
-        $lGallery = $this->gallery->getLatest( 20 );
+        $lGallery = $this->gallery->getLatest( 10 );
 
         // Get latest video
         $lVideo = $this->video->getLatest( 10 );
@@ -95,19 +96,19 @@ class IndexController extends FaceController
         $currPage = $this->pages->getDefaultPage();
 
         //Get announces
-        $lImportantAnnounces = $this->announce->getLatest(10, true);
-        $lRegularAnnounces   = $this->announce->getLatest(10);
-        $lTopicalAnnounces   = $this->announce->getLatest(10, null, true);
+        $lImportantAnnounces = $this->announce->getLatest(5, true);
+        $lRegularAnnounces   = $this->announce->getLatest(5);
+        $lTopicalAnnounces   = $this->announce->getLatest(5, null, true);
 
         return $this->renderView('index.index', [
-            'lNews' => $lNews,
-            'lGallery' => $lGallery,
-            'lVideo' => $lVideo,
+            'lNews'     => $lNews,
+            'lGallery'  => $lGallery,
+            'lVideo'    => $lVideo,
             'lImportantAnnounces' => $lImportantAnnounces,
-            'lRegularAnnounces' => $lRegularAnnounces,
-            'lTopicalAnnounces' => $lTopicalAnnounces,
-            'currPage' => $currPage,
-
+            'lRegularAnnounces'   => $lRegularAnnounces,
+            'lTopicalAnnounces'   => $lTopicalAnnounces,
+            'currPage'  => $currPage,
+            'aTitle'    => Lang::get('menues.nav.dashboard')
         ]);
     }
 }

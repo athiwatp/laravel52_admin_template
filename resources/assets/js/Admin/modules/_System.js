@@ -144,8 +144,6 @@ var AdminSingleton = (function($) {
              **/
             redirectTo: function(url) {
 
-                // console.log(url);
-
                 window.location.href = url;
             },
 

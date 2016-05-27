@@ -24,7 +24,7 @@ class Menues extends TransformerAbstract
             'print' => (boolean) $menu->is_shown_print_version,
             'redirect' => (boolean) $menu->is_redirectable,
             'redirect_url' => $menu->redirect_url,
-            'linked' => $menu->linked,
+            'linked' => $menu->linkedmenu,
             'url' => $menu->url,
             'created' => $menu->created_at,
             'updated' => $menu->updated_at

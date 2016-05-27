@@ -13,4 +13,18 @@ class Gallery extends Model
      * @var string
     */
     protected $table = 'gallery';
+
+    /**
+     * Returns the list of logs which are related to current announce
+     *
+    */
+    public function logs()
+    {
+       return $this->morphMany('App\Modules\Logs', 'object');
+    }
+
+    public function getEditurlAttribute()
+    {
+        return route( 'admin.gallery.edit', array('id' => $this->id) );
+    }
 }

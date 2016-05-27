@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\AnnouncementsRepository;
+use Lang;
 
 class AnnouncementsController extends FaceController
 {
@@ -18,6 +19,9 @@ class AnnouncementsController extends FaceController
      */
     public function __construct(AnnouncementsRepository $announce)
     {
+        // Call the parent controller first
+        parent::__construct();
+
         $this->announce = $announce;
     }
 
@@ -40,7 +44,7 @@ class AnnouncementsController extends FaceController
         }
 
         return redirect()->route('home')
-            ->with('status', 'The page was not found');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 
     /**
@@ -61,6 +65,6 @@ class AnnouncementsController extends FaceController
         }
 
         return redirect()->route('home')
-            ->with('status', 'The page was not found');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 }

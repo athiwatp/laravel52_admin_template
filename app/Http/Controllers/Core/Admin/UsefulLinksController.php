@@ -6,10 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UsefulLinksRequest;
 use App\Repositories\UsefulLinksRepository;
 use App\Repositories\ChaptersRepository;
+use App\Repositories\FileRepository;
+use App\Events\Files\FileWasLoaded;
+use App\Events\Files\FileWasRemoved;
+use App\Events\Logs\LogsWasChanged;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config;
+use Lang, Redirect, cTemplate, cBreadcrumbs, Event, cForms, URL, Config;
 
 class UsefulLinksController extends AdminController
 {
@@ -21,16 +25,26 @@ class UsefulLinksController extends AdminController
     protected $usefulLinks;
 
     /**
+     * File repository
+     *
+     * @var Object repository
+     */
+    protected $file = null;
+
+    /**
      * Create a new UsefulLinksController instance
      *
      * @param App\Repositories\UsefulLinksRepository
      *
      * @return void
      */
-    public function __construct( UsefulLinksRepository $usefulLinks, ChaptersRepository $chapters )
+    public function __construct( UsefulLinksRepository $usefulLinks, ChaptersRepository $chapters, FileRepository $file )
     {
         $this->usefulLinks = $usefulLinks;
         $this->chapters    = $chapters;
+
+        // File repository
+        $this->file = $file;
     }
 
     /**
@@ -77,10 +91,10 @@ class UsefulLinksController extends AdminController
                         'aParams' => array('id' => 'delete', 'disabled' => true,'class' => 'delete-btn', 'data-url' => URL::route('admin.usefulLinks.destroy', array('id' => '%id%')) )
                     ),
                     'refresh' => array(
-                        'url' => URL::route('admin.menu.index'),
+                        'url' => URL::route('admin.usefulLinks.index'),
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
-                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.usefulLinks.index') )
+                        'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn')
                     )
                 )
             ))
@@ -137,9 +151,55 @@ class UsefulLinksController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
-        $this->usefulLinks->store( $request->all() );
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'url' => 'required|url',
+                'chapter_id' => 'required|not_in:0'
+                ));
+
+        if ( $usefulLinks = $this->usefulLinks->store( $request->all() ) ) {
+            $TYPE = Config::get('constants.RESOURCES.USEFUL_LINK');
+
+            if ( $request->hasFile('image') ) {
+                // Delete related files
+                if ( false === empty($usefulLinks['image']) ) {
+                    Event::fire( new FileWasRemoved(array(
+                        'path' => $usefulLinks['image'],
+                        'content_id' => $usefulLinks['id'],
+                        'content_type' => $TYPE,
+                    )));
+                }
+
+                // Upload the the photo
+                $response = Event::fire( new FileWasLoaded(array(
+                    'type' => $TYPE,
+                    'id' => $usefulLinks['id'],
+                    'file' => $request->file('image'),
+                    'prefix' => '%s',
+                )));
+
+                $response = $response ? current($response) : null;
+
+                if ($response && $response->code === Config::get('constants.DONE_STATUS.SUCCESS') ) {
+                    $this->usefulLinks->fixChanges( $usefulLinks['id'], [
+                        'image' => $response->filepath
+                    ]);
+                }
+            }
+
+            Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+            'title'   => $request->get('title'),
+            'object_id'    => $usefulLinks['id'],
+            'object_type'  => 'App\Models\UsefulLinks'
+        )));
+
+            // Check the files for current content
+            $this->file->correct($request->get('_token'), $usefulLinks['id'], $TYPE);
+        }
 
         return Redirect::route('admin.usefulLinks.index')
             ->with('message', array(
@@ -177,6 +237,7 @@ class UsefulLinksController extends AdminController
             'formChapter' => Lang::get('useful_links.lists.useful_links_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('useful_links.lists.editing_useful_links'),
+            'useCKEditor' => true,
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),

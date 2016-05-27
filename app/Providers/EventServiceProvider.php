@@ -27,6 +27,14 @@ class EventServiceProvider extends ServiceProvider
 
         'App\Events\Url\UrlWasChanged' => [
             'App\Listeners\Url\ChangeUrlListener',
+        ],
+
+        'App\Events\Logs\LogsWasChanged' => [
+            'App\Listeners\Logs\ChangedLogsListener',
+        ],
+
+        'App\Events\Mail\SendMail' => [
+            'App\Listeners\Mail\SendMailListener',
         ]
     ];
 

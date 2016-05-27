@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Core\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
 
 use App\Http\Requests;
-use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Gate;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Gate, Auth, Config, Event;
 
 class UsersController extends AdminController
 {
@@ -116,7 +116,8 @@ class UsersController extends AdminController
                 )
             ),
             'formContent' => $this->renderView('user.register', array(
-                'oData' => null
+                'oData' => null,
+                'checkGroup' => $this->users->getCheckGroup()
             )),
             'formUrl' => URL::route('admin.users.store'),
         ));
@@ -129,14 +130,38 @@ class UsersController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( UserRequest $request )
+    public function store( Request $request )
     {
-        $this->users->store( $request->all() );
+        if ( $request->get('id') > 0 ) {
+            $rules = array(
+                    'name' => 'required|min:3|max:255',
+                    'email' => 'required|email|max:255',
+                    'phone' => 'max:255',
+                    'group' => 'required|not_in:-1'
+                    );
+        } else {
+            $rules = array(
+                    'name' => 'required|min:3|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|min:6|max:12',
+                    'password_confirmation' => 'required|same:password|min:6|max:12',
+                    'group' => 'required|not_in:-1'
+                    );
+        }
+        $validator = $this->validate( $request, $rules );
+
+        $user = $this->users->store( $request->all() );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->get('id') > 0 ? 'Редагував' : 'Створив' ),
+            'object_id'    => $user['id'],
+            'object_type'  => 'App\Models\User'
+        )));
 
         return Redirect::route('admin.users.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get( ($request->id > '0' ? 'users.lists.user_saved_successfully' : 'users.lists.user_register') )
+                'message'   => Lang::get( ($request->get('id') > 0 ? 'users.lists.user_saved_successfully' : 'users.lists.user_register') )
                 )
             );
     }
@@ -166,6 +191,16 @@ class UsersController extends AdminController
         );
         $oData = $this->users->edit($id);
 
+        if ( Auth::user()->is_admin === Config::get('constants.USERS.ADMIN') && Auth::id() != $id ) {
+            $formSwitcher = array(array(
+                    'title' => Lang::get('users.form.is_admin'),
+                    'name' => 'is_admin',
+                    'value' => $oData->is_admin
+                ));
+        } else {
+            $formSwitcher = null;
+        }
+
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('users.lists.users_management'),
@@ -183,15 +218,10 @@ class UsersController extends AdminController
                     'params' => array('class'=>'btn-success')
                 )
             ),
-            'formSwitcher' => array(
-                array(
-                    'title' => Lang::get('users.form.is_admin'),
-                    'name' => 'is_admin',
-                    'value' => $oData->is_admin
-                )
-            ),
+            'formSwitcher' => $formSwitcher,
             'formContent' => $this->renderView('user.edit', array(
-                'oData' => $oData
+                'oData' => $oData,
+                'checkGroup' => $this->users->getCheckGroup()
             )),
             'formUrl' => URL::route('admin.users.store'),
         ));

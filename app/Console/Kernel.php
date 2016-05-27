@@ -3,7 +3,9 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\NotifySubscribersAboutLatestChanges;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
+        NotifySubscribersAboutLatestChanges::class
     ];
 
     /**
@@ -24,7 +27,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // For more info: https://laravel.com/docs/5.2/scheduling
+
+        $dt = Carbon::now();
+
+        // Run this command from Monday to Friday at 18:30
+        $schedule->command('mail:latestnews')
+            ->timezone('Europe/Kiev')
+            ->dailyAt('18:30')
+            ->when(function() use($dt) {
+                if ( $dt->dayOfWeek == Carbon::SUNDAY || $dt->dayOfWeek == Carbon::SATURDAY) {
+                    return false;
+                }
+                return true;
+            });
     }
 }

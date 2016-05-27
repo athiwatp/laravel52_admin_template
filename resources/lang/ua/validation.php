@@ -97,5 +97,32 @@ return [
     | "email".
     |
     */
-    'attributes' => [],
+    'attributes' => [
+        'title' => '<strong>Заголовка</strong>',
+        'description' => '<strong>Опис</strong>',
+        'date' => '<strong>Дата</strong>',
+        'chapter_id' => '<strong>Розділу</strong>',
+        'chapter' => '<strong>Розділу</strong>',
+        'is_topical' => '<strong>Актуально до</strong>',
+        'top_date_end' => '<strong>Дата актуально до</strong>',
+        'date_start' => '<strong>Дата початку</strong>',
+        'date_end' => '<strong>Дата закінчення</strong>',
+        'image' => '<strong>Зображення</strong>',
+        'important' => '<strong>Важливо</strong>',
+        'pos' => '<strong>Позицiя</strong>',
+        'filename' => '<strong>Файл</strong>',
+        'type_menu' => '<strong>Тип меню</strong>',
+        'parent_id' => '<strong>Батькiвський вузол</strong>',
+        'page_id' => '<strong>Контент сторiнки</strong>',
+        'url' => '<strong>URL</strong>',
+        'redirect_url' => '<strong>Перенаправлення URL</strong>',
+        'is_redirectable' => '<strong>Перехід на вказану сторінку</strong>',
+        'content' => '<strong>Зміст</strong>',
+        'necessarily' => '<strong>Зображення - не обов\'язково</strong>',
+        'email' => '<strong>E-mail</strong>',
+        'name' => '<strong>Iм\'я</strong>',
+        'group' => '<strong>Группи</strong>',
+        'password' => '<strong>Пароль</strong>',
+        'password_confirmation' => '<strong>Підтвердіть Пароль</strong>',
+    ],
 ];

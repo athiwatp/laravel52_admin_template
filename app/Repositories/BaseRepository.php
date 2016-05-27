@@ -22,6 +22,13 @@ abstract class BaseRepository {
     protected $dateFormat = 'd/m/Y';
 
     /**
+     * Published flag
+     *
+     * @var String
+     */
+    protected $PUBLISHED = 0;
+
+    /**
      * Get number of records
      *
      * @return array

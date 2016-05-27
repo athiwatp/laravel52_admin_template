@@ -8,14 +8,14 @@
         <tr>
             <th>#</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
-            <th class="sorting">{{ Lang::get('table_field.lists.active') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
             <th>#</th>
             <th>{{ Lang::get('chapters.form.title') }}</th>
-            <th class="sorting">{{ Lang::get('table_field.lists.active') }}</th>
+            <th class="sorting">{{ Lang::get('chapters.form.is_active') }}</th>
         </tr>
     </tfoot>
 </table>

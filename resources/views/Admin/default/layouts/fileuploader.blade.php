@@ -24,8 +24,8 @@
     <script src="/js/vendor/ckeditor/plugins/imageuploader/function.js"></script>
     <script src="/js/vendor/ckeditor/ckeditor.min.js"></script>
 
-    <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon">
-    <link type="image/x-icon" href="/favicon.ico" rel="icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 </head>
 <body class="file-uploader">
 <div id="header" class="file-uploader-header">

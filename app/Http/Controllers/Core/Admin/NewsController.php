@@ -10,8 +10,9 @@ use App\Repositories\FileRepository;
 
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
+use App\Events\Logs\LogsWasChanged;
 use App\Http\Requests;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
+use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
 class NewsController extends AdminController
 {
@@ -60,7 +61,7 @@ class NewsController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( NewsRequest $input )
     {
         $aBreadcrumbs = array(
             array('url' => '#', 'icon' => '<i class="fa fa-list-alt"></i>', 'title' => Lang::get('news.lists.lists_news'))
@@ -80,7 +81,7 @@ class NewsController extends AdminController
                         'url' => URL::route('admin.news.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add')
+                        'aParams' => array('id' => 'add_news')
                     ),
                     'edit' => array(
                         'url' => '#', 
@@ -99,7 +100,13 @@ class NewsController extends AdminController
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
                         'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.news.index') )
-                    )
+                    ),
+                    // 'sync' => array(
+                    //     'url' => URL::route( 'admin.news.sync', array( 'start' => $input->get('start', 0) ) ),
+                    //     'title' => Lang::get('table_field.toolbar.sync'),
+                    //     'icon' => '<i class="fa fa-arrow-circle-down"></i>',
+                    //     'aParams' => array('id' => 'sync')
+                    // )
                 )
             ))
         ));
@@ -122,6 +129,8 @@ class NewsController extends AdminController
             'formChapter' => Lang::get('news.lists.news_management'),
             'formSubChapter' => '',
             'formTitle' => Lang::get('news.lists.create_new_news'),
+            'formJsHandler' => 'news/form',
+            'formFormId' => 'admin_news_form',
             'useCKEditor' => true,
             'formButtons' => array(
                 array(
@@ -168,6 +177,40 @@ class NewsController extends AdminController
      */
     public function store( NewsRequest $request )
     {
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'url' => 'required_with:title',
+                'date' => 'required',
+                'content' => 'required',
+                'chapter_id' => 'required|not_in:0',
+                'image' => 'required_without:necessarily',
+                ));
+        $id = $request->get('id');
+        $date = test_for_materiality_date( Carbon::createFromFormat( $this->news->getDateFormat(), $request->get('date') ), Carbon::now()->subYear() );
+
+        if ( $date !== true ) {
+            return Redirect::route( ($id > 0 ? 'admin.news.edit' : 'admin.news.create'), array('id' => $id) )
+                ->with('message', array(
+                    'code'      => self::$statusError,
+                    'message'   => Lang::get('table_field.incorrectly_specified_date', array('date' => Lang::get('table_field.lists.date') . ' ' . $request->get('date')))
+                    ))
+                ->withInput();
+        }
+
+        if (
+                ($id === '0' && $request->get('necessarily') === null && $request->hasFile('image') === false )
+                 || 
+                ($id > 0 && $this->news->edit($id)->photo == null && $request->get('necessarily') === null && $request->hasFile('image') === false)
+            ) {
+            return Redirect::route( ($id > 0 ? 'admin.news.edit' : 'admin.news.create'), array('id' => $id) )
+                ->with('message', array(
+                    'code'      => self::$statusError,
+                    'message'   => Lang::get('news.lists.news_need_photo')
+                    ))
+                ->withInput();
+        }
+
         if ( $news = $this->news->store( $request->all() ) ) {
             $TYPE_NEWS = Config::get('constants.RESOURCES.NEWS');
 
@@ -199,6 +242,12 @@ class NewsController extends AdminController
                 }
             }
 
+            Event::fire( new LogsWasChanged(array(
+                'comment' => ( $id > 0 ? 'Редагував' : 'Створив' ),
+                'object_id'    => $news['id'],
+                'object_type'  => 'App\Models\News'
+            )));
+
             // Check the files for current content
             $this->file->correct($request->get('_token'), $news['id'], $TYPE_NEWS);
         }
@@ -229,6 +278,8 @@ class NewsController extends AdminController
             'formSubChapter' => '',
             'useCKEditor' => true,
             'formTitle' => Lang::get('news.lists.editing_news'),
+            'formJsHandler' => 'news/form',
+            'formFormId' => 'admin_news_form',
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -289,4 +340,18 @@ class NewsController extends AdminController
     {
         //
     }
+
+    // //// TEMP
+    // public function sync($start)
+    // {
+    //     $sync = $this->news->sync( $start );
+
+    //     return Redirect::route('admin.news.index', array('start' => $sync['start']))
+    //         ->with('message', array(
+    //             'code' => self::$statusOk,
+    //             'message' => Lang::get('table_field.sync.message') . $sync['index']
+    //         ));
+    // }
+    ///
+
 }

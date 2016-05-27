@@ -4,6 +4,8 @@ use App\Repositories\SettingsRepository;
 use App\Repositories\CustomerReviewsRepository as CustomerReviews;
 use App\Repositories\MenuesRepository as rMenu;
 use App\Repositories\UsefulLinksRepository as UsefulLinks;
+use App\Repositories\ChaptersRepository as Chapters;
+use App\Repositories\UrlHistoryRepository as UrlHistory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 
@@ -62,7 +64,8 @@ if (! function_exists('get_formatted_date') ) {
 if (! function_exists('str_custom_limit') ) {
     function str_custom_limit( $str, $limit )
     {
-        return str_limit( strip_tags($str), $limit);
+//        return str_limit(preg_replace('/[^А-Яа-яА-Яа-яA-Za-z0-9\-]/', '', strip_tags($str) ), $limit);
+        return str_limit( trim(str_replace(['&nbsp;', "\n"], ' ', strip_tags($str))), $limit);
     }
 }
 
@@ -73,8 +76,8 @@ if (! function_exists('str_custom_limit') ) {
  * @return String
  */
 if (! function_exists('get_youtube_preview') ) {
-    function get_youtube_preview( $url ) {
-        return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $url ) .  '/hqdefault.jpg';
+    function get_youtube_preview( $youtube_url ) {
+        return 'http://img.youtube.com/vi/' . cScreenshot::getItems( $youtube_url ) .  '/hqdefault.jpg';
     }
 }
 
@@ -142,15 +145,48 @@ if (! function_exists('get_admin_phone') ) {
  *
  */
 if (! function_exists('get_useful_links') ) {
-    function get_useful_links() {
+    function get_useful_links( $chapter_id ) {
 
         $links = new UsefulLinks();
 
-        return $links->getUsefulLinks();
+        return $links->getUsefulLinks( $chapter_id );
     }
 }
 
+/**
+ *
+ *
+ */
+if (! function_exists('get_chapters') ) {
+    function get_chapters( $type ) {
 
+        $chapter = new Chapters();
+
+        return $chapter->getChapters( $type );
+    }
+}
+
+/**
+ *
+ *
+ */
+if (! function_exists('get_url_history') ) {
+    function get_url_history( $id, $type, $getUrl ) {
+
+        $url = new UrlHistory();
+        $aUrl = $url->getFindUrl( 0, $type, $getUrl );
+
+        if ( $aUrl ) {
+            $getUrl = substr($getUrl, 0, 234) . '_' . time();
+        }
+
+        if ( $aUrl['type_id'] != $id ) {
+            $saveUrlHistory = $url->saveUrlHistory( $id, $type, $getUrl );
+        }
+
+        return $getUrl;
+    }
+}
 
 /**
  * Returns settings data
@@ -171,11 +207,25 @@ if ( ! function_exists('get_contact_address') ) {
     function get_contact_address( $default = '' ) {
         $s = get_settings_data('contact_address');
 
+        if ( empty($default) ) {
+            $default = '55200 Україна, Первомайськ, вул. Грушевського, 3';
+        }
+
         return empty($s) ? $default : $s;
     }
 }
 
-
+/**
+ * Returns settings data
+ */
+if ( ! function_exists('get_mail_signature') ) {
+    function get_mail_signature() {
+        return 'З повагою, відділ зв`язків з громадськістю<br/>'.
+            get_contact_address() . '<br/>' .
+            'Тел.: ' . get_admin_phone() . '<br />'.
+            'Email: ' . get_admin_email();
+    }
+}
 
 if ( ! function_exists('get_search_data') ) {
     function get_search_data() {
@@ -203,6 +253,23 @@ if (! function_exists('get_formatted_date') ) {
                     ' ' . $dt->minute . ':' . $dt->minute
                     : ''
             );
+    }
+}
+
+/**
+ * Returns Boolean
+ *
+ * @param String $date
+ * @param Boolean $time - show time
+ *
+ * @return Boolean
+ */
+if (! function_exists('test_for_materiality_date') ) {
+    function test_for_materiality_date( $date, $repellingDate = null ) {
+        if ( $repellingDate === null ) {
+            $repellingDate = Carbon::now()->subYear();
+        }
+        return $repellingDate->diffInDays( $date, false ) >= 0 ? true : false;
     }
 }
 
@@ -271,12 +338,15 @@ if (! function_exists('sidebar_menu') ) {
          */
         Menu::create('sidebar_menu', function($menu) {
             $menu->setPresenter('App\Helpers\Menu\SidebarPresenter');
+
             try {
                 $repoMenu = new rMenu();
                 $aTree = rMenu::buildTree( $repoMenu->getSidebarMenu()->toArray() );
+
                 foreach($aTree as $item) {
                     rMenu::createItem($item, $menu);
                 }
+
             } catch (Exception $e) {}
         });
 
@@ -300,12 +370,59 @@ if ( ! function_exists('breadcrumbs_for_page') ) {
             return '';
         }
 
-        if ( $page->menu ) {
-//            dd($page->menu, $page->menu->parent_for_parent );
+        if ( $page->menu && $parentMenu = $page->menu->parent_for_parent ) {
+            return '<a href="' . route('menu-url', ['url' => $parentMenu->url ]) . '">' .
+                $parentMenu->title .
+            '</a> /';
         }
     }
 }
 
+/**
+ * Build Google Analitics code
+ *
+ * @param {Object} $page
+ *
+ * @return {String}
+ */
+if ( ! function_exists('build_google_analitics_code') ) {
+
+    function build_google_analitics_code()
+    {
+        return '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');
+
+            ga(\'create\', \'UA-1939944-1\', \'auto\');
+            ga(\'send\', \'pageview\');
+        ';
+    }
+}
+
+/**
+ * Build Counters code
+ *
+ * @param {Object} $page
+ *
+ * @return {String}
+ */
+if ( ! function_exists('build_counters') ) {
+
+    function build_counters()
+    {
+        return 'bmN=navigator,bmD=document,bmD.cookie=\'b=b\',i=0,bs=[],bm={o:1,v:180253,s:180253,t:0,c:bmD.cookie?1:0,n:Math.round((Math.random()* 1000000)),w:0};
+                            for(var f=self;f!=f.parent;f=f.parent)bm.w++;
+                            try{if(bmN.plugins&&bmN.mimeTypes.length&&(x=bmN.plugins[\'Shockwave Flash\']))bm.m=parseInt(x.description.replace(/([a-zA-Z]|s)+/,\'\'));
+                            else for(var f=3;f<20;f++)if(eval(\'new ActiveXObject("ShockwaveFlash.ShockwaveFlash.\'+f+\'")\'))bm.m=f}catch(e){;}
+                            try{bm.y=bmN.javaEnabled()?1:0}catch(e){;}
+                            try{bmS=screen;bm.v^=bm.d=bmS.colorDepth||bmS.pixelDepth;bm.v^=bm.r=bmS.width}catch(e){;}
+                            r=bmD.referrer.slice(7);if(r&&r.split(\'/\')[0]!=window.location.host){bm.f=escape(r);bm.v^=r.length}
+                            bm.v^=window.location.href.length;for(var x in bm) if(/^[ovstcnwmydrf]$/.test(x)) bs[i++]=x+bm[x];
+                            bmD.write(\'<sc\'+\'ript type="text/javascript" language="javascript" src="http://c.bigmir.net/?\'+bs.join(\'&\')+\'"></sc\'+\'ript>\');
+                            //-->';
+    }
+}
 
 /**
  * Function to build the main menu
@@ -320,18 +437,43 @@ if (! function_exists('linked_sidebar_menu') ) {
         /**
          * Create main menu for the Front-end side
          */
-        Menu::create('sidebar_menu', function($menu) use ($menu_id) {
+        Menu::create('linked_sidebar_menu', function($menu) use ($menu_id) {
             $menu->setPresenter('App\Helpers\Menu\SidebarPresenter');
             try {
                 $repoMenu = new rMenu();
-                $aTree = rMenu::buildTree( $repoMenu->getSidebarMenu($menu_id)->toArray() );
+                $arrMenus = [];
+
+                $mnuObject = $repoMenu->getById( $menu_id );
+
+                if ( $mnuObject ) {
+                    $arrMenus = $mnuObject->linkedmenu;
+                }
+
+                $result = [];
+                foreach ($arrMenus as $element) {
+                    if ( $element ) {
+                        $result[] = $element->toArray();
+
+                        $child = $repoMenu->child( $element->id );
+
+                        if ( $child && $child->count() > 0) {
+                            foreach ($child as $childItem ) {
+                                $result[] = $childItem->toArray();
+                            }
+                        }
+
+                    }
+                }
+
+                $aTree = rMenu::buildTree( $result, 0, true );
+
                 foreach($aTree as $item) {
                     rMenu::createItem($item, $menu);
                 }
             } catch (Exception $e) {}
         });
 
-        return Menu::get('sidebar_menu');
+        return Menu::get('linked_sidebar_menu');
     }
 }
 

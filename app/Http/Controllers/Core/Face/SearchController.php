@@ -46,6 +46,5 @@ class SearchController extends FaceController
         return $this->renderView('search.index', [
             'result' => $result
         ]);
-        dd($keywords);
     }
 }

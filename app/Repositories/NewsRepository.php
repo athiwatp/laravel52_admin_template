@@ -1,8 +1,10 @@
 <?php namespace App\Repositories;
 
 use App\Models\News as News;
-use Carbon\Carbon, Auth, cTrackChangesUrl, Config;
 use Illuminate\Http\Request;
+use App\Models\UrlHistory as UrlHistory;
+use App\Repositories\UrlHistoryRepository;
+use Carbon\Carbon, Auth, cTrackChangesUrl, Config;
 
 class NewsRepository extends BaseRepository {
 
@@ -27,7 +29,7 @@ class NewsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(News $news, UrlHistoryRepository $history)
+    public function __construct( News $news, UrlHistoryRepository $history )
     {
         // News Model
         $this->model = $news;
@@ -49,6 +51,18 @@ class NewsRepository extends BaseRepository {
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Create or update Message
+     *
+     * @param App\Models\News $news
+     *
+     * @return Collection of Object
+    */
+    public function getIndex()
+    {
+        return $this->model->where('is_published', '=', $this->PUBLISHED)->get();
     }
 
     /**
@@ -79,6 +93,20 @@ class NewsRepository extends BaseRepository {
         }
 
         return [];
+    }
+
+    /**
+     * Returns the news which were added today
+     *
+     * @return Collection
+    */
+    public function getTodaysNews()
+    {
+        return $this->model->whereRaw('DATE_FORMAT(created_at, "%Y-%m-%d") = ?', [Carbon::today()->toDateString()])
+            ->where('is_published', $this->PUBLISHED)
+            ->orderBy('date', 'DESC')
+            ->take(10)
+            ->get();
     }
 
     /**
@@ -135,9 +163,13 @@ class NewsRepository extends BaseRepository {
         }
 
         if ( $timestamp && $timestamp > 0) {
-            $dt = Carbon::createFromTimestamp( $timestamp )->addDay();
+            $dt = Carbon::createFromTimestamp( $timestamp );
 
-            $object->where('date', '=', $dt->toDateString() );
+            $dtStart = $dt->copy()->startOfDay()->toDateTimeString();
+            $dtEnd   = $dt->copy()->endOfDay()->toDateTimeString();
+
+            $object->where( 'date', '>=', $dtStart )
+                ->where( 'date', '<=', $dtEnd );
         }
 
         $result = $object->paginate( $this->paginationAmount );
@@ -191,7 +223,7 @@ class NewsRepository extends BaseRepository {
     {
         $news->title        = $inputs['title'];
         $news->content      = $inputs['content'];
-        $news->chapter_id   = ( isset($inputs['chapter_id']) ? $inputs['chapter_id'] : null );
+        $news->chapter_id   = $inputs['chapter_id'];
         $news->user_id      = Auth::id();
         $news->url          = $inputs['url'];
         $news->type_news    = '1';
@@ -202,9 +234,10 @@ class NewsRepository extends BaseRepository {
         $news->is_important = $inputs['is_important'];
         $news->tags         = $inputs['tags'];
 
-        $news->save();
-
-        return true;
+        if ( $news->save() ) {
+            return $news;
+        }
+        return false;
     }
 
     /**
@@ -217,30 +250,25 @@ class NewsRepository extends BaseRepository {
     public function store( $inputs )
     {
         $id = $inputs['id'];
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_NEWS');
 
         if ( isset($id) && $id > 0 ) {
             $model = $this->model->find( $id );
         } else {
             $model = new $this->model;
         }
+        $sUrl = $model->url;
 
-        if ( $id > 0 && $model->url != $inputs['url'] ) {
-            cTrackChangesUrl::getItems(
-                array(
-                    'aData' => array(
-                        'content_type' => Config::get('constants.URL_HISTORY.TYPE_NEWS'),
-                        'url' => $inputs['url'],
-                        'type_id' => $inputs['id']
-                    )
-                )
-            );
-        }
+        $aNews = $this->saveNews( $model, $inputs );
 
-        if ( $this->saveNews( $model, $inputs ) ) {
-            return $model->toArray();
-        } else {
-            return false;
+        $changeUrl = get_url_history($aNews['id'], $TYPE, $inputs['url'] );
+
+        $this->fixChanges( $aNews['id'], ['url' => $changeUrl] );
+
+        if ( $aNews ) {
+            return $aNews->toArray();
         }
+        return false;
     }
 
     /**
@@ -264,6 +292,76 @@ class NewsRepository extends BaseRepository {
     */
     public function destroy($id)
     {
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_NEWS');
+
+        $this->history->getDestroyById( $id, $TYPE );
+
         return parent::destroy($id);
     }
+
+    public function getLatestNews()
+    {
+        return $this->model->orderBy('date', 'DESC')->take(10)->get();
+    }
+
+//     //// TEMP: SHOULD BE REMOVED
+//     public function sync( $start )
+//     {
+//         $iAmount = 500;
+//         $iIndex  = 0;
+
+//         $aNews = $this->index();
+
+//         $oldNews = DB::connection('old_db')->table('prm_news')
+// //            ->take($iAmount)
+// //            ->offset($start * $iAmount)
+//             ->get();
+
+//         foreach($oldNews as $oldItem) {
+//             $news = $this->model
+//                 ->where( 'title','=', htmlspecialchars_decode($oldItem->full_descr) )
+//                 ->where( 'content', '=', htmlspecialchars_decode($oldItem->descr) )
+//                 ->first();
+
+//             if ($news && $news->count() > 0) {
+//                 continue;
+//             }
+
+//             $addUrl = cTrackChangesUrl::addUrl( [
+//                 'content_title' => strip_tags(
+//                     htmlspecialchars_decode(
+//                         $oldItem->full_descr
+//                     )
+//                 )
+//             ]);
+
+//             $nNews = new $this->model;
+//             $dtObject = Carbon::createFromFormat('Y-m-d', $oldItem->createIt);
+
+//             $dtCreate = $dtObject !== false && $dtObject->year > 0 ?
+//                 $dtObject : Carbon::now()->subYears(10);
+
+//             $nNews->title        = htmlspecialchars_decode($oldItem->full_descr);
+//             $nNews->content      = htmlspecialchars_decode($oldItem->descr);
+//             $nNews->chapter_id   = null;
+//             $nNews->user_id      = 1;
+//             $nNews->url          = $addUrl ? $addUrl->url : md5( time() );
+//             $nNews->type_news    = '1';
+//             $nNews->date         = $dtCreate->toDateString();
+//             $nNews->source       = '';
+//             $nNews->is_published = 1;
+//             $nNews->is_main      = 0;
+//             $nNews->is_important = 0;
+//             $nNews->tags         = '';
+
+//             $nNews->save();
+//             $iIndex++;
+//         }
+//         $start++;
+
+//         return array('start' => $start, 'index' => $iIndex);
+//     }
+//     ////
+
+
 }

@@ -21,7 +21,7 @@ module.exports = {
      **/
     custURL: {
         edit: '/admin/menu/%n/edit',
-        del: system.getUrl( 'menu/%n' )
+        del: system.getUrl('menu/%n')
     },
 
     /**
@@ -32,45 +32,54 @@ module.exports = {
     columnDefs: [
         {
             className: 'select-checkbox',
-            render: function( data ) {
+            render: function (data) {
                 return '';
             },
-            targets:   0
+            targets: 0
         },
 
         {
-            render: function( data ) {
-                return system.getFormattedDate( data );
+            render: function (data) {
+                return system.getFormattedDate(data);
             },
             targets: 4
         },
         {
-            render: function ( data, type, row ) {
+            render: function (data, type, row) {
                 var noTags = system.stripTags(data),
                     sLinked = '';
 
-                if ( system.isEmpty(row.linked) === false ) {
-                    // console.log(row.linked, row.title);
+                if (row.type === 'S') {
+                    noTags += ' / [Бокове меню]';
+                } else if (row.type === 'F') {
+                    noTags += ' / [Нижнє меню]';
+                } else {
+                    noTags += ' / [Головне меню]';
+                }
+
+                if (system.isEmpty(row.linked) === false) {
 
                     sLinked = '<br />' +
-                            '<ul class="linked-menu">';
+                        '<ul class="linked-menu">';
 
-                    for ( var i = 0; i < row.linked.length; i++) {
-                        sLinked += '<li><a href="/admin/menu/'+ row.linked[i].id + '/edit">' + row.linked[i].title + '</a></li>';
+                    for (var i = 0; i < row.linked.length; i++) {
+                        if (row.linked[i]) {
+                            sLinked += '<li><a href="/admin/menu/' + row.linked[i].id + '/edit">' + row.linked[i].title + '</a></li>';
+                        }
                     }
 
                     sLinked += '</ul>';
                 }
 
-                return '<a href="/admin/menu/'+ row.id + '/edit" title="' + noTags + '" class="edit-link">' +
-                    system.ellipsis( noTags, 100 ) +
+                return '<a href="/admin/menu/' + row.id + '/edit" title="' + noTags + '" class="edit-link">' +
+                    system.ellipsis(noTags, 100) +
                     '</a>' +
                     sLinked;
             },
             targets: 1
         },
         {
-            render: function( data ) {
+            render: function (data) {
                 return system.getPublishedIcon(data);
             },
             targets: 3
@@ -78,16 +87,16 @@ module.exports = {
     ],
 
     select: {
-        style:    'os',
+        style: 'os',
         selector: 'td:first-child'
     },
 
     order: [
-        [ 4, 'desc' ]
+        [4, 'desc']
     ],
 
     ajax: {
-        url: system.getUrl( 'menu' )
+        url: system.getUrl('menu')
     },
 
 

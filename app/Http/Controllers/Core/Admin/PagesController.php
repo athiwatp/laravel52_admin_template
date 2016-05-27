@@ -1,13 +1,17 @@
-<?php namespace App\Http\Controllers\Core\Admin;
+<?php
+
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PagesRequest;
 use App\Repositories\PagesRepository;
 use App\Repositories\FileRepository;
+use App\Repositories\MenuesRepository;
+use App\Events\Logs\LogsWasChanged;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config;
+use Lang, Redirect, cTemplate, cBreadcrumbs, Event, cForms, URL, Config;
 
 class PagesController extends AdminController
 {
@@ -39,9 +43,10 @@ class PagesController extends AdminController
      *
      * @return void
      */
-    public function __construct( PagesRepository $pages, FileRepository $file )
+    public function __construct( PagesRepository $pages, FileRepository $file, MenuesRepository $menu )
     {
         $this->pages = $pages;
+        $this->menu = $menu;
 
         // File repository
         $this->file = $file;
@@ -52,7 +57,7 @@ class PagesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( PagesRequest $input )
     {
         $aBreadcrumbs = array(
             array('url' => '#', 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages'))
@@ -102,12 +107,18 @@ class PagesController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create( PagesRequest $input )
     {
+        $oMenuId = null;
+
         $aBreadcrumbs = array(
             array('url' => URL::route('admin.pages.index'), 'icon' => '<i class="fa fa-sticky-note"></i>', 'title' => Lang::get('pages.lists.lists_pages')),
             array('url' => '#', 'icon' => '<i class="fa fa-plus"></i>', 'title' => Lang::get('pages.lists.create_page'))
         );
+
+        if ( isset($input) && $input->get('menu_id') > 0 ) {
+            $oMenuId = $input->get('menu_id');
+        }
 
         return cForms::createForm( $this->getTheme(), array(
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
@@ -115,6 +126,8 @@ class PagesController extends AdminController
             'formSubChapter' => '',
             'formTitle' => Lang::get('pages.lists.create_new_pages'),
             'useCKEditor' => true,
+            'formJsHandler' => 'pages/form',
+            'formFormId' => 'admin_pages_form',
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -134,7 +147,8 @@ class PagesController extends AdminController
                 )
             ),
             'formContent' => $this->renderView('pages.add', array(
-                'oData' => null
+                'oData' => null,
+                'oMenuId' => $oMenuId
             )),
             'formUrl' => URL::route('admin.pages.store'),
         ));
@@ -146,8 +160,14 @@ class PagesController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( PagesRequest $request )
+    public function store( Request $request )
     {
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'url' => 'required_with:title'
+                ));
+
         if ($page = $this->pages->store( $request->only([
             'title',
             'url',
@@ -162,6 +182,22 @@ class PagesController extends AdminController
 
             // Check the files for current content
             $this->file->correct($request->get('_token'), $page['id'], $TYPE_PAGE);
+        }
+
+        Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+            'object_id'    => $page['id'],
+            'object_type'  => 'App\Models\Pages'
+        )));
+
+        if ($request->all() && $request->get('menu_id') > 0 ) {
+            $this->menu->fixChanges( $request->get('menu_id'), [
+                'page_id' => $page['id']
+            ]);
+            return Redirect::route('admin.menu.index')
+                ->with('message', array(
+                    'code'      => self::$statusOk,
+                    'message'   => Lang::get('pages.lists.pages_and_menu_saved_successfully') ));
         }
 
         return Redirect::route('admin.pages.index')
@@ -201,6 +237,8 @@ class PagesController extends AdminController
             'formSubChapter' => '',
             'formTitle' => Lang::get('pages.lists.editing_page'),
             'useCKEditor' => true,
+            'formJsHandler' => 'pages/form',
+            'formFormId' => 'admin_pages_form',
             'formButtons' => array(
                 array(
                     'title' => '<i class="fa fa-arrow-left"></i> ' . Lang::get('table_field.lists.back'),
@@ -217,7 +255,7 @@ class PagesController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.published'),
                     'name' => 'is_published',
-                    'value' => $oData->is_published
+                    'value' => $oData['is_published']
                 )
             ),
             'formContent' => $this->renderView('pages.add', array(
@@ -249,4 +287,18 @@ class PagesController extends AdminController
     {
         //
     }
+
+    //// TEMP: SHOULD BE REMOVED
+    public function sync() 
+    {
+        $sync = $this->pages->sync( $start = 0 );
+
+        return Redirect::route('admin.pages.index', array('start' => $start))
+            ->with('message', array(
+                'code' => self::$statusOk,
+                'message' => Lang::get('table_field.sync.message')
+            ));
+    }
+    ///
+
 }

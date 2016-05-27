@@ -10,6 +10,9 @@
     <meta name="author" content="Sergey Donchenko">
     <meta name="api_token" content="{{ Auth::user()->api_token }}">
 
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     {{-- Custom CSS --}}
     @yield('css')
 
@@ -57,7 +60,7 @@
 
                 <div class="{{$sType}}">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ $sMessage }}
+                    {!! $sMessage !!}
                 </div>
                 @endif
 
@@ -68,7 +71,9 @@
 
     </div>
     <!-- /#wrapper -->
-
+<div data-role="page-scroller">
+    <span class="fa fa-angle-up"></span>
+</div>
 {!! Html::script('js/vendor/jquery.min.js') !!}
 {!! Html::script('js/vendor/inputmask.min.js') !!}
 {!! Html::script('js/vendor/bootstrap.min.js') !!}

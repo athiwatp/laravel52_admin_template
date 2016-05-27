@@ -11,7 +11,7 @@
         <p>
             <img src="/js/vendor/ckeditor/plugins/imageuploader/img/cd-icon-upload-big.png">
             <br>
-            Видалити файл
+            {{ Lang::get('table_field.files.destroy_file') }}
         </p>
     </div>
 
@@ -19,8 +19,8 @@
     {{--<div class="menu-toolbar">{!!  Toolbar::getToolbarParams($aToolbar, $aFilters) !!}</div>--}}
 
     <p class="folderInfo">
-        Всього: <span id="finalcount">{{ $iFilesCount }}</span>,
-        зображень - <span id="finalsize">{{ $fSizeSumm }}</span>
+        {{ Lang::get('table_field.files.total') }} <span id="finalcount">{{ $iFilesCount }}</span>,
+        {{ Lang::get('table_field.files.pictures') }} - <span id="finalsize">{{ $fSizeSumm }}</span>
     </p>
 
     <div id="files" class="file-list">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="text-center">{{ $oFiles->links() }}</div>
             @else
-                Завантаженних документів - не знайдено
+                {{ Lang::get('table_field.files.uploaded_documents_not_found') }}
             @endif
 
         </div>
@@ -74,7 +74,7 @@
 
             <button class="headerBtn greenBtn" name="submit" onclick="$('#uploadImgForm').submit();">
                 <img src="/js/vendor/ckeditor/plugins/imageuploader/img/cd-icon-upload.png" class="headerIcon">
-                Завантажити
+                {{ Lang::get('table_field.files.download') }}
             </button>
         </div>
         <br><br><br>
@@ -82,7 +82,7 @@
         <form action="{{ URL::route('file-upload') }}" method="post" enctype="multipart/form-data" id="uploadImgForm" onsubmit="return checkUpload();">
             <p class="uploadP">
                 <img src="/js/vendor/ckeditor/plugins/imageuploader/img/cd-icon-select.png" class="headerIcon">
-                Виберіть, будь-ласка файл для завантаження:
+                {{ Lang::get('table_field.files.file_to_download') }}:
             </p>
             <input type="file" name="upload" id="upload">
             <input type="hidden" name="CKEditorFuncNum" value="{{ $CKEditorFuncNum }}">
@@ -90,9 +90,9 @@
             <br>
 
             <h3 class="settingsh3" style="font-size:12px;font-weight:lighter;">
-                Документ буде завантаженний та збереженний в наступній папці:<br>
+                {{ Lang::get('table_field.files.file_download_save_dir') }}:<br>
                 <p style="font-weight:bolder;">"{{ $sUserUploadFolder }}"</p>
-                (Адміністратор може змінити дане налаштування)
+                {{ Lang::get('table_field.files.administrator_can_change_settings') }}
             </h3>
             <br>
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

@@ -38,6 +38,23 @@
         template:'<div id="event-calendar-wrapper"></div>',
 
         /**
+         * Describe the properties for the component
+         *
+         * @var Object
+         **/
+        props: {
+            /**
+             * Current date
+             *
+             * @var String
+             **/
+            currDate: {
+                type: String,
+                default: null
+            },
+        },
+
+        /**
          * Data structure
          *
          **/
@@ -58,7 +75,9 @@
          **/
         ready: function() {
             var self = this,
-                wrapper = '#event-calendar-wrapper';
+                wrapper = '#event-calendar-wrapper',
+                currDate = self.$get('currDate' ) || new Date(),
+                defaultDate = new Date( currDate );
 
             // Senf ajax request
             self._sendRequest().then(function() {
@@ -67,6 +86,11 @@
                 $(wrapper).datepicker({
                     language: 'uk',
                     todayHighlight: true,
+                    defaultViewDate: {
+                        year: defaultDate.getFullYear(),
+                        month: defaultDate.getMonth(),
+                        day: defaultDate.getDate()
+                    },
                     beforeShowDay: function (date) {
                         var year = date.getFullYear(),
                             month = date.getMonth() + 1,

@@ -14,6 +14,7 @@ return array(
         'select_pages' => 'Оберiть контент',
         'create_pages' => 'Створити сторінку',
         'pages_saved_successfully' => 'Сторінка збережена успішно!',
+        'pages_and_menu_saved_successfully' => 'Меню і сторінка для нього збережено успішно!',
         ),
 
     'form' =>array(
@@ -21,6 +22,8 @@ return array(
         'tegs' => 'Мета-теги',
         'title' => 'Заголовок',
         'subtitle' => 'Підзаголовок',
+        'url' => 'URL',
+        'public_url' => 'Публічный URL',
         ),
 
     );

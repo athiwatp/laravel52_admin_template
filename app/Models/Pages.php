@@ -31,4 +31,18 @@ class Pages extends Model
     {
         return $this->belongsTo('App\Models\Menues', 'id', 'page_id');
     }
+
+    /**
+     * Returns the list of logs which are related to current announce
+     *
+    */
+    public function logs()
+    {
+       return $this->morphMany('App\Modules\Logs', 'object');
+    }
+
+    public function getEditurlAttribute()
+    {
+        return route( 'admin.pages.edit', array('id' => $this->id) );
+    }
 }

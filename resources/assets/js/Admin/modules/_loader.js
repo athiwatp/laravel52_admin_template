@@ -52,6 +52,10 @@ module.exports = {
             case 'usefulLinks/list':
                 mod = require('./usefulLinks/list.js');
                 break;
+
+            case 'logs/list':
+                mod = require('./logs/list.js');
+                break;
         }
 
         return mod;
@@ -75,6 +79,14 @@ module.exports = {
 
             case 'announcements/form':
                 mod = require('./announcements/form.js');
+                break;
+
+            case 'news/form':
+                mod = require('./news/form.js');
+                break;
+
+            case 'pages/form':
+                mod = require('./pages/form.js');
                 break;
         }
 

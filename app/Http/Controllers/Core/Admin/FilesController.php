@@ -1,12 +1,13 @@
-<?php namespace App\Http\Controllers\Core\Admin;
+<?php
+
+namespace App\Http\Controllers\Core\Admin;
 
 use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
 use App\Events\Files\FileWasLoaded;
 use App\Http\Requests;
 use App\Helpers\File as cFile;
-use Lang, Config, Redirect, Event;
-use Carbon\Carbon;
+use Carbon\Carbon, Lang, Config, Redirect, Event;
 
 class FilesController extends AdminController
 {
@@ -116,7 +117,7 @@ class FilesController extends AdminController
         $TYPE_CONTENT = Config::get('constants.RESOURCES.CONTENT');
         $STATUS    = Config::get('constants.DONE_STATUS.FAILURE');
 
-        $sMessage  = 'Файл не вдалося завантажити!';
+        $sMessage  = Lang::get('table_field.files.message_error');
         $aParams   = [];
 
         if ( $request->hasFile('upload') ) {
@@ -136,7 +137,7 @@ class FilesController extends AdminController
                 $aParams['CKEditorFuncNum'] = $request->get('CKEditorFuncNum');
 
                 $STATUS   = $response->code;
-                $sMessage = 'Файл був успішно збереженний!';
+                $sMessage = Lang::get('table_field.files.message');
             }
         }
 

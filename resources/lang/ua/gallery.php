@@ -10,11 +10,13 @@ return array(
         'create_gallery' => 'Новий файл',
         'editing_gallery' => 'Редагування файлу',
         'gallery' => 'Галерея',
-        ),
+        'count_gallery' => 'Всього (:num) файлів',
+        'go_to_gallery' => 'Перейти до списку Галереї',
+    ),
 
     'message' => array(
         'store_gallery' => 'Медіа файл успішно збережений!',
-        ),
+    ),
 
     'form' => array(
         'chapter' => 'Розділ',
@@ -24,5 +26,5 @@ return array(
         'type_photo' => 'Фото',
         'file' => 'Файл',
         'select_type_gallery' => 'Виберіть тип файлу',
-        )
-    );
+    )
+);

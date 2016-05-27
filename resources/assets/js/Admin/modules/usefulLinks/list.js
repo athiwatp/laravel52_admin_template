@@ -42,7 +42,9 @@ module.exports = {
 
                 return '<a href="/admin/usefulLinks/'+ row.id + '/edit" title="' + noTags + '">' +
                     system.ellipsis( noTags, 100 ) +
-                    '</a>';
+                    '</a>' + ( row.image?
+                    '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">':
+                    '');
             },
             targets: 1
         },

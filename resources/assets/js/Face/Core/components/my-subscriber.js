@@ -300,8 +300,6 @@
 
     return new Vue({
         el: elId
-    })
-
-
+    });
 
 }));

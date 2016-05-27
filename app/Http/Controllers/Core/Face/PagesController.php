@@ -1,11 +1,9 @@
-<?php
-
-namespace App\Http\Controllers\Core\Face;
+<?php namespace App\Http\Controllers\Core\Face;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\PagesRepository;
-
+use Lang;
 
 class PagesController extends FaceController
 {
@@ -44,6 +42,6 @@ class PagesController extends FaceController
         }
 
         return redirect()->route('home')
-            ->with('status', 'Страница - не найдена!');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 }

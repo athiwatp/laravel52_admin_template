@@ -7,6 +7,9 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Models\Chapters;
 use League\Fractal\Manager;
 use App\Repositories\ChaptersRepository;
+use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class ChapterController extends ApiController
 {
@@ -16,17 +19,21 @@ class ChapterController extends ApiController
      * @var {App\Repositories\ChaptersRepository}
      */
     protected $_chapter = null;
+    protected $user = null;
 
     /**
      * Constructor
      */
-    public function __construct(Manager $fractal, ChaptersRepository $chapter)
+    public function __construct( Manager $fractal, ChaptersRepository $chapter, UserRepository $user )
     {
         // apply parent implementation
         parent::__construct($fractal);
 
         // Chapter repository
         $this->_chapter = $chapter;
+
+        // User repository
+        $this->user = $user;
     }
 
     /**
@@ -61,6 +68,18 @@ class ChapterController extends ApiController
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $chapter = $this->_chapter->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $chapter['title'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\Chapters',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

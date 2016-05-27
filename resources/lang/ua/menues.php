@@ -22,6 +22,15 @@ return array(
         'announcements' => 'Анонси',
         'subscribers_management' => 'Підписчики',
         'useful-links' => 'Корисні посилання',
+        'logs' => 'Лог файл',
+        ),
+
+    'route' => array(
+        'dashboard' => 'Головна',
+        'announce' => 'Анонси',
+        'news' => 'Новини',
+        'video_news' => 'Відео Новини',
+        'gallery' => 'Галерея',
         ),
 
     'lists' => array(
@@ -35,8 +44,9 @@ return array(
         ),
 
     'form' => array(
-        'title' => 'Назва',
+        'title' => 'Заголовок',
         'pos' => 'Позицiя',
+        'connected_with' => 'Пов\'язаний з',
         'type_menu' => 'Тип меню',
         'parent_id' => 'Батькiвський вузол',
         'path' => 'Path',
@@ -54,5 +64,9 @@ return array(
         'is_loaded_by_default' => 'Завантажувати по-змовчуваню',
         'is_shown_print_version' => 'Показувати "Версія для друку"',
         'is_redirectable' => 'Перехід на вказану сторінку',
+        'modules' => 'Для переходу в наступнi модулi, потрiбно скопiювати наступне: [<strong> / </strong>] i [<strong> назва модулю </strong>]',
+        'message_type_menu' => 'Поділяючи меню за типом, ми маємо можливість маніпулювати елементами і показувати у відповідних місцях',
+        'message_linked_to_menu' => 'Показувати поточний пункт меню, на зв\'язковий сторінці (як сайдбар меню)',
+        'internal_modules' => 'внутрішні модулі'
         )
     );

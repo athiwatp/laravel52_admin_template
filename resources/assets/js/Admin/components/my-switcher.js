@@ -32,7 +32,7 @@
     Vue.component('my-switcher', {
         template: '<div class="btn-group btn-toggle" @click="onSwitcherClick($event, this)" v-el:wrapper>' + 
                 '<button class="btn btn-default">{{ cmpNo }}</button>' +
-                '<input type="hidden" name="{{ cmpName }}" value="{{ cmpValue }}"  v-model="status">'+
+                '<input type="hidden" name="{{ cmpName }}" id="{{ cmpName }}" value="{{ cmpValue }}"  v-model="status">'+
                 '<button class="btn btn-success active">{{ cmpYes }}</button>' +
         '</div>',
         /**
@@ -64,7 +64,6 @@
             this.status = val;
 
             if ( val === '0' ) {
-                // console.log(this.$els.wrapper);
                 this._toggle(this.$els.wrapper);
             }
         },

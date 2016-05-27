@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\MenuesRepository;
 use App\Repositories\PagesRepository;
-use Config;
+use Config, Lang;
 
 class MenuController extends FaceController
 {
@@ -64,6 +64,6 @@ class MenuController extends FaceController
         }
 
         return redirect()->route('home')
-            ->with('status', 'Страница - не найдена!');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 }

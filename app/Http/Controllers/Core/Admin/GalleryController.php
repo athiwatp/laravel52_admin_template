@@ -9,6 +9,7 @@ use App\Repositories\ChaptersRepository;
 
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
+use App\Events\Logs\LogsWasChanged;
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
 use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config, Event;
@@ -65,7 +66,7 @@ class GalleryController extends AdminController
                         'url' => URL::route('admin.gallery.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add', 'class' => 'add-btn')
+                        'aParams' => array('id' => 'add_gallery', 'class' => 'add-btn')
                     ),
                     'edit' => array(
                         'url' => '#',
@@ -134,8 +135,25 @@ class GalleryController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( GalleryRequest $request )
+    public function store( Request $request )
     {
+        if ( $request->get('id') > 0 ) {
+            $rules = array(
+                'title' => 'required|min:3|max:255',
+                'chapter_id' => 'required|not_in:0',
+                'pos' => 'required',
+                );
+        } else {
+            $rules = array(
+                'title' => 'required|min:3|max:255',
+                'chapter_id' => 'required|not_in:0',
+                'pos' => 'required',
+               'filename' => 'required|image'
+                );
+        }
+
+        $validator = $this->validate( $request, $rules );
+
         if ( $gallery = $this->gallery->store( $request->all() ) ) {
             if ( $request->hasFile('filename') ) {
                 $TYPE_GALLERY = Config::get('constants.RESOURCES.PHOTO_GALLERY');
@@ -167,6 +185,12 @@ class GalleryController extends AdminController
                 }
             }
         }
+
+        Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+            'object_id'    => $gallery['id'],
+            'object_type'  => 'App\Models\Gallery'
+        )));
 
         return Redirect::route('admin.gallery.index')
             ->with('message', array(

@@ -14,4 +14,17 @@ class Chapters extends Model
     */
     protected $table = 'chapters';
 
+    /**
+     * Returns the list of logs which are related to current announce
+     *
+    */
+    public function logs()
+    {
+       return $this->morphMany('App\Modules\Logs', 'object');
+    }
+
+    public function getEditurlAttribute()
+    {
+        return route( 'admin.chapter.edit', array('id' => $this->id) );
+    }
 }

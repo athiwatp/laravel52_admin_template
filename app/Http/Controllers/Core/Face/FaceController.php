@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Core\Face;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Config;
 use App\Http\Controllers\Core\Controller;
@@ -23,6 +22,9 @@ class FaceController extends Controller
      */
     public function __construct()
     {
+        // Call parent constructor
+        parent::__construct();
+
         $theme = Config::get('theme.' . $this->chapter . '.name');
 
         if ( $theme ) {

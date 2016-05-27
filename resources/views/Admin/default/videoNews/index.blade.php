@@ -8,9 +8,6 @@
             <th>#</th>
             <th>{{ Lang::get('table_field.lists.date') }}</th>
             <th>{{ Lang::get('videoNews.form.title') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
         </tr>
     </thead>
     <tfoot>
@@ -18,9 +15,6 @@
             <th>#</th>
             <th>{{ Lang::get('table_field.lists.date') }}</th>
             <th>{{ Lang::get('videoNews.form.title') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
-            <th>{{ Lang::get('table_field.lists.published') }}</th>
         </tr>
     </tfoot>
 </table>

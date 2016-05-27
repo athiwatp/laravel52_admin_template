@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\NewsRepository;
+use App\Repositories\ChaptersRepository;
+use Lang;
 
 class NewsController extends FaceController
 {
@@ -14,15 +16,25 @@ class NewsController extends FaceController
     protected $news = null;
 
     /**
+     * Inject the chapter repository
+     *
+     * @var {Object}
+     */
+    protected $news_chapter = null;
+
+    /**
      *
      */
-    public function __construct(NewsRepository $news)
+    public function __construct( NewsRepository $news, ChaptersRepository $chapter )
     {
         // Call the parent controller first
         parent::__construct();
 
         // Implement here custom logic
         $this->news = $news;
+
+        // inject the chapter repository
+        $this->news_chapter = $chapter;
     }
 
     /**
@@ -39,7 +51,7 @@ class NewsController extends FaceController
         }
 
         return redirect()->route('home')
-            ->with('status', 'Страница - не найдена!');
+            ->with('status', Lang::get('table_field.page_was_not_found'));
     }
 
     /**

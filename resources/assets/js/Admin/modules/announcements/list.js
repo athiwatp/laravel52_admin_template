@@ -11,7 +11,7 @@ module.exports = {
         {data: 'date_start', name: 'date_start'},
         //{data: 'date_end', name:'date_end', bVisible:false},
         {data: 'title', name:'title'},
-        {data: 'published', name: 'is_published'}
+        {data: 'content', name:'description', bVisible:false}
     ],
 
     /**
@@ -58,23 +58,21 @@ module.exports = {
                     published = '<i class="fa fa-eye green"></i>',
                     important = '';
 
+                if ( row.published === false ) {
+                    published = '<i class="fa fa-eye-slash red"></i>';
+                }
+
                 if ( row.important === true ) {
                     important = '<i class="fa fa-flag yellow"></i> ';
                 }
 
                 return '<a href="/admin/announcements/'+ row.id + '/edit" title="' + noTags + '">' +
-                    important + system.ellipsis( noTags, 100 ) +
+                    published + ' ' + important + system.ellipsis( noTags, 100 ) +
                 '</a>' + ( row.image?
                     '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">':
                     '');
             },
             targets: 2
-        },
-        {
-            render: function( data ) {
-                return system.getPublishedIcon(data);
-            },
-            targets: 3
         }
     ],
 

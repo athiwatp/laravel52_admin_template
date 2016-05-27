@@ -18,7 +18,8 @@ return [
         'CHAPTER' => 'chapter',
         'ANNOUNCE' => 'announce',
         'PAGE' => 'page',
-        'CONTENT' => 'content'
+        'CONTENT' => 'content',
+        'USEFUL_LINK' => 'usefulLink',
     ],
 
     /**
@@ -60,6 +61,7 @@ return [
     'USERS' => [
         'ADMIN' => '1',
         'USER' => '0',
+        'EDITOR' => '2',
         'IS_VERIFIED' => '1',
         'NOT_VERIFIED' => '0'
     ],
@@ -85,6 +87,7 @@ return [
         'TYPE_PAGE' => 'page',
         'TYPE_NEWS' => 'news',
         'TYPE_VIDEO' => 'video',
+        'TYPE_ANNOUNCE' => 'announce',
     ],
 
     /**

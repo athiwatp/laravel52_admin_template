@@ -61,4 +61,49 @@ $(function() {
         });
     }
 
+    /**
+     * Handle the photo item
+     *
+     **/
+    var photoItemSelector = '.photo-gallery-item';
+    if ( $(photoItemSelector).length > 0 ) {
+
+
+        $(photoItemSelector).each(function () {
+
+            $(this).on('click', function (event) {
+                event = event || window.event;
+
+                var target = event.target || event.srcElement,
+                    link = target.src ? target.parentNode : target,
+                    options = {index: link, event: event, titleProperty: 'title'},
+                    links = $('a.link-item');
+
+                // Inlcude Blueimp library
+                require('blueimp-gallery');
+
+                // Cancel all commands
+                event.preventDefault();
+
+                blueimp.Gallery(links, options);
+
+                return false;
+            });
+
+        });
+
+        $(photoItemSelector).append(
+            '<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">'+
+            '<div class="slides"></div>'+
+            '<h3 class="title"></h3>'+
+            '<a class="prev">‹</a>'+
+            '<a class="next">›</a>'+
+            '<a class="close">×</a>'+
+            '<a class="play-pause"></a>'+
+            '<ol class="indicator"></ol>'+
+            '</div>'
+        );
+    }
+
+
 });

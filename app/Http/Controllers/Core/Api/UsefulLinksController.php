@@ -7,6 +7,9 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Models\UsefulLinks;
 use League\Fractal\Manager;
 use App\Repositories\UsefulLinksRepository;
+use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class UsefulLinksController extends ApiController
 {
@@ -20,13 +23,16 @@ class UsefulLinksController extends ApiController
     /**
      * Constructor
      */
-    public function __construct(Manager $fractal, UsefulLinksRepository $usefulLinks)
+    public function __construct( Manager $fractal, UsefulLinksRepository $usefulLinks, UserRepository $user )
     {
         // apply parent implementation
         parent::__construct($fractal);
 
         // useful links repository
         $this->usefulLinks = $usefulLinks;
+
+        // User repository
+        $this->user = $user;
     }
 
 
@@ -62,6 +68,18 @@ class UsefulLinksController extends ApiController
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $link = $this->usefulLinks->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $link['title'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\UsefulLinks',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

@@ -7,6 +7,9 @@ use League\Fractal\Manager;
 use Yajra\Datatables\Facades\Datatables;
 use App\Models\VideoNews;
 use App\Repositories\VideoNewsRepository;
+use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class VideoNewsController extends ApiController
 {
@@ -16,19 +19,21 @@ class VideoNewsController extends ApiController
      * @var {App\Repositories\VideoNewsRepository}
      */
     protected $video = null;
-
-
+    protected $user = null;
     protected $fractal;
 
     /**
      * Constructor
     */
-    public function __construct(Manager $fractal, VideoNewsRepository $video)
+    public function __construct( Manager $fractal, VideoNewsRepository $video, UserRepository $user )
     {
         $this->fractal = $fractal;
 
         // inject video
         $this->video = $video;
+
+        // User repository
+        $this->user = $user;
     }
 
     /**
@@ -63,6 +68,18 @@ class VideoNewsController extends ApiController
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $videoNews = $this->video->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $videoNews['title'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\VideoNews',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

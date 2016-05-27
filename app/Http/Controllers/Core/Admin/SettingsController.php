@@ -76,7 +76,7 @@ class SettingsController extends AdminController
      */
     public function store( SettingsRequest $request )
     {
-        $this->settings->store( $request->all() );
+        $settings = $this->settings->store( $request->all() );
 
         return Redirect::route('admin.settings.index')
             ->with('message', array(

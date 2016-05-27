@@ -6,14 +6,25 @@ use Carbon\Carbon, Auth;
 class UrlHistoryRepository extends BaseRepository {
 
     /**
+     * UrlHistory instance
+     *
+     * @var App\Repositories\UrlHistoryRepository
+     */
+    protected $url = null;
+
+    /**
      * Create a new Message instance
      *
-     * @param App\Models\UrlHistory $urlHist
+     * @param App\Models\UrlHistory $url
      *
      * @return void
     */
-    public function __construct(UrlHistory $url)
+    public function __construct( UrlHistory $url = null )
     {
+        if ($url === null) {
+            $url = new UrlHistory();
+        }
+
         $this->model = $url;
     }
 
@@ -24,16 +35,24 @@ class UrlHistoryRepository extends BaseRepository {
      *
      * @return
     */
-    public function savePage( $url, $inputs )
+    public function saveUrlHistory( $sContentId, $sType, $sUrl )
     {
-        $url->date      = $inputs['date'];
-        $url->type_id   = $inputs['type_id'];
-        $url->url       = $inputs['url'];
-        $url->type      = $inputs['type'];
+        $historyUrl = $this->getFindUrl( $sContentId, $sType, $sUrl );
 
-        $page->save();
+        if ( $historyUrl === null ) {
+            $history = new UrlHistory;
 
-        return true;
+            $history->type_id   = $sContentId;
+            $history->url       = $sUrl;
+            $history->type      = $sType;
+            $history->add_date  = Carbon::now()->toDateString();
+
+            if ( $history->save() ) {
+                return $history;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -43,9 +62,17 @@ class UrlHistoryRepository extends BaseRepository {
      *
      * @return void
     */
-    public function store( $inputs )
+    public function getFindUrl( $sContentId = 0, $type, $url )
     {
-        $pages = $this->savePage( new $this->model, $inputs );
+        $findUrl = $this->model
+            ->where('type', '=', $type)
+            ->where('url', '=', $url);
+
+        if ( $sContentId > 0 ) {
+            $findUrl->where('type_id', '=', $sContentId);
+        }
+
+        return $findUrl->first();
     }
 
     /**
@@ -77,5 +104,12 @@ class UrlHistoryRepository extends BaseRepository {
             'type' => reset($aType),
             'status' => false
         );
+    }
+
+    public function getDestroyById( $id, $sType )
+    {
+        $this->model->where('type_id', '=', $id)
+            ->where('type', '=', $sType)
+            ->delete();
     }
 }

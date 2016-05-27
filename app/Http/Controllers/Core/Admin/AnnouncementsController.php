@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Core\Admin;
+<?php
+
+namespace App\Http\Controllers\Core\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AnnouncementsRequest;
@@ -8,6 +10,7 @@ use App\Repositories\FileRepository;
 
 use App\Events\Files\FileWasLoaded;
 use App\Events\Files\FileWasRemoved;
+use App\Events\Logs\LogsWasChanged;
 use App\Http\Requests;
 use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event, Config;
 
@@ -56,7 +59,7 @@ class AnnouncementsController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( AnnouncementsRequest $input )
     {
         $aBreadcrumbs = array(
             array('url' => '#', 'icon' => '<i class="fa fa-bullhorn"></i>', 'title' => Lang::get('announce.lists.lists_announce'))
@@ -95,7 +98,13 @@ class AnnouncementsController extends AdminController
                         'title' => Lang::get('table_field.toolbar.refresh'),
                         'icon' => '<i class="fa fa-refresh"></i>',
                         'aParams' => array('id' => 'refresh', 'class' => 'refresh-btn', 'data-url' => URL::route('admin.announcements.index') )
-                    )
+                    ),
+                    // 'sync' => array(
+                    //     'url' => URL::route( 'admin.announcements.sync', array( 'start' => $input->get('start', 0) ) ),
+                    //     'title' => Lang::get('table_field.toolbar.sync'),
+                    //     'icon' => '<i class="fa fa-arrow-circle-down"></i>',
+                    //     'aParams' => array('id' => 'sync')
+                    // )
                 )
             ))
         ));
@@ -121,7 +130,7 @@ class AnnouncementsController extends AdminController
             'sFormBreadcrumbs' => cBreadcrumbs::getItems($this->getTheme(), $aBreadcrumbs),
             'formChapter' => Lang::get('announce.lists.announce_management'),
             'formSubChapter' => '',
-            'formTitle' => Lang::get('announce.lists.create_new_announce'),
+            'formTitle' => Lang::get('announce.lists.create_announce'),
             'formJsHandler' => 'announcements/form',
             'formFormId' => 'admin_announce_form',
             'useCKEditor' => true,
@@ -141,11 +150,6 @@ class AnnouncementsController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.published'),
                     'name' => 'is_published'
-                ),
-                array(
-                    'title' => Lang::get('news.form.important'),
-                    'name' => 'important',
-                    'value' => '0'
                 )
             ),
             'formContent' => $this->renderView('announcements.add', array(
@@ -165,6 +169,46 @@ class AnnouncementsController extends AdminController
      */
     public function store( Request $request )
     {
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'top_date_end' => 'required_with:is_topical',
+                'date_start' => 'required',
+                'date_end' => 'required',
+                'chapter_id' => 'required|not_in:0'
+                ));
+
+        if ( $request->get('id') > 0 ) {
+            $image = $this->announce->edit($request->get('id'))['image'];
+            if ( $image == false ) {
+                $image = $request->hasFile('image');
+            }
+        } else {
+            $image = $request->hasFile('image');
+        }
+
+        if ( $request->get('important') === '1' && $image == false ) {
+            return Redirect::route( ($request->get('id') > 0 ? 'admin.announcements.edit' : 'admin.announcements.create'), array('id' => $request->get('id')) )
+                ->with('message', array(
+                    'code'      => self::$statusError,
+                    'message'   => Lang::get('announce.lists.important_announce_need_photo')
+                    ))
+                ->withInput();
+        }
+
+        $date_start = test_for_materiality_date( Carbon::createFromFormat( $this->announce->getDateFormat(), $request->get('date_start') ), Carbon::now()->subYear() );
+        $date_end   = test_for_materiality_date( Carbon::createFromFormat( $this->announce->getDateFormat(), $request->get('date_end') ), Carbon::now()->subYear() );
+
+        if( ($date_start !== true ) || ($date_end !== true ) ) {
+            $date = $date_start !== true ? Lang::get('announce.form.date_start') . ' ' . $request->get('date_start') : Lang::get('announce.form.date_end') . ' ' . $request->get('date_end');
+
+            return Redirect::route( ($request->get('id') > 0 ? 'admin.announcements.edit' : 'admin.announcements.create'), array('id' => $request->get('id')) )
+                ->with('message', array(
+                    'code'      => self::$statusError,
+                    'message'   => Lang::get('table_field.incorrectly_specified_date', array('date' => $date))
+                    ))
+                ->withInput();
+        }
 
         if ( $announce = $this->announce->store( $request->except(['_token']) ) ) {
             $TYPE_ANNOUNCE = Config::get('constants.RESOURCES.ANNOUNCE');
@@ -197,6 +241,13 @@ class AnnouncementsController extends AdminController
                 }
             }
 
+            Event::fire( new LogsWasChanged(array(
+                'comment' => ( $request['id'] > 0 ? 'Редагував' : 'Створив' ),
+                'title' => $request->get('title'),
+                'object_id'    => $announce['id'],
+                'object_type'  => 'App\Models\Announcements'
+            )));
+
             // Check the files for current content
             $this->file->correct($request->get('_token'), $announce['id'], $TYPE_ANNOUNCE);
         }
@@ -204,7 +255,7 @@ class AnnouncementsController extends AdminController
         return Redirect::route('admin.announcements.index')
             ->with('message', array(
                 'code'      => self::$statusOk,
-                'message'   => Lang::get('announce.lists.announce_saved_successfully') ));
+                'message'   => Lang::get('announce.lists.announce_saved_successfully') ) );
     }
 
     /**
@@ -257,7 +308,7 @@ class AnnouncementsController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.published'),
                     'name' => 'is_published',
-                    'value' => $oData->is_published
+                    'value' => $oData['is_published']
                 )
             ),
             'formContent' => $this->renderView('announcements.add', array(
@@ -290,4 +341,18 @@ class AnnouncementsController extends AdminController
     {
         //
     }
+
+    // //// TEMP
+    // public function sync($start)
+    // {
+    //     $sync = $this->announce->sync( $start );
+
+    //     return Redirect::route('admin.announcements.index', array('start' => $sync['start']))
+    //         ->with('message', array(
+    //             'code' => self::$statusOk,
+    //             'message' => Lang::get('table_field.sync.message') . $sync['index']
+    //         ));
+    // }
+    ///
+
 }

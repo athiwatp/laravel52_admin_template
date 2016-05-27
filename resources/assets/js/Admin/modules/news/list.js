@@ -10,8 +10,7 @@ module.exports = {
         {data: 'id', name:'id', orderable: false},
         {data: 'date', name:'date'},
         {data: 'title', name:'title'},
-        {data: 'content', name:'content', bVisible: false},
-        {data: 'published', name:'is_published'}
+        {data: 'content', name:'content', bVisible: false}
     ],
 
     /**
@@ -36,17 +35,20 @@ module.exports = {
                 return '';
             },
             targets:   0
-        },
-        {
+        }, {
             render: function( data ) {
                 return system.getFormattedDate( data );
             },
             targets: 1
-        },
-        {
+        }, {
             render: function ( data, type, row ) {
                 var noTags = system.stripTags(data),
+                    published = '<i class="fa fa-eye green"></i>',
                     main = '', important = '';
+
+                if ( row.published === false ) {
+                    published = '<i class="fa fa-eye-slash red"></i>';
+                }
 
                 if ( row.main === true ) {
                     main = '<i class="fa fa-bolt light-yellow"></i> ';
@@ -57,18 +59,12 @@ module.exports = {
                 }
 
                 return '<a href="/admin/news/'+ row.id + '/edit" title="' + noTags + '">' +
-                    main + important + system.ellipsis( noTags, 100 ) +
+                    published + ' ' + main + important + system.ellipsis( noTags, 100 ) +
                 '</a>' + ( row.photo?
                     '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">':
                     '');
             },
             targets: 2
-        },
-        {
-            render: function( data ) {
-                return system.getPublishedIcon(data);
-            },
-            targets: 4
         }
     ],
 

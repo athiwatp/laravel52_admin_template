@@ -1,7 +1,7 @@
 
 <div class="form-group">
     {{ Form::label('title', Lang::get('announce.form.title') ) }}
-    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('class' => 'form-control convert-to-url')) }}
+    {{ Form::text('title', ( isset($oData) ? $oData->title : null), array('required', 'minlength' => 3, 'maxlength' => 255, 'class' => 'form-control convert-to-url')) }}
 </div>
 
 <div class="form-group">
@@ -82,6 +82,9 @@
     ])
 }}
 
+@if( env('APP_ENV', 'testing') )
+    {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 1) }}
+@endif
 
 @if ( Config::get('app.debug') == true )
     <pre>

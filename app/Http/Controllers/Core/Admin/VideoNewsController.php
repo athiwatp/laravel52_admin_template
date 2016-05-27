@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Core\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\VideoNewsRequest;
 use App\Repositories\VideoNewsRepository;
+use App\Events\Logs\LogsWasChanged;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Carbon\Carbon, Lang, Redirect, cTemplate, cBreadcrumbs, Event, cForms, URL;
 
 class VideoNewsController extends AdminController
 {
@@ -139,9 +140,34 @@ class VideoNewsController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( VideoNewsRequest $request )
+    public function store( Request $request )
     {
-        $this->videoNews->store( $request->all() );
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'url' => 'required_with:title',
+                'youtube_url' => 'required|url|max:500',
+                'date' => 'required'
+                ));
+
+        $date = test_for_materiality_date( Carbon::createFromFormat( $this->videoNews->getDateFormat(), $request->get('date') ), Carbon::now()->subYear() );
+
+        if ( $date !== true ) {
+            return Redirect::route( ($request->get('id') > 0 ? 'admin.videoNews.edit' : 'admin.videoNews.create'), array('id' => $request->get('id')) )
+                ->with('message', array(
+                    'code'      => self::$statusError,
+                    'message'   => Lang::get('table_field.incorrectly_specified_date', array('date' => Lang::get('table_field.lists.date') . ' ' . $request->get('date')))
+                    ))
+                ->withInput();
+        }
+
+        $videoNews = $this->videoNews->store( $request->all() );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+            'object_id'    => $videoNews['id'],
+            'object_type'  => 'App\Models\VideoNews'
+        )));
 
         return Redirect::route('admin.videoNews.index')
             ->with('message', array(

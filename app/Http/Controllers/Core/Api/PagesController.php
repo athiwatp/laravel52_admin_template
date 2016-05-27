@@ -7,28 +7,34 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Models\Pages;
 use League\Fractal\Manager;
 use App\Repositories\PagesRepository;
+use App\Repositories\UserRepository;
+use App\Events\Logs\LogsWasChanged;
+use Event;
 
 class PagesController extends ApiController
 {
     /**
-     * Injected variable for the chapters
+     * Injected variable for the pages
      *
-     * @var {App\Repositories\ChaptersRepository}
+     * @var {App\Repositories\PagesRepository}
      */
     protected $page = null;
+    protected $user = null;
 
     /**
      * Constructor
      */
-    public function __construct(Manager $fractal, PagesRepository $page)
+    public function __construct( Manager $fractal, PagesRepository $page, UserRepository $user )
     {
         // apply parent implementation
         parent::__construct($fractal);
 
-        // page repository
+        // Page repository
         $this->page = $page;
-    }
 
+        // User repository
+        $this->user = $user;
+    }
 
     /**
      * Display a listing of the resource.
@@ -56,12 +62,24 @@ class PagesController extends ApiController
     /**
      * Destroy the announce item
      *
-     * @param id {Integer} - menu identifier
+     * @param id {Integer} - page identifier
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
+        $user = $this->user->findUserByToken( $request->get('api_token') );
+        $page = $this->page->edit( $id );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment'     => 'Видалив ',
+            'title'       => $page['title'],
+            'type'        => 'destroy',
+            'object_id'   => $id,
+            'object_type' => 'App\Models\Pages',
+            'user_id'     => $user->id
+        )));
+
         $result = [
             'deleted' => false
         ];

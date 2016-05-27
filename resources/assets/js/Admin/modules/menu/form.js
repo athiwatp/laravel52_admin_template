@@ -8,7 +8,6 @@ var system = require('../_System.js').getInstance();
 
 Vue.use(require('vue-resource'));
 
-
 module.exports = new Vue({
     el: '#admin_menu_form',
 
@@ -54,7 +53,14 @@ module.exports = new Vue({
              *
              * @var Bolean
              **/
-            is_redirectable: false
+            is_redirectable: false,
+
+            /**
+             * Page identifier
+             *
+             * @var Integer
+             **/
+            page_id: 0
         },
 
         retrieved: {
@@ -67,7 +73,7 @@ module.exports = new Vue({
          * Data
          **/
         linked: [
-            {text: '-- Выберите связную страницу --', value:'0', type: ''}
+            {text: '-- Виберіть зв\'язну сторінку --', value:'0', type: ''}
         ],
 
         /**
@@ -79,8 +85,8 @@ module.exports = new Vue({
          * Default element for parents list
          **/
         parentDefault: [
-            {text: '-- Выберите родительский элемент --', value:'-1'},
-            {text: '*** Корневой элемент системы ***', value:'0'}
+            {text: '-- Виберіть батьківський елемент --', value:'-1'},
+            {text: '*** Кореневий елемент системи ***', value:'0'}
         ]
 
     },
@@ -90,6 +96,10 @@ module.exports = new Vue({
      **/
     ready: function(){
         var self = this;
+
+        if (self.menu.type != 0) {
+            self.onTypeChange();
+        }
 
         for(var i in self.parentDefault) {
             self.parents.push(self.parentDefault[i]);
@@ -107,6 +117,15 @@ module.exports = new Vue({
      * Defined methods
      **/
     methods: {
+
+        checkFormBeforeSaving: function(event) {
+            var self = this;
+
+            //event.preventDefault();
+
+            return false;
+        },
+
         /**
          * Handle the status change for the type menu DropDown
          **/
@@ -251,10 +270,14 @@ module.exports = new Vue({
          **/
         isRedirectTextDisabled: function() {
             return !this.menu.is_redirectable;
+        },
+
+        /**
+         *
+         **/
+        isRedirectDisabledPage: function() {
+            return this.menu.is_redirectable;
         }
-
-
-
     }
 
 });

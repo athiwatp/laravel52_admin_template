@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SubscribersRequests;
 use App\Repositories\SubscribersRepository;
 use App\Http\Controllers\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config;
+use App\Events\Logs\LogsWasChanged;
+use App\Events\Mail\SendMail;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Config, Event;
 
 class SubscribersController extends AdminController
 {
@@ -128,9 +130,35 @@ class SubscribersController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
-        $this->subscribers->store( $request->all() );
+        if ( $request->get('id') > 0 ) {
+            $rules = array('email' => 'required|min:3|max:255|email');
+        } else {
+            $rules = array('email' => 'required|min:3|max:255|email|unique:subscribers');
+        }
+
+        $validator = $this->validate( $request, $rules );
+
+        $subscribers = $this->subscribers->store( $request->all() );
+
+        if ( $subscribers ) {
+            Event::fire( new LogsWasChanged(array(
+                'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+                'object_id'    => $subscribers->id,
+                'object_type'  => 'App\Models\Subscribers'
+            )));
+
+            // Send activation mail
+            if( $request->get('send_activation_email') ) {
+                Event::fire( new SendMail([
+                    'theme' => 'Themes.' . Config::get('theme.Themes.name'),
+                    'template' => SendMail::SUBSCRIBER_ACTIVATION,
+                    'to' => $request->get('email'),
+                    'code' => $subscribers->activation_code
+                ]));
+            }
+        }
 
         return Redirect::route('admin.subscribers.index')
             ->with('message', array(

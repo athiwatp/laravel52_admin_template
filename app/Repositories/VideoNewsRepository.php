@@ -1,10 +1,18 @@
 <?php namespace App\Repositories;
 
 use App\Models\VideoNews as VideoNews;
-use Carbon\Carbon, Auth;
+use Carbon\Carbon, Auth, Config;
 use Illuminate\Http\Request;
 
 class VideoNewsRepository extends BaseRepository {
+
+    /**
+     * URL History
+     *
+     * @var Object history
+    */
+    protected $history = null;
+
     /**
      * Create a new Message instance
      *
@@ -12,9 +20,16 @@ class VideoNewsRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(VideoNews $videoNews)
+    public function __construct( VideoNews $videoNews, UrlHistoryRepository $history )
     {
+        // Video news Model
         $this->model = $videoNews;
+
+        // History
+        $this->history = $history;
+
+        // Retrieve the config settings
+        $this->PUBLISHED = Config::get('constants.DONE_STATUS.SUCCESS');
     }
 
         /**
@@ -27,6 +42,18 @@ class VideoNewsRepository extends BaseRepository {
     public function index()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Create or update Message
+     *
+     * @param App\Models\VideoNews $videoNews
+     *
+     * @return
+    */
+    public function getIndex()
+    {
+        return $this->model->where('is_published', '=', $this->PUBLISHED)->get();
     }
 
     /**
@@ -82,13 +109,15 @@ class VideoNewsRepository extends BaseRepository {
         $videoNews->title        = $inputs['title'];
         $videoNews->content      = $inputs['content'];
         $videoNews->date         = $inputs['date'] ? Carbon::createFromFormat($this->dateFormat, $inputs['date'] ) : Carbon::now()->toDateString();
+        $videoNews->youtube_url  = $inputs['youtube_url'];
         $videoNews->url          = $inputs['url'];
         $videoNews->is_published = $inputs['is_published'];
         $videoNews->user_id      = Auth::id();
 
-        $videoNews->save();
-
-        return true;
+        if ( $videoNews->save() ) {
+            return $videoNews;
+        }
+        return false;
     }
 
     /**
@@ -102,6 +131,7 @@ class VideoNewsRepository extends BaseRepository {
     public function store( $inputs )
     {
         $id = $inputs['id'];
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_VIDEO');
 
         if ( isset($id) && $id > 0 ) {
             $model = $this->model->find( $id );
@@ -110,6 +140,14 @@ class VideoNewsRepository extends BaseRepository {
         }
 
         $videoNews = $this->saveVideoNews( $model, $inputs );
+
+        $changeUrl = get_url_history($videoNews['id'], $TYPE, $inputs['url'] );
+        $this->fixChanges( $videoNews['id'], ['url' => $changeUrl] );
+
+        if ( $videoNews ) {
+            return $videoNews;
+        }
+        return false;
     }
 
     /**
@@ -133,6 +171,10 @@ class VideoNewsRepository extends BaseRepository {
     */
     public function destroy($id)
     {
+        $TYPE = Config::get('constants.URL_HISTORY.TYPE_VIDEO');
+
+        $this->history->getDestroyById( $id, $TYPE );
+
         return parent::destroy($id);
     }
 

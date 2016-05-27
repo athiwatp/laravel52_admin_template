@@ -14,4 +14,17 @@ class VideoNews extends Model
     */
     protected $table = 'video_news';
 
+    /**
+     * Returns the list of logs which are related to current announce
+     *
+    */
+    public function logs()
+    {
+       return $this->morphMany('App\Modules\Logs', 'object');
+    }
+
+    public function getEditurlAttribute()
+    {
+        return route( 'admin.videoNews.edit', array('id' => $this->id) );
+    }
 }

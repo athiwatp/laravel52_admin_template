@@ -46234,6 +46234,7 @@ var loader = require('./modules/_loader.js');
 var _system = require('./modules/_System.js').getInstance();
 
 require('./types/String.js');
+require('./types/Array.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
 
@@ -46244,22 +46245,35 @@ require('bootstrap-datepicker');
 
 $(function () {
 
-    if ($('.switcher').length > 0) {
-        $('.switcher').each(function () {
-            var id = $(this).attr('id');
+    /// ========== VUE Components ============ ///
+    $('.switcher').each(function () {
+        var id = $(this).attr('id');
 
-            if (_system.isEmpty(id)) {
-                id = _system.generateId();
+        if (_system.isEmpty(id)) {
+            id = _system.generateId();
 
-                $(this).attr('id', id);
-            }
-            // console.log(id);
+            $(this).attr('id', id);
+        }
 
-            var gallery = require('./components/my-switcher.js')($, {
-                elId: '#' + id
-            }, _system);
-        });
-    }
+        require('./components/my-switcher.js')($, {
+            elId: '#' + id
+        }, _system);
+    });
+
+    $('.street-switcher').each(function () {
+        var id = $(this).attr('id');
+
+        if (_system.isEmpty(id)) {
+            id = _system.generateId();
+
+            $(this).attr('id', id);
+        }
+
+        require('../Core/components/my-location-switcher.js')($, {
+            elId: '#' + id
+        }, _system);
+    });
+    /// ====================== ///
 
     /**
      * Handle the grids
@@ -46280,9 +46294,6 @@ $(function () {
     // Toolbar buttons
     // 1. edit_menu
     if ($('#edit').length > 0) {
-
-        // console.log('Hey!!!!');
-
         $('#edit').on('click', function (e) {
             var self = this;
 
@@ -46386,10 +46397,14 @@ $(function () {
 
         $(this).on('keyup', function () {
             var sTitle = $(this).val(),
-                resField = $('.data-url');
+                resField = $('.data-url'),
+                resFieldPublic = $('.data-public_url');
 
             if (resField) {
                 $(resField).val(sTitle.translit());
+            }
+            if (resFieldPublic.length > 0) {
+                $(resFieldPublic).val(public_url.value.substring(0, 26) + url.value);
             }
         });
     });
@@ -46401,7 +46416,7 @@ $(function () {
         var handler = $(this).attr('data-handler');
 
         if (handler) {
-            var module = loader.getFormModule(handler);
+            loader.getFormModule(handler);
         }
     });
 
@@ -46417,10 +46432,26 @@ $(function () {
             });
         }
     });
+
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('[data-role="page-scroller"]').fadeIn();
+            } else {
+                $('[data-role="page-scroller"]').fadeOut();
+            }
+        });
+
+        $('[data-role="page-scroller"]').click(function () {
+            $('body, html').animate({
+                scrollTop: 0
+            }, 500);
+        });
+    });
     // ====== //
 });
 
-},{"./components/my-switcher.js":37,"./modules/_System.js":38,"./modules/_ckeditor.js":39,"./modules/_datatable.js":40,"./modules/_loader.js":41,"./modules/_mask.js":42,"./modules/_metis.js":43,"./modules/_resizer.js":44,"./types/String.js":58,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+},{"../Core/components/my-location-switcher.js":63,"./components/my-switcher.js":37,"./modules/_System.js":38,"./modules/_ckeditor.js":39,"./modules/_datatable.js":40,"./modules/_loader.js":41,"./modules/_mask.js":42,"./modules/_metis.js":43,"./modules/_resizer.js":44,"./types/Array.js":61,"./types/String.js":62,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -46457,7 +46488,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         elId = parameters && parameters.elId ? parameters.elId : '#switcher';
 
     Vue.component('my-switcher', {
-        template: '<div class="btn-group btn-toggle" @click="onSwitcherClick($event, this)" v-el:wrapper>' + '<button class="btn btn-default">{{ cmpNo }}</button>' + '<input type="hidden" name="{{ cmpName }}" value="{{ cmpValue }}"  v-model="status">' + '<button class="btn btn-success active">{{ cmpYes }}</button>' + '</div>',
+        template: '<div class="btn-group btn-toggle" @click="onSwitcherClick($event, this)" v-el:wrapper>' + '<button class="btn btn-default">{{ cmpNo }}</button>' + '<input type="hidden" name="{{ cmpName }}" id="{{ cmpName }}" value="{{ cmpValue }}"  v-model="status">' + '<button class="btn btn-success active">{{ cmpYes }}</button>' + '</div>',
         /**
          * Describe the properties for the component
          *
@@ -46487,7 +46518,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             this.status = val;
 
             if (val === '0') {
-                // console.log(this.$els.wrapper);
                 this._toggle(this.$els.wrapper);
             }
         },
@@ -46703,8 +46733,6 @@ var AdminSingleton = function ($) {
              * @param String url
              **/
             redirectTo: function redirectTo(url) {
-
-                // console.log(url);
 
                 window.location.href = url;
             },
@@ -47056,6 +47084,10 @@ module.exports = {
             case 'usefulLinks/list':
                 mod = require('./usefulLinks/list.js');
                 break;
+
+            case 'logs/list':
+                mod = require('./logs/list.js');
+                break;
         }
 
         return mod;
@@ -47079,13 +47111,21 @@ module.exports = {
             case 'announcements/form':
                 mod = require('./announcements/form.js');
                 break;
+
+            case 'news/form':
+                mod = require('./news/form.js');
+                break;
+
+            case 'pages/form':
+                mod = require('./pages/form.js');
+                break;
         }
 
         return mod;
     }
 };
 
-},{"./announcements/form.js":45,"./announcements/list.js":46,"./chapters/list.js":47,"./customerReviews/list.js":48,"./gallery/list.js":49,"./menu/form.js":50,"./menu/list.js":51,"./news/list.js":52,"./pages/list.js":53,"./subscribers/list.js":54,"./usefulLinks/list.js":55,"./users/list.js":56,"./video/list.js":57}],42:[function(require,module,exports){
+},{"./announcements/form.js":45,"./announcements/list.js":46,"./chapters/list.js":47,"./customerReviews/list.js":48,"./gallery/list.js":49,"./logs/list.js":50,"./menu/form.js":51,"./menu/list.js":52,"./news/form.js":53,"./news/list.js":54,"./pages/form.js":55,"./pages/list.js":56,"./subscribers/list.js":57,"./usefulLinks/list.js":58,"./users/list.js":59,"./video/list.js":60}],42:[function(require,module,exports){
 'use strict';
 
 /**
@@ -47223,7 +47263,7 @@ module.exports = {
      **/
     columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date_start', name: 'date_start' },
     //{data: 'date_end', name:'date_end', bVisible:false},
-    { data: 'title', name: 'title' }, { data: 'published', name: 'is_published' }],
+    { data: 'title', name: 'title' }, { data: 'content', name: 'description', bVisible: false }],
 
     /**
      * Define the URLs
@@ -47259,18 +47299,17 @@ module.exports = {
                 published = '<i class="fa fa-eye green"></i>',
                 important = '';
 
+            if (row.published === false) {
+                published = '<i class="fa fa-eye-slash red"></i>';
+            }
+
             if (row.important === true) {
                 important = '<i class="fa fa-flag yellow"></i> ';
             }
 
-            return '<a href="/admin/announcements/' + row.id + '/edit" title="' + noTags + '">' + important + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
+            return '<a href="/admin/announcements/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + important + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
-    }, {
-        render: function render(data) {
-            return system.getPublishedIcon(data);
-        },
-        targets: 3
     }],
 
     ajax: {
@@ -47316,7 +47355,7 @@ module.exports = {
      **/
     columnDefs: [{
         className: 'select-checkbox',
-        render: function render(data) {
+        render: function render() {
             return '';
         },
         targets: 0
@@ -47487,6 +47526,66 @@ module.exports = {
 },{"../_System.js":38}],50:[function(require,module,exports){
 'use strict';
 
+var system = require('../_System.js').getInstance();
+
+module.exports = {
+    /**
+     * Define a list of columns for the grid
+     *
+     * @var Object
+     **/
+    columns: [{ data: 'date', name: 'created_at' }, { data: 'comment', name: 'comment' }, { data: 'related_object', name: 'object_type' }, { data: 'user', name: 'user_id' }],
+
+    /**
+     * Renderer for the columns by the index
+     *
+     * @var Object
+     **/
+    columnDefs: [{
+        render: function render(data) {
+            return system.getFormattedDate(data, true);
+        },
+        targets: 0
+    }, {
+        render: function render(data, type, row) {
+            var link = row.related_object.url ? row.related_object.url : '#';
+
+            if (row.related_object.url) {
+                return '<a href="' + link + '">' + system.ellipsis(system.stripTags(data), 100) + '</a>';
+            } else {
+                return system.ellipsis(system.stripTags(data), 100);
+            };
+        },
+        targets: 1
+    }, {
+        render: function render(row) {
+            return row ? row.title : '';
+        },
+        targets: 2
+    }, {
+        render: function render(row) {
+
+            return '<div title="Тел ' + row.phone + '">' + row.name + '</div>';
+        },
+        targets: 3
+    }],
+
+    ajax: {
+        url: system.getUrl('logs')
+    },
+
+    select: {
+        style: 'os',
+        selector: 'td:first-child'
+    },
+
+    order: [[1, 'desc']]
+
+};
+
+},{"../_System.js":38}],51:[function(require,module,exports){
+'use strict';
+
 /**
  * Module to handle the admin forms
  *
@@ -47542,7 +47641,14 @@ module.exports = new Vue({
              *
              * @var Bolean
              **/
-            is_redirectable: false
+            is_redirectable: false,
+
+            /**
+             * Page identifier
+             *
+             * @var Integer
+             **/
+            page_id: 0
         },
 
         retrieved: {
@@ -47554,7 +47660,7 @@ module.exports = new Vue({
         /**
          * Data
          **/
-        linked: [{ text: '-- Выберите связную страницу --', value: '0', type: '' }],
+        linked: [{ text: '-- Виберіть зв\'язну сторінку --', value: '0', type: '' }],
 
         /**
          * Parents
@@ -47564,7 +47670,7 @@ module.exports = new Vue({
         /**
          * Default element for parents list
          **/
-        parentDefault: [{ text: '-- Выберите родительский элемент --', value: '-1' }, { text: '*** Корневой элемент системы ***', value: '0' }]
+        parentDefault: [{ text: '-- Виберіть батьківський елемент --', value: '-1' }, { text: '*** Кореневий елемент системи ***', value: '0' }]
 
     },
 
@@ -47573,6 +47679,10 @@ module.exports = new Vue({
      **/
     ready: function ready() {
         var self = this;
+
+        if (self.menu.type != 0) {
+            self.onTypeChange();
+        }
 
         for (var i in self.parentDefault) {
             self.parents.push(self.parentDefault[i]);
@@ -47590,6 +47700,15 @@ module.exports = new Vue({
      * Defined methods
      **/
     methods: {
+
+        checkFormBeforeSaving: function checkFormBeforeSaving(event) {
+            var self = this;
+
+            //event.preventDefault();
+
+            return false;
+        },
+
         /**
          * Handle the status change for the type menu DropDown
          **/
@@ -47731,13 +47850,19 @@ module.exports = new Vue({
          **/
         isRedirectTextDisabled: function isRedirectTextDisabled() {
             return !this.menu.is_redirectable;
-        }
+        },
 
+        /**
+         *
+         **/
+        isRedirectDisabledPage: function isRedirectDisabledPage() {
+            return this.menu.is_redirectable;
+        }
     }
 
 });
 
-},{"../_System.js":38,"vue":35,"vue-resource":24}],51:[function(require,module,exports){
+},{"../_System.js":38,"vue":35,"vue-resource":24}],52:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47781,13 +47906,22 @@ module.exports = {
             var noTags = system.stripTags(data),
                 sLinked = '';
 
+            if (row.type === 'S') {
+                noTags += ' / [Бокове меню]';
+            } else if (row.type === 'F') {
+                noTags += ' / [Нижнє меню]';
+            } else {
+                noTags += ' / [Головне меню]';
+            }
+
             if (system.isEmpty(row.linked) === false) {
-                // console.log(row.linked, row.title);
 
                 sLinked = '<br />' + '<ul class="linked-menu">';
 
                 for (var i = 0; i < row.linked.length; i++) {
-                    sLinked += '<li><a href="/admin/menu/' + row.linked[i].id + '/edit">' + row.linked[i].title + '</a></li>';
+                    if (row.linked[i]) {
+                        sLinked += '<li><a href="/admin/menu/' + row.linked[i].id + '/edit">' + row.linked[i].title + '</a></li>';
+                    }
                 }
 
                 sLinked += '</ul>';
@@ -47816,7 +47950,56 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],52:[function(require,module,exports){
+},{"../_System.js":38}],53:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module to handle the admin forms
+ *
+ * @url https://vuejs.org
+ **/
+var Vue = require('vue');
+var system = require('../_System.js').getInstance();
+
+Vue.use(require('vue-resource'));
+
+module.exports = new Vue({
+    el: '#admin_news_form',
+
+    data: {
+        news: {
+            /**
+             * Is necessarily photo news
+             *
+             * @var Boolean
+             **/
+            necessarily: false
+        }
+    },
+
+    /**
+     * Init form
+     **/
+    ready: function ready() {
+        var self = this;
+    },
+
+    /**
+     *
+     **/
+    computed: {
+        /**
+         * Check if necessarily field is disabled
+         *
+         * @return Boolean
+         **/
+        isNecessarilyDisabled: function isNecessarilyDisabled() {
+            return this.news.necessarily;
+        }
+    }
+});
+
+},{"../_System.js":38,"vue":35,"vue-resource":24}],54:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47827,7 +48010,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'content', name: 'content', bVisible: false }, { data: 'published', name: 'is_published' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'content', name: 'content', bVisible: false }],
 
     /**
      * Define the URLs
@@ -47858,8 +48041,13 @@ module.exports = {
     }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
+                published = '<i class="fa fa-eye green"></i>',
                 main = '',
                 important = '';
+
+            if (row.published === false) {
+                published = '<i class="fa fa-eye-slash red"></i>';
+            }
 
             if (row.main === true) {
                 main = '<i class="fa fa-bolt light-yellow"></i> ';
@@ -47869,14 +48057,9 @@ module.exports = {
                 important = '<i class="fa fa-flag yellow"></i> ';
             }
 
-            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + main + important + system.ellipsis(noTags, 100) + '</a>' + (row.photo ? '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">' : '');
+            return '<a href="/admin/news/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + main + important + system.ellipsis(noTags, 100) + '</a>' + (row.photo ? '<br><img width="100" height="50" src="' + row.photo + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 2
-    }, {
-        render: function render(data) {
-            return system.getPublishedIcon(data);
-        },
-        targets: 4
     }],
 
     ajax: {
@@ -47892,7 +48075,86 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],53:[function(require,module,exports){
+},{"../_System.js":38}],55:[function(require,module,exports){
+'use strict';
+
+/**
+ * Module to handle the admin forms
+ *
+ * @url https://vuejs.org
+ **/
+var Vue = require('vue');
+var system = require('../_System.js').getInstance();
+
+Vue.use(require('vue-resource'));
+
+module.exports = new Vue({
+  el: '#admin_pages_form',
+
+  /**
+   * Binded data
+   **/
+  data: {
+    pages: {
+      /**
+       * Current identifier
+       *
+       * @var Integer
+       **/
+      id: 0,
+
+      /**
+       * Is url pages
+       *
+       * @var String
+       **/
+      url: '',
+
+      /**
+       * Is public_url pages
+       *
+       * @var String
+       **/
+      public_url: '',
+
+      /**
+       * Is template_url pages
+       *
+       * @var String
+       **/
+      template_url: ''
+    }
+  },
+
+  /**
+   * Init form
+   **/
+  ready: function ready() {
+    var self = this;
+  },
+
+  /**
+   *
+   **/
+  computed: {
+    /**
+     * Check if page field is url
+     *
+     * @return String
+     **/
+    convertToPublicUrl: function convertToPublicUrl() {
+      var url = this.pages.url,
+          public_url = '',
+          template_url = this.pages.template_url;
+
+      public_url = template_url.replace('%%url%%', url);
+
+      return public_url;
+    }
+  }
+});
+
+},{"../_System.js":38,"vue":35,"vue-resource":24}],56:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47966,7 +48228,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],54:[function(require,module,exports){
+},{"../_System.js":38}],57:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -47977,7 +48239,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'email', name: 'email' }, { data: 'active', name: 'is_active' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'email', name: 'email' }],
 
     /**
      * Define the URLs
@@ -48009,14 +48271,9 @@ module.exports = {
                 active = '<i class="fa fa-eye-slash red"></i>';
             }
 
-            return '<a href="/admin/subscribers/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/subscribers/' + row.id + '/edit" title="' + noTags + '">' + active + ' ' + system.ellipsis(noTags, 100) + '</a>';
         },
         targets: 1
-    }, {
-        render: function render(data) {
-            return system.getPublishedIcon(data);
-        },
-        targets: 2
     }],
 
     select: {
@@ -48030,7 +48287,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],55:[function(require,module,exports){
+},{"../_System.js":38}],58:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -48069,7 +48326,7 @@ module.exports = {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data);
 
-            return '<a href="/admin/usefulLinks/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>';
+            return '<a href="/admin/usefulLinks/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>' + (row.image ? '<br><img width="100" height="50" src="' + row.image + '" ' + 'class="img-responsive img-thumbnail">' : '');
         },
         targets: 1
     }, {
@@ -48090,7 +48347,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],56:[function(require,module,exports){
+},{"../_System.js":38}],59:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -48168,7 +48425,7 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],57:[function(require,module,exports){
+},{"../_System.js":38}],60:[function(require,module,exports){
 'use strict';
 
 var system = require('../_System.js').getInstance();
@@ -48179,7 +48436,7 @@ module.exports = {
      *
      * @var Object
      **/
-    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }, { data: 'published', name: 'is_published' }],
+    columns: [{ data: 'id', name: 'id', orderable: false }, { data: 'date', name: 'date' }, { data: 'title', name: 'title' }, { data: 'created', name: 'created_at', bVisible: false }, { data: 'updated', name: 'updated_at', bVisible: false }, { data: 'content', name: 'content', bVisible: false }],
 
     /**
      * Define the URLs
@@ -48198,7 +48455,7 @@ module.exports = {
      **/
     columnDefs: [{
         className: 'select-checkbox',
-        render: function render(data) {
+        render: function render() {
             return '';
         },
         targets: 0
@@ -48210,20 +48467,20 @@ module.exports = {
     }, {
         render: function render(data, type, row) {
             var noTags = system.stripTags(data),
+                published = '<i class="fa fa-eye green"></i>',
                 img = '';
+
+            if (row.published === false) {
+                published = '<i class="fa fa-eye-slash red"></i>';
+            }
 
             if (system.isEmpty(row.preview) === false) {
                 img = '<br /><img width="100" height="50" src="http://img.youtube.com/vi/' + row.preview + '/hqdefault.jpg" ' + 'class="img-responsive img-thumbnail">';
             }
 
-            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + system.ellipsis(noTags, 100) + '</a>' + img;
+            return '<a href="/admin/videoNews/' + row.id + '/edit" title="' + noTags + '">' + published + ' ' + system.ellipsis(noTags, 100) + '</a>' + img;
         },
         targets: 2
-    }, {
-        render: function render(data) {
-            return system.getPublishedIcon(data);
-        },
-        targets: 5
     }],
 
     ajax: {
@@ -48239,7 +48496,21 @@ module.exports = {
 
 };
 
-},{"../_System.js":38}],58:[function(require,module,exports){
+},{"../_System.js":38}],61:[function(require,module,exports){
+"use strict";
+
+Array.prototype.contains = function (obj) {
+    var i = this.length;
+
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
+};
+
+},{}],62:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48385,6 +48656,211 @@ String.prototype.sprintf = String.prototype.sprintf || function () {
     return str;
 };
 
-},{}]},{},[36]);
+},{}],63:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function (factory) {
+    "use strict";
+
+    // AMD
+
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], {}, function ($, parameters, _system) {
+            return factory($, parameters, _system);
+        });
+    }
+    // CommonJS
+    else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+            module.exports = function ($, parameters, _system) {
+
+                if (!$) {
+                    $ = require('jquery');
+                }
+
+                return factory($, parameters, _system);
+            };
+        }
+        // Browser
+        else {
+                factory(jQuery, {}, _system);
+            }
+})(function ($, parameters, _system) {
+    'use strict';
+
+    var Vue = require('vue'),
+        elId = parameters && parameters.elId ? parameters.elId : '#street-switcher';
+
+    Vue.use(require('vue-resource'));
+
+    Vue.component('my-street-switcher', {
+        template: '<div class="well well-sm">' + '<h4><label>{{ cmpTitle }}</label></h4>' + '<p><input name="query" v-model="filterKey"></p>' + '<ul class="region-switcher">' + '<li v-for="item in items | filterBy filterKey">' +
+        //'   <input type="checkbox" value="{{ item.id }}" id="chk_district_{{ item.id }}" />'+
+        '   <label class="region-name" v-bind:class="[item.open ? \'opened\' : \'\']" for="chk_district_{{ item.id }}" @click="toggle(item)">' + '       <span v-if="hasStreets(item)">[ {{ item.open === false ? treeChars.plus : treeChars.minus }} ]</span>' + '       <span v-if="hasStreets(item)===false">[ {{ treeChars.star }} ]</span>' + '       {{ item.title }}' + '   </label>' + '   <ul v-if="item.open">' + '       <li v-for="street in item.streets">' + '           <input type="checkbox" value="{{ street.id }}" id="chk_street_{{ street.id }}" v-model="selectedIds" name="{{ cmpChkName }}[]" />' + '           <label for="chk_street_{{ street.id }}">{{ street.title }}</label>' + '       </li>' + '   </ul>' + '</li>' + '</ul>' +
+        //'<span>Selected Ids: {{ selectedIds | json }}</span>'+
+        '</div>',
+
+        /**
+         * Describe the properties for the component
+         *
+         * @var Object
+         **/
+        props: {
+            /**
+             * Regio title
+             *
+             * @var Object
+             **/
+            cmpTitle: {
+                type: String,
+                default: 'Regions'
+            },
+
+            /**
+             * The component name for checkbox
+             *
+             * @var Oject
+             **/
+            cmpChkName: {
+                type: String,
+                default: 'streets'
+            },
+
+            /**
+             * The list of checked items
+             *
+             * @var Array
+             **/
+            cmpChecked: {
+                type: String,
+                default: ''
+            }
+        },
+
+        /**
+         * Data container
+         *
+         * @var Object
+         **/
+        data: function data() {
+            return {
+                /**
+                 * The list of regions with streets
+                 *
+                 * @var Array
+                 **/
+                items: null,
+
+                /**
+                 *
+                 **/
+                filterKey: '',
+
+                /**
+                 *
+                 **/
+                open: false,
+
+                /**
+                 * Tree char
+                 *
+                 * @var Object
+                 **/
+                treeChars: {
+                    plus: '+',
+                    minus: '-',
+                    star: '*'
+                },
+
+                selectedIds: []
+            };
+        },
+
+        /**
+         * When component is ready to be rendered
+         **/
+        ready: function ready() {
+            var self = this;
+
+            self._sendRequest().then(function () {});
+        },
+
+        /**
+         * The list of available methods
+         *
+         * @var Object
+         **/
+        methods: {
+
+            /**
+             * Send ajax request to server
+             *
+             * @param Object data
+             **/
+            _sendRequest: function _sendRequest(data) {
+                var self = this,
+                    selected = self.cmpChecked.split(','),
+                    sUrl = _system.getUrl('districts', { aggregated: true, checked: self.cmpChecked });
+
+                return Vue.http.get(sUrl).then(function (response) {
+                    if (response.ok === true) {
+                        self.items = response.data;
+
+                        if (_system.isArray(selected)) {
+                            self.selectedIds = selected;
+                        }
+
+                        self.items.forEach(function (district) {
+
+                            if (_system.isArray(district.streets)) {
+                                var arr = district.streets;
+
+                                for (var i = 0; i < arr.length; i++) {
+                                    if (selected.contains(arr[i]['id'])) {
+                                        district.open = true;
+                                        return false;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }, function (response) {}).finally(function (response) {});
+            },
+
+            /**
+             *
+             **/
+            toggle: function toggle(item) {
+                if (this.isFolder) {
+                    item.open = !item.open;
+                }
+            },
+
+            /**
+             *
+             **/
+            hasStreets: function hasStreets(item) {
+                return item && item.streets && item.streets.length > 0;
+            }
+        },
+
+        computed: {
+            /**
+             * Check if node has child component
+             *
+             **/
+            isFolder: function isFolder() {
+                return true;
+            }
+        }
+    });
+
+    return new Vue({
+        el: elId
+    });
+});
+
+},{"jquery":8,"vue":35,"vue-resource":24}]},{},[36]);
 
 //# sourceMappingURL=admin.js.map

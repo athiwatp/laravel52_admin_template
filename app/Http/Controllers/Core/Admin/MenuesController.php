@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\MenuesRequest;
 use App\Repositories\MenuesRepository;
 use App\Repositories\PagesRepository;
+use App\Events\Logs\LogsWasChanged;
 
 use App\Http\Requests;
 use App\Http\Controllers\Core\Controller;
-use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL;
+use Lang, Redirect, cTemplate, cBreadcrumbs, cForms, URL, Event;
 
 class MenuesController extends AdminController
 {
@@ -62,7 +63,7 @@ class MenuesController extends AdminController
                         'url' => URL::route('admin.menu.create'),
                         'title' => Lang::get('table_field.toolbar.add'),
                         'icon' => '<i class="fa fa-plus"></i>',
-                        'aParams' => array('id' => 'add', 'class' => 'add-btn')
+                        'aParams' => array('id' => 'add_menu', 'class' => 'add-btn')
                     ),
                     'edit' => array(
                         'url' => '#', 
@@ -116,7 +117,10 @@ class MenuesController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-success')
+                    'params' => [
+                        'class'=>'btn-success',
+                        'v-on:click' => 'checkFormBeforeSaving'
+                    ]
                 )
             ),
             'formSwitcher' => array(
@@ -129,6 +133,7 @@ class MenuesController extends AdminController
                 'aTypeMenues' => $this->menues->getMenuTypes(),
                 'aMenues' => $this->menues->getComboList(),
                 'aPages' => $this->pages->getComboList(),
+                'getRoute' => $this->menues->getRoute(),
                 'oData' => null
             )),
             'formUrl' => URL::route('admin.menu.store'),
@@ -142,9 +147,29 @@ class MenuesController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( MenuesRequest $request )
+    public function store( Request $request )
     {
-        $this->menues->store( $request->all() );
+        $validator = $this->validate( $request,
+            array(
+                'title' => 'required|min:3|max:255',
+                'url' => 'required_with:title',
+                'type_menu' => 'required|not_in:0',
+                'pos' => 'required|numeric',
+                'parent_id' => 'required|not_in:-1',
+                'redirect_url' => 'required_with:is_redirectable'
+                ));
+
+        $menu = $this->menues->store( $request->all() );
+
+        Event::fire( new LogsWasChanged(array(
+            'comment' => ( $request->id > 0 ? 'Редагував' : 'Створив' ),
+            'object_id'    => $menu['id'],
+            'object_type'  => 'App\Models\Menues'
+        )));
+
+        if ( $menu && $request->get('page_id') === '0') {
+            return Redirect::route('admin.pages.create', array('menu_id' => $menu['id']));
+        }
 
         return Redirect::route('admin.menu.index')
             ->with('message', array(
@@ -193,7 +218,10 @@ class MenuesController extends AdminController
                 array(
                     'title' => Lang::get('table_field.lists.save'),
                     'type' => 'submit',
-                    'params' => array('class'=>'btn-success')
+                    'params' => [
+                        'class'=>'btn btn-success',
+                        'v-on:click' => 'checkFormBeforeSaving'
+                    ]
                 )
             ),
             'formSwitcher' => array(
@@ -207,7 +235,8 @@ class MenuesController extends AdminController
                 'oData' => $oData,
                 'aTypeMenues' => $this->menues->getMenuTypes(),
                 'aPages' => $this->pages->getComboList(),
-                'aMenues' => $this->menues->getComboList()
+                'aMenues' => $this->menues->getComboList(),
+                'getRoute' => $this->menues->getRoute()
             )),
             'formUrl' => URL::route('admin.menu.store'),
         ));

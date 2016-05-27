@@ -23,7 +23,7 @@ class VideoNews extends TransformerAbstract
             'created' => $videoNews->created_at,
             'updated' => $videoNews->updated_at,
             'published' => (boolean) $videoNews->is_published,
-            'preview' => cScreenshot::getItems($videoNews->url)
+            'preview' => cScreenshot::getItems($videoNews->youtube_url)
         ];
     }
 }

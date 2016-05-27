@@ -23,6 +23,7 @@ return array(
         'profile' => 'Профіль',
         'created' => 'Створений',
         'updated' => 'Оновлений',
+        'group_name' => 'Группа',
         ),
 
     'auth' => array(
@@ -40,6 +41,13 @@ return array(
         'name' => 'Iм\'я',
         'confirm_pass' => 'Підтвердіть Пароль',
         'register' => 'Реєстрація',
+        ),
+
+    'check' => array(
+        'select_group' => 'Оберіть группу',
+        'user' => 'Користувач',
+        'editor' => 'Редактор',
+        'administrator' => 'Адміністратор',
         ),
 
     );

@@ -11,8 +11,12 @@ class ChaptersRepository extends BaseRepository {
      *
      * @return void
     */
-    public function __construct(Chapters $chapters)
+    public function __construct( Chapters $chapters = null )
     {
+        if ( $chapters === null ) {
+            $chapters = new Chapters();
+        }
+
         $this->model = $chapters;
     }
 
@@ -118,6 +122,18 @@ class ChaptersRepository extends BaseRepository {
         }
 
         return $aItems;
+    }
+
+    /**
+    * Prepare a list of chapters for the combox
+    */
+    public static function getChapters( $sType )
+    {
+        return $oItems = Chapters::where('type_chapter', '=', $sType)
+            ->where('is_active', '=', Config::get('constants.DONE_STATUS.SUCCESS'))
+            ->orderBy('pos')
+            ->orderBy('title')
+            ->get();
     }
 
 }

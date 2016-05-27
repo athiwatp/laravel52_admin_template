@@ -8,6 +8,11 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/callback/{provider}', 'Core\SocialAuthController@callback');
 
+    Route::get('/subscription/activate/{code}',  ['as' => 'subscription-activate', 'uses' => 'Core\Face\SubscribersController@activate']);
+    Route::get('/subscription/deactivate/{code}',  ['as' => 'subscription-deactivate', 'uses' => 'Core\Face\SubscribersController@deactivate']);
+    Route::get('/subscription/thanks/{code}',  ['as' => 'subscription-thanks', 'uses' => 'Core\Face\SubscribersController@thanks']);
+    Route::get('/subscription/error',  ['as' => 'subscription-activation-error', 'uses' => 'Core\Face\SubscribersController@error']);
+
     // Home page
     Route::get('/', array('as' => 'home', 'uses' => 'Core\Face\IndexController@index') );
 
@@ -45,6 +50,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/announcements', array('as' => 'announce-list', 'uses' => 'Core\Face\AnnouncementsController@index') );
 });
 
+Route::group(['prefix' => 'print', 'middleware' => ['web'] ], function() {
+    Route::get('/n/{url}', array('as' => 'print-news-url', 'uses' => 'Core\Face\PrintController@showNews') );
+});
+
 /**
  * Admin
 */
@@ -62,6 +71,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'] ], function() {
 
     // Handle the Announcements
     Route::get('chapter/announcements', array('as' => 'admin.chapter.announcements', 'uses' => 'Core\Admin\ChaptersController@indexAnnouncements'));
+
+    // Handle the Logs
+    Route::get('logs', array('as' => 'admin.logs', 'uses' => 'Core\Admin\LogsController@index'));
 
     // Chapters
     Route::resource('chapter', 'Core\Admin\ChaptersController');
@@ -122,8 +134,18 @@ Route::group(['prefix' => 'api/v1', 'middleware' => [/*'api',*/ 'auth:api']], fu
     Route::resource('subscribers', 'Core\Api\SubscriberController', ['only' => ['index', 'destroy']]);
     Route::resource('announcements', 'Core\Api\AnnouncementsController', ['only' => ['index', 'show', 'destroy']]);
     Route::resource('usefulLinks', 'Core\Api\UsefulLinksController', ['only' => ['index', 'show', 'destroy']]);
+    Route::resource('logs', 'Core\Api\LogsController', ['only' => ['index']]);
 
 });
 
 
 
+    // /// TEMPORARY SECTION: WILL BE REMOVED 
+
+    // Route::get('/pages/sync/{start?}', array('as' => 'admin.pages.sync', 'before' => 'auth', 'uses' => 'Core\Admin\PagesController@sync'));
+
+    // Route::get('/news/sync/{start?}', array('as' => 'admin.news.sync', 'before' => 'auth', 'uses' => 'Core\Admin\NewsController@sync'));
+
+    // Route::get('/announcements/sync/{start?}', array('as' => 'admin.announcements.sync', 'before' => 'auth', 'uses' => 'Core\Admin\AnnouncementsController@sync'));
+
+    // ///

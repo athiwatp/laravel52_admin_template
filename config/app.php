@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Kiev',
 
     /*
     |--------------------------------------------------------------------------
@@ -219,6 +219,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Image'     => Intervention\Image\Facades\Image::class,
 
+        'HTMLMin' => GrahamCampbell\HTMLMin\Facades\HTMLMin::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         'Form' => 'Collective\Html\FormFacade',
