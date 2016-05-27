@@ -3,7 +3,6 @@ var loader = require( './modules/_loader.js' );
 var _system = require( './modules/_System.js').getInstance();
 
 require( './types/String.js' );
-require( './types/Array.js' );
 require( './modules/_metis.js' );
 require( './modules/_resizer.js' );
 
@@ -25,20 +24,6 @@ $(function() {
         }
 
         require('./components/my-switcher.js')($, {
-            elId: '#' + id
-        }, _system);
-    });
-
-    $('.street-switcher').each(function() {
-        var id = $(this).attr('id');
-
-        if ( _system.isEmpty(id) ) {
-            id = _system.generateId();
-
-            $(this).attr('id', id);
-        }
-
-        require('../Core/components/my-location-switcher.js')($, {
             elId: '#' + id
         }, _system);
     });

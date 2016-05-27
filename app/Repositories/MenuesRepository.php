@@ -39,6 +39,8 @@ class MenuesRepository extends BaseRepository {
             $linked = new MenuLinked();
         }
 
+        $this->linkedmenu = $linked;
+
         // Inject url history object
         $this->history = $history;
     }
@@ -73,10 +75,11 @@ class MenuesRepository extends BaseRepository {
 
         $menu->parent_id    = ( array_key_exists('parent_id', $inputs) && $inputs['parent_id'] > 0 ? $inputs['parent_id'] : 0 );
         $menu->title        = $inputs['title'];
-        $menu->path         = $oMenus['path'];
         $menu->pos          = ( isset($inputs['pos']) ? $inputs['pos'] : 0 );
         $menu->type_menu    = ( isset($inputs['type_menu']) ? $inputs['type_menu'] : 0 );
         $menu->page_id      = ( isset($inputs['page_id']) ? $inputs['page_id'] : null );
+        $menu->path         = $oMenus['path'];
+
         $menu->url          = $inputs['url'];
         $menu->user_id      = Auth::id();
         $menu->redirect_url = ( isset($inputs['redirect_url']) ? $inputs['redirect_url'] : null );
@@ -260,7 +263,6 @@ class MenuesRepository extends BaseRepository {
     public function getMenu($bAllMenu = false)
     {
         $oAllMenu = $this->model
-            // ->orderBy('parent_id')
             ->orderBy('pos')
             ->orderBy('title');
 

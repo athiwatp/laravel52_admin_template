@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
 
         $dt = Carbon::now();
 
+
         // Run this command from Monday to Friday at 18:30
         $schedule->command('mail:latestnews')
             ->timezone('Europe/Kiev')

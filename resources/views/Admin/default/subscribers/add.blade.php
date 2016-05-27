@@ -26,6 +26,6 @@
 
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
 
-@if( env('APP_ENV', 'testing') )
+@if( env('APP_ENV', 'testing') === 'testing' )
     {{ Form::hidden('is_active', isset($oData) ? $oData->is_active : 1) }}
 @endif

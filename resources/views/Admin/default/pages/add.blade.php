@@ -62,11 +62,11 @@
         </div>
     </div>
 {{ Form::hidden('id', isset($oData) ? $oData->id : 0) }}
-@if( env('APP_ENV', 'testing') )
-    {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 1) }}
-@endif
 {{ Form::hidden('template_url', route('page-url', ['url' => '%%url%%']), ['v-model' => 'pages.template_url'] ) }}
 {{ Form::hidden('menu_id', isset($oMenuId) ? $oMenuId : 0) }}
+@if( env('APP_ENV', 'testing') === 'testing' )
+    {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 1) }}
+@endif
 </div>
 
 @if ( Config::get('app.debug') == true )

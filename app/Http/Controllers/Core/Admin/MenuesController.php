@@ -149,6 +149,7 @@ class MenuesController extends AdminController
      */
     public function store( Request $request )
     {
+        // dd( $request->all() );
         $validator = $this->validate( $request,
             array(
                 'title' => 'required|min:3|max:255',

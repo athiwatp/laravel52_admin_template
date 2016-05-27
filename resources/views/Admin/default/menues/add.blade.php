@@ -143,7 +143,7 @@
     ])
 }}
 
-@if( env('APP_ENV', 'testing') )
+@if( env('APP_ENV', 'testing') === 'testing' )
     {{ Form::hidden('parent_id', '-1') }}
     {{ Form::hidden('is_published', isset($oData) ? $oData->is_published : 0) }}
 @endif

@@ -29,14 +29,13 @@ module.exports = {
      *
      * @var Object
      **/
-    columnDefs: [
-        {
-            className: 'select-checkbox',
-            render: function (data) {
-                return '';
-            },
-            targets: 0
+    columnDefs: [{
+        className: 'select-checkbox',
+        render: function (data) {
+            return '';
         },
+        targets: 0
+    },
 
         {
             render: function (data) {
@@ -50,11 +49,11 @@ module.exports = {
                     sLinked = '';
 
                 if (row.type === 'S') {
-                    noTags += ' / [Бокове меню]';
+                    noTags += ' / [Боковое меню]';
                 } else if (row.type === 'F') {
-                    noTags += ' / [Нижнє меню]';
+                    noTags += ' / [Нижнее меню]';
                 } else {
-                    noTags += ' / [Головне меню]';
+                    noTags += ' / [Главное меню]';
                 }
 
                 if (system.isEmpty(row.linked) === false) {
