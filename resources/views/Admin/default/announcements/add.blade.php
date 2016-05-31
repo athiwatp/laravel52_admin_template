@@ -7,7 +7,10 @@
 <div class="form-group">
     {!!
         Form::_label('important',
-            Form::checkbox('important', '1', isset($oData) && $oData->important === '1' ? true : false , array('id' => 'important')) . ' ' . Lang::get('announce.form.important')
+            Form::checkbox('important', '1', isset($oData) && $oData->important === '1' ? true : false , array(
+                'id' => 'important',
+                ':disabled'=>'!isTopDateDisabled'
+                )) . ' ' . Lang::get('announce.form.important')
         )
     !!}
     <p class="help-block">{{ Lang::get('announce.form.important_help') }}</p>

@@ -46234,7 +46234,6 @@ var loader = require('./modules/_loader.js');
 var _system = require('./modules/_System.js').getInstance();
 
 require('./types/String.js');
-require('./types/Array.js');
 require('./modules/_metis.js');
 require('./modules/_resizer.js');
 
@@ -46256,20 +46255,6 @@ $(function () {
         }
 
         require('./components/my-switcher.js')($, {
-            elId: '#' + id
-        }, _system);
-    });
-
-    $('.street-switcher').each(function () {
-        var id = $(this).attr('id');
-
-        if (_system.isEmpty(id)) {
-            id = _system.generateId();
-
-            $(this).attr('id', id);
-        }
-
-        require('../Core/components/my-location-switcher.js')($, {
             elId: '#' + id
         }, _system);
     });
@@ -46451,7 +46436,7 @@ $(function () {
     // ====== //
 });
 
-},{"../Core/components/my-location-switcher.js":63,"./components/my-switcher.js":37,"./modules/_System.js":38,"./modules/_ckeditor.js":39,"./modules/_datatable.js":40,"./modules/_loader.js":41,"./modules/_mask.js":42,"./modules/_metis.js":43,"./modules/_resizer.js":44,"./types/Array.js":61,"./types/String.js":62,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
+},{"./components/my-switcher.js":37,"./modules/_System.js":38,"./modules/_ckeditor.js":39,"./modules/_datatable.js":40,"./modules/_loader.js":41,"./modules/_mask.js":42,"./modules/_metis.js":43,"./modules/_resizer.js":44,"./types/String.js":61,"bootstrap-datepicker":1,"jquery":8}],37:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -47850,13 +47835,6 @@ module.exports = new Vue({
          **/
         isRedirectTextDisabled: function isRedirectTextDisabled() {
             return !this.menu.is_redirectable;
-        },
-
-        /**
-         *
-         **/
-        isRedirectDisabledPage: function isRedirectDisabledPage() {
-            return this.menu.is_redirectable;
         }
     }
 
@@ -47907,11 +47885,11 @@ module.exports = {
                 sLinked = '';
 
             if (row.type === 'S') {
-                noTags += ' / [Бокове меню]';
+                noTags += ' / [Боковое меню]';
             } else if (row.type === 'F') {
-                noTags += ' / [Нижнє меню]';
+                noTags += ' / [Нижнее меню]';
             } else {
-                noTags += ' / [Головне меню]';
+                noTags += ' / [Главное меню]';
             }
 
             if (system.isEmpty(row.linked) === false) {
@@ -48497,20 +48475,6 @@ module.exports = {
 };
 
 },{"../_System.js":38}],61:[function(require,module,exports){
-"use strict";
-
-Array.prototype.contains = function (obj) {
-    var i = this.length;
-
-    while (i--) {
-        if (this[i] == obj) {
-            return true;
-        }
-    }
-    return false;
-};
-
-},{}],62:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48656,211 +48620,6 @@ String.prototype.sprintf = String.prototype.sprintf || function () {
     return str;
 };
 
-},{}],63:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-(function (factory) {
-    "use strict";
-
-    // AMD
-
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], {}, function ($, parameters, _system) {
-            return factory($, parameters, _system);
-        });
-    }
-    // CommonJS
-    else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
-            module.exports = function ($, parameters, _system) {
-
-                if (!$) {
-                    $ = require('jquery');
-                }
-
-                return factory($, parameters, _system);
-            };
-        }
-        // Browser
-        else {
-                factory(jQuery, {}, _system);
-            }
-})(function ($, parameters, _system) {
-    'use strict';
-
-    var Vue = require('vue'),
-        elId = parameters && parameters.elId ? parameters.elId : '#street-switcher';
-
-    Vue.use(require('vue-resource'));
-
-    Vue.component('my-street-switcher', {
-        template: '<div class="well well-sm">' + '<h4><label>{{ cmpTitle }}</label></h4>' + '<p><input name="query" v-model="filterKey"></p>' + '<ul class="region-switcher">' + '<li v-for="item in items | filterBy filterKey">' +
-        //'   <input type="checkbox" value="{{ item.id }}" id="chk_district_{{ item.id }}" />'+
-        '   <label class="region-name" v-bind:class="[item.open ? \'opened\' : \'\']" for="chk_district_{{ item.id }}" @click="toggle(item)">' + '       <span v-if="hasStreets(item)">[ {{ item.open === false ? treeChars.plus : treeChars.minus }} ]</span>' + '       <span v-if="hasStreets(item)===false">[ {{ treeChars.star }} ]</span>' + '       {{ item.title }}' + '   </label>' + '   <ul v-if="item.open">' + '       <li v-for="street in item.streets">' + '           <input type="checkbox" value="{{ street.id }}" id="chk_street_{{ street.id }}" v-model="selectedIds" name="{{ cmpChkName }}[]" />' + '           <label for="chk_street_{{ street.id }}">{{ street.title }}</label>' + '       </li>' + '   </ul>' + '</li>' + '</ul>' +
-        //'<span>Selected Ids: {{ selectedIds | json }}</span>'+
-        '</div>',
-
-        /**
-         * Describe the properties for the component
-         *
-         * @var Object
-         **/
-        props: {
-            /**
-             * Regio title
-             *
-             * @var Object
-             **/
-            cmpTitle: {
-                type: String,
-                default: 'Regions'
-            },
-
-            /**
-             * The component name for checkbox
-             *
-             * @var Oject
-             **/
-            cmpChkName: {
-                type: String,
-                default: 'streets'
-            },
-
-            /**
-             * The list of checked items
-             *
-             * @var Array
-             **/
-            cmpChecked: {
-                type: String,
-                default: ''
-            }
-        },
-
-        /**
-         * Data container
-         *
-         * @var Object
-         **/
-        data: function data() {
-            return {
-                /**
-                 * The list of regions with streets
-                 *
-                 * @var Array
-                 **/
-                items: null,
-
-                /**
-                 *
-                 **/
-                filterKey: '',
-
-                /**
-                 *
-                 **/
-                open: false,
-
-                /**
-                 * Tree char
-                 *
-                 * @var Object
-                 **/
-                treeChars: {
-                    plus: '+',
-                    minus: '-',
-                    star: '*'
-                },
-
-                selectedIds: []
-            };
-        },
-
-        /**
-         * When component is ready to be rendered
-         **/
-        ready: function ready() {
-            var self = this;
-
-            self._sendRequest().then(function () {});
-        },
-
-        /**
-         * The list of available methods
-         *
-         * @var Object
-         **/
-        methods: {
-
-            /**
-             * Send ajax request to server
-             *
-             * @param Object data
-             **/
-            _sendRequest: function _sendRequest(data) {
-                var self = this,
-                    selected = self.cmpChecked.split(','),
-                    sUrl = _system.getUrl('districts', { aggregated: true, checked: self.cmpChecked });
-
-                return Vue.http.get(sUrl).then(function (response) {
-                    if (response.ok === true) {
-                        self.items = response.data;
-
-                        if (_system.isArray(selected)) {
-                            self.selectedIds = selected;
-                        }
-
-                        self.items.forEach(function (district) {
-
-                            if (_system.isArray(district.streets)) {
-                                var arr = district.streets;
-
-                                for (var i = 0; i < arr.length; i++) {
-                                    if (selected.contains(arr[i]['id'])) {
-                                        district.open = true;
-                                        return false;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }, function (response) {}).finally(function (response) {});
-            },
-
-            /**
-             *
-             **/
-            toggle: function toggle(item) {
-                if (this.isFolder) {
-                    item.open = !item.open;
-                }
-            },
-
-            /**
-             *
-             **/
-            hasStreets: function hasStreets(item) {
-                return item && item.streets && item.streets.length > 0;
-            }
-        },
-
-        computed: {
-            /**
-             * Check if node has child component
-             *
-             **/
-            isFolder: function isFolder() {
-                return true;
-            }
-        }
-    });
-
-    return new Vue({
-        el: elId
-    });
-});
-
-},{"jquery":8,"vue":35,"vue-resource":24}]},{},[36]);
+},{}]},{},[36]);
 
 //# sourceMappingURL=admin.js.map

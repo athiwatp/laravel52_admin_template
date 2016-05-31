@@ -23,7 +23,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     {{ Form::label('title', Lang::get('menues.form.title') ) }}
     {{
@@ -92,7 +91,7 @@
             [
                 'class' => 'form-control',
                  'v-model' => 'menu.page_id',
-                ':disabled'=>'isRedirectDisabledPage'
+                ':disabled'=>'!isRedirectTextDisabled'
             ]
         )
     }}
@@ -100,13 +99,15 @@
 
 <div class="form-group">
     {!!  Form::_label('redirect_url', Lang::get('menues.form.redirect_url') . ' (<a data-toggle="modal" data-target="#myRoute">' . Lang::get('menues.form.internal_modules') . '</a>)' ) !!}
+
     {{
         Form::text('redirect_url', ( isset($oData) ? $oData->redirect_url : null ), array(
             'class' => 'form-control',
             'id' => 'thisModel',
-            ':disabled'=>'isRedirectTextDisabled'
+            ':disabled' => 'isRedirectTextDisabled'
         ))
     }}
+
     {!!
         Form::_label('redirectable', Form::checkbox('is_redirectable', '1', isset($oData) && $oData->is_redirectable === '1' ? true : false , array(
             'id' => 'redirectable',

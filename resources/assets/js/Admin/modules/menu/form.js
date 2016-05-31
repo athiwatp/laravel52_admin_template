@@ -87,7 +87,7 @@ module.exports = new Vue({
         parentDefault: [
             {text: '-- Виберіть батьківський елемент --', value:'-1'},
             {text: '*** Кореневий елемент системи ***', value:'0'}
-        ]
+        ],
 
     },
 
@@ -270,13 +270,6 @@ module.exports = new Vue({
          **/
         isRedirectTextDisabled: function() {
             return !this.menu.is_redirectable;
-        },
-
-        /**
-         *
-         **/
-        isRedirectDisabledPage: function() {
-            return this.menu.is_redirectable;
         }
     }
 
